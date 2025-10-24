@@ -1,0 +1,13 @@
+# Minimal valid meta-spec for testing
+name: test-kit
+version: 0.1.0
+domain: generic
+lifecycle: greenfield
+
+entity:
+  name: TestEntity
+  fields:
+    - name: id
+      type: str
+      description: Unique identifier
+

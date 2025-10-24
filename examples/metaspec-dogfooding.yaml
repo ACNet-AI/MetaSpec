@@ -1,0 +1,88 @@
+# MetaSpec - Generate MetaSpec itself using MetaSpec (Dogfooding)
+name: metaspec-toolkit
+version: 0.1.0
+description: Meta-specification framework for generating Spec-Driven X (SD-X) toolkits
+domain: generic
+lifecycle: greenfield
+
+entity:
+  name: MetaSpecDefinition
+  fields:
+    - name: name
+      type: string
+      required: true
+      description: Toolkit name (kebab-case or snake_case)
+    
+    - name: version
+      type: string
+      required: true
+      description: Semantic version (e.g., "0.1.0")
+    
+    - name: domain
+      type: string
+      required: true
+      description: Target domain (generic, mcp, web, ai, etc.)
+    
+    - name: lifecycle
+      type: string
+      required: true
+      description: Development lifecycle (greenfield or brownfield)
+    
+    - name: entity
+      type: object
+      required: true
+      description: Core entity definition with name and fields
+    
+    - name: commands
+      type: array
+      required: false
+      description: Optional custom CLI commands
+    
+    - name: dependencies
+      type: array
+      required: false
+      description: Optional Python package dependencies
+
+commands:
+  - name: init
+    description: Generate a new toolkit from meta-spec definition
+    options:
+      - name: output
+        type: string
+        required: false
+        description: Output directory for generated toolkit
+      
+      - name: force
+        type: boolean
+        required: false
+        description: Overwrite existing output directory
+      
+      - name: templates
+        type: string
+        required: false
+        description: Custom template directory path
+
+  - name: validate
+    description: Validate a meta-spec YAML file
+    options:
+      - name: strict
+        type: boolean
+        required: false
+        description: Treat warnings as errors
+
+  - name: preview
+    description: Preview what will be generated without creating files
+    options:
+      - name: verbose
+        type: boolean
+        required: false
+        description: Show detailed file tree
+
+dependencies:
+  - jinja2>=3.1.0
+  - typer>=0.9.0
+  - rich>=13.0.0
+  - ruamel.yaml>=0.18.0
+  - jsonschema>=4.20.0
+  - pydantic>=2.5.0
+

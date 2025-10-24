@@ -1,0 +1,11 @@
+# Comprehensive invalid example with multiple error types
+name: 123  # Wrong type - should be string
+version: 1.0  # Wrong type - should be quoted string
+domain: invalid-domain  # Invalid enum value
+lifecycle: greenfield
+
+entity:
+  # Missing 'name' field
+  fields:  # Empty list
+    []
+

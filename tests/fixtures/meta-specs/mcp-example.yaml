@@ -1,0 +1,33 @@
+# MCP Server toolkit example
+name: mcp-spec-kit
+version: 0.1.0
+description: Spec-driven toolkit for MCP server development
+domain: mcp
+lifecycle: greenfield
+
+entity:
+  name: MCPServer
+  fields:
+    - name: tools
+      type: list
+      description: Available tools
+    - name: resources
+      type: list
+      description: Available resources
+    - name: prompts
+      type: list
+      description: Available prompts
+
+commands:
+  - name: deploy
+    description: Deploy MCP server
+    options:
+      - name: target
+        type: string
+        required: true
+        description: Deployment target (dev/staging/prod)
+
+dependencies:
+  - fastapi>=0.100.0
+  - pydantic>=2.0.0
+

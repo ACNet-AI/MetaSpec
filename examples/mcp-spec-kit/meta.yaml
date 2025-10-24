@@ -1,0 +1,323 @@
+# Meta-Spec Definition for MCP-Spec-Kit
+# This example shows how to use Meta-Spec to generate a spec-driven system for MCP development
+
+meta:
+  name: "mcp-spec-kit"
+  version: "0.1.0"
+  kind: "domain"
+  description: "Spec-driven development toolkit for MCP servers"
+  
+  # Intent-Driven (inspired by spec-kit)
+  intent:
+    purpose: "Standardize MCP server development with spec-driven approach"
+    users: 
+      - "MCP server developers"
+      - "Platform engineers"
+      - "AI agents (Claude, Copilot)"
+    goals:
+      - "Reduce MCP server development time from days to hours"
+      - "Ensure MCP protocol compliance"
+      - "Provide clear development workflow"
+      - "Enable AI agents to develop MCP servers"
+    problems_solved:
+      - "Inconsistent MCP server implementations"
+      - "Lack of MCP development best practices"
+      - "Manual protocol validation"
+      - "Steep learning curve for MCP protocol"
+  
+  # Development Modes
+  development_modes:
+    greenfield:
+      enabled: true
+      description: "Create new MCP servers from scratch"
+    exploration:
+      enabled: true
+      description: "Explore different MCP architectures"
+    brownfield:
+      enabled: false
+      description: "Enhance existing MCP servers"
+  
+  # AI Agent Support
+  ai_support:
+    enabled: true
+    agents:
+      - name: "claude"
+        instruction_file: "CLAUDE.md"
+        commands:
+          - "/mcpspec.spec"
+          - "/mcpspec.plan"
+          - "/mcpspec.tasks"
+          - "/mcpspec.validate"
+      
+      - name: "copilot"
+        instruction_file: "AGENTS.md"
+        commands:
+          - "mcpspec spec"
+          - "mcpspec plan"
+          - "mcpspec tasks"
+    
+    constitution:
+      enabled: true
+      inherit_from: "meta-spec"
+      domain_rules:
+        - "Must validate against MCP protocol specification"
+        - "Must include manifest.json in all generated servers"
+        - "Tools must have valid JSON Schema for input"
+        - "All prompts must have clear argument definitions"
+        - "Resources must follow URI template specification"
+        - "Must test server with MCP Inspector before deployment"
+
+# Core entities in MCP domain
+entities:
+  - name: "MCPServer"
+    description: "A complete MCP server specification"
+    fields:
+      - name: "name"
+        type: "string"
+        required: true
+        description: "Server name"
+      
+      - name: "version"
+        type: "string"
+        required: true
+        pattern: "^\\d+\\.\\d+\\.\\d+$"
+        description: "Semantic version"
+      
+      - name: "description"
+        type: "string"
+        required: true
+      
+      - name: "tools"
+        type: "list<Tool>"
+        required: false
+        description: "MCP tools provided by this server"
+      
+      - name: "resources"
+        type: "list<Resource>"
+        required: false
+      
+      - name: "prompts"
+        type: "list<Prompt>"
+        required: false
+  
+  - name: "Tool"
+    description: "MCP Tool definition"
+    fields:
+      - name: "name"
+        type: "string"
+        required: true
+      
+      - name: "description"
+        type: "string"
+        required: true
+      
+      - name: "input_schema"
+        type: "json_schema"
+        required: true
+        description: "JSON Schema for tool input"
+      
+      - name: "implementation"
+        type: "code_block"
+        required: false
+  
+  - name: "Resource"
+    description: "MCP Resource definition"
+    fields:
+      - name: "uri"
+        type: "uri_template"
+        required: true
+        description: "Resource URI template"
+      
+      - name: "name"
+        type: "string"
+        required: true
+      
+      - name: "description"
+        type: "string"
+        required: true
+      
+      - name: "mime_type"
+        type: "string"
+        required: false
+  
+  - name: "Prompt"
+    description: "MCP Prompt definition"
+    fields:
+      - name: "name"
+        type: "string"
+        required: true
+      
+      - name: "description"
+        type: "string"
+        required: true
+      
+      - name: "arguments"
+        type: "list<PromptArgument>"
+        required: false
+
+  - name: "PromptArgument"
+    description: "Prompt argument definition"
+    fields:
+      - name: "name"
+        type: "string"
+        required: true
+      
+      - name: "description"
+        type: "string"
+        required: true
+      
+      - name: "required"
+        type: "boolean"
+        required: false
+        default: false
+
+# Templates for MCP
+templates:
+  - name: "mcp-default"
+    engine: "jinja2"
+    path: "templates/mcp-default"
+    description: "Default MCP server template"
+  
+  - name: "mcp-advanced"
+    engine: "jinja2"
+    path: "templates/mcp-advanced"
+    description: "Advanced MCP server with full lifecycle"
+
+# MCP Development Pipeline
+pipeline:
+  - name: "understand"
+    description: "Understand MCP requirements"
+    output: "specs/{{feature}}/spec.md"
+  
+  - name: "design"
+    description: "Design MCP architecture"
+    input: "specs/{{feature}}/spec.md"
+    output: 
+      - "specs/{{feature}}/plan.md"
+      - "specs/{{feature}}/mcp-capabilities.md"
+  
+  - name: "validate"
+    description: "Validate MCP protocol compliance"
+    validators:
+      - "mcp-protocol-validator"
+      - "manifest-validator"
+      - "schema-validator"
+  
+  - name: "generate"
+    description: "Generate MCP server code"
+    output:
+      - "src/server.py"
+      - "manifest.json"
+      - "config.yaml"
+  
+  - name: "test"
+    description: "Test generated MCP server"
+    tools:
+      - "mcp-inspector"
+      - "pytest"
+
+# MCP-specific constraints
+constraints:
+  technical:
+    languages: ["python"]
+    frameworks: ["mcp-framework", "mcp-factory"]
+    mcp_protocol_version: "1.0"
+  
+  operational:
+    transport: ["stdio", "sse"]
+    deployment: ["local", "docker", "cloud"]
+  
+  compliance:
+    mcp_standards: ["protocol-compliance", "security-best-practices"]
+
+# Adapters: MCP domain adapter
+extensions:
+  - name: "mcp-adapter"
+    type: "adapter"
+    module: "adapters.mcp_adapter"
+    enabled: true
+    config:
+      protocol_version: "1.0"
+      validate_manifest: true
+      validate_schemas: true
+
+# Output: AI work environment (not just code)
+output:
+  type: "ai_workspace"
+  
+  structure:
+    # AI work environment (required)
+    - path: "memory/"
+      description: "Constitution and MCP best practices"
+      required: true
+    
+    - path: "specs/"
+      description: "AI-generated MCP server specifications"
+      required: true
+    
+    - path: "templates/"
+      description: "MCP server templates"
+      required: true
+    
+    - path: "scripts/"
+      description: "MCP validation and deployment scripts"
+      required: true
+    
+    # Implementation layer (optional, may be provided by other tools like mcp-factory-server)
+    - path: "src/"
+      description: "CLI implementation (optional)"
+      required: false
+    
+    - path: "tests/"
+      description: "Test files"
+      required: false
+  
+  files:
+    # AI support files (required)
+    - name: "AGENTS.md"
+      template: "agents-mcp-template.md"
+      required: true
+      description: "Instructions for AI agents on MCP development"
+    
+    - name: "CLAUDE.md"
+      template: "claude-mcp-template.md"
+      required: true
+      description: "Claude-specific MCP development guide"
+    
+    - name: "memory/constitution.md"
+      template: "constitution-mcp-template.md"
+      required: true
+      description: "MCP development principles and constraints"
+    
+    # Project files
+    - name: "README.md"
+      template: "readme-mcp-template.md"
+      required: true
+    
+    - name: "pyproject.toml"
+      template: "pyproject-template.toml"
+      required: true
+    
+    # Template files
+    - name: "templates/mcp-server-template.yaml"
+      template: "mcp-server-spec-template.md"
+      required: true
+    
+    - name: "templates/spec-template.md"
+      template: "spec-format-template.md"
+      required: true
+    
+    - name: "templates/plan-template.md"
+      template: "plan-format-template.md"
+      required: true
+
+# Examples: Sample projects
+examples:
+  - name: "file-processor-mcp-server"
+    path: "examples/file-processor"
+    description: "Complete example of MCP file processor server"
+    includes:
+      - "specs/file-processor/spec.md"
+      - "specs/file-processor/plan.md"
+      - "specs/file-processor/tasks.md"
+

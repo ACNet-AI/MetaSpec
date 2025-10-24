@@ -1,0 +1,10 @@
+# Invalid: missing required 'domain' field
+name: invalid-kit
+version: 0.1.0
+lifecycle: greenfield
+
+entity:
+  name: TestEntity
+  fields:
+    - name: id
+

@@ -1,0 +1,240 @@
+# Meta-Spec Template
+# Use this template to define a new spec-driven development system
+
+meta:
+  name: "example-spec"              # Name of the spec system
+  version: "0.1.0"                  # Semantic version (semver)
+  kind: "domain"                    # Type: spec-kit | openspec | domain
+  description: "Short description"  # One-line description
+  
+  # Version Evolution (inspired by OpenAPI) 🆕
+  evolution:
+    enabled: false                  # Enable evolution tracking
+    
+    # Version history
+    versions:
+      - version: "0.1.0"
+        date: "2025-01-20"
+        status: "active"            # active | deprecated | removed
+    
+    # Changelog
+    changelog:
+      - version: "0.1.0"
+        date: "2025-01-20"
+        changes:
+          added: []
+          changed: []
+          deprecated: []
+          removed: []
+          fixed: []
+    
+    # Backward compatibility
+    backward_compatibility:
+      supported_versions: ["0.1.0"]
+      auto_migrate: false
+    
+    # Extension mechanism
+    extensions:
+      enabled: false
+      prefix: "x-"
+      allowed_locations: ["entities", "templates", "pipeline"]
+  
+  # Intent-Driven Development (inspired by spec-kit)
+  intent:
+    purpose: "Why this spec system exists"
+    users: ["developers", "architects"]
+    goals:
+      - "Standardize development process"
+      - "Improve code quality"
+    problems_solved:
+      - "Inconsistent implementations"
+      - "Lack of documentation"
+  
+  # Development Modes (inspired by spec-kit)
+  development_modes:
+    greenfield:                     # 0→1 development (greenfield)
+      enabled: true
+      description: "From concept to production"
+    exploration:                    # Parallel exploration
+      enabled: false
+      description: "Explore multiple solutions"
+    brownfield:                     # 1→n iteration
+      enabled: false
+      description: "Iterative enhancement"
+  
+  # AI Agent Support Configuration
+  ai_support:
+    enabled: true                   # Generate AI instruction files
+    agents:
+      - name: "claude"              # Agent name
+        instruction_file: "CLAUDE.md"
+        commands:                   # Commands the agent can use
+          - "/example.spec"
+          - "/example.plan"
+          - "/example.tasks"
+      - name: "copilot"
+        instruction_file: "AGENTS.md"
+    
+    constitution:
+      enabled: true                 # Generate constitution.md
+      inherit_from: "meta-spec"     # Inherit from parent
+      domain_rules:                 # Domain-specific rules
+        - "Rule 1: ..."
+        - "Rule 2: ..."
+
+# Entities: Core building blocks of your spec system
+entities:
+  - name: "Specification"
+    description: "Top-level spec document"
+    
+    # Evolution support (optional) 🆕
+    deprecated: false               # Mark entity as deprecated
+    deprecated_since: null          # Version when deprecated (e.g., "1.0.0")
+    removed_in: null                # Version when will be removed (e.g., "2.0.0")
+    replacement: "NewSpecification" # Suggested replacement entity
+    migration_guide: null           # URL or path to migration guide
+    
+    fields:
+      - name: "name"
+        type: "string"
+        required: true
+        description: "Name of the specification"
+        
+        # Field-level evolution 🆕
+        deprecated: false
+        deprecated_since: null
+        removed_in: null
+      
+      - name: "version"
+        type: "string"
+        required: true
+        pattern: "^\\d+\\.\\d+\\.\\d+$"
+        description: "Semantic version"
+      
+      - name: "components"
+        type: "list<Component>"
+        required: false
+        description: "List of components"
+  
+  - name: "Component"
+    description: "A component in the system"
+    fields:
+      - name: "id"
+        type: "string"
+        required: true
+      
+      - name: "type"
+        type: "enum"
+        values: ["service", "tool", "resource"]
+        required: true
+      
+      - name: "description"
+        type: "string"
+        required: false
+
+# Templates: How to generate code/docs
+templates:
+  - name: "default"
+    engine: "jinja2"
+    path: "templates/default"
+    description: "Default template set"
+  
+  - name: "advanced"
+    engine: "jinja2"
+    path: "templates/advanced"
+    description: "Advanced template set"
+
+# Pipeline: Generation workflow stages
+pipeline:
+  - name: "parse"
+    description: "Parse input specification"
+  
+  - name: "validate"
+    description: "Validate against schema"
+  
+  - name: "normalize"
+    description: "Normalize data structures"
+  
+  - name: "generate"
+    description: "Generate code and docs"
+  
+  - name: "package"
+    description: "Package output"
+
+# Extensions: Plugin configuration
+extensions:
+  - name: "example-adapter"
+    type: "adapter"
+    module: "adapters.example_adapter"
+    enabled: true
+  
+  - name: "custom-validator"
+    type: "validator"
+    module: "validators.custom"
+    enabled: false
+
+# Constraints: Enterprise and domain constraints (inspired by spec-kit)
+constraints:
+  technical:
+    languages: ["python"]           # Allowed languages
+    frameworks: []                  # Required frameworks
+    dependencies: []                # Dependency constraints
+  
+  operational:
+    cloud_provider: null            # AWS, Azure, GCP, etc.
+    deployment: null                # Docker, Kubernetes, etc.
+    
+  compliance:
+    standards: []                   # GDPR, SOC2, etc.
+    security: []                    # Security requirements
+
+# Output: What gets generated
+output:
+  type: "ai_workspace"              # AI working environment (not just code)
+  
+  structure:
+    # AI work environment (core)
+    - path: "memory/"
+      description: "Constitution and project memory"
+      required: true
+    - path: "specs/"
+      description: "AI-generated specifications"
+      required: true
+    - path: "templates/"
+      description: "Output format templates"
+      required: true
+    - path: "scripts/"
+      description: "Automation scripts"
+      required: true
+    
+    # Code implementation (optional)
+    - path: "src/"
+      description: "Source code"
+      required: false
+    - path: "tests/"
+      description: "Test files"
+      required: false
+    - path: "docs/"
+      description: "Documentation"
+      required: false
+  
+  files:
+    - name: "README.md"
+      template: "readme-template.md"
+    - name: "AGENTS.md"
+      template: "agents-template.md"
+      condition: "ai_support.enabled"
+    - name: "memory/constitution.md"
+      template: "constitution-template.md"
+      condition: "ai_support.constitution.enabled"
+
+# Examples: Sample usage
+examples:
+  - name: "basic"
+    path: "examples/basic"
+    description: "Basic usage example"
+  
+  - name: "advanced"
+    path: "examples/advanced"
+    description: "Advanced features example"
+

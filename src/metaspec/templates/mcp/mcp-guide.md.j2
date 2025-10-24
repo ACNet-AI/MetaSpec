@@ -1,0 +1,363 @@
+# MCP Development Guide for {{ name }}
+
+**MCP Protocol**: Model Context Protocol  
+**Toolkit**: {{ name }} v{{ version }}
+
+---
+
+## What is MCP?
+
+Model Context Protocol (MCP) is a standard for connecting AI models with external tools, data sources, and prompts.
+
+**Key Concepts**:
+- **Tools**: Functions that AI can call
+- **Resources**: Data that AI can access
+- **Prompts**: Templates for AI interactions
+- **Server**: Your MCP implementation
+
+---
+
+## MCP Server Architecture
+
+```
+┌─────────────┐
+│ AI Client   │
+│ (Claude)    │
+└──────┬──────┘
+       │ MCP Protocol
+       │
+┌──────▼──────┐
+│ MCP Server  │  ← Your {{ entity.name }}
+├─────────────┤
+│ Tools       │  ← Functions AI can call
+│ Resources   │  ← Data AI can access
+│ Prompts     │  ← Templates AI uses
+└─────────────┘
+```
+
+---
+
+## Building Your MCP Server
+
+### Step 1: Define Tools
+
+Tools are functions that AI can invoke:
+
+```yaml
+tools:
+  - name: search_database
+    description: Search the database for records
+    input_schema:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query
+        limit:
+          type: integer
+          description: Max results
+          default: 10
+      required: [query]
+```
+
+**Implementation**:
+```python
+async def search_database(query: str, limit: int = 10):
+    # Your implementation
+    results = await db.search(query, limit)
+    return {"results": results}
+```
+
+### Step 2: Define Resources
+
+Resources are data that AI can access:
+
+```yaml
+resources:
+  - uri: db://records/{id}
+    name: Database Record
+    description: Individual database record
+    mime_type: application/json
+```
+
+**Implementation**:
+```python
+async def get_resource(uri: str):
+    record_id = extract_id_from_uri(uri)
+    record = await db.get(record_id)
+    return {
+        "uri": uri,
+        "mimeType": "application/json",
+        "content": record
+    }
+```
+
+### Step 3: Define Prompts
+
+Prompts are templates for AI interactions:
+
+```yaml
+prompts:
+  - name: analyze_record
+    description: Analyze a database record
+    arguments:
+      - name: record_id
+        description: ID of record to analyze
+        required: true
+```
+
+**Implementation**:
+```python
+async def get_prompt(name: str, arguments: dict):
+    record = await db.get(arguments["record_id"])
+    return {
+        "messages": [
+            {
+                "role": "user",
+                "content": f"Analyze this record: {record}"
+            }
+        ]
+    }
+```
+
+---
+
+## MCP Protocol Messages
+
+### Tool Call Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "search_database",
+    "arguments": {
+      "query": "example",
+      "limit": 5
+    }
+  },
+  "id": 1
+}
+```
+
+### Tool Call Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Found 3 results..."
+      }
+    ]
+  },
+  "id": 1
+}
+```
+
+---
+
+## Error Handling
+
+### Standard Error Codes
+
+```yaml
+errors:
+  - code: -32700  # Parse error
+  - code: -32600  # Invalid request
+  - code: -32601  # Method not found
+  - code: -32602  # Invalid params
+  - code: -32603  # Internal error
+```
+
+### Error Response Format
+
+```json
+{
+  "jsonrpc": "2.0",
+  "error": {
+    "code": -32602,
+    "message": "Invalid params",
+    "data": {
+      "param": "query",
+      "reason": "Required parameter missing"
+    }
+  },
+  "id": 1
+}
+```
+
+---
+
+## Testing Your MCP Server
+
+### 1. Unit Tests
+
+Test individual tools:
+```python
+async def test_search_tool():
+    result = await search_database("test", limit=5)
+    assert len(result["results"]) <= 5
+```
+
+### 2. Integration Tests
+
+Test with MCP Inspector:
+```bash
+# Start your server
+python -m {{ package_name }} serve
+
+# In another terminal
+mcp-inspector http://localhost:3000
+```
+
+### 3. AI Client Tests
+
+Test with Claude Desktop:
+```json
+{
+  "mcpServers": {
+    "{{ name }}": {
+      "command": "python",
+      "args": ["-m", "{{ package_name }}", "serve"],
+      "env": {}
+    }
+  }
+}
+```
+
+---
+
+## Best Practices
+
+### Tool Design
+
+✅ **Do**:
+- Use clear, descriptive names
+- Provide complete JSON schemas
+- Handle errors gracefully
+- Document all parameters
+- Return structured data
+
+❌ **Don't**:
+- Use ambiguous names
+- Skip schema validation
+- Return raw error messages
+- Assume parameter types
+- Return unstructured text
+
+### Resource Design
+
+✅ **Do**:
+- Use RESTful URI patterns
+- Specify correct MIME types
+- Document URI structure
+- Handle missing resources
+- Cache when appropriate
+
+❌ **Don't**:
+- Use arbitrary URI schemes
+- Omit MIME types
+- Return inconsistent formats
+- Ignore access control
+- Skip caching strategy
+
+### Prompt Design
+
+✅ **Do**:
+- Define clear purposes
+- Mark required arguments
+- Provide usage examples
+- Include safety constraints
+- Test with real AI
+
+❌ **Don't**:
+- Create generic prompts
+- Skip argument validation
+- Omit examples
+- Ignore safety
+- Skip AI testing
+
+---
+
+## Common Patterns
+
+### Pattern 1: CRUD Operations
+
+```yaml
+tools:
+  - name: create_item
+  - name: read_item
+  - name: update_item
+  - name: delete_item
+```
+
+### Pattern 2: Search & Filter
+
+```yaml
+tools:
+  - name: search
+    # Search with query
+  - name: filter
+    # Filter with criteria
+```
+
+### Pattern 3: Batch Operations
+
+```yaml
+tools:
+  - name: batch_process
+    input_schema:
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+```
+
+---
+
+## Deployment
+
+### Development
+
+```bash
+# Run locally
+{{ package_name }} serve --port 3000
+```
+
+### Production
+
+```bash
+# Run with uvicorn
+uvicorn {{ package_name }}.server:app --host 0.0.0.0 --port 3000
+```
+
+### Docker
+
+```dockerfile
+FROM python:3.11
+COPY . /app
+WORKDIR /app
+RUN pip install .
+CMD ["{{ package_name }}", "serve"]
+```
+
+---
+
+## Resources
+
+- [MCP Specification](https://modelcontextprotocol.io/specification)
+- [MCP Examples](https://github.com/modelcontextprotocol/servers)
+- [Claude Desktop](https://claude.ai/desktop)
+- [{{ name }} Documentation](./README.md)
+
+---
+
+**Guide Version**: 1.0  
+**Generated by**: MetaSpec {{ metaspec_version }}  
+**Last Updated**: {{ date }}
+

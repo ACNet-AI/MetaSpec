@@ -1,0 +1,86 @@
+# API Testing Spec-Kit
+# Toolkit for API testing specification management
+
+name: "api-test-spec"
+version: "0.1.0"
+domain: "testing"
+lifecycle: "greenfield"
+description: "Spec-driven toolkit for API testing and validation"
+
+entity:
+  name: "APITest"
+  description: "Represents an API test specification"
+  fields:
+    - name: "name"
+      type: "string"
+      required: true
+      description: "Test name"
+    
+    - name: "endpoint"
+      type: "string"
+      required: true
+      description: "API endpoint URL"
+    
+    - name: "method"
+      type: "string"
+      required: true
+      description: "HTTP method (GET, POST, PUT, DELETE, etc.)"
+    
+    - name: "headers"
+      type: "object"
+      required: false
+      description: "HTTP headers"
+    
+    - name: "body"
+      type: "object"
+      required: false
+      description: "Request body"
+    
+    - name: "assertions"
+      type: "array"
+      required: true
+      description: "List of assertions to validate response"
+    
+    - name: "timeout"
+      type: "number"
+      required: false
+      description: "Request timeout in seconds"
+
+commands:
+  - name: "init"
+    description: "Initialize new API test spec"
+    options:
+      - name: "--template"
+        description: "Template to use"
+        default: "rest-api"
+  
+  - name: "validate"
+    description: "Validate API test spec"
+    options:
+      - name: "--strict"
+        description: "Enable strict validation"
+        default: "false"
+  
+  - name: "run"
+    description: "Run API tests from spec"
+    options:
+      - name: "--env"
+        description: "Environment to test against"
+        default: "dev"
+  
+  - name: "generate"
+    description: "Generate test code from spec"
+    options:
+      - name: "--framework"
+        description: "Test framework (pytest, jest, etc.)"
+        default: "pytest"
+
+dependencies:
+  - "pydantic>=2.0.0"
+  - "typer>=0.9.0"
+  - "requests>=2.31.0"
+  - "pytest>=7.4.0"
+
+templates:
+  custom_templates: []
+

@@ -1,0 +1,89 @@
+# Design System Spec-Kit
+# Toolkit for design system specification management
+
+name: "design-system-spec"
+version: "0.1.0"
+domain: "design"
+lifecycle: "brownfield"
+description: "Spec-driven toolkit for design system management"
+
+entity:
+  name: "Component"
+  description: "Represents a design system component"
+  fields:
+    - name: "name"
+      type: "string"
+      required: true
+      description: "Component name"
+    
+    - name: "category"
+      type: "string"
+      required: true
+      description: "Component category (atoms, molecules, organisms, etc.)"
+    
+    - name: "description"
+      type: "string"
+      required: true
+      description: "Component description"
+    
+    - name: "variants"
+      type: "array"
+      required: false
+      description: "Component variants (primary, secondary, etc.)"
+    
+    - name: "props"
+      type: "object"
+      required: true
+      description: "Component properties and their types"
+    
+    - name: "states"
+      type: "array"
+      required: false
+      description: "Component states (hover, active, disabled, etc.)"
+    
+    - name: "accessibility"
+      type: "object"
+      required: true
+      description: "Accessibility requirements (ARIA, keyboard navigation, etc.)"
+    
+    - name: "examples"
+      type: "array"
+      required: false
+      description: "Usage examples"
+
+commands:
+  - name: "init"
+    description: "Initialize new design component spec"
+    options:
+      - name: "--category"
+        description: "Component category"
+        default: "atoms"
+  
+  - name: "validate"
+    description: "Validate design component spec"
+    options:
+      - name: "--a11y"
+        description: "Check accessibility compliance"
+        default: "true"
+  
+  - name: "generate"
+    description: "Generate component code from spec"
+    options:
+      - name: "--framework"
+        description: "UI framework (react, vue, svelte, etc.)"
+        default: "react"
+      - name: "--with-storybook"
+        description: "Generate Storybook stories"
+        default: "true"
+  
+  - name: "preview"
+    description: "Preview component in browser"
+
+dependencies:
+  - "pydantic>=2.0.0"
+  - "typer>=0.9.0"
+  - "jinja2>=3.1.0"
+
+templates:
+  custom_templates: []
+

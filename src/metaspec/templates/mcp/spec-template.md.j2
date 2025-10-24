@@ -1,0 +1,251 @@
+# MCP Server Specification: {{ entity.name }}
+
+**Version**: 1.0  
+**Protocol**: Model Context Protocol (MCP)  
+**Last Updated**: {{ date }}
+
+---
+
+## Overview
+
+This specification defines an MCP server with tools, resources, and prompts.
+
+**Purpose**: [Describe the purpose of this MCP server]
+
+---
+
+## Server Definition: {{ entity.name }}
+
+### Tools
+
+{% set has_tools = namespace(value=false) %}
+{% for field in entity.fields %}{% if field.name == 'tools' %}{% set has_tools.value = true %}{% endif %}{% endfor %}
+{% if has_tools.value %}
+Define available tools that can be called by clients:
+
+```yaml
+tools:
+  - name: tool_name
+    description: Tool description
+    input_schema:
+      type: object
+      properties:
+        param1:
+          type: string
+          description: Parameter description
+      required: [param1]
+```
+{% endif %}
+
+### Resources
+
+{% set has_resources = namespace(value=false) %}
+{% for field in entity.fields %}{% if field.name == 'resources' %}{% set has_resources.value = true %}{% endif %}{% endfor %}
+{% if has_resources.value %}
+Define available resources that can be accessed:
+
+```yaml
+resources:
+  - uri: resource://example/{id}
+    name: Example Resource
+    description: Resource description
+    mime_type: application/json
+```
+{% endif %}
+
+### Prompts
+
+{% set has_prompts = namespace(value=false) %}
+{% for field in entity.fields %}{% if field.name == 'prompts' %}{% set has_prompts.value = true %}{% endif %}{% endfor %}
+{% if has_prompts.value %}
+Define prompt templates:
+
+```yaml
+prompts:
+  - name: prompt_name
+    description: Prompt description
+    arguments:
+      - name: arg1
+        description: Argument description
+        required: true
+```
+{% endif %}
+
+---
+
+## Complete Example
+
+```yaml
+# MCP Server Specification
+server:
+  name: {{ entity.name }}
+  version: 1.0.0
+  
+  tools:
+    - name: get_data
+      description: Retrieve data from source
+      input_schema:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Data identifier
+        required: [id]
+  
+  resources:
+    - uri: data://example/{id}
+      name: Example Data
+      description: Example resource
+      mime_type: application/json
+  
+  prompts:
+    - name: analyze
+      description: Analyze data
+      arguments:
+        - name: data_id
+          description: ID of data to analyze
+          required: true
+```
+
+---
+
+## MCP Protocol Requirements
+
+### 1. Tool Schemas
+
+All tools must provide complete JSON schemas:
+- **type**: Always "object"
+- **properties**: Define all parameters
+- **required**: List required parameters
+- **additionalProperties**: Set to false for strict validation
+
+### 2. Resource URIs
+
+Follow URI template specification (RFC 6570):
+- Use `{variable}` for template variables
+- Specify allowed URI schemes
+- Document URI patterns clearly
+
+### 3. Error Handling
+
+Define error responses for all tools:
+```json
+{
+  "error": {
+    "code": "INVALID_PARAMS",
+    "message": "Parameter validation failed",
+    "data": {}
+  }
+}
+```
+
+### 4. Capabilities
+
+Declare server capabilities:
+```yaml
+capabilities:
+  tools: true
+  resources: true
+  prompts: true
+  logging: true
+```
+
+---
+
+## Testing Your MCP Server
+
+1. **Validate Specification**
+```bash
+{{ package_name }} validate mcp-server-spec.yaml
+```
+
+2. **Generate Server Code**
+```bash
+{{ package_name }} generate mcp-server-spec.yaml --output ./mcp-server
+```
+
+3. **Test with MCP Inspector**
+```bash
+mcp-inspector ./mcp-server
+```
+
+---
+
+## Best Practices
+
+### Tool Design
+
+1. **Single Responsibility**: Each tool does one thing well
+2. **Clear Naming**: Use verb-noun naming (get_data, create_resource)
+3. **Complete Schemas**: Provide full JSON schemas
+4. **Error Handling**: Define all error cases
+
+### Resource Design
+
+1. **RESTful URIs**: Follow REST conventions
+2. **Consistent Naming**: Use consistent URI patterns
+3. **Mime Types**: Specify correct content types
+4. **Access Control**: Document access requirements
+
+### Prompt Design
+
+1. **Clear Purpose**: Each prompt has clear purpose
+2. **Required Args**: Mark required arguments
+3. **Examples**: Provide usage examples
+4. **Safety**: Include safety constraints
+
+---
+
+## Common MCP Patterns
+
+### Pattern 1: Data Retrieval Tool
+
+```yaml
+tools:
+  - name: get_item
+    description: Retrieve a single item
+    input_schema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Item identifier
+      required: [id]
+```
+
+### Pattern 2: Resource Collection
+
+```yaml
+resources:
+  - uri: items://collection
+    name: Item Collection
+    description: Collection of all items
+    mime_type: application/json
+```
+
+### Pattern 3: Analysis Prompt
+
+```yaml
+prompts:
+  - name: analyze_data
+    description: Analyze provided data
+    arguments:
+      - name: data
+        description: Data to analyze
+        required: true
+```
+
+---
+
+## References
+
+- [MCP Specification](https://modelcontextprotocol.io)
+- [MCP Guide](./mcp-guide.md)
+- [AI Agent Guide](./AGENTS.md)
+
+---
+
+**Template Version**: 1.0  
+**MCP Protocol**: Latest  
+**Generated by**: MetaSpec {{ metaspec_version }}
+
