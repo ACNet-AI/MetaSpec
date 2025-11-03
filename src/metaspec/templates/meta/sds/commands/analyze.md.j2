@@ -1,0 +1,447 @@
+---
+description: Perform protocol specification quality analysis - read-only analysis for protocol consistency
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Goal
+
+Identify inconsistencies, ambiguities, and gaps in protocol specifications. **READ-ONLY** analysis - no file modifications.
+
+**Focus**: Protocol specification quality (WHAT the protocol is), NOT toolkit implementation (HOW to implement).
+
+## Operating Constraints
+
+**STRICTLY READ-ONLY**: Do NOT modify any files. Output structured analysis report only.
+
+**Constitution Authority**: constitution.md defines protocol design principles. Violations are CRITICAL.
+
+## Execution Flow
+
+### 1. Load Protocol Artifacts
+
+**Required Files**:
+- `specs/protocol/XXX-{name}/spec.md` - Protocol specification
+- `/memory/constitution.md` - Protocol design principles
+
+**Optional Files**:
+- `specs/protocol/XXX-{name}/README.md` - Protocol overview
+- `specs/protocol/XXX-{name}/examples/` - Protocol examples
+
+**DO NOT load** (these are toolkit-specific):
+- ❌ plan.md (toolkit architecture)
+- ❌ tasks.md (implementation tasks)
+- ❌ Any files in `specs/toolkit/`
+
+### 2. Extract Protocol Elements
+
+**From spec.md**:
+- Protocol overview and purpose
+- Core entities (name, schema, fields)
+- Entity validation rules
+- Protocol operations (requests/responses)
+- Error codes and handling
+- Protocol examples
+
+**From constitution.md**:
+- Protocol design principles
+- MUST/SHOULD requirements specific to protocols
+- Quality standards for specifications
+
+### 3. Detection Passes
+
+#### A. Entity Definition Quality
+
+**Check each entity**:
+- ✅ Entity has clear purpose statement
+- ✅ All fields have type specified
+- ✅ Required vs optional is clear
+- ✅ Field descriptions are specific (not vague)
+- ✅ Field constraints documented (enum, format, range)
+- ✅ Example values provided
+
+**Report**:
+```
+❌ MEDIUM: Entity 'Server' field 'capabilities' missing type specification [spec.md §Entities]
+❌ HIGH: Entity 'Tool' field 'inputSchema' has vague description "Schema for input" - should specify JSON Schema format [spec.md §Entities]
+✅ Entity 'Resource' field 'uri' well-defined: type=string, required=true, format=URI
+```
+
+#### B. Validation Rule Completeness
+
+**Check**:
+- ✅ Each entity has validation rules section
+- ✅ All required fields have validation rules
+- ✅ Validation rules are specific (not "must be valid")
+- ✅ Cross-entity validation documented
+- ✅ Error messages defined for rule violations
+
+**Report**:
+```
+❌ HIGH: Entity 'Tool' field 'name' lacks validation rule [spec.md §Validation Rules]
+  Recommendation: Add "Tool name must be unique within server"
+❌ MEDIUM: Validation rule "inputSchema must be valid" is vague [spec.md §Validation Rules]
+  Recommendation: Specify "must conform to JSON Schema Draft 7"
+✅ All validation rules have corresponding error codes
+```
+
+#### C. Protocol Operations Completeness
+
+**Check each operation**:
+- ✅ Operation purpose clearly stated
+- ✅ Request schema defined
+- ✅ Response schema defined
+- ✅ Success response documented
+- ✅ Error responses documented
+- ✅ Operation constraints specified
+
+**Report**:
+```
+❌ CRITICAL: Operation 'tools/call' missing response schema [spec.md §Operations]
+❌ HIGH: Operation 'initialize' doesn't document error scenarios [spec.md §Operations]
+✅ Operation 'tools/list' has complete request/response schemas
+```
+
+#### D. Schema Consistency
+
+**Check**:
+- ✅ Entity schemas use consistent field naming (camelCase vs snake_case)
+- ✅ Type definitions are consistent across entities
+- ✅ Required fields are consistent with operation schemas
+- ✅ No conflicting constraints across specs
+
+**Report**:
+```
+❌ LOW: Entity 'Server' uses 'server_id', Entity 'Tool' uses 'toolId' [Naming Inconsistency]
+  Recommendation: Standardize on camelCase or snake_case
+✅ All type definitions consistent (string, number, boolean, object, array)
+```
+
+#### E. Error Handling Completeness
+
+**Check**:
+- ✅ Error codes defined
+- ✅ Error response format specified
+- ✅ Error messages are descriptive
+- ✅ Error scenarios documented for each operation
+- ✅ Recovery guidance provided
+
+**Report**:
+```
+❌ HIGH: Error code 'E001' has no description [spec.md §Error Handling]
+❌ MEDIUM: Error response format doesn't include 'details' field for debugging [spec.md §Error Handling]
+✅ Error code 'E003' well-documented: "Tool not found - verify tool name"
+```
+
+#### F. Examples Completeness
+
+**Check**:
+- ✅ Each entity has example instance
+- ✅ Each operation has request/response example
+- ✅ Examples are valid against schemas
+- ✅ Examples cover success and error cases
+- ✅ Complex scenarios illustrated
+
+**Report**:
+```
+❌ HIGH: Entity 'Resource' has no example instance [spec.md §Examples]
+❌ MEDIUM: Operation 'tools/call' only shows success case, no error example [spec.md §Examples]
+✅ Entity 'Tool' has complete example with all fields
+```
+
+#### G. Cross-Entity Dependencies
+
+**Check**:
+- ✅ Referenced entities exist
+- ✅ Field references are valid (e.g., "references Tool.id")
+- ✅ Dependency constraints documented
+- ✅ Circular dependencies identified
+
+**Report**:
+```
+❌ HIGH: Entity 'Prompt' references 'Tool.name' but Tool entity has 'id' not 'name' [spec.md §Entities]
+✅ All entity references are valid
+```
+
+#### H. Constitution Alignment (Protocol-Specific)
+
+**Check protocol against constitution**:
+- ✅ Entity-First: Entities have 3-5 core fields?
+- ✅ Clear Semantics: Field names self-explanatory?
+- ✅ Minimal Viable: Protocol includes only essential operations?
+- ✅ Extensibility: Protocol allows for future extensions?
+- ✅ AI-Friendly: Schema descriptions clear for AI agents?
+- ✅ Domain Standards: Follows established domain conventions?
+
+**Report**:
+```
+❌ CRITICAL: Entity 'Server' has 8 required fields, violates Entity-First principle (3-5 max) [Constitution]
+❌ HIGH: Field name 'opts' is not self-explanatory, violates Clear Semantics [Constitution]
+✅ Protocol follows REST-like operation naming conventions
+```
+
+#### I. Ambiguity Detection
+
+**Check for vague terms**:
+- ❌ "Appropriate", "suitable", "reasonable", "valid"
+- ❌ "Should be fast", "must be secure"
+- ❌ Unresolved placeholders (TODO, TBD, ???)
+- ❌ Missing quantification
+
+**Report**:
+```
+❌ HIGH: "inputSchema must be valid" - what validation standard? [spec.md §Validation Rules]
+  Recommendation: Specify "must conform to JSON Schema Draft 7"
+❌ MEDIUM: "Server should respond quickly" lacks quantification [spec.md §Operations]
+  Recommendation: Define timeout (e.g., "<500ms for tool list")
+```
+
+#### J. Terminology Consistency
+
+**Check**:
+- ✅ Same concept named consistently (tool vs function vs method)
+- ✅ Field names consistent (id vs identifier vs ID)
+- ✅ Operation names consistent (list vs get vs query)
+
+**Report**:
+```
+❌ LOW: Entity 'Server' uses 'version', Entity 'Tool' uses 'toolVersion' [Terminology Drift]
+  Recommendation: Standardize on 'version' for all entities
+✅ All operation names use verb-noun pattern
+```
+
+### 4. Severity Assignment
+
+**CRITICAL**: Constitution violation, missing operation schema, undefined entities
+**HIGH**: Missing validation rules, incomplete error handling, ambiguous requirements
+**MEDIUM**: Terminology drift, missing examples, underspecified constraints
+**LOW**: Style improvement, minor inconsistency
+
+### 5. Generate Analysis Report
+
+**Output format**:
+
+```markdown
+# Protocol Specification Analysis Report
+
+**Date**: [DATE]
+**Protocol**: [NAME]
+**Version**: [VERSION]
+**Analyzed Files**:
+- specs/protocol/XXX-{name}/spec.md
+- memory/constitution.md
+
+---
+
+## Summary
+
+**Total Issues**: [N]
+- CRITICAL: [X]
+- HIGH: [Y]
+- MEDIUM: [Z]
+- LOW: [W]
+
+**Constitution Compliance**: ✅ PASS | ❌ FAIL ([N] violations)
+
+---
+
+## Critical Issues
+
+| ID | Category | Location | Issue | Recommendation |
+|----|----------|----------|-------|----------------|
+| C1 | Schema | spec.md §Operations | Operation 'tools/call' missing response schema | Define response schema with result/error fields |
+| C2 | Constitution | spec.md §Entities | Entity 'Server' has 8 required fields (max 5) | Make 3 fields optional |
+
+---
+
+## High Priority Issues
+
+| ID | Category | Location | Issue | Recommendation |
+|----|----------|----------|-------|----------------|
+| H1 | Validation | spec.md §Entities | Field 'inputSchema' validation rule missing | Add "must conform to JSON Schema Draft 7" |
+| H2 | Error Handling | spec.md §Operations | Operation 'initialize' missing error scenarios | Document timeout, invalid params errors |
+
+---
+
+## Medium Priority Issues
+
+| ID | Category | Location | Issue | Recommendation |
+|----|----------|----------|-------|----------------|
+| M1 | Examples | spec.md §Examples | Entity 'Resource' has no example | Add example with typical values |
+| M2 | Ambiguity | spec.md §Validation | "Must be valid" is vague | Specify validation standard |
+
+---
+
+## Entity Quality Analysis
+
+| Entity | Fields | Required | Examples | Validation Rules | Status |
+|--------|--------|----------|----------|------------------|--------|
+| Server | 5 | 3 | ✅ | ✅ | ✅ PASS |
+| Tool | 6 | 8 (⚠️) | ✅ | ❌ Missing | ❌ FAIL |
+| Resource | 4 | 2 | ❌ Missing | ✅ | ⚠️ PARTIAL |
+
+---
+
+## Operations Quality Analysis
+
+| Operation | Request Schema | Response Schema | Error Cases | Examples | Status |
+|-----------|---------------|-----------------|-------------|----------|--------|
+| initialize | ✅ | ✅ | ❌ Missing | ✅ | ⚠️ PARTIAL |
+| tools/list | ✅ | ✅ | ✅ | ✅ | ✅ PASS |
+| tools/call | ✅ | ❌ Missing | ✅ | ❌ Missing | ❌ FAIL |
+
+---
+
+## Validation Rules Coverage
+
+| Entity | Total Fields | Fields with Rules | Coverage | Status |
+|--------|--------------|-------------------|----------|--------|
+| Server | 5 | 5 | 100% | ✅ PASS |
+| Tool | 6 | 4 | 67% | ❌ FAIL |
+| Resource | 4 | 4 | 100% | ✅ PASS |
+
+**Missing Rules**:
+- Tool.inputSchema: No format validation specified
+- Tool.name: No uniqueness constraint specified
+
+---
+
+## Constitution Alignment
+
+| Principle | Status | Evidence |
+|-----------|--------|----------|
+| Entity-First (3-5 core fields) | ❌ FAIL | Tool has 8 required fields |
+| Clear Semantics | ⚠️ PARTIAL | Field 'opts' unclear |
+| Minimal Viable | ✅ PASS | Only essential operations |
+| Extensibility | ✅ PASS | Supports custom capabilities |
+| AI-Friendly | ✅ PASS | Clear descriptions |
+| Domain Standards | ✅ PASS | Follows JSON-RPC patterns |
+
+**Overall**: ❌ FAIL (1 critical violation)
+
+---
+
+## Recommendations
+
+### Immediate Actions (CRITICAL)
+
+1. **Define response schema for 'tools/call'** (C1):
+   ```yaml
+   tools_call_response:
+     result: any
+     error: 
+       code: string
+       message: string
+   ```
+
+2. **Reduce Tool entity required fields** (C2):
+   - Make optional: description, tags, permissions
+
+### High Priority Actions
+
+1. **Add validation rule for inputSchema** (H1):
+   - Specify: "Must conform to JSON Schema Draft 7"
+   - Add error code: E005 "Invalid input schema format"
+
+2. **Document error scenarios for initialize** (H2):
+   - Timeout (E001): "Server initialization timeout (>5s)"
+   - Invalid params (E002): "Invalid server configuration"
+
+### Medium Priority Actions
+
+1. **Add example for Resource entity** (M1)
+2. **Clarify vague validation rules** (M2)
+
+---
+
+## Next Steps
+
+- [ ] **If CRITICAL issues exist**: Fix before proceeding to toolkit development
+- [ ] **If HIGH issues exist**: Consider fixing to ensure protocol clarity
+- [ ] **MEDIUM/LOW issues**: Can be addressed during toolkit implementation
+
+**Recommendation**: 
+⚠️ Fix CRITICAL issues (C1, C2) before running /metaspec.sdd.specify
+
+Protocol is the foundation. A clear protocol enables better toolkit implementation.
+
+Run /metaspec.sds.clarify or manually edit spec.md to address issues.
+
+---
+
+**Generated**: [DATE]
+**Report Version**: 1.0
+```
+
+### 6. Offer Remediation
+
+**Ask user**:
+```
+Would you like me to suggest concrete fixes for the top 5 issues?
+(I will NOT apply them automatically - you can review and decide)
+```
+
+**If user says yes**, provide detailed recommendations for each issue.
+
+## Important Notes
+
+1. **Protocol-Focused Analysis**
+   - Only analyze protocol specifications
+   - Do NOT check toolkit implementation details
+   - Do NOT reference plan.md, tasks.md, or src/ code
+   - Focus: WHAT the protocol is, not HOW to implement it
+
+2. **Constitution Authority**
+   - Constitution violations are always CRITICAL
+   - Protocol must adjust, not constitution
+   - Protocol-specific principles apply
+
+3. **Read-Only Analysis**
+   - No file modifications
+   - Only output report
+   - User decides on remediation
+
+4. **Clarity is Key**
+   - Every entity must be clear
+   - Every operation must be specified
+   - Every validation rule must be concrete
+   - No vague terms tolerated
+
+5. **Examples Matter**
+   - Examples prove the protocol is usable
+   - Missing examples = specification gap
+   - Examples should cover edge cases
+
+## Example Output
+
+```
+✅ Protocol Analysis Complete
+
+📊 Summary:
+- Total Issues: 8
+  - CRITICAL: 2
+  - HIGH: 3
+  - MEDIUM: 2
+  - LOW: 1
+
+❌ Constitution Compliance: FAIL (1 violation)
+
+📁 Report: /specs/protocol/analysis-report.md
+
+⚠️ Recommendation:
+Fix CRITICAL issues before toolkit development.
+
+🔄 Next steps:
+1. Fix C1: Define response schema for 'tools/call'
+2. Fix C2: Reduce Tool entity required fields
+3. Fix H1: Add inputSchema validation rule
+4. Re-run /metaspec.sds.analyze to verify fixes
+
+💡 Run: /metaspec.sds.clarify to refine ambiguous sections
+```

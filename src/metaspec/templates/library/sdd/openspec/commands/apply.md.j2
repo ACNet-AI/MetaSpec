@@ -1,0 +1,38 @@
+# Generated Template
+
+**Project**: {{ name }}
+**Version**: {{ version }}
+**Domain**: {{ domain }}
+**Date**: {{ date }}
+
+---
+
+---
+description: Implement an approved change proposal - track tasks and execute planned changes
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Implementing Changes
+
+**Guardrails**
+- Favor straightforward, minimal implementations first and add complexity only when it is requested or clearly required.
+- Keep changes tightly scoped to the requested outcome.
+- Refer to `{{ specs_dir }}/AGENTS.md` (located inside the `{{ specs_dir }}/` directory—run `ls {{ specs_dir }}` or `{{ cli_name }} update` if you don't see it) if you need additional project conventions or clarifications.
+
+**Steps**
+Track these steps as TODOs and complete them one by one.
+1. Read `changes/<id>/proposal.md`, `design.md` (if present), and `tasks.md` to confirm scope and acceptance criteria.
+2. Work through tasks sequentially, keeping edits minimal and focused on the requested change.
+3. Confirm completion before updating statuses—make sure every item in `tasks.md` is finished.
+4. Update the checklist after all work is done so each task is marked `- [x]` and reflects reality.
+5. Reference `{{ cli_name }} list` or `{{ cli_name }} show <item>` when additional context is required.
+
+**Reference**
+- Use `{{ cli_name }} show <id> --json --deltas-only` if you need additional context from the proposal while implementing.

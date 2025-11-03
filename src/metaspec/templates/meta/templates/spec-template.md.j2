@@ -1,0 +1,420 @@
+# Toolkit Specification: [TOOLKIT_NAME]
+
+**Created**: [DATE]  
+**Status**: Draft  
+**Domain**: [TOOLKIT_DOMAIN]  
+**Input**: "$ARGUMENTS"
+
+---
+
+## Toolkit Overview
+
+**Purpose**: [What this toolkit does - one sentence]
+
+**Target Domain**: [Domain name, e.g., API Testing, Design Systems, Infrastructure]
+
+**Primary Use Cases**:
+1. [Use case 1]
+2. [Use case 2]
+3. [Use case 3]
+
+**Example Scenario**:
+```
+[Show a brief scenario of how users would use this toolkit]
+Example: "Developer writes API test spec in test.yaml, validates it, then executes tests against staging API"
+```
+
+---
+
+## Specification Types
+
+### [Specification Type 1]
+
+**Purpose**: [What this spec type is for]
+
+**File Format**: YAML | JSON | Markdown | TOML
+
+**Example**:
+```yaml
+[Show minimal example of this spec type]
+```
+
+**When to use**: [Scenarios where users would create this spec type]
+
+**Validation**: [What makes this spec type valid]
+
+---
+
+### [Specification Type 2] *(if applicable)*
+
+**Purpose**: [What this spec type is for]
+
+**File Format**: YAML | JSON | Markdown | TOML
+
+**Example**:
+```yaml
+[Show minimal example]
+```
+
+**When to use**: [Scenarios]
+
+---
+
+## Entity Definitions
+
+### [PRIMARY_ENTITY]
+
+**Description**: [What this entity represents in the domain]
+
+**Fields**:
+
+| Field | Type | Required | Description | Example | Constraints |
+|-------|------|----------|-------------|---------|-------------|
+| [field_1] | string | Yes | [Description] | `"example"` | [Constraints] |
+| [field_2] | string | Yes | [Description] | `"example"` | [Constraints] |
+| [field_3] | number | No | [Description] | `42` | [Constraints] |
+| [field_4] | array | No | [Description] | `["item1"]` | [Constraints] |
+| [field_5] | object | No | [Description] | `{key: "value"}` | [Constraints] |
+
+**Validation Rules**:
+- **VR-001**: [Rule 1 - e.g., "field_1 must match pattern ^[a-z-]+$"]
+- **VR-002**: [Rule 2 - e.g., "field_2 must be one of: value1, value2, value3"]
+- **VR-003**: [Rule 3 - e.g., "if field_3 is provided, it must be > 0"]
+
+**Domain Constraints**:
+- [Constraint 1 - e.g., "HTTP methods follow RFC 7231"]
+- [Constraint 2 - e.g., "Status codes must be in 100-599 range"]
+- [Constraint 3 - e.g., "Endpoints must start with /"]
+
+**Example Entity Instance**:
+```yaml
+[Show complete example of this entity]
+```
+
+---
+
+### [SECONDARY_ENTITY] *(if applicable)*
+
+**Description**: [What this entity represents]
+
+**Fields**:
+
+| Field | Type | Required | Description | Example |
+|-------|------|----------|-------------|---------|
+| [field_1] | string | Yes | [Description] | `"example"` |
+
+**Validation Rules**:
+- [Rules for this entity]
+
+**Relationship to [PRIMARY_ENTITY]**:
+[How this entity relates to primary entity]
+
+---
+
+## Workflow Definitions
+
+### [WORKFLOW_1]
+
+**Purpose**: [What this workflow accomplishes]
+
+**User Goal**: [What user wants to achieve]
+
+**Steps**:
+
+1. **[Step 1 Name]**: [What happens]  
+   **Input**: [What user provides]  
+   **Output**: [What user gets]  
+   **Command**: `[toolkit-name] [command] [args]`  
+   **Validation**: [What is checked]
+
+2. **[Step 2 Name]**: [What happens]  
+   **Input**: [What user provides]  
+   **Output**: [What user gets]  
+   **Command**: `[toolkit-name] [command] [args]`  
+   **Validation**: [What is checked]
+
+3. **[Step 3 Name]**: [What happens]  
+   **Input**: [What user provides]  
+   **Output**: [What user gets]  
+   **Command**: `[toolkit-name] [command] [args]`  
+   **Result**: [Final outcome]
+
+**Example Usage**:
+```bash
+# Step 1
+[toolkit-name] [command1] [args]
+# [Show expected output]
+
+# Step 2
+[toolkit-name] [command2] [args]
+# [Show expected output]
+
+# Step 3
+[toolkit-name] [command3] [args]
+# [Show expected output]
+```
+
+**Success Indicators**:
+- ✅ [How user knows workflow succeeded]
+- ✅ [What artifacts are produced]
+- ✅ [What feedback user receives]
+
+**Error Scenarios**:
+- ❌ [Common error 1] → [How to fix]
+- ❌ [Common error 2] → [How to fix]
+
+---
+
+### [WORKFLOW_2] *(if applicable)*
+
+**Purpose**: [What this workflow accomplishes]
+
+**Steps**:
+[Similar structure as workflow 1]
+
+---
+
+## CLI Commands
+
+### `init`
+
+**Purpose**: [What this command does]
+
+**Usage**: `[toolkit-name] init [options] <output-file>`
+
+**Options**:
+- `--template <name>`: [Description]
+- `--force`: [Description]
+
+**Example**:
+```bash
+[toolkit-name] init test.yaml
+# Creates test.yaml with template content
+```
+
+**Output**: [What user sees]
+
+**Generated Files**: [List of files created]
+
+---
+
+### `validate`
+
+**Purpose**: [What this command does]
+
+**Usage**: `[toolkit-name] validate [options] <spec-file>`
+
+**Options**:
+- `--strict`: [Description]
+- `--format <json|text>`: [Description]
+
+**Example**:
+```bash
+[toolkit-name] validate test.yaml
+# ✅ Validation passed: test.yaml
+#    - All required fields present
+#    - No validation errors
+#    - 3 entities validated
+```
+
+**Output**: [What user sees]
+
+**Exit Codes**:
+- `0`: Validation successful
+- `1`: Validation failed
+- `2`: File not found or invalid format
+
+---
+
+### `[command3]`
+
+**Purpose**: [What this command does]
+
+**Usage**: `[toolkit-name] [command3] [options] <args>`
+
+**Options**:
+[List options]
+
+**Example**:
+```bash
+[Show example]
+```
+
+**Output**: [What user sees]
+
+---
+
+[Add more commands as needed]
+
+---
+
+## Validation Requirements
+
+### Structural Validation
+
+**Purpose**: Ensure specification has correct structure
+
+**Requirements**:
+- **SV-001**: File must be valid YAML/JSON
+- **SV-002**: All required fields must be present
+- **SV-003**: Field types must match specification
+- **SV-004**: No unknown fields (unless extensibility enabled)
+
+**Error Message Format**:
+```
+❌ Structural Error: [Error type]
+  Field: [field_path]
+  Issue: [What's wrong]
+  Expected: [What should be]
+  Fix: [How to fix it]
+```
+
+---
+
+### Semantic Validation
+
+**Purpose**: Ensure specification makes logical sense
+
+**Requirements**:
+- **SM-001**: [Requirement 1 - e.g., "Referenced entities must exist"]
+- **SM-002**: [Requirement 2 - e.g., "No circular dependencies"]
+- **SM-003**: [Requirement 3 - e.g., "Unique identifiers"]
+
+**Error Message Format**:
+```
+❌ Semantic Error: [Error type]
+  Location: [where in spec]
+  Issue: [What's wrong]
+  Context: [Relevant info]
+  Fix: [How to fix it]
+```
+
+---
+
+### Domain-Specific Validation
+
+**Purpose**: Ensure specification follows domain rules
+
+**Requirements**:
+- **DV-001**: [Domain rule 1 - e.g., "HTTP methods must be valid"]
+- **DV-002**: [Domain rule 2 - e.g., "Status codes in valid range"]
+- **DV-003**: [Domain rule 3 - e.g., "URLs must be valid"]
+
+**Why These Rules**:
+- [Rule 1]: [Explanation of why this domain constraint exists]
+- [Rule 2]: [Explanation]
+- [Rule 3]: [Explanation]
+
+**Error Message Format**:
+```
+❌ Domain Error: [Error type]
+  Field: [field_name]
+  Value: [actual_value]
+  Issue: [Why this violates domain rules]
+  Expected: [What's valid in this domain]
+  Fix: [How to fix it]
+```
+
+---
+
+## Quality Criteria
+
+### Usability
+
+- **QC-001**: Users can create valid spec in < 5 minutes
+- **QC-002**: Error messages include fix suggestions
+- **QC-003**: Examples provided for every concept
+- **QC-004**: Consistent naming conventions throughout
+
+### Performance
+
+- **QC-005**: Validation completes in < 100ms for typical spec
+- **QC-006**: Toolkit handles 1000+ specifications
+- **QC-007**: Memory usage < 50MB for normal workloads
+- **QC-008**: Startup time < 1 second
+
+### AI-Friendliness
+
+- **QC-009**: Error messages are parseable by AI
+- **QC-010**: Examples in all documentation
+- **QC-011**: Consistent patterns (no special cases)
+- **QC-012**: Clear intent (no implicit behavior)
+
+### Extensibility
+
+- **QC-013**: Custom validators can be registered
+- **QC-014**: Plugin system for new entity types
+- **QC-015**: Hook points for workflow customization
+- **QC-016**: Clear extension documentation
+
+### Domain Alignment
+
+- **QC-017**: Follows domain conventions (e.g., REST standards)
+- **QC-018**: Respects domain constraints (e.g., HTTP specs)
+- **QC-019**: Uses domain terminology correctly
+- **QC-020**: Validates against domain rules
+
+---
+
+## Assumptions
+
+[Document assumptions made during specification]
+
+**Example**:
+- **ASM-001**: File format is YAML (human-readable, widely adopted)
+- **ASM-002**: Validation uses JSON Schema (standard, well-supported)
+- **ASM-003**: CLI uses Typer framework (Python standard)
+- **ASM-004**: Error messages are English (internationalization later)
+
+**Rationale**: [Why these assumptions are reasonable]
+
+---
+
+## Open Questions
+
+[NEEDS CLARIFICATION: Question 1 - specific question that needs answer]
+
+[NEEDS CLARIFICATION: Question 2 - specific question that needs answer]
+
+[NEEDS CLARIFICATION: Question 3 - specific question that needs answer]
+
+**Note**: Maximum 3 open questions. Other ambiguities resolved with reasonable defaults documented in Assumptions.
+
+---
+
+## Constitution Alignment
+
+**Entity-First Design**: ✅ | ❌  
+[Explain how this spec follows or violates Entity-First principle]
+
+**Validator Extensibility**: ✅ | ❌  
+[Explain extensibility design]
+
+**Spec-First Development**: ✅ | ❌  
+[Explain how users write specs first]
+
+**AI-Agent Friendly**: ✅ | ❌  
+[Explain error messages, examples, consistency]
+
+**Progressive Enhancement**: ✅ | ❌  
+[Explain MVP and enhancement path]
+
+**Domain Specificity**: ✅ | ❌  
+[Explain domain constraints and conventions]
+
+---
+
+## Next Steps
+
+1. ✅ **Complete**: Toolkit specification defined
+2. ⏭️ **Next**: Use `/metaspec:clarify` to refine ambiguous sections
+3. ⏭️ **Then**: Use `/metaspec:plan` to design implementation architecture
+4. ⏭️ **Finally**: Use `/metaspec:tasks` to break down implementation
+
+---
+
+**Version**: 1.0  
+**Last Updated**: [DATE]  
+**Status**: Draft | Under Review | Approved
+
+

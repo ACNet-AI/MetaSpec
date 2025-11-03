@@ -1,0 +1,208 @@
+[project]
+name = "meta-spec"
+version = "0.1.0"
+description = "Meta-specification framework for generating Spec-Driven X (SD-X) toolkits for AI agents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+authors = [
+    {name = "ACNet-AI", email = "agencollabnet@gmail.com"},
+]
+
+keywords = [
+    "meta-spec",
+    "spec-driven",
+    "code-generation",
+    "meta-programming",
+    "specification",
+    "sdd",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "typer>=0.9.0",           # CLI framework
+    "jsonschema>=4.20.0",     # Schema validation
+    "jinja2>=3.1.2",          # Template rendering
+    "pydantic>=2.5.0",        # Data validation
+    "rich>=13.7.0",           # Terminal beautification
+    "packaging>=23.2",        # Version management
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.12.0",
+    "ruff>=0.1.8",
+    "mypy>=1.7.1",
+    "pre-commit>=3.6.0",
+]
+
+docs = [
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.24.0",
+]
+
+# Integrated spec toolkits (optional)
+spec-kit = [
+    # Note: spec-kit needs to be installed separately
+    # pip install git+https://github.com/github/spec-kit.git
+]
+
+openspec = [
+    # Note: openspec needs to be installed separately (Node.js)
+    # npm install -g @fission-ai/openspec
+]
+
+all = [
+    "meta-spec[dev,docs]",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/meta-spec"
+Repository = "https://github.com/your-org/meta-spec"
+Documentation = "https://meta-spec.readthedocs.io"
+"Bug Tracker" = "https://github.com/your-org/meta-spec/issues"
+
+[project.scripts]
+metaspec = "metaspec.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["metaspec", "metaspec.cli"]
+
+[tool.setuptools.package-data]
+metaspec = [
+    "templates/**/*.j2",
+]
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Default excludes
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+# Ruff configuration
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # imported but unused
+"tests/**/*.py" = ["S101"]  # use of assert
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_generics = false
+disallow_subclassing_any = false
+disallow_untyped_calls = false
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+explicit_package_bases = true
+namespace_packages = true
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--cov=metaspec",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=69",  # Pragmatic target achieved: core modules 94-99%, CLI requires integration tests
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["metaspec"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+

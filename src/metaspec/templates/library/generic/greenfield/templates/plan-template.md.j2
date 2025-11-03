@@ -1,0 +1,67 @@
+# Realization Plan: [NAME]
+
+**Context**: `[###-context-name]` | **Date**: [DATE] | **Spec**: [link]
+**Input**: Specification from context
+
+**Note**: This template is filled in by the `/{{ cli_prefix }}.plan` command.
+
+## Summary
+
+[Extract from specification: primary requirement + approach from research]
+
+## Technical Context
+
+**Primary Method**: [e.g., declarative, procedural, interactive or NEEDS CLARIFICATION]  
+**Key Dependencies**: [e.g., libraries, tools, services or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., database, files, memory or N/A]  
+**Validation**: [e.g., validation approach or NEEDS CLARIFICATION]  
+**Target Environment**: [e.g., platform, environment or NEEDS CLARIFICATION]
+**Artifact Type**: [single/multi-component - determines structure]  
+**Performance Goals**: [domain-specific goals or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific constraints or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific scale or NEEDS CLARIFICATION]
+
+## Constitution Check
+
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+
+[Gates determined based on constitution file]
+
+## Structure
+
+### Documentation (this context)
+
+```text
+[context-dir]/
+├── plan.md              # This file (/{{ cli_prefix }}.plan output)
+├── research.md          # Phase 0 output (/{{ cli_prefix }}.plan)
+├── model.md             # Phase 1 output (/{{ cli_prefix }}.plan)
+├── guide.md             # Phase 1 output (/{{ cli_prefix }}.plan)
+├── contracts/           # Phase 1 output (/{{ cli_prefix }}.plan)
+└── tasks.md             # Phase 2 output (/{{ cli_prefix }}.tasks - NOT by plan)
+```
+
+### Deliverables (repository root)
+
+```text
+[deliverable-dir]/
+├── core/
+├── supporting/
+└── integration/
+
+validation/
+├── contracts/
+├── integration/
+└── unit/
+```
+
+**Structure Decision**: [Document the selected structure and paths]
+
+## Complexity Tracking
+
+> **Fill ONLY if Constitution Check has violations that must be justified**
+
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| [complexity] | [justification] | [why simpler insufficient] |
+

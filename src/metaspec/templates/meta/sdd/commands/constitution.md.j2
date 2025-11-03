@@ -1,0 +1,318 @@
+---
+description: Create or update the speckit constitution defining design principles for spec-driven toolkit development
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+You are creating or updating the **speckit constitution** at `/memory/constitution.md`. This document defines the foundational design principles that govern how this spec-driven toolkit is built, ensuring it remains AI-friendly, extensible, and domain-focused.
+
+Unlike a typical application constitution (which defines project principles), this constitution is specifically for **developing a spec-driven toolkit** - it guides decisions about entity design, validator architecture, workflow design, and CLI interface.
+
+Follow this execution flow:
+
+### 1. Load existing constitution (if any)
+
+- Check for `/memory/constitution.md`
+- If exists, load it and identify placeholder tokens `[ALL_CAPS_IDENTIFIER]`
+- If new, use the constitution template structure
+
+### 2. Understand the toolkit domain
+
+**Critical**: Before defining principles, understand what domain this toolkit serves:
+- What specifications will users write? (API tests, design tokens, deployment configs?)
+- What entities are needed? (APITest, Component, Service?)
+- What workflows are supported? (validate → generate → execute?)
+
+**Ask clarifying questions if unclear**:
+- "What domain does this toolkit target?"
+- "What kind of specifications will users write?"
+- "What are the main entities?"
+
+### 3. Derive speckit-specific principles
+
+Based on the user input and toolkit domain, populate these **standard speckit principles**:
+
+#### **I. Entity-First Design**
+- Start with minimal viable entity definition (3-5 core fields)
+- All fields must have clear descriptions and types
+- Required fields only for truly essential data
+- Support progressive enhancement (add fields later)
+
+**Rationale**: Simple entities are easier for AI agents to understand and validate.
+
+#### **II. Validator Extensibility**
+- Core validator handles structure validation (JSON Schema, Pydantic)
+- Support custom validation rules via plugins or hooks
+- Clear error messages with field path and fix suggestions
+- Validation must be fast (<100ms for typical specs)
+
+**Rationale**: Different domains need different validation logic; extensibility is key.
+
+#### **III. Spec-First Development**
+- Users write specifications first, then toolkit processes them
+- Specifications are declarative (what, not how)
+- Specifications are human-readable (YAML/JSON/Markdown)
+- Specifications are version-controlled
+
+**Rationale**: Spec-first enables AI agents to generate and validate specifications.
+
+#### **IV. AI-Agent Friendly**
+- Clear error messages: "Field 'endpoint' is required in APITest entity"
+- Examples in documentation and templates
+- Consistent naming conventions (snake_case, kebab-case)
+- Avoid implicit behavior (explicit is better)
+
+**Rationale**: AI agents need clear feedback to correct mistakes and learn patterns.
+
+#### **V. Progressive Enhancement**
+- Ship MVP first (init + validate commands)
+- Add features incrementally (generate, execute, report)
+- Maintain backward compatibility (semantic versioning)
+- Document feature maturity (alpha, beta, stable)
+
+**Rationale**: Start simple, grow based on user feedback.
+
+#### **VI. Domain Specificity**
+- Respect domain constraints and conventions
+- Research domain standards before designing entities
+- Don't over-generalize (toolkit serves one domain well)
+- Include domain-specific validation (e.g., HTTP methods for API tests)
+
+**Rationale**: Generic toolkits are weak toolkits; domain focus creates value.
+
+### 4. Collect/derive values for placeholders
+
+- `[TOOLKIT_NAME]` - e.g., "API Test Kit", "Design Token Kit"
+- `[TOOLKIT_DOMAIN]` - e.g., "API Testing", "Design Systems", "Infrastructure"
+- `[PRIMARY_ENTITY]` - e.g., "APITest", "DesignToken", "ServiceConfig"
+- `[PRINCIPLE_N_NAME]` - Use standard speckit principles above (can add domain-specific ones)
+- `[PRINCIPLE_N_DESCRIPTION]` - Detailed description with examples
+- `[GOVERNANCE_RULES]` - How to amend constitution, compliance checks
+- `[CONSTITUTION_VERSION]` - Semantic versioning (start at 1.0.0)
+- `[RATIFICATION_DATE]` - Today's date (ISO 8601: YYYY-MM-DD)
+- `[LAST_AMENDED_DATE]` - Today's date if new/updated
+
+**Version bump rules**:
+- **MAJOR**: Backward incompatible principle changes (e.g., remove Entity-First)
+- **MINOR**: New principles added or major expansions
+- **PATCH**: Clarifications, wording fixes, examples added
+
+### 5. Draft the constitution content
+
+Replace all placeholders with concrete text. The constitution should include:
+
+#### Structure:
+```markdown
+# [TOOLKIT_NAME] Constitution
+
+## Toolkit Purpose
+[Brief description of what this toolkit does and what domain it serves]
+
+## Core Principles
+
+### I. Entity-First Design
+[Detailed principle with examples specific to this toolkit's domain]
+
+### II. Validator Extensibility
+[How validation works for this toolkit's entities]
+
+### III. Spec-First Development
+[What specifications look like for this toolkit]
+
+### IV. AI-Agent Friendly
+[How this toolkit helps AI agents understand and use it]
+
+### V. Progressive Enhancement
+[Planned evolution path for this toolkit]
+
+### VI. Domain Specificity
+[Domain constraints and conventions this toolkit respects]
+
+## Additional Principles
+[Any domain-specific principles beyond the standard 6]
+
+## Implementation Constraints
+[Technical requirements: Python version, dependencies, performance targets]
+
+## Governance
+[Amendment process, compliance checks, review schedule]
+
+**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+```
+
+### 6. Consistency propagation
+
+Update these files to align with the constitution:
+
+- `specs/toolkit/XXX-name/spec.md` - Ensure entity definitions match Entity-First principle
+- `/.metaspec/commands/design-entity.md` - Reference constitution principles
+- `/.metaspec/commands/design-workflow.md` - Reference Spec-First principle
+- `/README.md` - Update design philosophy section
+- `/AGENTS.md` - Update AI agent guidance
+
+**For each file**:
+- Read the file
+- Identify sections that reference principles
+- Update to match new/changed principles
+- Mark with `<!-- Updated per constitution v[VERSION] -->`
+
+### 7. Generate Sync Impact Report
+
+Prepend this as an HTML comment at the top of constitution file:
+
+```html
+<!--
+Constitution Update Report
+==========================
+Version Change: [OLD_VERSION] → [NEW_VERSION]
+Rationale: [MAJOR|MINOR|PATCH bump reason]
+
+Modified Principles:
+- [OLD_PRINCIPLE_NAME] → [NEW_PRINCIPLE_NAME]
+- [PRINCIPLE_NAME]: [description of changes]
+
+Added Principles:
+- [NEW_PRINCIPLE_NAME]: [brief description]
+
+Removed Principles:
+- [OLD_PRINCIPLE_NAME]: [deprecation reason]
+
+Affected Files:
+✅ specs/toolkit/XXX-name/spec.md - Updated entity requirements
+✅ /.metaspec/commands/design-entity.md - Added constitution check
+⚠️  /README.md - Pending manual update for design philosophy
+
+Follow-up TODOs:
+- [ ] Update examples in documentation
+- [ ] Add constitution compliance tests
+- [ ] Review existing code against new principles
+
+Generated: [ISO_DATE]
+-->
+```
+
+### 8. Validation checklist
+
+Before finalizing:
+
+- [ ] No remaining `[PLACEHOLDER]` tokens (except intentionally deferred with TODO)
+- [ ] Version follows semantic versioning
+- [ ] Dates in ISO 8601 format (YYYY-MM-DD)
+- [ ] All 6 standard speckit principles present (or explicitly omitted with reason)
+- [ ] Each principle has clear description and rationale
+- [ ] Principles are testable (can verify compliance in code/design)
+- [ ] Governance section includes amendment process
+- [ ] Domain specificity principle includes actual domain constraints
+- [ ] AI-Agent Friendly principle includes concrete examples
+
+### 9. Write constitution file
+
+- Write to `/memory/constitution.md`
+- Ensure proper Markdown formatting
+- No trailing whitespace
+- Single blank line between sections
+- Wrap long lines at ~100 characters
+
+### 10. Output summary to user
+
+Provide:
+
+```
+✅ Constitution updated to v[VERSION]
+
+📋 Changes:
+- [Summary of what changed]
+- [New principles added]
+- [Modified principles]
+
+📁 Updated files:
+- /memory/constitution.md
+- specs/toolkit/XXX-name/spec.md (if exists)
+- /.metaspec/commands/design-entity.md (if exists)
+
+⚠️  Files needing manual review:
+- [List any files that couldn't be auto-updated]
+
+🔄 Next steps:
+1. Review the constitution in /memory/constitution.md
+2. Use /metaspec:specify to define toolkit capabilities aligned with these principles
+3. Reference these principles during /metaspec:plan and /metaspec:implement
+
+💡 Suggested commit message:
+   docs: adopt toolkit constitution v[VERSION] ([principle summary])
+```
+
+## Important Notes
+
+1. **Constitution is for the toolkit, not the end-user project**
+   - This defines how to BUILD the toolkit
+   - It does NOT define how users USE the toolkit
+   - Focus on entity design, validator architecture, CLI design
+
+2. **Standard vs Domain-Specific Principles**
+   - Always include the 6 standard speckit principles
+   - Add domain-specific principles as needed (e.g., "RESTful API Conventions" for API testing)
+   - Don't remove standard principles without strong justification
+
+3. **Examples Matter**
+   - Each principle should include concrete examples
+   - Examples should use the actual entities from this toolkit
+   - Bad: "Validators should be extensible"
+   - Good: "Validators support custom rules via hooks, e.g., `register_assertion_validator('status_code', validate_http_status)`"
+
+4. **AI-First Language**
+   - Write for AI agents reading this document
+   - Use imperative language (MUST, SHOULD, MAY)
+   - Avoid ambiguity ("usually", "typically" → specify exact rules)
+   - Include anti-patterns (what NOT to do)
+
+5. **Version Control**
+   - Never decrement version
+   - Document reason for every version bump
+   - Keep sync report for traceability
+
+## Example Interaction
+
+**User**: `/metaspec:constitution "Design principles for API Test Kit"`
+
+**AI**:
+"I'll help create the constitution for your API Test Kit. Let me ask a few clarifying questions:
+
+1. What specifications will users write? (I'm assuming API test specs with endpoint, method, assertions)
+2. Should the toolkit support both REST and GraphQL? (impacts Domain Specificity principle)
+3. What's the primary workflow? (validate → execute → report?)
+
+I'll draft a constitution with these standard principles:
+- Entity-First Design (start with minimal APITest entity)
+- Validator Extensibility (support custom assertion types)
+- Spec-First Development (users write test.yaml, toolkit executes)
+- AI-Agent Friendly (clear error messages, examples)
+- Progressive Enhancement (MVP: validate + execute, later: generate, coverage)
+- Domain Specificity (REST/GraphQL standards, HTTP semantics)
+
+Shall I proceed?"
+
+**[After user confirms]**
+
+**AI**: 
+"✅ Constitution created at /memory/constitution.md (v1.0.0)
+
+📋 Principles defined:
+- Entity-First: Start with APITest (endpoint, method, assertions)
+- Validator Extensibility: Custom assertion types via plugins
+- Spec-First: Declarative YAML specifications
+- AI-Agent Friendly: Error messages show fix examples
+- Progressive Enhancement: MVP first, then advanced features
+- Domain Specificity: HTTP/REST standards, status codes, headers
+
+🔄 Next step:
+Use /metaspec:specify to define the APITest entity structure and validation rules, following these principles."
+

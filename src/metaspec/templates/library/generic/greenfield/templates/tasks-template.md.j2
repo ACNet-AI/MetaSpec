@@ -1,0 +1,89 @@
+# Tasks: [NAME]
+
+**Context**: `[###-context-name]`  
+**Created**: [DATE]  
+**Spec**: [link to spec]  
+**Plan**: [link to plan]
+
+## Task Format
+
+Every task follows this format:
+```
+- [ ] [TaskID] [P?] [S?] Description with path
+```
+
+- **TaskID**: Sequential (T001, T002, ...)
+- **[P]**: Parallel marker (can run simultaneously with other [P] tasks)
+- **[S]**: Scenario marker ([S1], [S2], etc. - maps to scenarios from spec)
+- **Path**: Explicit path to affected artifact
+
+## Phases
+
+### Phase 1: Setup
+
+- [ ] T001 - Initialize structure per realization plan
+- [ ] T002 - Configure dependencies
+
+### Phase 2: Foundation
+
+*Prerequisites for all scenarios*
+
+- [ ] T003 - [Foundational task]
+- [ ] T004 - [Foundational task]
+
+### Phase 3: Scenario 1 (P1) - [Scenario Title]
+
+**Goal**: [Scenario goal from spec]
+
+**Independent Validation**: [How to validate independently]
+
+**Tasks**:
+- [ ] T005 [P] [S1] - [Task with path]
+- [ ] T006 [P] [S1] - [Task with path]
+- [ ] T007 [S1] - [Task with path]
+
+### Phase 4: Scenario 2 (P2) - [Scenario Title]
+
+**Goal**: [Scenario goal from spec]
+
+**Independent Validation**: [How to validate independently]
+
+**Tasks**:
+- [ ] T008 [P] [S2] - [Task with path]
+- [ ] T009 [S2] - [Task with path]
+
+[Additional phases for more scenarios]
+
+### Final Phase: Polish & Quality
+
+- [ ] T050 - Final validation
+- [ ] T051 - Documentation updates
+- [ ] T052 - Optimization
+
+## Dependencies
+
+```mermaid
+graph TD
+    S1[Scenario 1] --> S2[Scenario 2]
+    S2 --> S3[Scenario 3]
+    Foundation --> S1
+    Foundation --> S2
+```
+
+## Parallel Execution
+
+Tasks marked with `[P]` can run in parallel:
+
+**Scenario 1 parallel opportunities**:
+- T005, T006 can run together
+
+**Scenario 2 parallel opportunities**:
+- T008 can run with other [P] tasks
+
+## Implementation Strategy
+
+1. **MVP First**: Complete Scenario 1 (P1) as minimal viable outcome
+2. **Incremental**: Add scenarios one at a time
+3. **Independent**: Each scenario is self-contained and verifiable
+4. **Validation**: Validate after each scenario completion
+

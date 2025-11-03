@@ -1,0 +1,269 @@
+# {{ name }} - AI Agent Guide
+
+> **For AI Assistants**: This document provides guidance on using {{ name }} for {{ domain }} development.
+
+---
+
+## 🎯 Your Role
+
+You are helping a developer use **{{ name }}** - a spec-driven toolkit for {{ domain }} projects.
+
+**Toolkit Version**: {{ version }}  
+**Domain**: {{ domain }}  
+**Lifecycle**: {{ lifecycle }}
+
+---
+
+## 📋 Core Entity: {{ entity.name }}
+
+This toolkit centers around the `{{ entity.name }}` entity with the following structure:
+
+{% for field in entity.fields %}
+- **{{ field.name }}** (`{{ field.type }}`): {{ field.description }}
+{% endfor %}
+
+---
+
+## 🔧 Available CLI Commands
+
+{% if cli_commands %}
+{% for command in cli_commands %}
+### `{{ command.name }}`
+
+{{ command.description }}
+
+{% if command.options %}
+**Options**:
+{% for option in command.options %}
+- `--{{ option.name }}` ({{ option.type }}){% if option.required %} *required*{% endif %}: {{ option.description }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+{% else %}
+No CLI commands defined yet. 
+
+To add commands, update your meta-spec definition:
+```yaml
+cli_commands:
+  - name: "parse"
+    description: "Parse {{ entity.name }} specification"
+  - name: "validate"
+    description: "Validate {{ entity.name }} specification"
+```
+
+Then regenerate the toolkit.
+{% endif %}
+
+---
+
+{% if slash_commands %}
+## ⚡ AI Slash Commands
+
+Use these slash commands in AI editors (Cursor, Claude, etc.) for AI-assisted development:
+
+{% for sc in slash_commands %}
+### `{{ sc.slash }}`
+
+{{ sc.description }}
+
+**Usage in AI Editor:**
+```
+{{ sc.slash }} [arguments]
+```
+
+{% endfor %}
+
+**Note**: Slash commands provide AI-assisted workflows. They complement the CLI commands above by offering interactive, AI-guided assistance within your editor.
+
+---
+
+{% endif %}
+## 📝 Workflow
+
+### Standard Flow
+
+```
+1. Initialize Specification
+   ↓
+2. Define {{ entity.name }} Structure
+   ↓
+3. Validate Specification
+   ↓
+4. Generate Implementation
+   ↓
+5. Customize & Extend
+```
+
+### Example Session
+
+```
+Human: "I need to create a new {{ entity.name }}"
+
+AI: "I'll help you create a {{ entity.name }} using {{ name }}.
+
+First, let me initialize the specification:
+
+[Creates {{ entity.name | lower }}-spec.md with appropriate structure]
+
+This defines:
+{% for field in entity.fields[:3] %}
+- {{ field.name }}: {{ field.description }}
+{% endfor %}
+
+Would you like me to validate and generate it?"
+```
+
+---
+
+## 🚀 Helping Users Initialize Projects
+
+When users want to create a new project using {{ name }}, guide them to set up the standard structure:
+
+### Recommended Project Structure
+
+```
+user-project/
+├── .{{ name | lower | replace('-', '') }}/
+│   ├── commands/              # (Optional) If you implement project init
+│   │   └── {{ name | lower | replace('-', '') }}.*.md
+│   └── templates/             # Output templates
+│
+├── memory/
+│   └── constitution.md        # User project's development principles
+│
+├── specs/                     # User project's specifications
+│   └── {entity_name}-spec.md
+│
+├── changes/                   # (Optional) Evolution proposals
+│   ├── add-feature-x/
+│   └── improve-feature-y/
+│
+└── README.md
+```
+
+**Note**: Use `.{{ name | lower | replace('-', '') }}/` instead of `.cursor/` to be AI-editor agnostic. Not all users use Cursor - they might use Claude, other AI editors, or no AI at all.
+
+### Initialization Guidance
+
+1. **Create project directory**
+2. **Set up memory/constitution.md** - Define project's core principles
+3. **Create specs/ directory** - For specification documents
+4. **Create first spec** - Define initial {{ entity.name }}
+
+**Example assistance**:
+```
+Human: "I want to create a new project using {{ name }}"
+
+AI: "I'll help you set up a project with {{ name }}.
+
+Let me create the standard structure:
+
+1. Create memory/constitution.md to define your project's principles
+2. Create specs/ directory for your specifications
+3. Create your first {{ entity.name }} specification
+
+Shall we start with memory/constitution.md?"
+```
+
+---
+
+## 🔒 Constitutional Constraints
+
+**ALWAYS follow** `memory/constitution.md` which defines:
+- Core principles for this toolkit
+- Quality standards
+- Prohibited patterns
+- Required patterns
+
+**Key principles**:
+1. **Specification-First**: Always define specs before implementation
+2. **Validation-Driven**: Validate specs before generation
+3. **Incremental Development**: Start with MVP, add features progressively
+4. **Domain Specificity**: Respect {{ domain }} constraints
+
+---
+
+## 🎨 Domain-Specific Guidance
+
+{% if domain == "mcp" %}
+### MCP (Model Context Protocol) Specifics
+
+- **Tools**: Define clear tool schemas with input/output types
+- **Resources**: Specify resource URIs and access patterns
+- **Prompts**: Document prompt templates and expected responses
+- **Error Handling**: Always include error cases in specifications
+{% elif domain == "web" %}
+### Web API Specifics
+
+- **Endpoints**: Define RESTful routes with HTTP methods
+- **Request/Response**: Specify JSON schemas
+- **Authentication**: Document auth requirements
+- **Rate Limiting**: Consider rate limit specifications
+{% elif domain == "ai" %}
+### AI Agent Specifics
+
+- **Capabilities**: Define agent capabilities and limitations
+- **Context**: Specify context requirements
+- **Prompts**: Document system and user prompts
+- **Safety**: Include safety constraints
+{% else %}
+### Generic Best Practices
+
+- Follow industry standards for {{ domain }}
+- Document all assumptions
+- Include validation rules
+- Provide clear examples
+{% endif %}
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# 1. Initialize new specification
+{{ package_name }} init my-{{ entity.name | lower }}-spec.md
+
+# 2. Edit specification (use your editor)
+# Define {{ entity.name }} structure
+
+# 3. Validate specification
+{{ package_name }} validate my-{{ entity.name | lower }}-spec.md
+
+# 4. Generate implementation
+{{ package_name }} generate my-{{ entity.name | lower }}-spec.md --output ./output
+```
+
+---
+
+## 📚 Examples
+
+See `examples/` directory for:
+- Minimal {{ entity.name }} specification
+- Complete {{ entity.name }} with all fields
+- Common patterns and anti-patterns
+
+---
+
+## 🐛 Troubleshooting
+
+### Issue: Validation fails
+
+**Solution**: Check specification format against schema. Common issues:
+{% for field in entity.fields %}
+- Missing required field: `{{ field.name }}`
+{% endfor %}
+
+### Issue: Generation produces errors
+
+**Solution**: Ensure specification is validated first. Run:
+```bash
+{{ package_name }} validate <spec-file> --strict
+```
+
+---
+
+**Generated by**: MetaSpec {{ metaspec_version }}  
+**Date**: {{ date }}  
+**Domain**: {{ domain }}
+

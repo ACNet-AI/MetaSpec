@@ -1,0 +1,717 @@
+---
+description: Define toolkit specification (SDD - Spec-Driven Development)
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+The text the user typed after `/metaspec.sdd.specify` is the **toolkit specification description**. 
+
+**PURPOSE: Toolkit Specification (SDD)** 🎯
+
+This command is for defining **toolkit implementation specifications**:
+- Focus: HOW to implement the toolkit
+- Output: `specs/toolkit/001-{name}/spec.md`
+- Must depend on protocol specs
+- Implementation-focused
+
+**NOT for protocol definition** - Use `/metaspec.sds.specify` for that.
+
+Follow this execution flow:
+
+### 1. Determine Toolkit and Load Existing Specification
+
+**Step 1a: Verify Protocol Dependency (REQUIRED)**
+
+```bash
+# Check if protocol specs exist
+ls specs/protocol/ | grep -E '^[0-9]{3}-'
+```
+
+**CRITICAL REQUIREMENT**: Toolkit specs MUST depend on at least one protocol spec.
+
+If no protocol specs exist, **STOP** and show this error:
+
+```
+❌ ERROR: Cannot create toolkit without protocol specification
+
+MetaSpec is a Spec-Driven framework. Every toolkit MUST depend on a protocol.
+
+The protocol defines WHAT (domain specification).
+The toolkit defines HOW (implementation).
+
+Please run this command first:
+  /metaspec.sds.specify "Define {domain} protocol"
+
+Then return to create toolkit with:
+  /metaspec.sdd.specify "Create {toolkit} for {domain}"
+
+Why this matters:
+- Protocol is the specification (core asset)
+- Toolkit is the implementation (supporting tool)
+- Without protocol, this becomes a generic code generator
+- MetaSpec's value is in spec-driven development
+```
+
+**Do not proceed** if no protocol specs exist.
+
+**Step 1b: Generate Toolkit Name**
+
+Based on user input, generate:
+- Short name: `{domain}-{component}`
+- Example: "mcp-parser", "graphql-validator", "oauth-client"
+- Check existing `specs/toolkit/` directory structure
+
+**Step 1c: Find Next Available Number**
+
+```bash
+# List existing toolkit specs
+ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
+# Find next number (e.g., if 001, 002 exist, use 003)
+```
+
+**Step 1d: Load Existing or Create New**
+
+- Check for `specs/toolkit/{number}-{name}/spec.md`
+- If exists, load for updating
+- If new, create new directory structure
+
+### 2. Gather Toolkit Specification Content
+
+**Focus**: Define how to implement tools to support the protocol.
+
+**Critical Questions**:
+
+1. **Dependencies**: Which protocol specs does this toolkit support?
+   - **REQUIRED**: Must reference at least one `protocol/XXX-` spec
+   - Example: "Depends on: protocol/001-mcp-core-protocol"
+   
+2. **Toolkit Purpose**: What does this toolkit do?
+   - Example: "Parse and validate MCP server definitions"
+   
+3. **Implementation Language** (NEW - CRITICAL 🎯):
+   - **Primary language**: Python / TypeScript / Go / Rust / Other?
+   - **Rationale**: Why this language?
+     - Target user community (Python devs, TS/JS devs, etc.)
+     - Ecosystem fit (existing tools, libraries)
+     - Performance requirements
+     - Deployment constraints
+   - **Secondary languages**: Any additional language support needed?
+   
+4. **Required Components** (NEW - CRITICAL 🎯):
+   Determine which components are needed for this toolkit:
+   
+   - [ ] **Parser** - Parse specifications from files
+     - Needed if: Users write specs in files (YAML/JSON/TOML)
+     - Not needed if: Specs are generated programmatically
+   
+   - [ ] **Validator** - Validate against protocol rules
+     - Needed if: Need to enforce protocol compliance
+     - Always recommended for spec-driven toolkits
+   
+   - [ ] **CLI** - Command-line interface
+     - Needed if: Users interact via terminal
+     - Provides: init, validate, generate commands
+   
+   - [ ] **Generator** - Generate code/docs from specs
+     - Needed if: Want to automate code generation
+     - Examples: Generate TypeScript types, Python classes
+   
+   - [ ] **SDK/Library** - Programmatic API
+     - Needed if: Other tools need to integrate
+     - Provides: Python/TS/Go module for importing
+   
+   **Which are MVP (must have) vs. future enhancements (nice to have)?**
+   
+5. **Architecture Direction** (NEW 🎯):
+   - **Structure**: Monolithic / Modular / Plugin-based?
+   - **Dependencies**: What frameworks/libraries?
+     - Examples: Pydantic (Python), Zod (TypeScript), encoding/json (Go)
+   - **Extensibility**: Plugin system / Hooks / Base classes?
+   
+6. **Parser Component** (if needed): How will specifications be parsed?
+   - Input formats (YAML, JSON, TOML, other)?
+   - Output format (Objects, AST, IR)?
+   
+7. **Validator Component** (if needed): What validation will it perform?
+   - Must validate against protocol rules
+   - What error messages/codes?
+   
+8. **CLI Commands** (if needed): What commands will users run?
+   - Example: `{toolkit-name} init`, `validate`, `generate`
+   - What are the inputs/outputs for each command?
+
+9. **Generator Component** (if needed): What will it generate?
+   - Output formats: Code (Python/TS/Go), Docs (MD), Config (JSON/YAML)?
+   - Templates: Built-in / User-provided / Both?
+
+10. **SDK/Library** (if needed): Will there be programmatic APIs?
+    - Public API surface: What functions/classes?
+    - Integration: How will other tools use this?
+
+**Important Notes**:
+- This is SDD (Spec-Driven Development) - focus on implementation
+- Must explicitly depend on protocol specs
+- For protocol definition, use `/metaspec.sds.specify` instead
+
+**If user input is vague**, make informed guesses based on domain standards and document assumptions.
+
+### 3. Generate Toolkit Specification Content
+
+Generate **Toolkit Implementation Specification** with these sections:
+
+#### **Dependencies Section** (REQUIRED - CRITICAL)
+
+**First and foremost**, declare dependencies on protocol specifications:
+
+```markdown
+## Dependencies
+
+**Protocol Specifications**:
+- **protocol/001-{domain}-protocol** - {Brief description of what protocol defines}
+
+### Dependency Rationale
+
+{Explain how this toolkit depends on the protocol:}
+- Which protocol entities are parsed/validated?
+- Which protocol rules are enforced?
+- How does the toolkit implement protocol operations?
+
+**Important**: 
+- This toolkit MUST reference at least one protocol specification
+- Changes to protocol specs may require updates to this toolkit
+- Without protocol dependency, this violates the Spec-Driven principle
+```
+
+**CRITICAL**: This Dependencies section is mandatory. Toolkit without protocol is not a valid speckit.
+
+#### **Toolkit Overview**
+```markdown
+## Overview
+
+**Name**: {Toolkit Name}
+**Version**: {version}
+**Status**: Draft | In Development | Stable
+**Created**: {date}
+
+**Purpose**: {What this toolkit does}
+
+**Target Protocol**: Implements support for protocol/001-{domain}-protocol
+
+**Primary Use Cases**:
+1. {Use case 1}
+2. {Use case 2}
+3. {Use case 3}
+
+**Example**:
+```bash
+# How users will use this toolkit
+{toolkit-name} init spec.yaml
+{toolkit-name} validate spec.yaml
+{toolkit-name} generate --output ./generated
+```
+\```
+
+#### **Implementation Details** (NEW 🎯)
+```markdown
+## Implementation
+
+### Language & Ecosystem
+
+**Primary Language**: {Python / TypeScript / Go / Rust / Other}
+
+**Rationale**: 
+{Why this language was chosen:}
+- Target user community: {who will use this}
+- Ecosystem fit: {existing tools and libraries}
+- Performance considerations: {if relevant}
+- Deployment needs: {pip / npm / binary / etc.}
+
+**Key Dependencies**:
+- {Framework/library 1}: {Purpose}
+- {Framework/library 2}: {Purpose}
+- {Framework/library 3}: {Purpose}
+
+### Architecture
+
+**Structure**: {Monolithic / Modular / Plugin-based}
+
+**Core Components**:
+- [ ] Parser - {Brief description}
+- [ ] Validator - {Brief description}
+- [ ] CLI - {Brief description}
+- [ ] Generator - {Brief description if included}
+- [ ] SDK - {Brief description if included}
+
+**Extensibility**:
+{How will users extend this toolkit:}
+- Plugin system / Custom validators / Hooks / etc.
+
+**File Structure** (Preliminary):
+```
+src/
+  {package_name}/
+    __init__.py         # Package initialization
+    models.py           # Data models (if needed)
+    parser.py           # Parser component (if needed)
+    validator.py        # Validator component (if needed)
+    cli.py              # CLI component (if needed)
+    generator.py        # Generator component (if needed)
+    api.py              # SDK interface (if needed)
+```
+
+Note: Actual structure will be refined in `/metaspec.sdd.plan`
+\```
+
+#### **Component Specifications**
+
+Define each toolkit component:
+
+##### **Component 1: Parser**
+
+```markdown
+### Parser Component
+
+**Purpose**: Parse user specifications into validated objects
+
+**Input Formats**:
+- YAML (primary)
+- JSON (alternative)
+- Python dict (programmatic)
+
+**Output Format**:
+- Validated Python object
+- AST representation (if needed)
+
+**Parsing Steps**:
+1. Load file (YAML/JSON)
+2. Validate schema structure
+3. Transform to internal representation
+4. Return parsed object or errors
+
+**Error Handling**:
+- `ParseError`: Invalid YAML/JSON syntax
+- `SchemaError`: Missing required fields
+- `TypeE Error`: Incorrect field types
+
+**API**:
+```python
+from {toolkit_name}.parser import parse_spec
+
+# Parse from file
+spec = parse_spec("spec.yaml")
+
+# Parse from string
+spec = parse_spec(yaml_string, format="yaml")
+
+# Parse from dict
+spec = parse_spec(spec_dict, format="dict")
+```
+\```
+
+##### **Component 2: Validator**
+
+```markdown
+### Validator Component
+
+**Purpose**: Validate specifications against protocol rules (from protocol/001-xxx)
+
+**Validation Rules** (Reference protocol spec):
+1. {Rule from protocol/001-xxx}
+2. {Rule from protocol/001-xxx}
+3. {Rule from protocol/001-xxx}
+
+**Validation Levels**:
+- **Error**: Violations that prevent usage
+- **Warning**: Issues that should be fixed
+- **Info**: Suggestions for improvement
+
+**Validation Output**:
+```python
+ValidationResult(
+    valid: bool,
+    errors: List[ValidationError],
+    warnings: List[ValidationWarning],
+    info: List[ValidationInfo]
+)
+```
+
+**Error Messages**:
+- Clear, actionable error messages
+- Point to exact location in spec
+- Suggest fixes when possible
+
+**API**:
+```python
+from {toolkit_name}.validator import validate_spec
+
+# Validate parsed spec
+result = validate_spec(spec)
+
+if not result.valid:
+    for error in result.errors:
+        print(f"{error.location}: {error.message}")
+```
+\```
+
+##### **Component 3: CLI**
+
+```markdown
+### CLI Component
+
+**Purpose**: Provide command-line interface for toolkit
+
+**Commands**:
+
+#### `init` - Create new specification
+```bash
+{toolkit-name} init [filename]
+
+Options:
+  --template [name]  Use specific template
+  --interactive      Interactive mode
+```
+
+#### `validate` - Validate specification
+```bash
+{toolkit-name} validate [filename]
+
+Options:
+  --strict           Treat warnings as errors
+  --format [json]    Output format
+```
+
+#### `generate` - Generate artifacts
+```bash
+{toolkit-name} generate [filename]
+
+Options:
+  --output [dir]     Output directory
+  --template [name]  Template to use
+```
+
+**CLI Framework**: typer or click
+**Output**: Rich formatting with colors and progress
+\```
+
+##### **Component 4: Generator (Optional)**
+
+If applicable:
+
+```markdown
+### Generator Component
+
+**Purpose**: Generate code/artifacts from validated specs
+
+**Generation Targets**:
+- {Target 1}: {Description}
+- {Target 2}: {Description}
+
+**Templates**:
+- Location: `templates/`
+- Format: Jinja2
+- Customization: User-overridable
+
+**API**:
+```python
+from {toolkit_name}.generator import generate
+
+# Generate from spec
+generate(spec, output_dir="./output", template="default")
+```
+\```
+
+#### **Architecture Design**
+
+```markdown
+## Architecture
+
+### Module Structure
+```
+{toolkit_name}/
+├── __init__.py
+├── parser.py          # Parser component
+├── validator.py       # Validator component
+├── generator.py       # Generator component (optional)
+├── cli.py             # CLI entry point
+├── models.py          # Data models
+├── exceptions.py      # Custom exceptions
+└── templates/         # Templates (if generator exists)
+```
+
+### Data Flow
+```
+Input File
+    ↓
+  Parser  ───→ Parsed Spec Object
+    ↓
+Validator ───→ Validation Result
+    ↓
+Generator ───→ Output Artifacts
+```
+
+### Key Classes
+- `{Toolkit}Spec`: Main specification object
+- `{Toolkit}Parser`: Parser implementation
+- `{Toolkit}Validator`: Validator implementation
+- `{Toolkit}Generator`: Generator implementation (optional)
+\```
+
+#### **Dependencies and Requirements**
+
+```markdown
+## Technical Requirements
+
+### Language
+- Python 3.9+
+
+### Core Dependencies
+- `pydantic`: Data validation and settings management
+- `typer`: CLI framework
+- `pyyaml` or `ruamel.yaml`: YAML parsing
+- `jinja2`: Template engine (if generator)
+- `rich`: Terminal formatting
+
+### Development Dependencies
+- `pytest`: Testing framework
+- `mypy`: Type checking
+- `ruff`: Linting and formatting
+- `coverage`: Code coverage
+
+### Optional Dependencies
+- {Additional deps based on specific needs}
+```
+
+#### **Validation Strategy**
+
+```markdown
+## Validation Strategy
+
+### Unit Tests
+- Test each component independently
+- Mock external dependencies
+- Aim for 80%+ coverage
+
+### Integration Tests
+- Test component interactions
+- Test CLI commands end-to-end
+- Test with real specification files
+
+### Validation Cases
+1. **Parser Tests**:
+   - Valid YAML/JSON parsing
+   - Invalid syntax handling
+   - Edge cases (empty files, large files)
+
+2. **Validator Tests**:
+   - Each validation rule from protocol spec
+   - Error message quality
+   - Multiple errors handling
+
+3. **CLI Tests**:
+   - Each command with various options
+   - Error handling
+   - Help messages
+
+4. **Generator Tests** (if applicable):
+   - Template rendering
+   - Output file creation
+   - Custom template handling
+
+### Validation Data
+- Sample valid specifications
+- Sample invalid specifications
+- Edge cases
+
+**Validation Location**: `tests/` directory
+```
+
+#### **Success Criteria**
+
+```markdown
+## Success Criteria
+
+### MVP Features
+- ✅ {Feature 1}
+- ✅ {Feature 2}
+- ✅ {Feature 3}
+
+### Quality Metrics
+- All tests pass
+- 80%+ code coverage
+- No critical linting errors
+- Type hints complete (mypy passes)
+
+### Documentation
+- README with quickstart
+- API documentation
+- CLI help messages complete
+- Example specifications
+
+### User Experience
+- Clear error messages
+- Fast execution (< 1s for typical specs)
+- Good CLI UX (progress bars, colors)
+```
+
+### 4. Write Specification File
+
+**Location**: `specs/toolkit/{number}-{name}/spec.md`
+
+**Structure**:
+```markdown
+# {Toolkit Name}
+
+**Version**: {version}
+**Status**: Draft | In Development | Stable
+**Created**: {date}
+
+## Dependencies
+
+{Dependencies from step 3}
+
+## Overview
+
+{Overview from step 3}
+
+## Components
+
+{Component specifications from step 3}
+
+## Architecture
+
+{Architecture design from step 3}
+
+## Technical Requirements
+
+{Requirements from step 3}
+
+## Validation Strategy
+
+{Validation strategy from step 3}
+
+## Success Criteria
+
+{Success criteria from step 3}
+
+## Implementation Plan
+
+See `plan.md` (created via `/metaspec.sdd.plan`)
+
+## Tasks
+
+See `tasks.md` (created via `/metaspec.sdd.tasks`)
+```
+
+### 5. Success Output
+
+```
+✅ Toolkit specification created/updated:
+
+📁 Location:
+   specs/toolkit/{number}-{name}/spec.md
+
+🎯 Toolkit: {Toolkit Name} v{version}
+
+📦 Dependencies:
+   → protocol/{dependency-1}
+   → protocol/{dependency-2}
+
+🔧 Components: {count} components defined
+   - {Component 1}
+   - {Component 2}
+   ...
+
+✓ Architecture: Defined
+✓ Validation Strategy: Defined
+✓ Success Criteria: Defined
+
+🔄 Next steps:
+1. Review toolkit specification
+2. Run /metaspec.sdd.plan to create implementation plan
+3. Run /metaspec.sdd.tasks to break down work
+4. Run /metaspec.sdd.implement to start building
+```
+
+## Best Practices
+
+### Toolkit Specification Focus
+
+✅ **DO**:
+- Define HOW to implement the toolkit
+- Specify Parser, Validator, CLI, Generator
+- Reference protocol specs explicitly
+- Include architecture and validation strategy
+- Focus on user experience
+
+❌ **DON'T**:
+- Redefine the protocol (belongs in protocol specs)
+- Skip dependency declarations
+- Mix protocol and toolkit concerns
+- Over-specify implementation details
+
+### Dependency Management
+
+- **Always** declare protocol dependencies at the top
+- Reference specific protocol/XXX- specs
+- Document which protocol features are supported
+- Note version compatibility if relevant
+
+### Component Design
+
+- Keep components modular and testable
+- Clear interfaces between components
+- Minimal coupling
+- Support both CLI and programmatic usage
+
+### Progressive Enhancement
+
+Start with MVP:
+1. Parser (basic)
+2. Validator (core rules)
+3. CLI (init + validate)
+
+Add later:
+4. Generator
+5. Advanced CLI features
+6. SDK/Library enhancements
+
+## Constitution Check
+
+Before finalizing, verify against `memory/constitution.md`:
+
+```bash
+# Check toolkit spec against constitution
+grep -A 5 "Minimal Viable Abstraction" memory/constitution.md
+grep -A 5 "AI-First Design" memory/constitution.md
+```
+
+**Ensure**:
+- Start with minimal viable toolkit
+- Components are clearly defined
+- Architecture supports extension
+- Testing is built-in from start
+
+## Troubleshooting
+
+**If no protocol specs exist**:
+→ Prompt user to create protocol spec first with `/metaspec.sds.specify`
+
+**If toolkit seems too complex**:
+→ Break into multiple toolkit specs (e.g., parser-only, validator-only)
+
+**If unclear architecture**:
+→ Use `/metaspec.sdd.clarify` to resolve design questions
+
+**If components overlap**:
+→ Review separation of concerns, consider merging or splitting
+
+**If validation strategy unclear**:
+→ Focus on contract testing at component boundaries

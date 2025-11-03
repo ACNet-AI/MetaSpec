@@ -1,0 +1,43 @@
+# Changelog
+
+All notable changes to {{ name }} will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- Initial release of {{ name }}
+- {{ entity.name }} entity support
+{% if cli_commands %}{% for cmd in cli_commands %}- `{{ cmd.name }}` command - {{ cmd.description }}
+{% endfor %}{% endif %}
+
+## [{{ version }}] - {{ date }}
+
+### Added
+- Core functionality for {{ domain }} domain
+- CLI interface with {{ cli_commands|length if cli_commands else 0 }} commands
+- Specification parser and validator
+- AI agent support (AGENTS.md)
+- Constitutional principles (memory/constitution.md)
+
+### Documentation
+- README with quick start guide
+- AGENTS.md for AI assistant integration
+- Project structure documentation
+
+---
+
+## Version History
+
+| Version | Date | Description |
+|---------|------|-------------|
+| {{ version }} | {{ date }} | Initial release |
+
+---
+
+**Note**: This changelog is maintained manually. Please update it when making changes to {{ name }}.
+
+For detailed commit history, see: [Git Log](../../commits/main)
+

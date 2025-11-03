@@ -1,0 +1,93 @@
+# Generated Template
+
+**Project**: {{ name }}
+**Version**: {{ version }}
+**Domain**: {{ domain }}
+**Date**: {{ date }}
+
+---
+
+---
+description: Execute the realization plan by processing and executing all tasks defined in tasks document.
+scripts:
+  sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+  ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+1. **Load context**: Parse required documents and available artifacts. All paths must be absolute.
+
+2. **Check validation status** (if validation artifacts exist):
+   - Scan all validation files
+   - For each validation, count total, completed, and incomplete items
+   - Create status table
+   - Calculate overall status (PASS if all complete, FAIL if any incomplete)
+   - **If any validation incomplete**:
+     - Display table with incomplete counts
+     - **STOP** and ask: "Some validations are incomplete. Proceed anyway? (yes/no)"
+     - Wait for user response
+     - If user says "no/wait/stop", halt execution
+     - If user says "yes/proceed/continue", proceed
+   - **If all validations complete**:
+     - Display table showing all passed
+     - Automatically proceed
+
+3. **Load and analyze context**:
+   - **REQUIRED**: Read tasks document for complete task list and execution plan
+   - **REQUIRED**: Read plan document for approach, architecture, and structure
+   - **IF EXISTS**: Read model document for components and relationships
+   - **IF EXISTS**: Read contracts for specifications and requirements
+   - **IF EXISTS**: Read research for decisions and constraints
+   - **IF EXISTS**: Read guide for realization scenarios
+
+4. **Setup Verification**:
+   - Verify necessary ignore files exist
+   - Create/update ignore files based on detected technologies and tools
+   - Ensure essential patterns are included
+
+5. **Parse tasks structure** and extract:
+   - **Task phases**: Setup, Foundation, Scenarios, Integration, Polish
+   - **Task dependencies**: Sequential vs parallel execution rules
+   - **Task details**: ID, description, paths, parallel markers [P]
+   - **Execution flow**: Order and dependency requirements
+
+6. **Execute realization** following the task plan:
+   - **Phase-by-phase execution**: Complete each phase before next
+   - **Respect dependencies**: Run sequential tasks in order, parallel [P] together
+   - **Validation-first approach**: Execute validation tasks before realization tasks
+   - **Path-based coordination**: Tasks affecting same paths must run sequentially
+   - **Validation checkpoints**: Verify each phase completion before proceeding
+
+7. **Realization execution rules**:
+   - **Setup first**: Initialize structure, dependencies, configuration
+   - **Validation before generation**: Write validation specs before generation
+   - **Core generation**: Create primary deliverables
+   - **Integration work**: Connections, middleware, external services
+   - **Polish and validation**: Final validation, optimization, documentation
+
+8. **Progress tracking and error handling**:
+   - Report progress after each completed task
+   - Halt if any non-parallel task fails
+   - For parallel tasks [P], continue with successful, report failed
+   - Provide clear error messages with context
+   - Suggest next steps if cannot proceed
+   - **IMPORTANT**: Mark completed tasks as [X]
+
+9. **Completion validation**:
+   - Verify all required tasks completed
+   - Check that generated artifacts match specification
+   - Validate that tests pass and coverage meets requirements
+   - Confirm realization follows the plan
+   - Report final status with summary of completed work
+
+Note: This command assumes complete task breakdown exists. If incomplete, suggest regenerating task list first.
+

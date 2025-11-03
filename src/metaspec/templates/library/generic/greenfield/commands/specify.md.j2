@@ -1,0 +1,109 @@
+# Generated Template
+
+**Project**: {{ name }}
+**Version**: {{ version }}
+**Domain**: {{ domain }}
+**Date**: {{ date }}
+
+---
+
+---
+description: Create or update the {{ entity_type }} specification from a natural language description.
+scripts:
+  sh: scripts/bash/create-new-feature.sh --json "{ARGS}"
+  ps: scripts/powershell/create-new-feature.ps1 -Json "{ARGS}"
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+The text the user typed after `/{{ cli_prefix }}.specify` in the triggering message **is** the {{ entity_type | lower }} description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+
+Given that description, do this:
+
+1. **Generate a concise short name** (2-4 words) for the work context:
+   - Analyze the description and extract the most meaningful keywords
+   - Create a 2-4 word short name that captures the essence
+   - Use action-noun format when possible
+   - Keep it concise but descriptive
+
+2. **Load specification template** to understand required sections.
+
+3. **Follow this execution flow**:
+   1. Parse user description from Input
+      If empty: ERROR "No description provided"
+   2. Extract key concepts from description
+      Identify: actors, actions, data, constraints
+   3. For unclear aspects:
+      - Make informed guesses based on context and domain standards
+      - Only mark with [NEEDS CLARIFICATION: specific question] if critical
+      - **LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total**
+   4. Fill Scenarios & Validation section
+      If no clear flow: ERROR "Cannot determine scenarios"
+   5. Generate Requirements
+      Each requirement must be verifiable
+      Use reasonable defaults for unspecified details
+   6. Define Success Criteria
+      Create measurable, implementation-agnostic outcomes
+   7. Identify Key Components (if applicable)
+   8. Return: SUCCESS (spec ready for planning)
+
+4. **Write the specification** using the template structure, replacing placeholders with concrete details.
+
+5. **Specification Quality Validation**: Validate against quality criteria:
+   - No implementation details (specific technologies, tools, methods)
+   - Focused on value and needs
+   - Written for non-technical stakeholders
+   - Requirements are verifiable and unambiguous
+   - Success criteria are measurable
+   - All acceptance scenarios are defined
+   - Edge cases are identified
+   - Scope is clearly bounded
+
+6. **Handle Validation Results**:
+   - **If all items pass**: Proceed to completion
+   - **If items fail**: Update spec to address issues (max 3 iterations)
+   - **If [NEEDS CLARIFICATION] remains** (max 3 total):
+     1. Present options to user in table format
+     2. Wait for user response
+     3. Update spec with selected answers
+     4. Re-run validation
+
+7. Report completion with spec file path and readiness for next phase.
+
+## General Guidelines
+
+- Focus on **WHAT** is needed and **WHY**
+- Avoid HOW to realize (no specific technologies, APIs, tools)
+- Written for stakeholders, not implementers
+- Make informed guesses when reasonable
+- Document assumptions
+- Limit clarifications to critical decisions
+- Think like a validator: Every vague requirement should be measurable
+
+### Success Criteria Guidelines
+
+Success criteria must be:
+1. **Measurable**: Include specific metrics
+2. **Implementation-agnostic**: No mention of specific technologies or methods
+3. **Value-focused**: Describe outcomes from user/business perspective
+4. **Verifiable**: Can be validated without knowing implementation details
+
+**Good examples**:
+- "Users can complete task in under 3 minutes"
+- "System supports 10,000 concurrent users"
+- "95% of operations complete in under 1 second"
+- "Task completion rate improves by 40%"
+
+**Bad examples** (implementation-focused):
+- "API response time is under 200ms" (too technical)
+- "Database handles 1000 TPS" (implementation detail)
+- "Components render efficiently" (technology-specific)
+

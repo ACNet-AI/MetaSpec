@@ -1,0 +1,346 @@
+---
+protocol:
+  name: {{ metadata.name }}
+  version: {{ metadata.version }}
+  status: {{ metadata.status | default("Draft") }}
+  created: {{ metadata.created }}
+  summary: {{ metadata.summary | default("") }}
+
+entities:
+{% if entities %}
+{% for entity in entities %}
+  - name: {{ entity.name }}
+    purpose: {{ entity.purpose }}
+    fields:
+    {% if entity.fields %}
+    {% for field in entity.fields %}
+      - name: {{ field.name }}
+        type: {{ field.type }}
+        required: {{ field.required | default(true) | lower }}
+        description: {{ field.description | default("") }}
+        constraints: {{ field.constraints | default([]) | tojson }}
+    {% endfor %}
+    {% else %}
+      - {}
+    {% endif %}
+    validation: {{ entity.validation | default([]) | tojson }}
+    examples: {{ entity.examples | default([]) | tojson }}
+{% endfor %}
+{% else %}
+  []
+{% endif %}
+
+operations:
+{% if operations %}
+{% for operation in operations %}
+  - name: {{ operation.name }}
+    purpose: {{ operation.purpose }}
+    request: {{ operation.request | default({}) | tojson }}
+    response: {{ operation.response | default({}) | tojson }}
+    errors: {{ operation.errors | default([]) | tojson }}
+    notes: {{ operation.notes | default("") }}
+{% endfor %}
+{% else %}
+  []
+{% endif %}
+
+validation_rules:
+{% if validation_rules %}
+{% for rule in validation_rules %}
+  - id: {{ rule.id }}
+    description: {{ rule.description }}
+    type: {{ rule.type }}
+    target: {{ rule.target }}
+    scope: {{ rule.scope | default("") }}
+    details: {{ rule.details | default("") }}
+{% endfor %}
+{% else %}
+  []
+{% endif %}
+
+workflows:
+{% if workflows %}
+{% for workflow in workflows %}
+  - entity: {{ workflow.entity }}
+    states: {{ workflow.states | default([]) | tojson }}
+    initial_state: {{ workflow.initial_state | default("") }}
+    final_states: {{ workflow.final_states | default([]) | tojson }}
+    transitions: {{ workflow.transitions | default([]) | tojson }}
+    forbidden: {{ workflow.forbidden | default([]) | tojson }}
+    validation: {{ workflow.validation | default([]) | tojson }}
+{% endfor %}
+{% else %}
+  []
+{% endif %}
+
+glossary: {{ glossary | default([]) | tojson }}
+use_cases: {{ use_cases | default([]) | tojson }}
+error_handling: {{ error_handling | default({}) | tojson }}
+examples: {{ examples | default([]) | tojson }}
+references: {{ references | default([]) | tojson }}
+---
+
+# {{ metadata.name }}
+
+**Version**: {{ metadata.version }}  
+**Status**: {{ metadata.status | default("Draft") }}  
+**Created**: {{ metadata.created }}
+
+{% if metadata.summary %}
+## Overview
+
+{{ metadata.summary }}
+
+{% endif %}
+{% if glossary %}
+## Glossary
+
+{% for term in glossary %}
+- **{{ term.term }}**: {{ term.definition }}{% if term.example %}  
+  _Example_: {{ term.example }}{% endif %}
+{% endfor %}
+
+{% endif %}
+{% if use_cases %}
+## Use Cases
+
+{% for case in use_cases %}
+### {{ case.name }}
+
+**Scenario**: {{ case.scenario }}
+
+{% if case.actors %}
+**Actors**:
+{% for actor in case.actors %}
+- {{ actor.name }}: {{ actor.role }}
+{% endfor %}
+
+{% endif %}
+{% if case.flow %}
+**Flow**:
+{% for step in case.flow %}
+{{ loop.index }}. {{ step }}
+{% endfor %}
+
+{% endif %}
+{% if case.elements %}
+**Protocol Elements Used**:
+{% for element in case.elements %}
+- {{ element }}
+{% endfor %}
+
+{% endif %}
+{% if case.outcome %}
+**Outcome**: {{ case.outcome }}
+
+{% endif %}
+{% endfor %}
+
+{% endif %}
+## Core Entities
+
+{% if entities %}
+{% for entity in entities %}
+### Entity: {{ entity.name }}
+
+**Purpose**: {{ entity.purpose }}
+
+{% if entity.schema_example %}
+```yaml
+{{ entity.schema_example | indent(width=0) }}
+```
+
+{% endif %}
+{% if entity.fields %}
+**Fields**:
+{% for field in entity.fields %}
+- `{{ field.name }}` ({{ field.type }}{% if field.required | default(true) %}, required{% endif %}): {{ field.description | default("") }}
+{% if field.constraints %}  
+  Constraints: {{ field.constraints }}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% if entity.validation %}
+**Validation Rules**:
+{% for rule in entity.validation %}
+- {{ rule }}
+{% endfor %}
+
+{% endif %}
+{% if entity.examples %}
+**Examples**:
+{% for example in entity.examples %}
+```json
+{{ example | indent(width=0) }}
+```
+
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% else %}
+> _No core entities defined yet._
+{% endif %}
+
+{% if workflows %}
+## Workflow
+
+{% for workflow in workflows %}
+### State Machine: {{ workflow.entity }}
+
+{% if workflow.states %}
+**States**:
+{% for state in workflow.states %}
+- `{{ state.name }}`: {{ state.description }}
+{% if state.example %}  
+  Example: {{ state.example }}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% if workflow.initial_state %}
+**Initial State**: `{{ workflow.initial_state }}`
+
+{% endif %}
+{% if workflow.final_states %}
+**Final States**: {% for state in workflow.final_states %}`{{ state }}`{% if not loop.last %}, {% endif %}{% endfor %}
+
+{% endif %}
+{% if workflow.transitions %}
+**Allowed Transitions**:
+{% for transition in workflow.transitions %}
+#### `{{ transition.from }}` → `{{ transition.to }}`
+- **Trigger**: {{ transition.trigger }}
+- **Precondition**: {{ transition.precondition }}
+- **Action**: {{ transition.action }}
+- **Postcondition**: {{ transition.postcondition }}
+
+{% endfor %}
+{% endif %}
+{% if workflow.forbidden %}
+**Forbidden Transitions**:
+{% for forbidden in workflow.forbidden %}
+- ❌ `{{ forbidden.from }}` → `{{ forbidden.to }}`: {{ forbidden.reason }}
+{% endfor %}
+
+{% endif %}
+{% if workflow.validation %}
+**Validation Rules**:
+{% for rule in workflow.validation %}
+- {{ rule }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if operations %}
+## Protocol Operations
+
+{% for operation in operations %}
+### Operation: {{ operation.name }}
+
+**Purpose**: {{ operation.purpose }}
+
+{% if operation.request_example %}
+**Request Schema**:
+```yaml
+{{ operation.request_example | indent(width=0) }}
+```
+
+{% endif %}
+{% if operation.response_example %}
+**Response Schema**:
+```yaml
+{{ operation.response_example | indent(width=0) }}
+```
+
+{% endif %}
+{% if operation.validation %}
+**Validation Rules**:
+{% for rule in operation.validation %}
+- {{ rule }}
+{% endfor %}
+
+{% endif %}
+{% if operation.notes %}
+**Notes**: {{ operation.notes }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+## Validation Rules
+
+{% if validation_rules %}
+{% for rule in validation_rules %}
+### {{ rule.id }}
+
+- **Description**: {{ rule.description }}
+- **Type**: {{ rule.type }}
+- **Target**: {{ rule.target }}
+{% if rule.scope %}- **Scope**: {{ rule.scope }}
+{% endif %}
+{% if rule.details %}- **Details**: {{ rule.details }}
+{% endif %}
+
+{% endfor %}
+{% else %}
+> _No validation rules defined yet._
+{% endif %}
+
+{% if error_handling %}
+## Error Handling
+
+{% if error_handling.codes %}
+### Error Codes
+{% for error in error_handling.codes %}
+- `{{ error.code }}`: {{ error.description }}
+{% endfor %}
+
+{% endif %}
+{% if error_handling.format %}
+### Error Response Format
+```yaml
+{{ error_handling.format | indent(width=0) }}
+```
+
+{% endif %}
+{% endif %}
+
+{% if examples %}
+## Protocol Examples
+
+{% for example in examples %}
+### {{ example.name }}
+
+{% if example.request %}
+**Request**:
+```json
+{{ example.request | indent(width=0) }}
+```
+
+{% endif %}
+{% if example.response %}
+**Response**:
+```json
+{{ example.response | indent(width=0) }}
+```
+
+{% endif %}
+{% if example.notes %}
+**Notes**: {{ example.notes }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if references %}
+## References
+
+{% for reference in references %}
+- {{ reference }}
+{% endfor %}
+
+{% endif %}
+

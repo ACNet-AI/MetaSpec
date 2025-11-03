@@ -1,0 +1,158 @@
+# Generated Template
+
+**Project**: {{ name }}
+**Version**: {{ version }}
+**Domain**: {{ domain }}
+**Date**: {{ date }}
+
+---
+
+---
+description: Generate a custom validation checklist based on requirements to validate requirement quality ("Unit Tests for Requirements")
+scripts:
+  sh: scripts/bash/check-prerequisites.sh --json
+  ps: scripts/powershell/check-prerequisites.ps1 -Json
+---
+
+## Validation Purpose: "Unit Tests for Requirements"
+
+**CRITICAL CONCEPT**: Validation checklists are **UNIT TESTS FOR REQUIREMENTS** - they validate the quality, clarity, and completeness of requirements.
+
+**NOT for verification/testing**:
+- ❌ NOT "Verify the system works correctly"
+- ❌ NOT "Test functionality operates as expected"
+- ❌ NOT "Confirm outputs are correct"
+
+**FOR requirements quality validation**:
+- ✅ "Are requirements defined for all identified scenarios?" (completeness)
+- ✅ "Is 'high performance' quantified with specific metrics?" (clarity)
+- ✅ "Are requirements consistent across all sections?" (consistency)
+- ✅ "Are validation criteria defined for all requirements?" (coverage)
+- ✅ "Does the spec define edge case handling?" (edge cases)
+
+**Metaphor**: If your spec is written in natural language, the validation checklist is its unit test suite. You're testing whether requirements are well-written, complete, unambiguous, and ready for realization - NOT whether the realization works.
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Execution Steps
+
+1. **Setup**: Load context and available documents.
+
+2. **Clarify intent** (dynamic): Generate up to THREE contextual clarifying questions:
+   - Generated from user's phrasing + signals from spec/plan/tasks
+   - Only ask about information that materially changes validation content
+   - Skip if already unambiguous in input
+   - Present options in table format when applicable
+   - Defaults: Standard depth, Reviewer audience, Top 2 focus areas
+
+3. **Understand request**: Combine input + clarifying answers:
+   - Derive validation theme (e.g., completeness, consistency, quality)
+   - Consolidate explicit must-have items
+   - Map focus selections to category scaffolding
+
+4. **Load context**: Read from work directory:
+   - Specification: Requirements and scope
+   - Plan (if exists): Technical details, dependencies
+   - Tasks (if exists): Realization tasks
+
+5. **Generate validation checklist** - Create "Unit Tests for Requirements":
+   - Create validation directory if doesn't exist
+   - Generate unique validation filename based on domain
+   - Number items sequentially (VAL001, VAL002, ...)
+   - Each run creates NEW file (never overwrites)
+
+   **CORE PRINCIPLE - Test Requirements, Not Realization**:
+   Every validation item MUST evaluate REQUIREMENTS for:
+   - **Completeness**: Are all necessary requirements present?
+   - **Clarity**: Are requirements unambiguous and specific?
+   - **Consistency**: Do requirements align with each other?
+   - **Measurability**: Can requirements be objectively verified?
+   - **Coverage**: Are all scenarios/edge cases addressed?
+
+   **Category Structure** - Group by quality dimensions:
+   - **Requirement Completeness** (Are all necessary requirements documented?)
+   - **Requirement Clarity** (Are requirements specific and unambiguous?)
+   - **Requirement Consistency** (Do requirements align without conflicts?)
+   - **Validation Criteria Quality** (Are success criteria measurable?)
+   - **Scenario Coverage** (Are all flows/cases addressed?)
+   - **Edge Case Coverage** (Are boundary conditions defined?)
+   - **Quality Attributes** (Are quality requirements specified?)
+   - **Dependencies & Assumptions** (Are they documented and validated?)
+   - **Ambiguities & Conflicts** (What needs clarification?)
+
+   **HOW TO WRITE VALIDATION ITEMS - "Unit Tests for Requirements"**:
+
+   ❌ **WRONG** (Testing realization):
+   - "Verify system displays 3 items"
+   - "Test interactions work correctly"
+   - "Confirm outputs are correct"
+
+   ✅ **CORRECT** (Testing requirements quality):
+   - "Are the number and layout of items explicitly specified?" [Completeness]
+   - "Is 'prominent display' quantified with specific criteria?" [Clarity]
+   - "Are requirements consistent across all sections?" [Consistency]
+   - "Are validation requirements defined for all interactions?" [Coverage]
+   - "Is fallback behavior specified when operations fail?" [Edge Cases]
+
+   **ITEM STRUCTURE**:
+   - Question format asking about requirement quality
+   - Focus on what's WRITTEN (or not written) in the spec
+   - Include quality dimension in brackets
+   - Reference spec section when checking existing requirements
+   - Use [Gap] marker when checking for missing requirements
+
+   **Traceability Requirements**:
+   - MINIMUM: ≥80% of items MUST include traceability reference
+   - Reference: spec section, or markers: [Gap], [Ambiguity], [Conflict], [Assumption]
+
+   **Surface & Resolve Issues** (Requirements Quality Problems):
+   - Ambiguities: "Is the term 'fast' quantified with metrics? [Ambiguity]"
+   - Conflicts: "Do requirements conflict between sections? [Conflict]"
+   - Assumptions: "Is the assumption of always-available service validated? [Assumption]"
+   - Dependencies: "Are external dependencies documented? [Dependency, Gap]"
+   - Missing definitions: "Is 'quality' defined with measurable criteria? [Gap]"
+
+   **Content Consolidation**:
+   - If >40 items, prioritize by risk/impact
+   - Merge near-duplicates
+   - If >5 low-impact edge cases, create one consolidated item
+
+   **🚫 ABSOLUTELY PROHIBITED**:
+   - ❌ Items starting with "Verify/Test/Confirm" + realization behavior
+   - ❌ References to system execution, user actions, outputs
+   - ❌ "Works properly", "functions correctly", "displays as expected"
+   - ❌ Realization details (technologies, tools, methods)
+
+   **✅ REQUIRED PATTERNS**:
+   - ✅ "Are [requirement type] defined/specified/documented for [scenario]?"
+   - ✅ "Is [vague term] quantified/clarified with specific criteria?"
+   - ✅ "Are requirements consistent between sections?"
+   - ✅ "Can [requirement] be objectively measured/verified?"
+   - ✅ "Does the spec define [missing aspect]?"
+
+6. **Report**: Output full path to created validation, item count, focus areas, depth level.
+
+**Important**: Each validation command invocation creates a validation file using descriptive names. This allows multiple validations of different types (e.g., `completeness.md`, `consistency.md`, `quality.md`).
+
+## Example Validation Types
+
+**Completeness Validation**: `completeness.md`
+- "Are requirements defined for all identified scenarios? [Completeness]"
+- "Are validation criteria specified for all requirements? [Coverage, Gap]"
+- "Are edge case requirements documented? [Gap]"
+
+**Consistency Validation**: `consistency.md`
+- "Are requirements consistent across all sections? [Consistency]"
+- "Do component requirements align with system requirements? [Consistency]"
+
+**Quality Validation**: `quality.md`
+- "Are quality attributes quantified with specific metrics? [Clarity]"
+- "Can quality requirements be objectively measured? [Measurability]"
+- "Are quality requirements testable? [Measurability]"
+

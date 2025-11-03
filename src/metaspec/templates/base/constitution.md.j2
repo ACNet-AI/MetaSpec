@@ -1,0 +1,219 @@
+# Constitutional Rules for {{ name }}
+
+> These rules MUST be followed by all AI agents and developers using this toolkit.
+
+**Domain**: {{ domain }}  
+**Version**: {{ version }}  
+**Last Updated**: {{ date }}
+
+---
+
+## 🎯 Core Principles
+
+### 1. Specification-First Development
+
+- **ALWAYS** define specifications before implementation
+- **NEVER** write code without a validated specification
+- Specifications are the source of truth
+
+### 2. Validation-Driven Workflow
+
+- **ALWAYS** validate specifications before generation
+- **NEVER** skip validation steps
+- Fix validation errors immediately
+
+### 3. Incremental Development
+
+- Start with MVP (Minimum Viable Product)
+- Add features incrementally
+- Each increment must be fully specified and validated
+
+### 4. Domain Specificity
+
+{% if domain == "mcp" %}
+**MCP-Specific Rules**:
+- All tools must have clear input/output schemas
+- Resources must specify URI patterns
+- Prompts must include expected response formats
+- Error handling must be explicit
+{% elif domain == "web" %}
+**Web API Rules**:
+- Follow RESTful conventions
+- Document all endpoints with HTTP methods
+- Include request/response examples
+- Specify authentication requirements
+{% elif domain == "ai" %}
+**AI Agent Rules**:
+- Define clear agent capabilities
+- Specify context requirements
+- Include safety constraints
+- Document prompt templates
+{% else %}
+**Generic Rules**:
+- Follow industry best practices for {{ domain }}
+- Document all design decisions
+- Include clear examples
+- Specify validation rules
+{% endif %}
+
+---
+
+## 🚫 Prohibited Patterns
+
+### Anti-Pattern 1: Implementation Before Specification
+
+**BAD**:
+```
+1. Write code
+2. Try to fit it into a spec
+```
+
+**GOOD**:
+```
+1. Write specification
+2. Validate specification
+3. Generate code from spec
+```
+
+### Anti-Pattern 2: Skipping Validation
+
+**BAD**:
+```bash
+{{ package_name }} generate spec.md  # Without validating
+```
+
+**GOOD**:
+```bash
+{{ package_name }} validate spec.md  # First validate
+{{ package_name }} generate spec.md  # Then generate
+```
+
+### Anti-Pattern 3: Manual Code Generation
+
+**BAD**: Manually writing code that could be generated from specs
+
+**GOOD**: Use generation tools, customize through specifications
+
+---
+
+## ✅ Required Patterns
+
+### Pattern 1: Entity Definition
+
+Every {{ entity.name }} must define:
+
+{% for field in entity.fields %}
+- `{{ field.name }}`: {{ field.description }}
+{% endfor %}
+
+### Pattern 2: Validation Before Action
+
+```bash
+# Required workflow
+1. {{ package_name }} validate <spec>
+2. (Fix any errors)
+3. {{ package_name }} generate <spec>
+```
+
+### Pattern 3: Documentation
+
+Every specification must include:
+- Clear description
+- Field definitions
+- Validation rules
+- Examples
+
+---
+
+## 🎨 Domain-Specific Constraints
+
+{% if domain == "mcp" %}
+### MCP Constraints
+
+1. **Tool Schemas**: Every tool must have complete JSON schema
+2. **Resource URIs**: Follow URI template spec (RFC 6570)
+3. **Error Codes**: Use standard MCP error codes
+4. **Version Compatibility**: Specify MCP protocol version
+{% elif domain == "web" %}
+### Web API Constraints
+
+1. **HTTP Methods**: Use appropriate verbs (GET, POST, PUT, DELETE)
+2. **Status Codes**: Return correct HTTP status codes
+3. **Content Types**: Specify request/response content types
+4. **Versioning**: Include API version in URLs or headers
+{% elif domain == "ai" %}
+### AI Agent Constraints
+
+1. **Safety First**: Include safety constraints in all specs
+2. **Context Limits**: Respect token/context window limits
+3. **Prompt Engineering**: Follow prompt engineering best practices
+4. **Fallback Behavior**: Define fallback for edge cases
+{% else %}
+### General Constraints
+
+1. **Type Safety**: Specify types for all fields
+2. **Validation**: Include validation rules
+3. **Error Handling**: Define error scenarios
+4. **Testing**: Include test scenarios in specs
+{% endif %}
+
+---
+
+## 📏 Quality Standards
+
+### Specification Quality
+
+- **Completeness**: All required fields defined
+- **Clarity**: Clear, unambiguous language
+- **Consistency**: Consistent naming and structure
+- **Testability**: Includes validation criteria
+
+### Generated Code Quality
+
+- **Correctness**: Matches specification exactly
+- **Maintainability**: Clean, readable code
+- **Documentation**: Comprehensive docstrings
+- **Testing**: Includes generated tests
+
+---
+
+## 🔄 Change Management
+
+### Modifying Specifications
+
+1. Update specification document
+2. Validate updated specification
+3. Regenerate affected code
+4. Verify changes
+
+### Version Control
+
+- Commit specifications to version control
+- Tag releases with version numbers
+- Maintain CHANGELOG.md
+- Document breaking changes
+
+---
+
+## 🚨 Emergency Procedures
+
+### If Generation Fails
+
+1. Check validation first: `{{ package_name }} validate <spec>`
+2. Review error messages carefully
+3. Fix specification issues
+4. Regenerate
+
+### If Specification is Unclear
+
+1. Do NOT guess - ask for clarification
+2. Review similar examples
+3. Consult domain documentation
+4. Update specification with learned insights
+
+---
+
+**Constitution Version**: 1.0  
+**Generated by**: MetaSpec {{ metaspec_version }}  
+**Domain**: {{ domain }}
+

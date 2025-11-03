@@ -1,0 +1,532 @@
+---
+description: Perform cross-artifact consistency analysis across toolkit specifications - read-only analysis before implementation
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Goal
+
+Identify inconsistencies, ambiguities, and gaps across toolkit specification artifacts before implementation. **READ-ONLY** analysis - no file modifications.
+
+## Operating Constraints
+
+**STRICTLY READ-ONLY**: Do NOT modify any files. Output structured analysis report only.
+
+**Constitution Authority**: constitution.md is non-negotiable. Constitution violations are CRITICAL and require spec adjustment.
+
+## Execution Flow
+
+### 1. Identify Feature Type and Load Artifacts
+
+**🏗️ Two-Feature Architecture Check**
+
+**Step 1a: Determine Feature Context**
+- Check current directory structure
+- Identify if analyzing Feature 1 (Protocol) or Feature 2 (Toolkit)
+
+**Step 1b: Load Appropriate Artifacts**
+
+**For Feature 1 (Protocol Spec)**:
+- **Required**:
+  - `specs/protocol/001-{domain}-protocol/spec.md` (protocol definition)
+  - `/memory/constitution.md` (domain principles)
+- **Optional**:
+  - `specs/protocol/001-{domain}-protocol/checklists/`
+- **Skip**: plan.md, tasks.md (not needed for protocol specs)
+
+**For Feature 2 (Toolkit Spec)**:
+- **Required**:
+  - `specs/toolkit/001-toolkit/spec.md` (toolkit definition)
+  - `specs/toolkit/001-toolkit/plan.md` (architecture)
+  - `specs/toolkit/001-toolkit/tasks.md` (task breakdown)
+  - `specs/protocol/001-{domain}-protocol/spec.md` (dependency!)
+  - `/memory/constitution.md` (design principles)
+- **Optional**:
+  - `specs/toolkit/001-toolkit/architecture.md`
+  - `specs/toolkit/001-toolkit/research.md`
+
+**If Feature 1 missing for Feature 2**: 
+⚠️ **CRITICAL**: "Feature 2 depends on Feature 1 but `specs/protocol/001-*` not found!"
+
+### 2. Build semantic models
+
+**Extract from spec.md**:
+- Entity fields (name, type, required, description)
+- Validation rules (structural, semantic, domain)
+- Workflows (steps, inputs, outputs)
+- CLI commands (name, purpose, options)
+- Quality criteria
+
+**Extract from plan.md**:
+- Architecture components (parser, validator, CLI)
+- Tech stack (Python, Pydantic, Typer)
+- File structure
+- Constitution alignment
+
+**Extract from tasks.md**:
+- Task IDs and descriptions
+- Phase grouping
+- File paths
+- Dependencies
+
+**Extract from constitution**:
+- Six principles (Entity-First, Validator Extensibility, etc.)
+- MUST/SHOULD requirements
+
+### 3. Detection passes
+
+#### A. Feature Dependency Validation (Feature 2 Only)
+
+**For Feature 2 (Toolkit Spec)** - Check dependency on Feature 1:
+
+**Check**:
+1. ✅ Feature 1 exists: `specs/protocol/001-{domain}-protocol/spec.md`
+2. ✅ Feature 2 declares dependency:
+   - Has a "Dependencies" section
+   - References "001-{domain}-protocol-spec"
+3. ✅ Feature 2 components reference Feature 1:
+   - Validator references Feature 1 validation rules
+   - Parser handles Feature 1 entities
+4. ✅ Feature 1 and Feature 2 naming consistency:
+   - Domain names match
+   - Entity references consistent
+
+**Report**:
+```
+❌ CRITICAL: Feature 2 lacks "Dependencies" section in spec.md
+   → ACTION REQUIRED: Add Dependencies section before /metaspec.sdd.implement
+   → This violates the Spec-Driven principle
+   → Toolkit without protocol is not a valid speckit
+
+❌ CRITICAL: Feature 1 (protocol) does not exist
+   → ACTION REQUIRED: Run /metaspec.sds.specify first to define protocol
+   → Cannot proceed with toolkit development without protocol
+   
+❌ HIGH: Feature 2 Validator doesn't reference Feature 1 validation rules
+   → ACTION RECOMMENDED: Update Validator section to reference protocol rules
+
+✅ Feature 1 exists: specs/protocol/001-mcp-protocol-spec/spec.md
+✅ Feature 2 declares dependency: "Depends on: 001-mcp-protocol-spec"
+✅ Validator references Feature 1: "Validates against MCP protocol rules"
+```
+
+**CRITICAL errors must be fixed before implementation.**
+
+**Skip this check for Feature 1** (Protocol specs don't have dependencies)
+
+#### B. Entity Definition Quality
+
+**Check**:
+- All fields have types specified
+- Required vs optional is clear
+- Field descriptions are specific
+- Example values provided
+- Validation rules documented
+
+**Report**:
+```
+❌ MEDIUM: Field 'headers' missing type specification [spec.md §Entity Definitions]
+❌ HIGH: Field 'assertions' has vague description "List of assertions" - no format specified [spec.md §Entity Definitions]
+✅ Field 'method' well-defined: type=string, required=true, enum=[GET,POST,PUT,DELETE]
+```
+
+#### C. Validation Rule Consistency
+
+**Check**:
+- All entity fields have validation rules
+- Error message formats consistent
+- Validation layers (1/2/3) mapped to implementation
+- Custom validator mechanism specified
+
+**Report**:
+```
+❌ HIGH: Field 'endpoint' lacks validation rule in spec.md but mentioned in validator-design.md [Inconsistency]
+✅ All validation rules have corresponding tasks in tasks.md Phase 4
+```
+
+#### D. Workflow Completeness
+
+**Check**:
+- All CLI commands mapped to workflows
+- Workflow steps have clear inputs/outputs
+- Success indicators measurable
+- Error scenarios documented
+
+**Report**:
+```
+❌ CRITICAL: CLI command 'execute' in spec.md has no corresponding workflow [Gap]
+✅ Workflow "Test Execution" maps to tasks T040-T041 in tasks.md
+```
+
+#### E. Constitution Alignment
+
+**Check spec.md against constitution**:
+- Entity-First: 3-5 core fields? ✅/❌
+- Validator Extensibility: Plugin system specified? ✅/❌
+- Spec-First: Users write specs first? ✅/❌
+- AI-Agent Friendly: Error messages actionable? ✅/❌
+- Progressive Enhancement: MVP scope clear? ✅/❌
+- Domain Specificity: Domain rules documented? ✅/❌
+
+**Report**:
+```
+❌ CRITICAL: Entity has 8 required fields, violates Entity-First principle (3-5 core fields) [Constitution §I]
+❌ HIGH: No custom validator registration mechanism specified, violates Validator Extensibility [Constitution §II]
+✅ Error message format is AI-friendly with examples [Constitution §IV]
+```
+
+#### F. Task Coverage
+
+**Check**:
+- All entities have model tasks
+- All validation rules have validator tasks
+- All CLI commands have CLI tasks
+- All components have test tasks
+
+**Report**:
+```
+❌ HIGH: Validation rule "endpoint must start with /" has no corresponding task [Gap]
+✅ Entity 'APITest' covered by tasks T008-T016
+✅ CLI command 'validate' covered by tasks T040-T041
+```
+
+#### G. Cross-Reference Integrity
+
+**Check**:
+- Files referenced in tasks exist in file structure
+- Components referenced in plan exist in spec
+- Validation rules in spec exist in validator-design
+- CLI commands in spec exist in tasks
+
+**Report**:
+```
+❌ MEDIUM: Task T015 references src/api_test_kit/errors.py but not in file structure [Plan §Project Structure]
+✅ All validation rules cross-referenced between spec and plan
+```
+
+#### H. Ambiguity Detection
+
+**Check for vague terms**:
+- "Fast", "scalable", "robust", "simple", "easy"
+- Missing quantification in quality criteria
+- Unresolved placeholders (TODO, TBD, ???)
+
+**Report**:
+```
+❌ HIGH: Quality criterion "validation should be fast" lacks quantification [spec.md §Quality Criteria]
+  Recommendation: Specify "<100ms for typical spec"
+❌ MEDIUM: "Simple error messages" is vague [spec.md §Validation Requirements]
+  Recommendation: Define error message format with examples
+```
+
+#### I. Terminology Consistency
+
+**Check**:
+- Same concept named consistently (entity vs model vs schema)
+- Field names consistent (endpoint vs url vs path)
+- Command names consistent (init vs initialize vs create)
+
+**Report**:
+```
+❌ LOW: spec.md uses "entity", plan.md uses "model" [Terminology Drift]
+  Recommendation: Standardize on "entity" (matches constitution)
+✅ All field names consistent across spec and plan
+```
+
+### 4. Severity assignment
+
+**CRITICAL**: Constitution violation, missing core artifact, blocking gap
+**HIGH**: Inconsistency, ambiguous requirement, missing coverage
+**MEDIUM**: Terminology drift, underspecified item, minor gap
+**LOW**: Style improvement, minor redundancy
+
+### 5. Generate analysis report
+
+**Output format**:
+
+```markdown
+# Toolkit Specification Analysis Report
+
+**Date**: [DATE]
+**Analyzed Files**:
+- spec.md
+- plan.md
+- tasks.md
+- constitution.md
+
+---
+
+## Summary
+
+**Total Issues**: [N]
+- CRITICAL: [X]
+- HIGH: [Y]
+- MEDIUM: [Z]
+- LOW: [W]
+
+**Constitution Compliance**: ✅ PASS | ❌ FAIL ([N] violations)
+
+---
+
+## Critical Issues
+
+| ID | Category | Location | Issue | Recommendation |
+|----|----------|----------|-------|----------------|
+| C1 | Constitution | spec.md §Entity | 8 required fields violates Entity-First (3-5 max) | Make 5 fields optional |
+| C2 | Workflow | spec.md §CLI | 'execute' command has no workflow | Add workflow or remove command |
+
+---
+
+## High Priority Issues
+
+| ID | Category | Location | Issue | Recommendation |
+|----|----------|----------|-------|----------------|
+| H1 | Validation | spec.md §Entity | Field 'assertions' format unspecified | Define assertion syntax |
+| H2 | Constitution | plan.md §Validator | No custom validator mechanism | Add register_validator() interface |
+
+---
+
+## Medium Priority Issues
+
+| ID | Category | Location | Issue | Recommendation |
+|----|----------|----------|-------|----------------|
+| M1 | Consistency | Multiple | "entity" vs "model" terminology drift | Standardize on "entity" |
+| M2 | Ambiguity | spec.md §Quality | "Fast validation" lacks quantification | Specify "<100ms" |
+
+---
+
+## Coverage Analysis
+
+**Entity Coverage**:
+- APITest: ✅ Tasks T008-T016 (complete)
+
+**Validation Rule Coverage**:
+- Structural validation: ✅ Task T026
+- Semantic validation: ✅ Task T027
+- Domain validation: ✅ Task T028
+- Endpoint rule: ❌ No task (GAP)
+
+**CLI Command Coverage**:
+- init: ✅ Task T040
+- validate: ✅ Task T041
+
+**Component Coverage**:
+- Parser: ✅ Tasks T017-T024
+- Validator: ✅ Tasks T025-T037
+- CLI: ✅ Tasks T038-T048
+
+---
+
+## Constitution Alignment
+
+| Principle | Status | Evidence |
+|-----------|--------|----------|
+| I. Entity-First | ❌ FAIL | 8 required fields (max 5) |
+| II. Validator Extensibility | ❌ FAIL | No plugin system specified |
+| III. Spec-First | ✅ PASS | Users write specs first |
+| IV. AI-Agent Friendly | ✅ PASS | Error messages actionable |
+| V. Progressive Enhancement | ✅ PASS | MVP scope clear |
+| VI. Domain Specificity | ✅ PASS | Domain rules documented |
+
+**Overall**: ❌ FAIL (2/6 principles violated)
+
+---
+
+## Metrics
+
+- Total Entity Fields: 6
+- Total Validation Rules: 8
+- Total CLI Commands: 2
+- Total Tasks: 59
+- Entity Coverage: 100%
+- Validation Coverage: 87% (7/8 rules)
+- CLI Coverage: 100%
+- Constitution Compliance: 67% (4/6 principles)
+
+---
+
+## Recommendations
+
+### Immediate Actions (CRITICAL)
+
+1. **Reduce required fields** (C1):
+   - Make 3 fields optional (headers, body, assertions)
+   - Keep only: name, endpoint, method as required
+
+2. **Add workflow for 'execute' command** (C2):
+   - Document execute workflow in spec.md
+   - Add corresponding tasks to tasks.md
+
+### High Priority Actions
+
+1. **Specify assertion format** (H1):
+   - Define assertion syntax in spec.md
+   - Add examples: "status: 200", "body.length > 0"
+
+2. **Add custom validator mechanism** (H2):
+   - Specify register_validator() in validator-design.md
+   - Add implementation task to tasks.md
+
+### Medium Priority Actions
+
+1. **Standardize terminology** (M1):
+   - Replace "model" with "entity" in plan.md
+
+2. **Quantify quality criteria** (M2):
+   - Specify "<100ms" for validation performance
+
+---
+
+## Next Steps
+
+- [ ] If CRITICAL issues exist: Fix before /metaspec:implement
+- [ ] If HIGH issues exist: Consider fixing before /metaspec:implement
+- [ ] MEDIUM/LOW issues: Can fix during or after implementation
+
+**Recommendation**: 
+⚠️ Do NOT proceed to /metaspec:implement until CRITICAL issues (C1, C2) are resolved.
+
+Run /metaspec:clarify or manually edit spec.md to address issues.
+
+---
+
+**Generated**: [DATE]
+**Report Version**: 1.0
+```
+
+### 6. Offer remediation
+
+**Ask user**:
+```
+Would you like me to suggest concrete fixes for the top 5 issues?
+(I will NOT apply them automatically - you can review and decide)
+```
+
+**If user says yes**:
+```
+## Suggested Remediation
+
+### C1: Reduce required fields
+
+**File**: spec.md §Entity Definitions
+
+**Current**:
+```yaml
+entity:
+  name: APITest
+  fields:
+    - name: name
+      type: string
+      required: true
+    - name: endpoint
+      type: string
+      required: true
+    - name: method
+      type: string
+      required: true
+    - name: headers
+      type: object
+      required: true   # ← Change to false
+    - name: body
+      type: object
+      required: true   # ← Change to false
+    - name: assertions
+      type: array
+      required: true   # ← Change to false
+```
+
+**Recommended**:
+```yaml
+entity:
+  name: APITest
+  fields:
+    - name: name
+      type: string
+      required: true
+    - name: endpoint
+      type: string
+      required: true
+    - name: method
+      type: string
+      required: true
+    - name: headers
+      type: object
+      required: false   # ← Optional
+    - name: body
+      type: object
+      required: false   # ← Optional
+    - name: assertions
+      type: array
+      required: false   # ← Optional
+```
+
+**Rationale**: Follows Entity-First principle (3 core fields + 3 optional)
+
+---
+
+[Continue for other issues...]
+```
+
+## Important Notes
+
+1. **Read-only analysis**
+   - No file modifications
+   - Only output report
+   - User decides on remediation
+
+2. **Constitution is authority**
+   - Violations are always CRITICAL
+   - Spec must adjust, not constitution
+   - No silent ignoring of principles
+
+3. **Focus on high-signal findings**
+   - Limit to 50 issues max
+   - Prioritize by severity
+   - Aggregate remainder
+
+4. **Coverage is key**
+   - Every entity needs tasks
+   - Every validation rule needs tasks
+   - Every CLI command needs tasks
+   - Every component needs tests
+
+5. **Quantify vague terms**
+   - "Fast" → "<100ms"
+   - "Simple" → "3-5 fields"
+   - "Extensible" → "register_validator() API"
+   - "AI-friendly" → "Include fix examples"
+
+## Example Output
+
+```
+✅ Analysis complete
+
+📊 Summary:
+- Total Issues: 12
+  - CRITICAL: 2
+  - HIGH: 4
+  - MEDIUM: 5
+  - LOW: 1
+
+❌ Constitution Compliance: FAIL (2 violations)
+
+📁 Report: /specs/analysis-report.md
+
+⚠️ Recommendation:
+DO NOT proceed to /metaspec:implement until CRITICAL issues resolved.
+
+🔄 Next steps:
+1. Fix C1: Reduce required fields (spec.md)
+2. Fix C2: Add execute workflow (spec.md)
+3. Fix H1: Specify assertion format (spec.md)
+4. Re-run /metaspec:analyze to verify fixes
+
+💡 Run: /metaspec:clarify to refine ambiguous sections
+```
+

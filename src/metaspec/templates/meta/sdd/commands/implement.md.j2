@@ -1,0 +1,561 @@
+---
+description: Execute toolkit implementation by processing and completing all tasks from tasks.md
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+**Goal**: Execute implementation tasks systematically, following TDD approach, respecting dependencies, and tracking progress.
+
+**Important**: This command runs AFTER `/metaspec:tasks`. It is the execution engine for toolkit development.
+
+### Execution Flow
+
+#### 1. Check prerequisites
+
+**Required files**:
+- `specs/toolkit/XXX-name/tasks.md` - Task breakdown
+- `specs/toolkit/XXX-name/plan.md` - Architecture design
+- `specs/toolkit/XXX-name/spec.md` - Entity definitions
+
+**If missing**:
+- Stop and instruct user to run `/metaspec:tasks` first
+
+#### 2. Check checklist status (if exists)
+
+**If** `specs/toolkit/XXX-name/checklists/` directory exists:
+
+1. Scan all checklist files (*.md)
+2. Count for each checklist:
+   - Total items: Lines matching `- [ ]` or `- [X]` or `- [x]`
+   - Completed: Lines matching `- [X]` or `- [x]`
+   - Incomplete: Lines matching `- [ ]`
+
+3. Display status table:
+   ```
+   | Checklist | Total | Completed | Incomplete | Status |
+   |-----------|-------|-----------|------------|--------|
+   | entity-design.md | 10 | 10 | 0 | ✓ PASS |
+   | validator-design.md | 8 | 5 | 3 | ✗ FAIL |
+   ```
+
+4. **If any incomplete**:
+   - Display table
+   - **STOP** and ask: "Some checklists are incomplete. Proceed anyway? (yes/no)"
+   - Wait for user response
+   - If "no": halt
+   - If "yes": continue
+
+5. **If all complete**:
+   - Display table
+   - Automatically proceed
+
+#### 3. Load implementation context
+
+**Read all design documents**:
+- `specs/toolkit/XXX-name/tasks.md` - Task list (REQUIRED)
+- `specs/toolkit/XXX-name/plan.md` - Architecture (REQUIRED)
+- `specs/toolkit/XXX-name/spec.md` - Entity spec (REQUIRED)
+- `specs/toolkit/XXX-name/architecture.md` - Component design (if exists)
+- `specs/toolkit/XXX-name/parser-design.md` - Parser interfaces (if exists)
+- `specs/toolkit/XXX-name/validator-design.md` - Validation layers (if exists)
+- `/specs/research.md` - Domain standards (if exists)
+
+#### 4. Project setup verification
+
+**Verify/create ignore files**:
+
+1. **Check if git repository**:
+   ```bash
+   git rev-parse --git-dir 2>/dev/null
+   ```
+   - If yes: Create/verify `.gitignore`
+
+2. **Detect technology from plan.md**:
+   - Python: Create/verify `.gitignore` for Python patterns
+
+**Python .gitignore patterns**:
+```
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+*.env
+```
+
+**If .gitignore exists**:
+- Verify essential patterns
+- Append missing patterns
+
+**If .gitignore missing**:
+- Create with full pattern set
+
+#### 5. Parse tasks.md structure
+
+**Extract from tasks.md**:
+- Phase list (Setup, Models, Parser, Validator, CLI, Docs, Integration)
+- Task list per phase
+- Task format: `- [ ] [TID] [P?] [COMP] Description with path`
+- Dependencies (sequential vs parallel)
+
+**Build execution plan**:
+```
+Phase 1: Setup
+  - T001 [SETUP] Create directory structure
+  - T002 [SETUP] Initialize pyproject.toml
+  - ...
+
+Phase 2: Models
+  - T008 [MODELS] Create models.py
+  - T009 [MODELS] Define Entity
+  - T010 [P] [TESTS] Create test_models.py  # Can parallelize
+  - T011 [P] [TESTS] Test instantiation       # Can parallelize
+  - ...
+
+[Continue for all phases]
+```
+
+#### 6. Execute implementation
+
+**Execution rules**:
+
+1. **Phase-by-phase**:
+   - Complete Phase N before starting Phase N+1
+   - Verify checkpoint after each phase
+
+2. **TDD approach**:
+   - Execute test tasks before implementation tasks
+   - Example: T010 (create test file) → T006 (implement)
+
+3. **Respect dependencies**:
+   - Sequential tasks: Execute in order
+   - Parallel tasks `[P]`: Can execute simultaneously
+   - Same file: Must be sequential
+
+4. **Progress tracking**:
+   - Mark completed tasks: `- [ ]` → `- [x]`
+   - Report after each task
+   - Save tasks.md after each phase
+
+**Execution order**:
+
+```
+Phase 1: Setup
+  → Execute T001, T002, T003... sequentially
+  → Checkpoint: Project structure created
+
+Phase 2: Models
+  → Execute T008, T009 (create models.py, define entity)
+  → Execute T010-T016 in parallel (all test tasks)
+  → Checkpoint: Entity models working, tests passing
+
+Phase 3: Parser
+  → Execute T017-T020 (implement parser)
+  → Execute T021-T024 in parallel (test tasks)
+  → Checkpoint: Parser working, tests passing
+
+[Continue for all phases]
+```
+
+#### 7. Task execution details (ENHANCED 🎯)
+
+**CRITICAL**: Before executing tasks, determine the implementation language and architecture from specs:
+
+```bash
+# Extract implementation details from spec.md
+grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
+
+# Key information to extract:
+# - Primary Language: Python / TypeScript / Go / Rust
+# - Key Dependencies: Frameworks and libraries
+# - Core Components: Which are included (Parser, Validator, CLI, etc.)
+# - File Structure: From plan.md
+```
+
+**For each task**:
+
+1. **Parse task**:
+   - Extract: Task ID, Component, Description, File path
+   - Check: Is parallel `[P]`?
+   - Check: Is checkpoint task?
+
+2. **Execute task BASED ON LANGUAGE** (NEW 🎯):
+   
+   **Determine implementation approach**:
+   - Read `specs/toolkit/001-*/spec.md` → Get primary language
+   - Read `specs/protocol/001-*/spec.md` → Get entity definitions
+   - Read `specs/toolkit/001-*/plan.md` → Get architecture design
+   
+   **Generate code according to language**:
+   
+   **For Python**:
+   - **SETUP tasks**: Create files/directories, initialize pyproject.toml
+   - **MODELS tasks**: Generate Pydantic models from protocol entities
+   - **PARSER tasks**: Implement parse_spec() using PyYAML/pydantic-yaml
+   - **VALIDATOR tasks**: Implement validation using Pydantic validators
+   - **CLI tasks**: Create Typer commands, Rich output formatting
+   - **TESTS tasks**: Write pytest tests
+   - **DOCS tasks**: Write Markdown + docstrings
+   
+   **For TypeScript**:
+   - **SETUP tasks**: Create files/directories, initialize package.json
+   - **MODELS tasks**: Generate Zod schemas or interfaces from protocol entities
+   - **PARSER tasks**: Implement parseSpec() using js-yaml
+   - **VALIDATOR tasks**: Implement validation using Zod/Yup
+   - **CLI tasks**: Create Commander.js commands
+   - **TESTS tasks**: Write Vitest/Jest tests
+   - **DOCS tasks**: Write Markdown + TSDoc
+   
+   **For Go**:
+   - **SETUP tasks**: Create files/directories, initialize go.mod
+   - **MODELS tasks**: Generate Go structs from protocol entities
+   - **PARSER tasks**: Implement ParseSpec() using gopkg.in/yaml.v3
+   - **VALIDATOR tasks**: Implement validation using validator package
+   - **CLI tasks**: Create Cobra commands
+   - **TESTS tasks**: Write Go tests
+   - **DOCS tasks**: Write Markdown + godoc
+   
+   **For Rust**:
+   - **SETUP tasks**: Create files/directories, initialize Cargo.toml
+   - **MODELS tasks**: Generate Rust structs with Serde from protocol entities
+   - **PARSER tasks**: Implement parse_spec() using serde_yaml
+   - **VALIDATOR tasks**: Implement validation using validator crate
+   - **CLI tasks**: Create Clap commands
+   - **TESTS tasks**: Write Rust tests
+   - **DOCS tasks**: Write Markdown + rustdoc
+
+   **Code Generation Strategy**:
+   - Read protocol/001-*/spec.md for entity definitions
+   - Generate models/types/structs that match protocol entities
+   - Implement parser that creates instances of these models
+   - Implement validator that enforces protocol rules
+   - Implement CLI commands defined in toolkit spec
+   - Follow architecture from plan.md
+
+3. **Verify task**:
+   - **SETUP**: Files created, configs valid, dependencies installable
+   - **MODELS**: Models instantiable, match protocol entities
+   - **PARSER**: Can parse valid/invalid specs, error handling works
+   - **VALIDATOR**: Enforces all protocol rules, error messages clear
+   - **CLI**: Commands execute, help text clear, output formatted
+   - **TESTS**: Tests pass, coverage adequate
+   - **DOCS**: Documentation complete, examples work
+
+4. **Mark complete**:
+   - Update tasks.md: `- [ ] T001` → `- [x] T001`
+   - Report: "✅ T001 complete: Created directory structure"
+
+5. **Handle errors**:
+   - If task fails: Report error, suggest fix
+   - If sequential task fails: Halt phase
+   - If parallel task fails: Continue others, report at end
+
+#### 8. Phase checkpoints
+
+**After each phase**:
+
+1. **Verify checkpoint criteria**:
+   - Phase 1: `✅ Project structure created, tests can run`
+   - Phase 2: `✅ Entity models working, all tests passing`
+   - Phase 3: `✅ Parser working, handles all error cases`
+   - Phase 4: `✅ All validation layers working, error messages clear`
+   - Phase 5: `✅ CLI working, init and validate commands functional`
+   - Phase 6: `✅ Documentation complete, examples working`
+   - Phase 7: `✅ All integration tests passing, constitution compliant`
+
+2. **If checkpoint fails**:
+   - Stop phase
+   - Report failing criteria
+   - Suggest fixes
+   - Ask user: "Fix issues and continue? (yes/no)"
+
+3. **If checkpoint passes**:
+   - Report success
+   - Save tasks.md
+   - Proceed to next phase
+
+#### 9. Progress reporting
+
+**After each task**:
+```
+✅ T001 complete: Created directory structure
+   Files created:
+   - src/api_test_kit/
+   - tests/unit/
+   - tests/integration/
+   - templates/
+   - memory/
+```
+
+**After each phase**:
+```
+✅ Phase 1 complete: Project Setup
+   Tasks: 7/7 complete
+   Time: 5 minutes
+   
+   Checkpoint: ✅ Project structure created, tests can run
+   
+   Next: Phase 2 (Entity Models)
+```
+
+**Overall progress**:
+```
+📊 Implementation Progress: 14/59 tasks (24%)
+   Phase 1: ✅ 7/7
+   Phase 2: 🔄 7/9 (in progress)
+   Phase 3: ⏳ 0/8
+   Phase 4: ⏳ 0/13
+   Phase 5: ⏳ 0/11
+   Phase 6: ⏳ 0/5
+   Phase 7: ⏳ 0/6
+```
+
+#### 10. Error handling
+
+**Error types**:
+
+1. **File creation error**:
+   - Report: Cannot create file [path]
+   - Suggest: Check permissions, disk space
+   - Action: Fix and retry task
+
+2. **Test failure**:
+   - Report: Test [name] failed
+   - Show: Test output, error message
+   - Suggest: Fix implementation, rerun tests
+   - Action: Fix and retry task
+
+3. **Import error**:
+   - Report: Cannot import [module]
+   - Suggest: Check dependencies, install packages
+   - Action: Fix dependencies, retry task
+
+4. **Validation error**:
+   - Report: Code doesn't match spec
+   - Show: Spec requirement, actual implementation
+   - Suggest: Adjust code to match spec
+   - Action: Fix and retry task
+
+5. **Constitution violation**:
+   - Report: Implementation violates [principle]
+   - Show: Principle text, violation
+   - Suggest: Refactor to align with principle
+   - Action: Ask user to approve deviation or fix
+
+#### 11. Completion validation
+
+**After all phases**:
+
+1. **Verify completeness**:
+   - [ ] All tasks marked `[x]`
+   - [ ] All checkpoints passed
+   - [ ] All tests passing
+   - [ ] No linter errors
+   - [ ] Constitution compliant
+
+2. **Run final checks**:
+   ```bash
+   # Run tests
+   pytest tests/ --cov
+
+   # Run linter
+   mypy src/ --strict
+   ruff check src/
+
+   # Test CLI
+   [toolkit-name] --help
+   [toolkit-name] init test.yaml
+   [toolkit-name] validate test.yaml
+   ```
+
+3. **Constitution compliance**:
+   - ✅ Entity-First: Model has 3-5 core fields
+   - ✅ Validator Extensibility: register_validator() works
+   - ✅ Spec-First: Users write specs first
+   - ✅ AI-Agent Friendly: Error messages actionable
+   - ✅ Progressive Enhancement: MVP feature set
+   - ✅ Domain Specificity: Domain rules implemented
+
+4. **Generate report**:
+   ```
+   ✅ Implementation complete
+   
+   📊 Summary:
+   - Total tasks: 59/59 complete
+   - Time: 3 days
+   - Test coverage: 92%
+   - Constitution: COMPLIANT
+   
+   📦 Deliverables:
+   - ✅ Entity models (models.py)
+   - ✅ Parser (parser.py)
+   - ✅ Validator (validator.py)
+   - ✅ CLI (cli.py)
+   - ✅ Tests (90% coverage)
+   - ✅ Documentation (README, AGENTS.md)
+   
+   🎯 MVP Status:
+   - v0.1.0 ready for release
+   - Features: init, validate commands
+   - Quality: All tests passing
+   
+   🔄 Next steps:
+   1. Run /metaspec:checklist to verify quality
+   2. Test with real-world specs
+   3. Update CHANGELOG.md
+   4. Create git tag v0.1.0
+   5. Publish to PyPI
+   
+   💡 Suggested commit message:
+      feat: implement [toolkit-name] v0.1.0 MVP
+   ```
+
+#### 12. Incremental saves
+
+**Save progress frequently**:
+- Save tasks.md after each phase
+- Commit code after each checkpoint
+- Push to git after significant milestones
+
+**Suggested commit messages**:
+```bash
+git commit -m "feat: complete Phase 1 (Project Setup)"
+git commit -m "feat: implement entity models (Phase 2)"
+git commit -m "feat: implement parser (Phase 3)"
+git commit -m "feat: implement validator (Phase 4)"
+git commit -m "feat: implement CLI commands (Phase 5)"
+git commit -m "docs: add documentation (Phase 6)"
+git commit -m "test: add integration tests (Phase 7)"
+```
+
+## Important Notes
+
+1. **TDD is mandatory**
+   - Write tests before implementation
+   - Run tests after each implementation
+   - Maintain > 90% coverage
+
+2. **Phase isolation**
+   - Don't start Phase N+1 until Phase N complete
+   - Verify checkpoint after each phase
+   - Fix issues before proceeding
+
+3. **Parallel execution**
+   - Tasks marked `[P]` can run in parallel
+   - Only if they touch different files
+   - Report all results together
+
+4. **Constitution alignment**
+   - Check principles after each phase
+   - Halt if violation detected
+   - Get user approval for deviations
+
+5. **Error recovery**
+   - Clear error messages
+   - Actionable suggestions
+   - Allow user to fix and retry
+
+6. **Progress visibility**
+   - Report after each task
+   - Show percentage complete
+   - Estimate time remaining
+
+## Example: Phase 2 Execution
+
+**Phase 2: Entity Models**
+
+```
+Starting Phase 2: Entity Models (9 tasks)
+
+✅ T008: Create src/api_test_kit/models.py
+   File created: src/api_test_kit/models.py
+
+✅ T009: Define APITest model
+   Fields added:
+   - name: str (required)
+   - endpoint: str (required)
+   - method: str (required)
+   - headers: Optional[Dict]
+   - body: Optional[Any]
+   - assertions: Optional[List]
+
+✅ T010: Add field validators
+   Validators added:
+   - method: Must be GET/POST/PUT/DELETE
+   - endpoint: Must start with /
+
+✅ T011: Add model methods
+   Methods added:
+   - model_dump()
+   - model_validate()
+   - model_json_schema()
+
+✅ T012: Add docstrings
+   Docstrings added for: APITest, all fields
+
+🧪 Running test tasks in parallel...
+
+✅ T013: Create tests/unit/test_models.py
+✅ T014: Test APITest instantiation (3 test cases)
+✅ T015: Test field validation (4 test cases)
+✅ T016: Test model methods (3 test cases)
+
+All tests passing: 10/10 ✅
+
+✅ Phase 2 checkpoint: Entity models working, all tests passing
+
+Phase 2 complete: 9/9 tasks (15 minutes)
+
+Next: Phase 3 (Parser)
+```
+
