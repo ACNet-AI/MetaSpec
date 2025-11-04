@@ -28,13 +28,11 @@ jobs:
     - name: Create venv and install
       run: |
         uv venv
-        source .venv/bin/activate
-        uv pip install -e ".[dev]"
+        .venv/bin/pip install -e ".[dev]"
     
     - name: Run tests
       run: |
-        source .venv/bin/activate
-        pytest --cov=metaspec --cov-report=xml --cov-report=term
+        .venv/bin/pytest --cov=metaspec --cov-report=xml --cov-report=term
     
     - name: Upload coverage
       uses: codecov/codecov-action@v4
@@ -61,18 +59,15 @@ jobs:
     - name: Create venv and install
       run: |
         uv venv
-        source .venv/bin/activate
-        uv pip install -e ".[dev]"
+        .venv/bin/pip install -e ".[dev]"
     
     - name: Run ruff
       run: |
-        source .venv/bin/activate
-        ruff check .
+        .venv/bin/ruff check .
     
     - name: Run mypy
       run: |
-        source .venv/bin/activate
-        mypy src/metaspec
+        .venv/bin/mypy src/metaspec
 
   build:
     name: Build Package
@@ -92,18 +87,15 @@ jobs:
     - name: Create venv and install build tools
       run: |
         uv venv
-        source .venv/bin/activate
-        uv pip install build twine
+        .venv/bin/pip install build twine
     
     - name: Build package
       run: |
-        source .venv/bin/activate
-        python -m build
+        .venv/bin/python -m build
     
     - name: Check package
       run: |
-        source .venv/bin/activate
-        twine check dist/*
+        .venv/bin/twine check dist/*
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
