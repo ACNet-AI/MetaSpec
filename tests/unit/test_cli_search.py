@@ -29,7 +29,7 @@ class TestSearchCommand:
             CommunitySpeckit(name="test-kit", command="test", description="Test kit"),
         ]
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["search", "test"])
         assert result.exit_code == 0
 
@@ -39,7 +39,7 @@ class TestSearchCommand:
         mock_reg = MagicMock()
         mock_reg.search.return_value = []
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["search", "nonexistent"])
         assert result.exit_code == 0
         assert "no speckits found" in result.stdout.lower() or "found 0" in result.stdout.lower()
@@ -50,7 +50,7 @@ class TestSearchCommand:
         mock_reg = MagicMock()
         mock_reg.install.return_value = (True, "Successfully installed")
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["install", "test-kit"])
         # Should attempt installation
         assert result.exit_code == 0 or "install" in result.stdout.lower()
@@ -61,7 +61,7 @@ class TestSearchCommand:
         mock_reg = MagicMock()
         mock_reg.install.return_value = (False, "Installation failed")
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["install", "nonexistent"])
         # Should show error
         assert result.exit_code != 0 or "fail" in result.stdout.lower()
@@ -82,7 +82,7 @@ class TestSearchCommand:
             CommunitySpeckit(name="kit3", command="cmd3", description="Kit 3"),
         ]
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["search", "kit"])
         assert result.exit_code == 0
 
@@ -98,7 +98,7 @@ class TestSearchCommand:
         mock_reg = MagicMock()
         mock_reg.get.return_value = None
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["install", "nonexistent"])
         assert result.exit_code != 0
         assert "not found" in result.stdout.lower()
@@ -124,7 +124,7 @@ class TestSearchCommand:
             "cli_commands": ["init", "validate"],
         }
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["install", "test-kit"])
         assert result.exit_code == 0
         assert "successfully" in result.stdout.lower() or "✓" in result.stdout
@@ -143,7 +143,7 @@ class TestSearchCommand:
         mock_reg.install.return_value = (True, "Successfully installed")
         mock_reg.is_installed.return_value = False
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["install", "test-kit"])
         assert result.exit_code == 0
         assert "warning" in result.stdout.lower() or "path" in result.stdout.lower()

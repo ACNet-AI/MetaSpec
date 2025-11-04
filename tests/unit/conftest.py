@@ -2,8 +2,9 @@
 Pytest configuration and fixtures for unit tests.
 """
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 from metaspec.models import (
     Command,

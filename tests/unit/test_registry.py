@@ -5,9 +5,11 @@ Unit tests for metaspec.registry module.
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from metaspec.registry import CommunityRegistry, CommunitySpeckit, get_community_registry
+from metaspec.registry import (
+    CommunityRegistry,
+    CommunitySpeckit,
+    get_community_registry,
+)
 
 
 class TestCommunitySpeckit:
@@ -65,7 +67,7 @@ class TestCommunityRegistry:
             returncode=0,
             stdout="1.0.0",
         )
-        
+
         info = CommunityRegistry.detect_speckit_info("test-cmd")
         assert info is not None
         assert info.get("version") == "1.0.0"
@@ -81,7 +83,7 @@ class TestCommunityRegistry:
             stdout="Commands:\n│ init       Initialize\n│ validate   Validate\n│ generate   Generate\n",
         )
         mock_run.side_effect = [version_result, help_result]
-        
+
         info = CommunityRegistry.detect_speckit_info("test-cmd")
         assert info is not None
         assert "cli_commands" in info
@@ -91,7 +93,7 @@ class TestCommunityRegistry:
     def test_detect_speckit_info_not_found(self, mock_run: MagicMock) -> None:
         """Test detecting speckit that doesn't exist."""
         mock_run.side_effect = FileNotFoundError()
-        
+
         info = CommunityRegistry.detect_speckit_info("nonexistent")
         assert info is None
 
@@ -120,7 +122,7 @@ Commands:
     def test_install_speckit_success(self, mock_get: MagicMock, mock_run: MagicMock) -> None:
         """Test successful speckit installation."""
         mock_run.return_value = MagicMock(returncode=0)
-        
+
         speckit = CommunitySpeckit(
             name="test",
             command="test",
@@ -128,7 +130,7 @@ Commands:
             pypi_package="test-speckit",
         )
         mock_get.return_value = speckit
-        
+
         registry = CommunityRegistry()
         success, message = registry.install("test")
         assert success is True
@@ -140,7 +142,7 @@ Commands:
         """Test failed speckit installation."""
         import subprocess
         mock_run.side_effect = subprocess.CalledProcessError(1, "pip install")
-        
+
         speckit = CommunitySpeckit(
             name="test",
             command="test",
@@ -148,7 +150,7 @@ Commands:
             pypi_package="test-speckit",
         )
         mock_get.return_value = speckit
-        
+
         registry = CommunityRegistry()
         success, message = registry.install("test")
         assert success is False
@@ -158,7 +160,7 @@ Commands:
     def test_search_speckits_empty(self, mock_fetch: MagicMock) -> None:
         """Test searching speckits with no results."""
         mock_fetch.return_value = []
-        
+
         registry = CommunityRegistry()
         results = registry.search("nonexistent")
         assert results == []
@@ -167,7 +169,7 @@ Commands:
     def test_list_all_speckits_empty(self, mock_fetch: MagicMock) -> None:
         """Test listing all speckits when registry is empty."""
         mock_fetch.return_value = []
-        
+
         registry = CommunityRegistry()
         speckits = registry.fetch_speckits()
         assert speckits == []
@@ -175,9 +177,9 @@ Commands:
     @patch("urllib.request.urlopen")
     def test_fetch_speckits_from_remote(self, mock_urlopen: MagicMock, tmp_path: Path) -> None:
         """Test fetching speckits from remote registry."""
-        from unittest.mock import MagicMock
         import json
-        
+        from unittest.mock import MagicMock
+
         # Mock response data
         response_data = {
             "speckits": [
@@ -188,18 +190,18 @@ Commands:
                 }
             ]
         }
-        
+
         # Mock urlopen response
         mock_response = MagicMock()
         mock_response.read.return_value = json.dumps(response_data).encode()
         mock_response.__enter__.return_value = mock_response
         mock_urlopen.return_value = mock_response
-        
+
         # Use custom cache dir to avoid conflicts
         registry = CommunityRegistry()
         registry.cache_dir = tmp_path / "cache"
         registry.cache_dir.mkdir(parents=True, exist_ok=True)
-        
+
         speckits = registry.fetch_speckits(use_cache=False)
         assert len(speckits) == 1
         assert speckits[0].name == "test-kit"
@@ -208,7 +210,7 @@ Commands:
     def test_fetch_speckits_uses_cache(self, mock_urlopen: MagicMock, tmp_path: Path) -> None:
         """Test that fetch_speckits uses cache when available."""
         import json
-        
+
         # Create cache file
         cache_dir = tmp_path / "cache"
         cache_dir.mkdir()
@@ -223,10 +225,10 @@ Commands:
             ]
         }
         cache_file.write_text(json.dumps(cache_data))
-        
+
         registry = CommunityRegistry()
         registry.cache_dir = cache_dir
-        
+
         # Should use cache without calling urlopen
         speckits = registry.fetch_speckits(use_cache=True)
         assert len(speckits) == 1
@@ -240,7 +242,7 @@ Commands:
             CommunitySpeckit(name="kit1", command="cmd1", description="Kit 1"),
             CommunitySpeckit(name="kit2", command="cmd2", description="Kit 2"),
         ]
-        
+
         registry = CommunityRegistry()
         speckit = registry.get("kit1")
         assert speckit is not None
@@ -252,7 +254,7 @@ Commands:
         mock_fetch.return_value = [
             CommunitySpeckit(name="kit1", command="cmd1", description="Kit 1"),
         ]
-        
+
         registry = CommunityRegistry()
         speckit = registry.get("cmd1")
         assert speckit is not None
@@ -262,7 +264,7 @@ Commands:
     def test_get_speckit_not_found(self, mock_fetch: MagicMock) -> None:
         """Test getting non-existent speckit."""
         mock_fetch.return_value = []
-        
+
         registry = CommunityRegistry()
         speckit = registry.get("nonexistent")
         assert speckit is None
@@ -274,7 +276,7 @@ Commands:
             CommunitySpeckit(name="python-kit", command="pykit", description="Python toolkit"),
             CommunitySpeckit(name="rust-kit", command="rustkit", description="Rust toolkit"),
         ]
-        
+
         registry = CommunityRegistry()
         results = registry.search("python")
         assert len(results) == 1
@@ -295,7 +297,7 @@ Commands:
     ) -> None:
         """Test fallback to cache when network fails."""
         import json
-        
+
         # Create cache file
         cache_dir = tmp_path / "cache"
         cache_dir.mkdir()
@@ -310,13 +312,13 @@ Commands:
             ]
         }
         cache_file.write_text(json.dumps(cache_data))
-        
+
         # Mock network failure
         mock_urlopen.side_effect = Exception("Network error")
-        
+
         registry = CommunityRegistry()
         registry.cache_dir = cache_dir
-        
+
         # Should fallback to cache
         speckits = registry.fetch_speckits(use_cache=False)
         assert len(speckits) == 1
@@ -328,13 +330,13 @@ Commands:
     ) -> None:
         """Test handling corrupted cache file."""
         import json
-        
+
         # Create corrupted cache file
         cache_dir = tmp_path / "cache"
         cache_dir.mkdir()
         cache_file = cache_dir / "community_speckits.json"
         cache_file.write_text("not valid json {}")
-        
+
         # Mock successful response
         response_data = {
             "speckits": [
@@ -349,10 +351,10 @@ Commands:
         mock_response.read.return_value = json.dumps(response_data).encode()
         mock_response.__enter__.return_value = mock_response
         mock_urlopen.return_value = mock_response
-        
+
         registry = CommunityRegistry()
         registry.cache_dir = cache_dir
-        
+
         # Should refetch from network since cache is corrupted
         speckits = registry.fetch_speckits(use_cache=True)
         assert len(speckits) == 1
@@ -363,7 +365,7 @@ Commands:
     def test_install_not_found(self, mock_get: MagicMock, mock_run: MagicMock) -> None:
         """Test installing speckit that doesn't exist."""
         mock_get.return_value = None
-        
+
         registry = CommunityRegistry()
         success, message = registry.install("nonexistent")
         assert success is False
@@ -380,7 +382,7 @@ Commands:
             pypi_package=None,
         )
         mock_get.return_value = speckit
-        
+
         registry = CommunityRegistry()
         success, message = registry.install("test")
         assert success is False
@@ -409,7 +411,7 @@ Commands:
                 tags=["rust", "systems"],
             ),
         ]
-        
+
         registry = CommunityRegistry()
         results = registry.search("dev")
         assert len(results) >= 1
@@ -422,16 +424,16 @@ Commands:
         """Test network failure with corrupted cache returns empty list."""
         # Mock network failure
         mock_urlopen.side_effect = Exception("Network error")
-        
+
         # Create corrupted cache file
         cache_dir = tmp_path / "cache"
         cache_dir.mkdir()
         cache_file = cache_dir / "community_speckits.json"
         cache_file.write_text("corrupted { json")
-        
+
         registry = CommunityRegistry()
         registry.cache_dir = cache_dir
-        
+
         # Should return empty list when network fails and cache is corrupted
         result = registry.fetch_speckits(use_cache=True)
         assert result == []

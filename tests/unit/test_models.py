@@ -270,14 +270,14 @@ class TestSpecKitProject:
             Path("src/main.py"): "print('hello')",
         }
         directories = [Path("tests"), Path("docs")]
-        
+
         project = SpecKitProject(
             root_path=root,
             files=files,
             directories=directories
         )
         project.write_to_disk()
-        
+
         # Verify root exists
         assert root.exists()
         # Verify files written
@@ -295,14 +295,14 @@ class TestSpecKitProject:
             Path("script.sh"): "#!/bin/bash\necho test",
         }
         executable_files = [Path("script.sh")]
-        
+
         project = SpecKitProject(
             root_path=root,
             files=files,
             executable_files=executable_files
         )
         project.write_to_disk()
-        
+
         script_path = root / "script.sh"
         assert script_path.exists()
         # Check executable permissions (0o755 = rwxr-xr-x)
@@ -318,15 +318,15 @@ class TestSpecKitProject:
         root.mkdir()
         existing_file = root / "existing.txt"
         existing_file.write_text("old content")
-        
+
         files = {
             Path("new.txt"): "new content",
         }
-        
+
         project = SpecKitProject(root_path=root, files=files)
         # Should succeed with force=True
         project.write_to_disk(force=True)
-        
+
         assert (root / "new.txt").exists()
         assert (root / "new.txt").read_text() == "new content"
 
@@ -334,10 +334,10 @@ class TestSpecKitProject:
         """Test that writing fails if directory exists and force=False."""
         root = tmp_path / "existing-project"
         root.mkdir()
-        
+
         files = {Path("file.txt"): "content"}
         project = SpecKitProject(root_path=root, files=files)
-        
+
         # Should raise FileExistsError
         with pytest.raises(FileExistsError) as exc_info:
             project.write_to_disk(force=False)
@@ -350,10 +350,10 @@ class TestSpecKitProject:
             Path("src/core/main.py"): "main code",
             Path("tests/unit/test_main.py"): "test code",
         }
-        
+
         project = SpecKitProject(root_path=root, files=files)
         project.write_to_disk()
-        
+
         assert (root / "src/core/main.py").exists()
         assert (root / "tests/unit/test_main.py").exists()
         assert (root / "src/core/main.py").read_text() == "main code"

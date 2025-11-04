@@ -32,7 +32,7 @@ class TestInfoCommand:
             version="1.0.0",
         )
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["info", "test-kit"])
         assert result.exit_code == 0
 
@@ -42,7 +42,7 @@ class TestInfoCommand:
         mock_reg = MagicMock()
         mock_reg.get.return_value = None
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["info", "nonexistent"])
         assert result.exit_code != 0 or "not found" in result.stdout.lower()
 
@@ -60,7 +60,7 @@ class TestInfoCommand:
         )
         mock_registry.return_value = mock_reg
         mock_installed.return_value = True
-        
+
         result = runner.invoke(app, ["info", "test-kit"])
         assert result.exit_code == 0
 
@@ -73,7 +73,7 @@ class TestInfoCommand:
             CommunitySpeckit(name="kit2", command="cmd2", description="Kit 2"),
         ]
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["list"])
         assert result.exit_code == 0
 
@@ -83,7 +83,7 @@ class TestInfoCommand:
         mock_reg = MagicMock()
         mock_reg.fetch_speckits.return_value = []
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["list"])
         assert result.exit_code == 0
 
@@ -96,10 +96,10 @@ class TestInfoCommand:
         mock_reg = MagicMock()
         mock_reg.fetch_speckits.return_value = []
         mock_registry.return_value = mock_reg
-        
+
         # Mock which to return some commands
         mock_which.side_effect = lambda cmd: "/usr/bin/" + cmd if cmd in ["python", "pytest"] else None
-        
+
         result = runner.invoke(app, ["list"])
         assert result.exit_code == 0
 
@@ -119,7 +119,7 @@ class TestInfoCommand:
             cli_commands=["init", "validate", "generate"],
         )
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["info", "full-kit"])
         assert result.exit_code == 0
 
@@ -146,7 +146,7 @@ class TestInfoCommand:
             cli_commands=["init", "validate", "generate"],
         )
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["info", "cmd-kit"])
         assert result.exit_code == 0
 
@@ -154,7 +154,7 @@ class TestInfoCommand:
     def test_info_command_not_found(self, mock_which: MagicMock) -> None:
         """Test info with command not found."""
         mock_which.return_value = None
-        
+
         result = runner.invoke(app, ["info", "nonexistent-cmd"])
         assert result.exit_code == 0
         assert "not found" in result.stdout.lower()
@@ -171,11 +171,11 @@ class TestInfoCommand:
             "version": "2.0.0",
             "cli_commands": ["init", "validate", "generate"],
         }
-        
+
         mock_reg = MagicMock()
         mock_reg.get.return_value = None
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["info", "test-cmd"])
         assert result.exit_code == 0
         assert "/usr/bin/test-cmd" in result.stdout
@@ -189,7 +189,7 @@ class TestInfoCommand:
         """Test info with command in community registry."""
         mock_which.return_value = "/usr/bin/community-cmd"
         mock_detect.return_value = {"version": "1.0.0"}
-        
+
         mock_reg = MagicMock()
         mock_reg.get.return_value = CommunitySpeckit(
             name="community-kit",
@@ -201,7 +201,7 @@ class TestInfoCommand:
             tags=["community", "test"],
         )
         mock_registry.return_value = mock_reg
-        
+
         result = runner.invoke(app, ["info", "community-cmd"])
         assert result.exit_code == 0
         assert "community registry" in result.stdout.lower()
@@ -215,12 +215,12 @@ class TestInfoCommand:
         mock_reg = MagicMock()
         mock_reg.fetch_speckits.return_value = []
         mock_registry.return_value = mock_reg
-        
+
         mock_discover.return_value = [
             {"command": "kit1", "version": "1.0.0", "path": "/usr/bin/kit1"},
             {"command": "kit2", "version": "2.0.0", "path": "/usr/bin/kit2"},
         ]
-        
+
         result = runner.invoke(app, ["list"])
         assert result.exit_code == 0
         assert "kit1" in result.stdout or "kit2" in result.stdout

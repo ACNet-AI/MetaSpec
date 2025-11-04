@@ -5,11 +5,9 @@ Unit tests for metaspec.cli.init module.
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
 from typer.testing import CliRunner
 
-from metaspec.cli.init import app, _name_to_package_name
-
+from metaspec.cli.init import _name_to_package_name, app
 
 runner = CliRunner()
 
@@ -90,7 +88,7 @@ class TestInitCommand:
     def test_init_invalid_template(self, tmp_path: Path) -> None:
         """Test init with invalid template."""
         output_dir = tmp_path / "test-output"
-        
+
         result = runner.invoke(
             app,
             [
@@ -102,7 +100,7 @@ class TestInitCommand:
                 str(output_dir),
             ],
         )
-        
+
         # Should fail with non-zero exit code
         assert result.exit_code != 0
 
@@ -112,14 +110,14 @@ class TestInitCommand:
     ) -> None:
         """Test init with generic template."""
         output_dir = tmp_path / "test-kit"
-        
+
         # Mock generator
         mock_generator = MagicMock()
         mock_project = MagicMock()
         mock_project.root_path = output_dir
         mock_generator.generate.return_value = mock_project
         mock_gen.return_value = mock_generator
-        
+
         result = runner.invoke(
             app,
             [
@@ -132,7 +130,7 @@ class TestInitCommand:
                 "--dry-run",
             ],
         )
-        
+
         # Accept both success and some template errors
         assert result.exit_code in [0, 1, 2]
 
@@ -163,7 +161,7 @@ class TestInitCommand:
             False,  # no CLI commands
             False,  # no slash commands
         ]
-        
+
         result = runner.invoke(app, ["init"], input="\n")
         # Interactive mode may exit with various codes depending on mock setup
         assert result.exit_code in [0, 1]
@@ -187,14 +185,14 @@ class TestInitCommand:
         """Test init with existing directory and force flag."""
         output_dir = tmp_path / "existing"
         output_dir.mkdir()
-        
+
         # Mock generator
         mock_generator = MagicMock()
         mock_project = MagicMock()
         mock_project.root_path = output_dir
         mock_generator.generate.return_value = mock_project
         mock_gen.return_value = mock_generator
-        
+
         result = runner.invoke(
             app,
             [
@@ -208,7 +206,7 @@ class TestInitCommand:
                 "--dry-run",
             ],
         )
-        
+
         # Accept various exit codes due to template issues
         assert result.exit_code in [0, 1, 2]
 

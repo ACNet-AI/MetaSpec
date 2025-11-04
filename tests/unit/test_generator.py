@@ -36,7 +36,7 @@ class TestGenerator:
             "README.md": "# Test",
             "pyproject.toml": "[project]",
         }
-        
+
         gen = Generator()
         project = gen.generate(
             meta_spec=sample_meta_spec,
@@ -57,7 +57,7 @@ class TestGenerator:
             "README.md": "# Test",
             "pyproject.toml": "[project]",
         }
-        
+
         gen = Generator()
         project = gen.generate(
             meta_spec=sample_meta_spec,
@@ -76,7 +76,7 @@ class TestGenerator:
             "README.md": "# Test",
             "pyproject.toml": "[project]",
         }
-        
+
         gen = Generator()
         project = gen.generate(
             meta_spec=sample_meta_spec,
@@ -95,7 +95,7 @@ class TestGenerator:
             "README.md": "# Test",
             "AGENTS.md": "# Agents",
         }
-        
+
         gen = Generator()
         project = gen.generate(
             meta_spec=sample_meta_spec,
@@ -111,12 +111,12 @@ class TestGenerator:
     ) -> None:
         """Test generation with force flag."""
         mock_render.return_value = {"README.md": "# Test"}
-        
+
         gen = Generator()
         # Create a file in output directory
         existing_file = temp_output_dir / "existing.txt"
         existing_file.write_text("existing content")
-        
+
         # Generate with force=True
         project = gen.generate(
             meta_spec=sample_meta_spec,
@@ -155,15 +155,15 @@ class TestGeneratorRealScenarios:
         mock_render.return_value = {
             "README.md": "# Test",
         }
-        
+
         output_dir = tmp_path / "real-project"
         gen = Generator()
-        project = gen.generate(
+        gen.generate(
             meta_spec=sample_meta_spec,
             output_dir=output_dir,
             dry_run=False,
         )
-        
+
         # Should write to disk
         assert output_dir.exists()
         assert (output_dir / "README.md").exists()
@@ -175,9 +175,9 @@ class TestGeneratorRealScenarios:
         """Test that generate fails when directory exists without force."""
         output_dir = tmp_path / "existing"
         output_dir.mkdir()
-        
+
         gen = Generator()
-        
+
         with pytest.raises(FileExistsError) as exc_info:
             gen.generate(
                 meta_spec=sample_meta_spec,
@@ -193,7 +193,7 @@ class TestGeneratorRealScenarios:
         """Test creating template context."""
         gen = Generator()
         context = gen._create_template_context(sample_meta_spec)
-        
+
         assert context["name"] == "test-spec-kit"
         assert context["version"] == "0.1.0"
         assert context["package_name"] == "test_spec_kit"
@@ -207,7 +207,7 @@ class TestGeneratorRealScenarios:
         """Test selecting templates."""
         gen = Generator()
         template_map = gen._select_templates(sample_meta_spec)
-        
+
         assert isinstance(template_map, dict)
         assert len(template_map) > 0
         # Should include base templates
@@ -222,17 +222,17 @@ class TestGeneratorRealScenarios:
             "README.md": "# Test",
             "src/main.py": "print('hello')",
         }
-        
+
         gen = Generator()
         context = gen._create_template_context(sample_meta_spec)
-        
+
         project = gen._construct_project(
             output_dir=tmp_path / "test-project",
             package_name="test_package",
             rendered_files=rendered_files,
             context=context,
         )
-        
+
         assert isinstance(project, SpecKitProject)
         assert len(project.files) > 0
         assert len(project.directories) > 0
@@ -245,12 +245,12 @@ class TestGeneratorRealScenarios:
 
         gen = Generator()
         context = gen._create_template_context(sample_meta_spec)
-        
+
         # Create a template map with a non-existent template (not optional)
         template_map = {
             "nonexistent/required.md.j2": "output/required.md",
         }
-        
+
         with pytest.raises(TemplateNotFound):
             gen._render_templates(template_map, context)
 
@@ -260,15 +260,15 @@ class TestGeneratorRealScenarios:
         """Test render templates skips optional command files."""
         gen = Generator()
         context = gen._create_template_context(sample_meta_spec)
-        
+
         # Create a template map with optional command file that doesn't exist
         template_map = {
             "library/generic/commands/optional.md.j2": "commands/optional.md",
         }
-        
+
         # Should not raise error for missing optional command files
         rendered = gen._render_templates(template_map, context)
-        
+
         # Should skip the missing optional file
         assert "commands/optional.md" not in rendered
 
@@ -278,14 +278,14 @@ class TestGeneratorRealScenarios:
         """Test successful template rendering."""
         gen = Generator()
         context = gen._create_template_context(sample_meta_spec)
-        
+
         # Use existing templates
         template_map = {
             "library/generic/greenfield/templates/spec-template.md.j2": "specs/spec.md",
         }
-        
+
         rendered = gen._render_templates(template_map, context)
-        
+
         # Should successfully render the template
         assert "specs/spec.md" in rendered
         assert len(rendered["specs/spec.md"]) > 0
@@ -295,28 +295,28 @@ class TestGeneratorRealScenarios:
     ) -> None:
         """Test project construction with CLI commands."""
         from metaspec.models import Command
-        
+
         # Add a command to meta spec
         sample_meta_spec.cli_commands = [
             Command(name="info", description="Show info"),
             Command(name="validate", description="Validate spec"),
         ]
-        
+
         gen = Generator()
         context = gen._create_template_context(sample_meta_spec)
-        
+
         rendered_files = {
             "README.md": "# Test",
             "pyproject.toml": "[project]\nname='test'",
         }
-        
+
         project = gen._construct_project(
             output_dir=tmp_path / "test",
             package_name="test_pkg",
             rendered_files=rendered_files,
             context=context,
         )
-        
+
         assert isinstance(project, SpecKitProject)
         assert len(project.files) >= 2
 

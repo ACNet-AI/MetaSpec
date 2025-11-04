@@ -30,7 +30,7 @@ class TestContributeCommand:
     def test_contribute_command_not_found(self, mock_detect: MagicMock) -> None:
         """Test contribute with command that doesn't exist."""
         mock_detect.return_value = None
-        
+
         result = runner.invoke(app, ["contribute", "nonexistent-command"])
         # Should fail or warn
         assert result.exit_code != 0 or "not found" in result.stdout.lower()
