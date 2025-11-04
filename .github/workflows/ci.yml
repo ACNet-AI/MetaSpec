@@ -25,16 +25,23 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v3
     
+    - name: Clean cache before install
+      run: |
+        find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+        find . -type f -name "*.pyc" -delete 2>/dev/null || true
+        find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+    
     - name: Install dependencies
       run: |
-        uv pip install --system -e ".[dev]"
+        uv pip install --system --no-cache -e ".[dev]"
     
-    - name: Verify installation
+    - name: Verify CLI options are visible
       run: |
-        python -c "import metaspec; print('metaspec file:', metaspec.__file__)"
-        python -c "from metaspec.cli.contribute import contribute_command; import inspect; sig = inspect.signature(contribute_command); print('contribute params:', list(sig.parameters.keys())); print('command param:', sig.parameters.get('command'))"
-        echo "--- Testing CLI help output ---"
-        python -c "from metaspec.cli.main import app; from typer.testing import CliRunner; runner = CliRunner(); result = runner.invoke(app, ['contribute', '--help']); print('Exit code:', result.exit_code); print('Has --command:', '--command' in result.stdout); print('Help output:'); print(result.stdout[:500])"
+        echo "=== Testing metaspec contribute --help ==="
+        metaspec contribute --help
+        echo ""
+        echo "=== Testing metaspec init --help ==="
+        metaspec init --help
     
     - name: Run tests
       run: |
