@@ -31,7 +31,7 @@ jobs:
     
     - name: Run tests
       run: |
-        uv run pytest --cov=metaspec --cov-report=xml --cov-report=term
+        pytest --cov=metaspec --cov-report=xml --cov-report=term
     
     - name: Upload coverage
       uses: codecov/codecov-action@v4
@@ -61,11 +61,11 @@ jobs:
     
     - name: Run ruff
       run: |
-        uv run ruff check .
+        ruff check .
     
     - name: Run mypy
       run: |
-        uv run mypy src/metaspec
+        mypy src/metaspec
 
   build:
     name: Build Package
