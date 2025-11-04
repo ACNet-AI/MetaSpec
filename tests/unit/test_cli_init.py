@@ -7,7 +7,8 @@ from unittest.mock import MagicMock, patch
 
 from typer.testing import CliRunner
 
-from metaspec.cli.init import _name_to_package_name, app
+from metaspec.cli.init import _name_to_package_name
+from metaspec.cli.main import app
 
 runner = CliRunner()
 

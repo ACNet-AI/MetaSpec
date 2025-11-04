@@ -65,11 +65,9 @@ DOMAIN_TEMPLATES = {
     },
 }
 
-app = typer.Typer()
 console = Console()
 
 
-@app.command("init")
 def init_command(
     name: str = typer.Argument(
         None,

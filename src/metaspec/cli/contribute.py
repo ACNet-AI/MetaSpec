@@ -9,6 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 
+import typer
 from rich.console import Console
 from rich.prompt import Confirm, Prompt
 
@@ -18,8 +19,17 @@ console = Console()
 
 
 def contribute_command(
-    command: str | None = None,
-    interactive: bool = True,
+    command: str | None = typer.Option(
+        None,
+        "--command",
+        "-c",
+        help="Speckit command name (auto-detected if not provided)"
+    ),
+    interactive: bool = typer.Option(
+        True,
+        "--interactive/--no-interactive",
+        help="Enable interactive prompts"
+    ),
 ) -> None:
     """
     Generate metadata JSON for contributing to the community registry.
