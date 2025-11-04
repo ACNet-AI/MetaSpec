@@ -50,10 +50,24 @@ What you can generate:
 ### Installation
 
 ```bash
-git clone https://github.com/ACNet-AI/MetaSpec.git
-cd MetaSpec
-uv pip install -e .  # or: pip install -e .
+# Recommended: Use uv (10-100x faster) ⚡
+uv pip install git+https://github.com/ACNet-AI/MetaSpec.git
+
+# Or use pip
+pip install git+https://github.com/ACNet-AI/MetaSpec.git
 ```
+
+<details>
+<summary>Other installation methods</summary>
+
+**Development mode**:
+```bash
+git clone https://github.com/ACNet-AI/MetaSpec.git && cd MetaSpec
+uv pip install -e .
+```
+
+**Coming soon**: `pip install metaspec` 🚀
+</details>
 
 ### Create Your First Speckit
 
@@ -380,21 +394,19 @@ Use `metaspec --help` or `metaspec <command> --help` for detailed options
 ## 🧪 Development
 
 ```bash
-# Install dev dependencies
+# Clone and install
+git clone https://github.com/ACNet-AI/MetaSpec.git && cd MetaSpec
 uv pip install -e ".[dev]"
 
-# Run tests (138 tests, 69% coverage)
-uv run pytest
+# Run tests
+uv run pytest                  # 138 tests, 69% coverage
 
 # Code quality checks
-uv run ruff check .        # Linting
-uv run mypy src/metaspec   # Type checking
-uv run black .             # Formatting
+uv run ruff check .            # Lint
+uv run mypy src/metaspec       # Type check
 ```
 
-**Test Coverage**: Core modules 94-99% ✅ | Overall 69% 
-
-📖 **Contributing guide**: See [contributing.md](./docs/contributing.md)
+📖 [Contributing Guide](./docs/contributing.md)
 
 ---
 

@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-11-04
+
+### 📚 Documentation
+
+#### Improved
+- **Installation Guide**: Simplified installation instructions (reduced by ~70%)
+  - Replace `git clone` workflow with direct `pip install git+https://...`
+  - Prioritize `uv` for 10-100x faster installation
+  - Add collapsible sections for alternative methods
+- **Documentation Quality**: Streamlined quickstart guide
+  - Cleaner examples and workflows
+  - Removed redundant content
+  - Better organized sections
+
+#### Changed
+- **Installation Recommendation**: `uv pip install` as primary method
+- **Documentation Length**: Reduced from ~350 to ~155 lines in quickstart.md
+- **User Experience**: Faster time-to-start (5 minutes or less)
+
 ### 🧪 Quality & Testing (2025-11-03)
 
 #### Added

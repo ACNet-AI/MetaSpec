@@ -13,95 +13,50 @@
 
 ## 🚀 Step 1: Install MetaSpec
 
-### Using uv (Recommended)
+```bash
+# Recommended: Use uv (10-100x faster) ⚡
+uv pip install git+https://github.com/ACNet-AI/MetaSpec.git
+
+# Or use pip
+pip install git+https://github.com/ACNet-AI/MetaSpec.git
+
+# Verify installation
+metaspec --version
+```
+
+<details>
+<summary>💡 First time using uv? Install in one line</summary>
 
 ```bash
-# Clone the repository
-git clone https://github.com/ACNet-AI/MetaSpec.git
-cd MetaSpec
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Install
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+</details>
+
+<details>
+<summary>🔧 Development mode installation</summary>
+
+```bash
+git clone https://github.com/ACNet-AI/MetaSpec.git && cd MetaSpec
 uv pip install -e .
 ```
-
-### Using pip
-
-```bash
-pip install -e .
-```
-
-### Verify Installation
-
-```bash
-metaspec --help
-```
-
-You should see:
-
-```
-Usage: metaspec [OPTIONS] COMMAND [ARGS]...
-
-  MetaSpec - Meta-specification framework for generating Spec-Driven X (SD-X) speckits
-
-Commands:
-  init     Create spec-driven speckit
-  spec     Manage and use speckits
-  version  Show version information
-```
+</details>
 
 ---
 
 ## 🎯 Step 2: Create Your First Speckit
 
-### Option A: Interactive Mode (Recommended for first time)
-
 ```bash
+# Interactive mode (recommended)
 metaspec init
-```
 
-The interactive wizard will guide you through:
-
-1. **Domain Selection** - Choose from generic, mcp, web, ai
-2. **Basic Information** - Name, description
-3. **Entity Design** - Define your main entity and fields
-4. **Commands** - Specify CLI commands
-5. **Dependencies** - Select Python packages
-
-Example session:
-
-```
-MetaSpec - Create Spec-Driven Speckit
-
-Step 1/5: Basic Information
-────────────────────────────────────────
-
-Available domains:
-  1. generic - Generic speckit for any domain
-  2. mcp - MCP server development
-  3. web - Web development
-  4. ai - AI agent development
-
-Select domain [1]: 1
-Speckit name (lowercase-with-dashes) [spec-kit]: my-spec-kit
-Brief description [Spec-driven speckit]: My first speckit
-
-Step 2/5: Entity Design
-────────────────────────────────────────
-
-Main entity name [Entity]: Task
-...
-```
-
-### Option B: Quick Start with Template
-
-```bash
-# Generic speckit (recommended)
+# Or quick start with template
 metaspec init my-spec-kit --template generic
-```
 
-### Option C: Preview Before Creating
-
-```bash
+# Preview (dry-run)
 metaspec init my-spec-kit --template generic --dry-run
 ```
 
@@ -139,168 +94,61 @@ my-spec-kit/
 
 ---
 
-## 🛠️ Step 4: Install and Develop
+## 🛠️ Step 4: Install and Use
 
 ```bash
-# Install dependencies
-pip install -e .
+# Enter generated project
+cd my-spec-kit
 
-# Use built-in MetaSpec commands to develop your speckit (in Cursor/AI editor)
-# /metaspec.constitution  - Define design principles
-# /metaspec.specify       - Define specifications
-# /metaspec.plan          - Plan implementation
-# /metaspec.implement     - Implement features
+# Install
+uv pip install -e .
+
+# Use 15 built-in MetaSpec commands (in AI editor)
+# SDS: /metaspec.sds.* (4 commands) - Define protocol
+# SDD: /metaspec.sdd.* (8 commands) - Develop toolkit
+# Evolution: /metaspec.* (3 commands) - Manage changes
 ```
 
 ---
 
-## 🔧 Step 5: Unified Spec Interface
-
-MetaSpec provides a unified interface for all speckits:
+## 🎯 Complete Example
 
 ```bash
-# List available speckits
-metaspec spec --list
+# 1. Create speckit
+metaspec init api-kit --template generic && cd api-kit
 
-# Generated speckits include built-in MetaSpec commands (11 total):
-# Definition Commands (8) - Active development
-# /metaspec.constitution, /metaspec.specify, /metaspec.clarify, /metaspec.plan,
-# /metaspec.tasks, /metaspec.implement, /metaspec.checklist, /metaspec.analyze
-# Evolution Commands (3) - Controlled changes
-# /metaspec.proposal, /metaspec.apply, /metaspec.archive
+# 2. Install
+uv pip install -e .
 
-# Optional: Use external tools (install separately)
-metaspec spec spec-kit init        # Alternative workflow
-metaspec spec openspec analyze     # Alternative evolution
-
-# Use your custom speckit
-metaspec spec my-spec-kit <command>
+# 3. Develop with built-in commands (in AI editor)
+# /metaspec.sds.specify  - Define API protocol
+# /metaspec.sdd.plan     - Design toolkit architecture
+# /metaspec.sdd.implement - Implement toolkit code
 ```
 
 ---
 
-## 🎯 Examples
-
-### Create API Testing Speckit
+## 🐛 FAQ
 
 ```bash
-metaspec init api-test-kit --template generic
-cd api-test-kit
-pip install -e .
+# Force overwrite existing directory
+metaspec init my-kit --template generic --force
+
+# Preview (dry-run)
+metaspec init my-kit --template generic --dry-run
 ```
 
-### Develop Speckit with Built-in MetaSpec Commands
-
-```bash
-# Create speckit
-metaspec init my-project --template generic
-cd my-project
-
-# Use built-in MetaSpec slash commands in your editor (no installation needed):
-
-# Definition Commands (8) - Active development
-# /metaspec.constitution - Define project principles
-# /metaspec.specify      - Define specifications
-# /metaspec.clarify      - Clarify ambiguities
-# /metaspec.plan         - Plan implementation
-# /metaspec.tasks        - Break down tasks
-# /metaspec.implement    - Execute implementation
-# /metaspec.checklist    - Validate quality
-# /metaspec.analyze      - Check consistency
-
-# Evolution Commands (3) - Controlled changes
-# /metaspec.proposal     - Propose specification changes
-# /metaspec.apply        - Apply approved changes
-# /metaspec.archive      - Archive completed changes
-```
-
-### Optional: Use External Spec Tools
-
-```bash
-cd my-project
-
-# If you prefer external spec tools (install separately):
-# metaspec spec spec-kit <command>    # Alternative workflow
-# metaspec spec openspec <command>    # Alternative evolution
-```
+**Q: Do I need to install spec-kit or openspec?**  
+**A**: No! Generated speckit includes 15 built-in MetaSpec commands for complete workflow.
 
 ---
 
-## 🎨 Customize Your Speckit
+## 📚 Learn More
 
-After generation, you can:
-
-1. **Edit Entity Fields** - Modify entity definition in generated code
-2. **Add Commands** - Extend CLI commands in cli.py
-3. **Customize Templates** - Edit templates for spec file format
-4. **Add Dependencies** - Update pyproject.toml
+- 📖 [README](../README.md) - Complete feature overview
+- 🤖 [AGENTS.md](../AGENTS.md) - AI workflow guide
+- 📚 [Examples](../examples/) - Example projects
 
 ---
 
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Q: How to overwrite an existing directory?**
-
-```bash
-metaspec init my-spec-kit --template generic --force
-```
-
-**Q: How to preview before creating?**
-
-```bash
-metaspec init my-spec-kit --template generic --dry-run
-```
-
-**Q: Spec-kit not found?**
-
-Spec-kit is an optional integrated toolkit. Install it:
-
-```bash
-pip install git+https://github.com/github/spec-kit.git
-```
-
-**Q: Do I need to install spec-kit/openspec?**
-
-No! Generated toolkits include built-in MetaSpec commands (15 commands: 4 SDS + 8 SDD + 3 Evolution) for complete spec-driven workflows. External tools (spec-kit, OpenSpec) are optional alternatives.
-
-**Q: What's the difference between MetaSpec commands and external tools?**
-
-- **MetaSpec commands**: Built-in, no installation, unified workflow (recommended)
-- **External tools**: Alternative workflows, require separate installation
-
----
-
-## 🎉 What's Next?
-
-### Learn More
-
-- 📖 [Main README](../README.md) - Complete feature overview
-- 🤖 [AGENTS.md](../AGENTS.md) - AI agent workflow guide
-- 📚 [Examples](../examples/) - Example speckit definitions
-- 🔧 [Speckit Protocol](./speckit-protocol.md) - Build custom speckits
-
-### Advanced Usage
-
-- Use templates for quick start
-- Use built-in MetaSpec commands for development
-- Create custom speckits
-- Optional: Integrate external spec tools
-
----
-
-## 🎊 Congratulations!
-
-You have successfully:
-
-- ✅ Installed MetaSpec
-- ✅ Created your first speckit
-- ✅ Explored built-in MetaSpec commands (15 commands: 4 SDS + 8 SDD + 3 Evolution)
-- ✅ Learned about the unified spec interface
-
-Now you can create speckits for any domain!
-
----
-
-**Version**: v0.1.0 | **Last Updated**: 2025-10-31
+**Congratulations!** You've mastered MetaSpec basics and can now create speckits for any domain! 🎉
