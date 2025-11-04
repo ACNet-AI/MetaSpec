@@ -23,12 +23,12 @@ def contribute_command(
         None,
         "--command",
         "-c",
-        help="Speckit command name (auto-detected if not provided)"
+        help="Speckit command name (auto-detected if not provided)",
     ),
     interactive: bool = typer.Option(
         True,
         "--interactive/--no-interactive",
-        help="Enable interactive prompts"
+        help="Enable interactive prompts",
     ),
 ) -> None:
     """
