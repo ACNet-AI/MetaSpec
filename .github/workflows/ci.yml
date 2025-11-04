@@ -43,6 +43,11 @@ jobs:
         echo "=== Testing metaspec init --help ==="
         metaspec init --help
     
+    - name: Debug test environment
+      run: |
+        python -c "import metaspec; print('metaspec.__file__:', metaspec.__file__)"
+        python -c "from metaspec.cli.main import app; from typer.testing import CliRunner; runner = CliRunner(); result = runner.invoke(app, ['contribute', '--help']); print('Test --command present:', '--command' in result.stdout); import sys; sys.stdout.write(result.stdout[:800])"
+    
     - name: Run tests
       run: |
         python -m pytest --cov=metaspec --cov-report=xml --cov-report=term
