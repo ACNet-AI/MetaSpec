@@ -1,12 +1,13 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:  # 允许手动触发
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags (v*)
+  workflow_dispatch:  # Allow manual trigger
 
 permissions:
-  contents: read
+  contents: write  # Required for creating GitHub Release
 
 jobs:
   build-and-publish:
@@ -52,4 +53,24 @@ jobs:
         name: dist-packages
         path: dist/
         retention-days: 7
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*
+        generate_release_notes: true
+        body: |
+          ## 📦 Installation
+          
+          ```bash
+          pip install metaspec
+          # or
+          uv pip install metaspec
+          ```
+          
+          ## 📝 Changelog
+          
+          See [CHANGELOG.md](https://github.com/ACNet-AI/MetaSpec/blob/main/CHANGELOG.md) for detailed changes.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
