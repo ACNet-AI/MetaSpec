@@ -155,7 +155,7 @@ STRUCTURE.txt
 
 # Internal documentation (not for public release)
 docs/internal/
-specs/
+/specs/
 memory/
 
 # Development workflow and archives (personal/historical)

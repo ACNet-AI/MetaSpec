@@ -1,0 +1,206 @@
+# {{ name }} Specifications
+
+> **Spec-Driven Development**: Define specifications first, then implement.
+
+---
+
+## 📋 Directory Structure
+
+```
+specs/
+├── 001-domain-spec/            ← Feature 1: Domain Specification (Primary)
+│   ├── spec.md                 ← Domain protocol/rules/standards
+│   └── checklists/             ← Quality checks (optional)
+│
+├── 002-toolkit-spec/           ← Feature 2: Toolkit Specification (Secondary)
+│   ├── spec.md                 ← Toolkit specification
+│   ├── plan.md                 ← Technical architecture (generated)
+│   ├── tasks.md                ← Development tasks (generated)
+│   └── checklists/             ← Quality checks (optional)
+│
+└── README.md                   ← This file
+```
+
+---
+
+## 🏗️ Two-Feature Architecture (Recommended)
+
+**IMPORTANT**: Separate domain specification from toolkit implementation.
+
+### Feature 1: Domain Specification (Primary)
+**Purpose**: Define the domain protocol, rules, and standards
+
+**Example**: `specs/001-{{ domain }}-protocol-spec/spec.md`
+- What is the domain protocol?
+- What are the entities and their schemas?
+- What are the validation rules?
+- What are the constraints and requirements?
+
+**Key**: This is **pure domain knowledge**, independent of implementation.
+
+### Feature 2: Toolkit Specification (Secondary)
+**Purpose**: Define how to build tools to parse, validate, and enforce the domain spec
+
+**Example**: `specs/002-toolkit-spec/spec.md`
+- **Depends on**: 001-{{ domain }}-protocol-spec
+- **Components**: Parser, Validator, CLI
+- **Goal**: Execute and validate Feature 1's specification
+
+**Key**: The toolkit is the **carrier** of the domain specification.
+
+### Why Separate?
+
+1. ✅ **Clear Concerns**: Protocol experts define Feature 1, toolkit experts define Feature 2
+2. ✅ **Reusable Specs**: Feature 1 can be published and referenced independently
+3. ✅ **Clean Dependencies**: Feature 2 explicitly depends on Feature 1
+4. ✅ **True Spec-Driven**: Specification IS the system, toolkit executes it
+
+### When to Merge?
+
+Only for very simple toolkits without formal protocols. **Default: Always separate.**
+
+---
+
+## 🎯 Development Workflow
+
+### Phase 1: Define Domain Specification
+
+#### Step 0: Define Design Principles
+```bash
+/sdx.constitution
+# Define domain governance principles at memory/constitution.md
+# Focus: Domain principles, not implementation
+```
+
+#### Step 1: Define Domain Specification
+```bash
+/sdx.specify "Define {{ domain }} protocol"
+# Creates specs/001-{{ domain }}-protocol-spec/spec.md
+# Focus: Domain protocol, entities, validation rules
+```
+
+#### Step 2 (Optional): Clarify Domain Specification
+```bash
+/sdx.clarify
+# Resolve ambiguities in the domain spec
+```
+
+#### Step 3 (Optional): Validate Domain Spec Quality
+```bash
+/sdx.checklist
+# Check domain specification completeness and clarity
+```
+
+---
+
+### Phase 2: Define Toolkit Specification
+
+#### Step 4: Define Toolkit Specification
+```bash
+/sdx.specify "Define toolkit for {{ domain }} protocol"
+# Creates specs/002-toolkit-spec/spec.md
+# Focus: Parser, Validator, CLI components
+# Depends on: 001-{{ domain }}-protocol-spec
+```
+
+#### Step 5: Design Architecture
+```bash
+/sdx.plan
+# Generates specs/002-toolkit-spec/plan.md
+# Technical design for the toolkit
+```
+
+#### Step 6: Break Down Tasks
+```bash
+/sdx.tasks
+# Generates specs/002-toolkit-spec/tasks.md
+# Development tasks for building src/ code
+```
+
+#### Step 7 (Optional): Validate Implementation Spec
+```bash
+/sdx.checklist
+# Check implementation specification quality
+```
+
+#### Step 8 (Optional): Check Consistency
+```bash
+/sdx.analyze
+# Cross-artifact consistency (spec.md, plan.md, tasks.md)
+# Verify Feature 2 aligns with Feature 1
+```
+
+---
+
+### Phase 3: Implement Toolkit
+
+#### Step 9: Implement
+```bash
+/sdx.implement
+# Build src/ code based on Feature 2 specifications
+```
+
+---
+
+## 📚 Feature Management
+
+### Create New Feature
+```bash
+./scripts/bash/create-new-feature.sh
+# Or use: /sdx.specify "feature description"
+```
+
+### Feature Numbering
+- `001-xxx`: Domain specification (Primary, core knowledge)
+- `002-xxx`: Toolkit specification (Secondary, executor)
+- `003-xxx`: Additional features or enhancements
+
+---
+
+## 🔄 Specification Evolution
+
+### Propose Changes (for stable features)
+```bash
+/sdx.proposal "Change description"
+# Creates change proposal in changes/
+```
+
+### Apply Approved Changes
+```bash
+/sdx.apply <proposal-id>
+# Applies changes to specifications
+```
+
+### Archive Completed Changes
+```bash
+/sdx.archive <proposal-id>
+# Moves to changes/archive/
+```
+
+---
+
+## 💡 Best Practices
+
+1. **Protocol Spec First, Toolkit Spec Second**: Define Feature 1 (protocol spec) before Feature 2 (toolkit spec)
+2. **Separate Concerns**: Keep protocol specification separate from toolkit specification
+3. **Explicit Dependencies**: Feature 2 must explicitly depend on Feature 1
+4. **Clarify Early**: Use `/sdx.clarify` if requirements are unclear (before planning)
+5. **Validate Before Coding**: Use `/sdx.checklist` and `/sdx.analyze` before `/sdx.implement`
+6. **Keep Specs Updated**: Specifications are living documents
+7. **Package Domain Specs**: The domain specification is a core asset to distribute
+
+---
+
+## 📖 File Descriptions
+
+| File | Purpose | When to Edit |
+|------|---------|--------------|
+| `spec.md` | What to build | During feature definition |
+| `plan.md` | How to build | Generated by `/sdx.plan` |
+| `tasks.md` | Task breakdown | Generated by `/sdx.tasks` |
+| `checklists/` | Quality checks | Generated by `/sdx.checklist` |
+
+---
+
+**Status**: 🟢 Ready for development | **Last Updated**: {{ date }}
+
