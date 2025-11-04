@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-11-04
+
+### 📚 Documentation
+- **Package Name Clarification**: Documented the intentional naming convention
+  - PyPI package: `meta-spec` (with hyphen, follows Python convention)
+  - Import name: `metaspec` (no hyphen, Python identifier)
+  - CLI command: `metaspec` (no hyphen, for convenience)
+  - This is standard practice in Python ecosystem (e.g., `scikit-learn` → `sklearn`)
+
+### 🐛 Bug Fixes
+- Fixed namespace package issue by adding proper `__init__.py`
+- Made CLI option tests resilient to output format differences
+- Resolved test failures in CI environment
+
 ## [0.1.1] - 2025-11-04
 
 ### 📚 Documentation
