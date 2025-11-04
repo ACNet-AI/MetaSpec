@@ -29,6 +29,13 @@ jobs:
       run: |
         uv pip install --system -e ".[dev]"
     
+    - name: Verify installation
+      run: |
+        python -c "import metaspec; print('metaspec file:', metaspec.__file__)"
+        python -c "from metaspec.cli.contribute import contribute_command; import inspect; sig = inspect.signature(contribute_command); print('contribute params:', list(sig.parameters.keys())); print('command param:', sig.parameters.get('command'))"
+        echo "--- Testing CLI help output ---"
+        python -c "from metaspec.cli.main import app; from typer.testing import CliRunner; runner = CliRunner(); result = runner.invoke(app, ['contribute', '--help']); print('Exit code:', result.exit_code); print('Has --command:', '--command' in result.stdout); print('Help output:'); print(result.stdout[:500])"
+    
     - name: Run tests
       run: |
         python -m pytest --cov=metaspec --cov-report=xml --cov-report=term
