@@ -25,14 +25,13 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v3
     
-    - name: Create venv and install
+    - name: Install dependencies
       run: |
-        uv venv
-        .venv/bin/pip install -e ".[dev]"
+        uv pip install --system -e ".[dev]"
     
     - name: Run tests
       run: |
-        .venv/bin/pytest --cov=metaspec --cov-report=xml --cov-report=term
+        python -m pytest --cov=metaspec --cov-report=xml --cov-report=term
     
     - name: Upload coverage
       uses: codecov/codecov-action@v4
@@ -56,18 +55,17 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v3
     
-    - name: Create venv and install
+    - name: Install dependencies
       run: |
-        uv venv
-        .venv/bin/pip install -e ".[dev]"
+        uv pip install --system -e ".[dev]"
     
     - name: Run ruff
       run: |
-        .venv/bin/ruff check .
+        python -m ruff check .
     
     - name: Run mypy
       run: |
-        .venv/bin/mypy src/metaspec
+        python -m mypy src/metaspec
 
   build:
     name: Build Package
@@ -84,18 +82,17 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v3
     
-    - name: Create venv and install build tools
+    - name: Install build tools
       run: |
-        uv venv
-        .venv/bin/pip install build twine
+        uv pip install --system build twine
     
     - name: Build package
       run: |
-        .venv/bin/python -m build
+        python -m build
     
     - name: Check package
       run: |
-        .venv/bin/twine check dist/*
+        python -m twine check dist/*
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
