@@ -98,7 +98,7 @@ Generated **speckits** (spec-driven toolkits) include **MetaSpec commands** in `
 - Include built-in MetaSpec commands for development
 - Follow spec-driven architecture patterns
 
-These commands provide a complete workflow from specification definition to controlled evolution (15 commands total).
+These commands provide a complete workflow from specification definition to controlled evolution (16 commands total).
 
 See [MetaSpec Commands section](#-metaspec-commands-specification-lifecycle-management) for the complete command reference.
 
@@ -112,12 +112,13 @@ When you generate a speckit, it includes MetaSpec (Spec-Driven X) commands in th
 
 MetaSpec uses a three-layer architecture to separate concerns:
 
-#### SDS (Spec-Driven Specification) - 4 Commands
+#### SDS (Spec-Driven Specification) - 5 Commands
 For defining domain protocol specifications:
 
 - `/metaspec.sds.constitution` - Define protocol design principles
 - `/metaspec.sds.specify` - Define protocol entities, operations, validation rules
 - `/metaspec.sds.clarify` - Resolve ambiguities in protocol specification
+- `/metaspec.sds.checklist` - Generate quality checklist for protocol specification
 - `/metaspec.sds.analyze` - Check protocol consistency
 
 **Location**: Works with `specs/protocol/` directory
@@ -253,8 +254,8 @@ For controlled specification evolution (both SDS and SDD):
 ### The Relationship
 
 ```
-MetaSpec commands (15 total):
-  - SDS (4 commands)     → Define protocol specifications (specs/protocol/)
+MetaSpec commands (16 total):
+  - SDS (5 commands)     → Define protocol specifications (specs/protocol/)
   - SDD (8 commands)     → Develop toolkits (specs/toolkit/)
   - Evolution (3 shared) → Manage changes (specs/changes/)
                               ↓
@@ -362,6 +363,7 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 /metaspec.sds.constitution  # Define protocol principles
 /metaspec.sds.specify       # Create specs/protocol/001-{domain}-protocol/spec.md
 /metaspec.sds.clarify       # Resolve protocol ambiguities
+/metaspec.sds.checklist     # Generate quality checklist for protocol
 /metaspec.sds.analyze       # Check protocol consistency
 
 # Phase 2: Toolkit Specification (SDD)
@@ -418,6 +420,7 @@ cd my-speckit
 # Phase 1: Define protocol
 /metaspec.sds.constitution  # Define protocol principles
 /metaspec.sds.specify "Define MCP protocol"  # Protocol entities
+/metaspec.sds.checklist  # Generate quality checklist
 /metaspec.sds.analyze  # Check protocol consistency
 
 # Phase 2: Design toolkit
@@ -430,6 +433,7 @@ cd my-speckit
 ```bash
 # Make changes to specs/protocol/001-*/spec.md
 /metaspec.sds.clarify  # Resolve ambiguities
+/metaspec.sds.checklist  # Validate protocol quality
 /metaspec.sds.analyze  # Check consistency
 ```
 
