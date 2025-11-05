@@ -254,10 +254,11 @@ metaspec init my-spec-kit --template generic
 # 2️⃣ DEVELOP: Use built-in MetaSpec slash commands (no installation needed)
 cd my-spec-kit
 
-# SDS Commands (4) - Define protocol specification
+# SDS Commands (5) - Define protocol specification
 # /metaspec.sds.constitution - Define protocol principles
 # /metaspec.sds.specify      - Define protocol entities and operations
 # /metaspec.sds.clarify      - Resolve protocol ambiguities
+# /metaspec.sds.checklist    - Generate quality checklist for protocol
 # /metaspec.sds.analyze      - Check protocol consistency
 
 # SDD Commands (8) - Develop spec-driven toolkit
