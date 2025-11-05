@@ -41,7 +41,7 @@ src/metaspec/templates/
 │
 └── meta/                     # Third layer: MetaSpec self-development (SDS + SDD)
     ├── sds/                 # Protocol specification commands
-    │   └── commands/        # /metaspec.sds.* (4 commands)
+    │   └── commands/        # /metaspec.sds.* (5 commands)
     └── sdd/                 # Speckit development commands
         └── commands/        # /metaspec.sdd.* (8 commands)
 ```
@@ -56,8 +56,8 @@ src/metaspec/templates/
 api-test-kit/                       # Generated speckit
 │
 ├── .metaspec/
-│   ├── commands/                   # MetaSpec development commands (15 commands)
-│   │   ├── metaspec.sds.*.md      # Protocol specification (4 commands)
+│   ├── commands/                   # MetaSpec development commands (16 commands)
+│   │   ├── metaspec.sds.*.md      # Protocol specification (5 commands)
 │   │   ├── metaspec.sdd.*.md      # Speckit development (8 commands)
 │   │   └── metaspec.*.md          # Evolution management (3 commands)
 │   └── templates/                  # MetaSpec shared output templates (5 files)

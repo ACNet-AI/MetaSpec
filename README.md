@@ -182,12 +182,12 @@ cd my-speckit
 my-speckit info                # Use directly (no metaspec prefix!)
 
 # Generated speckits include built-in MetaSpec commands (AI-assisted development)
-# MetaSpec Commands: /metaspec.sds.*, /metaspec.sdd.*, /metaspec.* (15 commands total)
+# MetaSpec Commands: /metaspec.sds.*, /metaspec.sdd.*, /metaspec.* (16 commands total)
 ```
 
 **Key Principle**: MetaSpec is a **generator**, not a runtime. Generated speckits are independent tools.
 
-**Built-in MetaSpec Workflow**: Every speckit includes 15 MetaSpec commands for complete development lifecycle (4 SDS + 8 SDD + 3 Evolution)
+**Built-in MetaSpec Workflow**: Every speckit includes 16 MetaSpec commands for complete development lifecycle (5 SDS + 8 SDD + 3 Evolution)
 
 ---
 
@@ -243,7 +243,7 @@ MetaSpec is designed for AI agents with strong reasoning capabilities. Speckit c
 
 | Tool | Purpose | Built-in? | Access Method |
 |------|---------|-----------|--------------|
-| **MetaSpec Commands** | Complete spec-driven workflow (15 commands) | ✅ Yes | `/metaspec.sds.*`, `/metaspec.sdd.*`, `/metaspec.*` slash commands in generated speckits |
+| **MetaSpec Commands** | Complete spec-driven workflow (16 commands) | ✅ Yes | `/metaspec.sds.*`, `/metaspec.sdd.*`, `/metaspec.*` slash commands in generated speckits |
 
 **Complete Workflow**:
 
@@ -423,7 +423,7 @@ uv run mypy src/metaspec       # Type check
 
 **v0.1.0** - Alpha Release 🎉
 
-Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (15 commands: 4 SDS + 8 SDD + 3 Evolution), unified spec interface.
+Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (16 commands: 5 SDS + 8 SDD + 3 Evolution), unified spec interface.
 
 ---
 

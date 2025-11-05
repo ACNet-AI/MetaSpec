@@ -103,8 +103,8 @@ cd my-spec-kit
 # Install
 uv pip install -e .
 
-# Use 15 built-in MetaSpec commands (in AI editor)
-# SDS: /metaspec.sds.* (4 commands) - Define protocol
+# Use 16 built-in MetaSpec commands (in AI editor)
+# SDS: /metaspec.sds.* (5 commands) - Define protocol
 # SDD: /metaspec.sdd.* (8 commands) - Develop toolkit
 # Evolution: /metaspec.* (3 commands) - Manage changes
 ```

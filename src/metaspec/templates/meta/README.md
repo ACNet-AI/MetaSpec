@@ -29,7 +29,7 @@ meta/ adopts a clear three-layer architecture, separating commands at different 
 
 ```
 meta/
-├── sds/              # Spec-Driven Specification (4 commands)
+├── sds/              # Spec-Driven Specification (5 commands)
 │   ├── commands/     # Protocol specification definition commands
 │   └── templates/    # (Current commands reference protocol templates under shared templates/)
 │
