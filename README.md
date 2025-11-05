@@ -189,6 +189,8 @@ my-speckit info                # Use directly (no metaspec prefix!)
 
 **Built-in MetaSpec Workflow**: Every speckit includes 16 MetaSpec commands for complete development lifecycle (5 SDS + 8 SDD + 3 Evolution)
 
+**Iteration-Aware Design**: Commands check for existing output and support update/new/append modes, preserving history and tracking progress across iterations ([Constitution Principle #6](memory/constitution.md#6-iteration-aware-design))
+
 ---
 
 ## 🌐 Community
@@ -417,6 +419,11 @@ uv run mypy src/metaspec       # Type check
 - **[AGENTS.md](./AGENTS.md)** - AI workflow guide
 - **[contributing.md](./docs/contributing.md)** - Contribution guide
 - **[examples/](./examples/)** - Example meta-specs
+
+**Iteration & Decision Guides**:
+- **[Evolution Guide](./docs/evolution-guide.md)** - When to use formal evolution vs fast iteration
+- **[Iteration Layers](./docs/iteration-layers.md)** - How Evolution and Command layers work together
+- **[Iteration Roadmap](./docs/iteration-roadmap.md)** - Which commands support iteration and why
 
 ---
 

@@ -156,7 +156,12 @@ STRUCTURE.txt
 # Internal documentation (not for public release)
 docs/internal/
 /specs/
+
+# Memory directory (ignore runtime files but track core configs)
 memory/
+!memory/constitution.md
+!memory/development-principles.md
+!memory/spec-design-principles.md
 
 # Development workflow and archives (personal/historical)
 .archive/

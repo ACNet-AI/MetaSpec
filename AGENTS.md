@@ -455,6 +455,167 @@ cd my-speckit
 
 ---
 
+## 🔄 Using Commands with Iteration Support
+
+**CRITICAL**: Validation/analysis commands (checklist, analyze, clarify) support **iteration modes** to preserve history and track progress.
+
+### Understanding Iteration Modes
+
+When you run a validation command and output already exists, you should ask the user which mode to use:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** (default) | Update scores/status, add Iteration N section | User says "re-run", "verify improvement", "check again" |
+| **new** | Create new output (backup existing) | User says "start fresh", "regenerate" |
+| **append** | Add supplementary output for different focus | User says "add another", "different aspect" |
+
+### Default Interpretation Rules
+
+**When user says**:
+- ✅ "re-run checklist" → **update** mode
+- ✅ "re-run analyze" → **update** mode
+- ✅ "verify improvement" → **update** mode
+- ✅ "check quality again" → **update** mode
+- ⚠️ "start fresh" → **new** mode
+- ⚠️ "regenerate checklist" → **new** mode
+- 🔵 "add another checklist" → **append** mode
+
+**Key principle**: Default to **update** mode unless user explicitly requests new/regenerate.
+
+### Iteration Workflow Example
+
+**Scenario**: User improves protocol based on checklist feedback
+
+```bash
+# Step 1: Initial validation
+User: "Run checklist to validate protocol quality"
+AI: /metaspec.sds.checklist
+
+Output:
+✅ Checklist generated: comprehensive-quality.md
+
+📋 Summary:
+- CHK001: ❌ Missing field types
+- CHK002: ❌ No validation rules
+- CHK003: ⚠️ Incomplete examples
+Score: 33% (1/3 passing)
+
+# Step 2: User fixes issues
+User edits specs/protocol/001-mcp/spec.md
+- Adds field types
+- Adds validation rules
+
+# Step 3: Re-validate (CRITICAL MOMENT)
+User: "Re-run checklist to verify improvements"
+
+AI recognizes:
+- ✅ Checklist file exists
+- ✅ User says "re-run... verify improvements"
+- ✅ This means: update mode (not regenerate)
+
+AI: /metaspec.sds.checklist (update mode)
+
+Output:
+✅ Checklist updated: comprehensive-quality.md
+
+📊 Iteration 2 Summary:
+- Items updated: 3/3
+- Improved: 2 items (CHK001: ❌ → ✅, CHK002: ❌ → ✅)
+- Still partial: 1 item (CHK003: ⚠️)
+
+📈 Progress:
+- Previous: 33% (1/3 passing)
+- Current: 67% (2/3 passing)
+- Improvement: +34%
+
+🎯 Key improvements:
+- CHK001: ❌ → ✅ (field types now defined)
+- CHK002: ❌ → ✅ (validation rules added)
+
+⚠️ Still needs work:
+- CHK003: Examples incomplete (2/5 entities)
+```
+
+### What Gets Preserved in Update Mode
+
+**Preserved**:
+- ✅ All previous iteration records (Iteration 1, 2, 3...)
+- ✅ Original checklist item IDs (CHK001, CHK002...)
+- ✅ Evidence and detailed findings
+- ✅ Category structure
+- ✅ Progress history
+
+**Updated**:
+- ✅ Pass/Partial/Missing status (❌ → ⚠️ → ✅)
+- ✅ Evidence with new findings
+- ✅ Overall scores and percentages
+
+**Added**:
+- ✅ New Iteration N section with date
+- ✅ Progress comparison (before/after)
+- ✅ List of improvements
+
+### Best Practices for AI Agents
+
+1. **Always check if output exists**
+   ```bash
+   Before running validation command:
+   - Check: Does checklists/comprehensive-quality.md exist?
+   - If YES: Ask user for mode (or infer from keywords)
+   - If NO: Generate new
+   ```
+
+2. **Default to update mode**
+   ```bash
+   Unless user explicitly says "start fresh" or "regenerate":
+   → Always choose update mode
+   → This preserves valuable history
+   ```
+
+3. **Highlight improvements**
+   ```bash
+   In update mode, emphasize:
+   - What improved: CHK001: ❌ → ✅
+   - What's still needed: CHK003: ⚠️
+   - Overall progress: +34%
+   ```
+
+4. **Never silently overwrite**
+   ```bash
+   ❌ WRONG: Detect existing file → Silently regenerate
+   ✅ RIGHT: Detect existing file → Ask mode → Update with history
+   ```
+
+### When NOT to Use Iteration Modes
+
+**Creation commands** (specify, implement, constitution):
+- ❌ These create initial specs/code
+- ❌ After creation, users edit directly
+- ❌ No iteration tracking needed
+
+**Execution commands** (tasks):
+- ❌ These execute and mark complete
+- ❌ Not validation-oriented
+- ❌ Use Evolution for changes
+
+### Evolution Layer vs Command Layer
+
+**Command Layer** (checklist, analyze, clarify):
+- Purpose: **Validate** specification quality (read-only)
+- Output: checklists/quality.md, analysis/report.md
+- Never modifies: spec.md
+- Iteration: update/new/append modes
+
+**Evolution Layer** (proposal, apply, archive):
+- Purpose: **Modify** specifications (formal process)
+- Output: changes/[id]/proposal.md, spec-delta.md
+- Modifies: spec.md (after approval)
+- When: Released toolkit OR breaking/major changes
+
+See [Decision Guide](docs/evolution-guide.md) for when to use which.
+
+---
+
 ## 📝 Complete Workflow: Generating a Speckit
 
 This section describes **how to generate a speckit** using `metaspec init`.

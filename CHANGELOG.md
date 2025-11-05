@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ✨ New Features
+- **Iteration-Aware Commands**: `/metaspec.sds.checklist` now supports iterative refinement
+  - Checks for existing checklist before generating
+  - Three modes: `update` (default), `new`, `append`
+  - Preserves history and evidence in update mode
+  - Adds iteration tracking: "Iteration N: [Date]"
+  - Default interpretation: "re-run" → "update", not "regenerate"
+
+### 📋 Constitution
+- **Principle #6: Iteration-Aware Design**: Added new core principle
+  - Commands must check if output already exists
+  - Support update/append modes, not just create
+  - Preserve history and track progress across iterations
+  - Rationale: Spec-driven development is iterative, not one-time
+
+### 🔧 Configuration
+- **Git Tracking**: Added `memory/constitution.md` to version control
+  - Updated `.gitignore` to allow core memory config files
+  - Constitution now properly versioned and tracked
+
+### 📚 Documentation
+- **Decision Guide**: Added comprehensive guides to clarify layer usage
+  - `docs/evolution-guide.md` - Complete decision matrix
+  - `docs/iteration-layers.md` - Visual workflow diagrams
+  - `docs/iteration-roadmap.md` - Planning for Phase 1 implementation
+  - Clarifies when to use Evolution (formal) vs Direct Edit (fast iteration)
+  - Explains Command Layer (validation) vs Evolution Layer (modification)
+  - Prevents confusion between `/metaspec.proposal` and direct spec editing
+- **Command Templates**: Updated with clear scope definitions
+  - `checklist.md.j2`: Explicitly states it never modifies spec.md
+  - `proposal.md.j2`: Includes decision guide for when to use Evolution
+  - Cross-references to decision guide documentation
+- **AGENTS.md**: Added comprehensive "Using Commands with Iteration Support" section
+  - Iteration modes explained (update/new/append)
+  - Default interpretation rules ("re-run" → update mode)
+  - Complete workflow example with before/after comparison
+  - Best practices for AI agents
+  - Evolution Layer vs Command Layer clarification
+- **README.md**: Updated with iteration-aware design features
+  - Added Iteration-Aware Design to key features
+  - Added links to decision guides in Documentation section
+
 ## [0.1.3] - 2025-11-05
 
 ### ✨ New Features

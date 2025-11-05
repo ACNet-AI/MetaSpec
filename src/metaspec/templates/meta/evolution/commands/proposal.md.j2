@@ -345,6 +345,33 @@ assertions:  # NEW field
    - Document any deviations
    - Get approval for violations
 
+---
+
+## ⚠️ When to Use Evolution vs Direct Edit
+
+**Use Evolution (/metaspec.proposal) when**:
+- ✅ Toolkit is released/published (v1.x.x) - ANY change requires Evolution
+- ✅ Breaking changes (add required field, change field type, remove field)
+- ✅ Major features (add new entity, new validation layer, new CLI command)
+- ✅ Need impact analysis and version control
+
+**Direct edit spec.md when**:
+- ✅ Toolkit is draft (v0.x.x)
+- ✅ Minor, non-breaking changes (fix typos, add examples, improve descriptions)
+- ✅ Fast iteration during development
+- ✅ Then validate with `/metaspec.sds.checklist` (update mode)
+
+**Decision rule**:
+```
+Is toolkit released (v1.x.x)?
+  YES → Always use Evolution
+  NO  → Is it breaking or major feature?
+    YES → Use Evolution
+    NO  → Direct edit + checklist
+```
+
+See `docs/evolution-guide.md` for complete decision guide.
+
 ## Example
 
 **User**: `/metaspec:proposal "Add GraphQL support to API Test Kit"`

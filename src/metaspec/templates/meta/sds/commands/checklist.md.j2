@@ -17,6 +17,29 @@ description: Generate quality checklist for protocol specification - validates p
 - ✅ "Are error codes documented with examples? [Completeness]"
 - ✅ "Can 'must be valid' be objectively measured? [Clarity]"
 
+---
+
+## ⚠️ CRITICAL: This Command Does NOT Modify spec.md
+
+**Checklist is a VALIDATION tool, NOT a modification tool.**
+
+**What this command does**:
+- ✅ Read `specs/protocol/XXX-name/spec.md`
+- ✅ Generate/update `checklists/comprehensive-quality.md`
+- ✅ Identify issues (✅ Pass / ⚠️ Partial / ❌ Missing)
+- ✅ Track improvement across iterations
+
+**What this command does NOT do**:
+- ❌ Modify `spec.md`
+- ❌ Fix issues automatically
+- ❌ Add missing fields or descriptions
+
+**When issues are found, user should**:
+- **Draft toolkit** (v0.x.x): Direct edit `spec.md` → Re-run checklist (update mode)
+- **Released toolkit** (v1.x.x): Use `/metaspec.proposal` → `/metaspec.apply`
+
+See `docs/evolution-guide.md` for decision guide.
+
 ## User Input
 
 ```text
@@ -27,7 +50,29 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Execution Flow
 
-### 1. Clarify intent
+### 1. Check for existing checklist
+
+**CRITICAL**: Before generating, check if checklist already exists:
+
+```bash
+ls specs/protocol/XXX-name/checklists/
+```
+
+**If checklist exists**, ask user:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update scores/status, add iteration section | Protocol improved, want to track progress |
+| **new** | Create new checklist (backup existing) | Complete restart, different focus |
+| **append** | Add new checklist for different focus | Existing checklist still valid, new aspect |
+
+**Default**: If user says "re-run", "verify improvement" → choose **update** mode
+
+**If NO checklist exists** → proceed to step 2
+
+---
+
+### 2. Clarify intent
 
 Generate up to 3 contextual clarifying questions based on user input:
 
@@ -49,11 +94,12 @@ Generate up to 3 contextual clarifying questions based on user input:
 - Audience: Protocol designer (self-review)
 - Depth: Standard
 
-### 2. Load protocol context
+### 3. Load protocol context
 
 **Read from**:
 - `specs/protocol/XXX-name/spec.md` (REQUIRED)
 - `/memory/constitution.md` (REQUIRED)
+- `specs/protocol/XXX-name/checklists/` (REQUIRED - check existing checklists)
 - `specs/protocol/XXX-name/examples/` (if exists)
 - `specs/protocol/XXX-name/README.md` (if exists)
 
@@ -62,12 +108,47 @@ Generate up to 3 contextual clarifying questions based on user input:
 - ❌ tasks.md (implementation tasks)
 - ❌ Any files in `specs/toolkit/`
 
-### 3. Generate checklist
+### 4. Generate or update checklist
+
+#### Mode A: **new** mode (default if no existing checklist)
 
 **Create**:
 - Directory: `specs/protocol/XXX-name/checklists/` (if not exists)
 - Filename: `[domain].md` (e.g., `entity-design.md`, `operations.md`, `validation-rules.md`)
 - Format: Sequential IDs starting from CHK001
+
+#### Mode B: **update** mode (if checklist exists)
+
+**Actions**:
+1. Read existing checklist structure
+2. Preserve all existing:
+   - Item IDs (CHK001, CHK002, ...)
+   - Categories
+   - Evidence sections
+   - Previous iteration results
+3. Update:
+   - ✅ Pass / ⚠️ Partial / ❌ Missing status
+   - Evidence with new findings
+4. Add **new section** at end:
+   ```markdown
+   ## 📊 Iteration N: [Date]
+   
+   ### Changes Since Last Check
+   - [List protocol improvements]
+   
+   ### Updated Scores
+   - [Show before/after comparison]
+   
+   ### New Issues Found
+   - [New checklist items if needed]
+   ```
+
+#### Mode C: **append** mode (different focus)
+
+**Actions**:
+1. Create new checklist file with different filename
+2. Reference existing checklist: "See also: [existing-checklist].md"
+3. Focus on new aspect (e.g., existing = entities, new = operations)
 
 **Checklist Categories** (for protocol specs):
 
@@ -138,7 +219,7 @@ Test for protocol specification issues:
 - Are missing definitions noted? [Gap]
 - Are unresolved questions marked (TODO, TBD)? [Ambiguity]
 
-### 4. Checklist Item Structure
+### 5. Checklist Item Structure
 
 **Pattern**:
 ```
@@ -162,7 +243,7 @@ Test for protocol specification issues:
 - [Ambiguity] - Unclear protocol element
 - [Conflict] - Conflicting protocol elements
 
-### 5. Example Checklist Items
+### 6. Example Checklist Items
 
 #### Entity Definitions (`entity-design.md`)
 
@@ -254,7 +335,7 @@ Test for protocol specification issues:
 - [ ] CHK010 - Is constitution referenced in design decisions? [Traceability, Spec]
 ```
 
-### 6. Anti-Examples: What NOT To Do
+### 7. Anti-Examples: What NOT To Do
 
 **❌ WRONG - Testing implementation**:
 ```markdown
@@ -270,7 +351,7 @@ Test for protocol specification issues:
 - [ ] CHK003 - Are protocol CLI interactions defined? [Completeness, Spec §Protocol Interface]
 ```
 
-### 7. Write checklist file
+### 8. Write checklist file
 
 - Write to `specs/protocol/XXX-name/checklists/[domain].md`
 - Use checklist-template structure
@@ -278,7 +359,9 @@ Test for protocol specification issues:
 - Group items by category
 - Number sequentially (CHK001, CHK002, ...)
 
-### 8. Report completion
+### 9. Report completion
+
+#### For **new** mode:
 
 ```
 ✅ Checklist generated: entity-design.md
@@ -308,6 +391,38 @@ It does NOT test if toolkit implements protocol, but whether the protocol specif
 💡 Usage:
 - During protocol review: Check items before toolkit development
 - After protocol draft: Verify protocol completeness
+```
+
+#### For **update** mode:
+
+```
+✅ Checklist updated: entity-design.md
+
+📊 Iteration N Summary:
+- Items updated: 8/10
+- Improved: 5 items (❌ → ⚠️ or ✅)
+- New issues: 2 items
+- Still failing: 1 item
+
+📈 Progress:
+- Previous score: 60% (6/10 passing)
+- Current score: 80% (8/10 passing)
+- Improvement: +20%
+
+📁 Location: specs/protocol/XXX-name/checklists/entity-design.md
+
+🎯 Key improvements detected:
+- CHK001: ❌ → ✅ (entities now have purpose statements)
+- CHK003: ⚠️ → ✅ (all fields now typed)
+- CHK005: ❌ → ⚠️ (partial validation rules added)
+
+⚠️ Still needs work:
+- CHK007: Examples still missing for 2/5 entities
+
+🔄 Next steps:
+1. Review updated scores
+2. Address remaining ❌ and ⚠️ items
+3. Re-run checklist after next iteration
 - Before release: Ensure protocol is production-ready
 ```
 
