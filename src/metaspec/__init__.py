@@ -5,7 +5,7 @@ A framework that generates complete, production-ready speck its (spec-driven too
 from YAML definitions.
 """
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 __all__ = ["__version__"]
 

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2025-11-05
+
 ### ✨ New Features - Phase 1: Complete Iteration-Aware Design
 - **All Validation/Analysis Commands** now support iterative refinement:
   - `/metaspec.sds.checklist` - Protocol quality validation with iteration tracking
