@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2025-11-05
+
+### ✨ New Features
+- **SDS Commands**: Added `/metaspec.sds.checklist` command for protocol quality validation
+  - Generates systematic quality checklists for protocol specifications
+  - Validates entity definitions, operations, validation rules, error handling
+  - Complements `/metaspec.sds.analyze` with human review framework
+  - Aligns with GitHub spec-kit best practices
+
+### 📚 Documentation
+- **Command Count**: Updated from 15 to 16 commands (5 SDS + 8 SDD + 3 Evolution)
+- **Complete Update**: All documentation reflects new command structure
+  - README.md, AGENTS.md, quickstart.md, architecture.md
+  - Template documentation and examples
+
+### 🐛 Bug Fixes
+- **Template Files**: Fixed `.gitignore` to include `src/metaspec/templates/base/specs/`
+  - Changed `specs/` to `/specs/` to only ignore root directory
+  - Template files now properly included in distribution
+
+### 🎯 Improvements
+- **SDS/SDD Symmetry**: Better alignment between protocol and toolkit workflows
+- **Quality Assurance**: Comprehensive quality validation for both SDS and SDD layers
+
 ## [0.1.2] - 2025-11-04
 
 ### 📚 Documentation
