@@ -22,7 +22,29 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 
 ## Execution Flow
 
-### 1. Identify Feature Type and Load Artifacts
+### 1. Check for existing analysis
+
+**CRITICAL**: Before generating, check if analysis already exists:
+
+```bash
+ls specs/toolkit/XXX-name/analysis/
+```
+
+**If analysis exists**, ask user:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update results, add iteration section | Toolkit improved, want to track progress |
+| **new** | Create new analysis (backup existing) | Complete restart, different focus |
+| **append** | Add supplementary analysis | Existing analysis still valid, new aspect |
+
+**Default**: If user says "re-run", "verify improvement" → choose **update** mode
+
+**If NO analysis exists** → proceed to step 2
+
+---
+
+### 2. Identify Feature Type and Load Artifacts
 
 **🏗️ Two-Feature Architecture Check**
 
@@ -54,7 +76,7 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 **If Feature 1 missing for Feature 2**: 
 ⚠️ **CRITICAL**: "Feature 2 depends on Feature 1 but `specs/protocol/001-*` not found!"
 
-### 2. Build semantic models
+### 3. Build semantic models
 
 **Extract from spec.md**:
 - Entity fields (name, type, required, description)
@@ -79,7 +101,7 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 - Six principles (Entity-First, Validator Extensibility, etc.)
 - MUST/SHOULD requirements
 
-### 3. Detection passes
+### 4. Detection passes
 
 #### A. Feature Dependency Validation (Feature 2 Only)
 
@@ -239,14 +261,14 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 ✅ All field names consistent across spec and plan
 ```
 
-### 4. Severity assignment
+### 5. Severity assignment
 
 **CRITICAL**: Constitution violation, missing core artifact, blocking gap
 **HIGH**: Inconsistency, ambiguous requirement, missing coverage
 **MEDIUM**: Terminology drift, underspecified item, minor gap
 **LOW**: Style improvement, minor redundancy
 
-### 5. Generate analysis report
+### 6. Generate analysis report
 
 **Output format**:
 
@@ -259,6 +281,39 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 - plan.md
 - tasks.md
 - constitution.md
+
+---
+
+## 📊 Iteration N: [DATE] (if update mode)
+
+**ONLY include this section when mode = `update`**
+
+### Changes Since Last Analysis
+- [List toolkit improvements made]
+- [What sections were modified]
+
+### Updated Results
+**Issues Resolved**:
+- ✅ C1: Entity reduced to 5 required fields
+- ✅ H1: Assertion syntax defined
+
+**Issues Still Open**:
+- ❌ C2: 'execute' command still lacks workflow
+
+**New Issues Found**:
+- ❌ M5: New inconsistency between spec and plan
+
+### Progress Comparison
+| Metric | Iteration N-1 | Iteration N | Change |
+|--------|---------------|-------------|--------|
+| Total Issues | 12 | 9 | -3 ✅ |
+| Critical | 2 | 1 | -1 ✅ |
+| High | 4 | 3 | -1 ✅ |
+| Medium | 5 | 4 | -1 ✅ |
+| Low | 1 | 1 | 0 |
+| Constitution Compliance | ❌ FAIL | ❌ FAIL | - |
+
+**Overall Progress**: +25% improvement (resolved 3/12 issues)
 
 ---
 
@@ -400,7 +455,7 @@ Run /metaspec:clarify or manually edit spec.md to address issues.
 **Report Version**: 1.0
 ```
 
-### 6. Offer remediation
+### 7. Offer remediation
 
 **Ask user**:
 ```

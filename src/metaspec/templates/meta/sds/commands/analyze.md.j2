@@ -24,7 +24,29 @@ Identify inconsistencies, ambiguities, and gaps in protocol specifications. **RE
 
 ## Execution Flow
 
-### 1. Load Protocol Artifacts
+### 1. Check for existing analysis
+
+**CRITICAL**: Before generating, check if analysis already exists:
+
+```bash
+ls specs/protocol/XXX-name/analysis/
+```
+
+**If analysis exists**, ask user:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update results, add iteration section | Protocol improved, want to track progress |
+| **new** | Create new analysis (backup existing) | Complete restart, different focus |
+| **append** | Add supplementary analysis | Existing analysis still valid, new aspect |
+
+**Default**: If user says "re-run", "verify improvement" → choose **update** mode
+
+**If NO analysis exists** → proceed to step 2
+
+---
+
+### 2. Load Protocol Artifacts
 
 **Required Files**:
 - `specs/protocol/XXX-{name}/spec.md` - Protocol specification
@@ -40,7 +62,7 @@ Identify inconsistencies, ambiguities, and gaps in protocol specifications. **RE
 - ❌ tasks.md (implementation tasks)
 - ❌ Any files in `specs/toolkit/`
 
-### 2. Extract Protocol Elements
+### 3. Extract Protocol Elements
 
 **From spec.md**:
 - Protocol overview and purpose
@@ -55,7 +77,7 @@ Identify inconsistencies, ambiguities, and gaps in protocol specifications. **RE
 - MUST/SHOULD requirements specific to protocols
 - Quality standards for specifications
 
-### 3. Detection Passes
+### 4. Detection Passes
 
 #### A. Entity Definition Quality
 
@@ -217,14 +239,14 @@ Identify inconsistencies, ambiguities, and gaps in protocol specifications. **RE
 ✅ All operation names use verb-noun pattern
 ```
 
-### 4. Severity Assignment
+### 5. Severity Assignment
 
 **CRITICAL**: Constitution violation, missing operation schema, undefined entities
 **HIGH**: Missing validation rules, incomplete error handling, ambiguous requirements
 **MEDIUM**: Terminology drift, missing examples, underspecified constraints
 **LOW**: Style improvement, minor inconsistency
 
-### 5. Generate Analysis Report
+### 6. Generate Analysis Report
 
 **Output format**:
 
@@ -237,6 +259,39 @@ Identify inconsistencies, ambiguities, and gaps in protocol specifications. **RE
 **Analyzed Files**:
 - specs/protocol/XXX-{name}/spec.md
 - memory/constitution.md
+
+---
+
+## 📊 Iteration N: [DATE] (if update mode)
+
+**ONLY include this section when mode = `update`**
+
+### Changes Since Last Analysis
+- [List protocol improvements made]
+- [What sections were modified]
+
+### Updated Results
+**Issues Resolved**:
+- ✅ C1: Response schema added for 'tools/call'
+- ✅ H1: Validation rule added for inputSchema
+
+**Issues Still Open**:
+- ❌ C2: Tool entity still has 8 required fields
+
+**New Issues Found**:
+- ❌ M5: New ambiguity detected in 'capabilities' field
+
+### Progress Comparison
+| Metric | Iteration N-1 | Iteration N | Change |
+|--------|---------------|-------------|--------|
+| Total Issues | 15 | 12 | -3 ✅ |
+| Critical | 2 | 1 | -1 ✅ |
+| High | 5 | 4 | -1 ✅ |
+| Medium | 6 | 5 | -1 ✅ |
+| Low | 2 | 2 | 0 |
+| Constitution Compliance | ❌ FAIL | ❌ FAIL | - |
+
+**Overall Progress**: +20% improvement (resolved 3/15 issues)
 
 ---
 
@@ -380,7 +435,7 @@ Run /metaspec.sds.clarify or manually edit spec.md to address issues.
 **Report Version**: 1.0
 ```
 
-### 6. Offer Remediation
+### 7. Offer Remediation
 
 **Ask user**:
 ```
@@ -421,6 +476,7 @@ Would you like me to suggest concrete fixes for the top 5 issues?
 
 ## Example Output
 
+**For new analysis**:
 ```
 ✅ Protocol Analysis Complete
 
@@ -445,4 +501,34 @@ Fix CRITICAL issues before toolkit development.
 4. Re-run /metaspec.sds.analyze to verify fixes
 
 💡 Run: /metaspec.sds.clarify to refine ambiguous sections
+```
+
+**For update mode**:
+```
+✅ Analysis updated: consistency-report.md
+
+📊 Iteration 2 Summary:
+- Issues updated: 8/8
+- Improved: 3 issues (C1: ❌ → ✅, H1: ❌ → ✅, H2: ❌ → ⚠️)
+- Still critical: 1 issue (C2: ❌)
+- New issues: 1 (M5: Ambiguity in 'capabilities')
+
+📈 Progress:
+- Previous: 8 total issues (2 critical)
+- Current: 6 total issues (1 critical)
+- Improvement: -25% issues, -50% critical
+
+🎯 Key improvements:
+- ✅ C1: Response schema added for 'tools/call'
+- ✅ H1: Validation rule added for inputSchema
+- ⚠️ H2: Partial error handling added
+
+⚠️ Still needs work:
+- ❌ C2: Tool entity still has 8 required fields (should be ≤5)
+- ❌ M5: NEW - 'capabilities' field lacks definition
+
+🔄 Next steps:
+1. Fix remaining critical issue (C2)
+2. Clarify 'capabilities' field definition (M5)
+3. Complete error handling (H2)
 ```

@@ -18,13 +18,35 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ### Execution Flow
 
-#### 1. Load toolkit specification
+#### 1. Check for existing clarification
+
+**CRITICAL**: Before generating, check if clarification report already exists:
+
+```bash
+ls specs/protocol/XXX-name/clarifications/
+```
+
+**If clarification exists**, ask user:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update status, mark resolved ambiguities | Protocol clarified, want to track progress |
+| **new** | Create new clarification (backup existing) | Complete restart, different focus |
+| **append** | Add supplementary clarification | Existing report still valid, new aspect |
+
+**Default**: If user says "re-run", "check again" → choose **update** mode
+
+**If NO clarification exists** → proceed to step 2
+
+---
+
+#### 2. Load toolkit specification
 
 - Read `specs/protocol/XXX-name/spec.md`
 - If missing, instruct user to run `/metaspec:specify` first
 - Parse current entity definitions, workflows, validation rules
 
-#### 2. Perform ambiguity scan
+#### 3. Perform ambiguity scan
 
 Scan the specification using this **speckit-specific taxonomy**. Mark each category: **Clear** / **Partial** / **Missing**.
 
@@ -98,7 +120,7 @@ Scan the specification using this **speckit-specific taxonomy**. Mark each categ
 
 For each category with **Partial** or **Missing** status, add to clarification queue (unless low-impact).
 
-#### 3. Generate prioritized clarification queue
+#### 4. Generate prioritized clarification queue
 
 **Constraints**:
 - Maximum 5 questions total
@@ -123,7 +145,7 @@ For each category with **Partial** or **Missing** status, add to clarification q
 - Implementation details (e.g., which Python library to use)
 - Questions better suited for `/metaspec:plan`
 
-#### 4. Interactive questioning loop
+#### 5. Interactive questioning loop
 
 **Present ONE question at a time**:
 
@@ -176,7 +198,7 @@ For each category with **Partial** or **Missing** status, add to clarification q
 - User signals done ("done", "good", "no more"), OR
 - 5 questions asked
 
-#### 5. Integrate answers incrementally
+#### 6. Integrate answers incrementally
 
 **After EACH accepted answer**:
 
@@ -207,7 +229,7 @@ For each category with **Partial** or **Missing** status, add to clarification q
    - Atomic overwrite
    - Preserve formatting
 
-#### 6. Validation (after each update)
+#### 7. Validation (after each update)
 
 - [ ] Clarifications section has one bullet per answer
 - [ ] Total questions ≤ 5
@@ -216,8 +238,9 @@ For each category with **Partial** or **Missing** status, add to clarification q
 - [ ] Valid Markdown structure
 - [ ] Consistent terminology
 
-#### 7. Report completion
+#### 8. Report completion
 
+**For new clarification**:
 ```
 ✅ Clarification complete
 
@@ -251,6 +274,37 @@ Status legend:
 📁 Updated: specs/protocol/XXX-name/spec.md
 
 💡 Next step: /metaspec:plan
+```
+
+**For update mode**:
+```
+✅ Clarification updated: ambiguity-report.md
+
+📊 Iteration 2 Summary:
+- Ambiguities checked: 10
+- Resolved: 3 (AMB-001, AMB-002, AMB-003)
+- Still outstanding: 2 (AMB-004, AMB-005)
+- New ambiguities: 1 (AMB-006)
+
+📈 Progress:
+- Previous: 5 outstanding ambiguities
+- Current: 3 outstanding ambiguities
+- Improvement: -40% ambiguities
+
+🎯 Key improvements:
+- ✅ AMB-001: "must be valid" → JSON Schema Draft 7
+- ✅ AMB-002: "appropriate timeout" → 100-5000ms
+- ✅ AMB-003: "error handling" → E001-E010 error codes
+
+⚠️ Still needs clarification:
+- ❌ AMB-004: "capabilities" field lacks definition
+- ❌ AMB-005: "permissions" scope unclear
+- ❌ AMB-006: NEW - "metadata" format unspecified
+
+🔄 Next steps:
+1. Clarify remaining ambiguities (3)
+2. Run /metaspec.sds.analyze to verify consistency
+3. Consider /metaspec:plan once ambiguities < 2
 ```
 
 ### Special Cases

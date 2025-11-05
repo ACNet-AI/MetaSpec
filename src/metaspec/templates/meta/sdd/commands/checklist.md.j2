@@ -27,7 +27,29 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Execution Flow
 
-### 1. Clarify intent
+### 1. Check for existing checklist
+
+**CRITICAL**: Before generating, check if checklist already exists:
+
+```bash
+ls specs/toolkit/XXX-name/checklists/
+```
+
+**If checklist exists**, ask user:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update scores/status, add iteration section | Toolkit improved, want to track progress |
+| **new** | Create new checklist (backup existing) | Complete restart, different focus |
+| **append** | Add new checklist for different focus | Existing checklist still valid, new aspect |
+
+**Default**: If user says "re-run", "verify improvement" → choose **update** mode
+
+**If NO checklist exists** → proceed to step 2
+
+---
+
+### 2. Clarify intent
 
 Generate up to 3 contextual clarifying questions based on user input:
 
@@ -49,7 +71,7 @@ Generate up to 3 contextual clarifying questions based on user input:
 - Audience: Toolkit developer (self-review)
 - Depth: Standard
 
-### 2. Load toolkit context
+### 3. Load toolkit context
 
 **Read from**:
 - `specs/toolkit/XXX-name/spec.md` (REQUIRED)
@@ -57,7 +79,7 @@ Generate up to 3 contextual clarifying questions based on user input:
 - `/memory/constitution.md` (REQUIRED)
 - `specs/toolkit/XXX-name/architecture.md` (if exists)
 
-### 3. Generate checklist
+### 4. Generate checklist
 
 **Create**:
 - Directory: `specs/toolkit/XXX-name/checklists/` (if not exists)
@@ -262,6 +284,7 @@ Test for specification issues:
 
 ### 8. Report completion
 
+**For new checklist**:
 ```
 ✅ Checklist generated: entity-design.md
 
@@ -291,6 +314,36 @@ It does NOT test if the implementation works, but whether the specification is:
 - During spec review: Check items before /metaspec:plan
 - After implementation: Verify spec matched reality
 - Before release: Ensure spec is complete
+```
+
+**For update mode**:
+```
+✅ Checklist updated: comprehensive-quality.md
+
+📊 Iteration 2 Summary:
+- Items updated: 10/10
+- Improved: 3 items (CHK001: ❌ → ✅, CHK003: ❌ → ⚠️, CHK005: ⚠️ → ✅)
+- Still failing: 2 items (CHK002, CHK007)
+- New items: 0
+
+📈 Progress:
+- Previous: 40% (4/10 passing)
+- Current: 60% (6/10 passing)
+- Improvement: +20%
+
+🎯 Key improvements:
+- ✅ CHK001: Entity field types now specified
+- ✅ CHK005: Examples added for all entities
+- ⚠️ CHK003: Partial validation rules (3/5 entities)
+
+⚠️ Still needs work:
+- ❌ CHK002: Field constraints missing (enum, regex)
+- ❌ CHK007: Error messages lack specificity
+
+🔄 Next steps:
+1. Fix remaining failing items (2)
+2. Complete partial validation rules (CHK003)
+3. Run /metaspec.sdd.analyze to verify consistency
 ```
 
 ## Important Notes

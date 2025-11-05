@@ -7,13 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### ✨ New Features
-- **Iteration-Aware Commands**: `/metaspec.sds.checklist` now supports iterative refinement
-  - Checks for existing checklist before generating
+### ✨ New Features - Phase 1: Complete Iteration-Aware Design
+- **All Validation/Analysis Commands** now support iterative refinement:
+  - `/metaspec.sds.checklist` - Protocol quality validation with iteration tracking
+  - `/metaspec.sds.analyze` - Protocol consistency analysis with progress comparison
+  - `/metaspec.sds.clarify` - Protocol ambiguity resolution with resolved item tracking
+  - `/metaspec.sdd.checklist` - Toolkit quality validation with iteration tracking
+  - `/metaspec.sdd.analyze` - Toolkit consistency analysis with progress comparison
+  - `/metaspec.sdd.clarify` - Toolkit ambiguity resolution with resolved item tracking
+
+**Unified Iteration Support**:
+  - Checks for existing output before generating
   - Three modes: `update` (default), `new`, `append`
   - Preserves history and evidence in update mode
   - Adds iteration tracking: "Iteration N: [Date]"
   - Default interpretation: "re-run" → "update", not "regenerate"
+  - Before/after comparison with improvement percentage
+  - Progress tracking: issues resolved, still open, newly found
 
 ### 📋 Constitution
 - **Principle #6: Iteration-Aware Design**: Added new core principle
