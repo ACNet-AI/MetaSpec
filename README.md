@@ -453,4 +453,4 @@ Inspired by [Spec-Kit](https://github.com/github/spec-kit), [Protocol Buffers](h
 
 ---
 
-**Built for the Spec-Driven Development Community**
+**A Meta-Specification Framework for Generating Spec-Driven Toolkits**
