@@ -19,10 +19,10 @@ from rich.prompt import Confirm, Prompt
 from metaspec.generator import create_generator
 from metaspec.models import MetaSpecDefinition
 
-# Built-in domain template for quick start
+# Built-in starter presets for quick start
 # Used when: metaspec init <name> --template default
 # For domain-specific toolkits, use interactive mode or create custom YAML
-DOMAIN_TEMPLATES = {
+STARTER_PRESETS = {
     "default": {
         "name": "my-speckit",
         "version": "0.1.0",
@@ -261,15 +261,15 @@ def init_command(
 
 def _create_from_template(template: str, toolkit_name: str) -> MetaSpecDefinition:
     """Create MetaSpecDefinition from template."""
-    if template not in DOMAIN_TEMPLATES:
+    if template not in STARTER_PRESETS:
         console.print(f"[red]Error:[/red] Unknown template '{template}'")
-        console.print(f"Available templates: {', '.join(DOMAIN_TEMPLATES.keys())}")
+        console.print(f"Available templates: {', '.join(STARTER_PRESETS.keys())}")
         raise typer.Exit(1)
 
     console.print(f"\n[dim]Using template: {template}[/dim]")
 
     # Get template data
-    template_data = DOMAIN_TEMPLATES[template].copy()
+    template_data = STARTER_PRESETS[template].copy()
     template_data["name"] = toolkit_name
 
     # Create MetaSpecDefinition directly from dict (no YAML round-trip)
