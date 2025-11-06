@@ -400,65 +400,138 @@ Select primary toolkit type(s):
 
 ---
 
-#### STEP 2: Derive CLI Commands from Type
+#### STEP 2: Derive CLI Commands from Toolkit Purpose
 
-**Based on toolkit type, derive commands**:
+**CRITICAL**: ❌ **DON'T use fixed command names** (init, validate, list)  
+            ✅ **DO derive commands based on toolkit function and domain**
 
-| Toolkit Type | Derived CLI Commands | Description |
-|-------------|---------------------|-------------|
-| **Generator** | `init <name>`, `create`, `scaffold` | Initialize new projects |
-| **Environment Checker** | `check`, `verify`, `doctor` | Check system requirements |
-| **Validator** | `validate <file>`, `lint`, `check` | Validate against protocol |
-| **Query Tool** | `list`, `show <id>`, `info` | Display information |
-| **State Manager** | `update`, `sync`, `status` | Manage state |
-| **Community** | `search <query>`, `install <name>`, `contribute` | Community features |
+**Why This Matters**:
+- CLI commands serve toolkit-specific purposes
+- Names should reflect what the toolkit actually does
+- Real projects show diverse command naming
 
-**Real Project Examples**:
+---
 
+**CLI Command Derivation Process**:
+
+1. **Identify Toolkit Functions**
+   - What does this toolkit DO?
+   - Generator: Creates projects/files
+   - Validator: Checks compliance
+   - Query: Displays information
+   - Manager: Tracks/updates state
+
+2. **Match Functions to Command Purposes**
+   - Don't copy "init, validate, list"
+   - Think: What actions do users need?
+
+3. **Choose Domain-Appropriate Names**
+   - Match domain terminology
+   - Keep commands intuitive
+
+---
+
+**Real Project CLI Commands** (learn from these):
+
+| Project | Toolkit Type | Actual Commands | Insight |
+|---------|-------------|-----------------|---------|
+| **Specify** | Generator<br>+ Checker | `init` - Create project<br>`check` - Verify tools | Simple, focused |
+| **OpenSpec** | Validator<br>+ Query<br>+ Manager | `validate` - Check proposal<br>`list` - Show proposals<br>`show` - Display details<br>`update` - Sync state | State-management oriented |
+| **MetaSpec** | Generator<br>+ Community | `init` - Generate speckit<br>`search` - Find packages<br>`install` - Get from community<br>`contribute` - Share speckit | Community platform |
+| **Spec-Kit** | Workflow Tool | No CLI (shell scripts only)<br>`specify.sh`, `plan.sh` | Script-based approach |
+
+**Key Insight**: Commands reflect toolkit purpose, not generic patterns
+
+---
+
+**Command Purpose Guidelines** (NOT fixed names):
+
+| Toolkit Function | Command Purpose | Naming Examples | When to Include |
+|-----------------|----------------|-----------------|-----------------|
+| **Project Generation** | Create/initialize | `init`, `create`, `new`, `scaffold` | If toolkit creates projects |
+| **Environment Setup** | Check prerequisites | `check`, `verify`, `doctor`, `setup` | If toolkit needs environment |
+| **Protocol Validation** | Validate compliance | `validate`, `check`, `lint`, `verify` | If protocol has rules |
+| **Information Query** | Display data | `list`, `show`, `info`, `get`, `display` | If toolkit manages content |
+| **State Management** | Update/sync | `update`, `sync`, `refresh`, `pull` | If toolkit tracks state |
+| **Community Integration** | Package operations | `search`, `install`, `publish`, `contribute` | If ecosystem exists |
+
+**Customization Based on Domain**:
 ```bash
-# Specify (Generator + Checker)
-specify init my-project --ai claude
-specify check
+# Generic toolkit → Generic commands
+toolkit validate spec.yaml
 
-# OpenSpec (Validator + Query + State Manager)
-openspec validate <id>
-openspec list --specs
-openspec show <id>
-openspec update
+# Domain-specific → Domain commands  
+mcp-toolkit validate-server config.json
+api-toolkit check-endpoint spec.yaml
+```
 
-# MetaSpec (Generator + Community)
-metaspec init my-speckit
-metaspec search "api"
-metaspec install api-speckit
-metaspec contribute my-speckit
+---
+
+**Example Derivation - MCP-Speckit**:
+
+```markdown
+## Toolkit Type Analysis
+
+**Primary Functions**:
+1. Validator (validate MCP server definitions)
+2. Query Tool (show MCP protocol reference)
+3. Generator (optional: scaffold MCP projects)
+
+**Derived CLI Commands**:
+
+### From Validator function:
+✅ validate <file>          # Validate MCP server definition
+   --strict                 # Treat warnings as errors
+   --format json            # Output format
+
+### From Query Tool function:
+✅ show spec [section]      # Display MCP protocol docs
+✅ get template <entity>    # Get entity template
+✅ list examples            # List available examples
+
+### From Generator function (if needed):
+✅ init [project-name]      # Initialize MCP project
+   --template server        # Project template
+
+**Customization Decision**:
+- Keep generic: `validate`, `init` (standard toolkit operations)
+- Or domain-specific: `validate-server`, `init-mcp-project`
+- Choice depends on: toolkit scope, user expectations
+```
+
+**Result**: 3-6 CLI commands based on toolkit functions, not fixed templates
 ```
 
 ---
 
 #### STEP 3: Protocol-Influenced CLI Parameters
 
-**If protocol defines specific content**, customize command parameters:
+**Protocol content can influence command parameters** (not command names):
 
-**Protocol has multiple entities**:
+**If protocol defines entity types**:
 ```bash
-# If protocol defines 5 entity types
-{toolkit-name} get-template <entity>
-# Options: requirements | design | code | tests | deployment
+# Protocol has: Server, Tool, Resource entities
+{toolkit-name} show <entity-type>     # show server | tool | resource
+{toolkit-name} init <entity-type>     # init server | tool
 ```
 
-**Protocol has examples**:
+**If protocol has structured sections**:
 ```bash
-{toolkit-name} get-example <type>
-# Options derived from protocol example types
+# Protocol has: Overview, Entities, Operations, Examples sections
+{toolkit-name} docs [section]         # docs entities | docs operations
 ```
 
-**Protocol has sections**:
+**If protocol defines workflow phases**:
 ```bash
-{toolkit-name} get-spec [section]
-# Sections from protocol structure
+# Protocol has: Phase 1, Phase 2, Phase 3
+{toolkit-name} status                 # Show current phase
+{toolkit-name} next                   # Move to next phase
 ```
 
-**Key Principle**: Protocol influences **parameters**, not **command types**
+**Key Principle**: 
+- Protocol influences **parameters and options**
+- NOT command names (those come from toolkit purpose)
+- Use protocol's actual terminology in parameters
 
 ---
 
@@ -501,7 +574,7 @@ metaspec contribute my-speckit
 
 **Toolkit Type**: Validator + Query Tool + Generator
 
-**Derived Commands**:
+**Derived Commands** (domain-appropriate naming):
 
 ```bash
 # From Validator type
@@ -510,19 +583,26 @@ mcpspeckit validate <file>
   --format json         JSON output
 
 # From Query Tool type  
-mcpspeckit list
-  --type entities       List entity types
+mcpspeckit show [section]       # Not "get-spec" - more intuitive
+  --format markdown              # Show MCP protocol docs
 
-mcpspeckit get-spec [section]
-  --format markdown     Output format
+mcpspeckit list [type]           # List entities or examples
+  --type servers                 # MCP-specific entity types
 
-mcpspeckit get-template <entity>
-  --output file.json    Save to file
+mcpspeckit docs <topic>          # Access MCP documentation
+  --search keyword               # Search docs
 
 # From Generator type
 mcpspeckit init [project-name]
-  --template default    Template to use
+  --template server              # Initialize MCP project
+  --ai-provider anthropic        # Configure AI provider
 ```
+
+**Naming Rationale**:
+- ✅ `show` instead of `get-spec` (more intuitive verb)
+- ✅ `docs` for documentation access (common pattern)
+- ✅ `list` stays generic (standard query command)
+- ✅ Parameters reflect MCP domain (`servers`, `server`, `ai-provider`)
 
 **Note**: These CLI commands are **independent tools**, NOT called by Slash Commands.
 
@@ -667,41 +747,98 @@ Option C: Composed (Recommended)
 
 ---
 
-#### STEP 2: Derive Commands from Protocol
+#### STEP 2: Derive Command Names from Protocol
 
-**Mapping Rules**: Protocol content → Commands
+**CRITICAL**: ❌ **DON'T use generic names** (get-spec, get-template, validate)  
+            ✅ **DO extract domain-specific names** from protocol terminology
 
-| Protocol Content | Indicator | Derived Command | Purpose |
-|-----------------|-----------|-----------------|---------|
-| **Complex rules** | 20+ pages, many constraints | `get-spec [section]` | Access protocol knowledge |
-| **Multiple entities** | 3+ entity definitions | `get-template <entity>` | Retrieve entity structures |
-| **Validation rules** | JSON schemas, constraints | `validate <file>` | Check compliance |
-| **Workflow (Type A)** | States & transitions | `get-workflow`, `next-phase` | Navigate workflow |
-| **Workflow (Type B)** | Action sequences | One command per action | Execute each step |
-| **Examples** | Example library | `get-example <type>` | Reference examples |
-| **Operations** | Interface definitions | `get-spec operations` | Access interface specs |
+**Why This Matters**:
+- Generic names lose domain meaning
+- Real projects use domain-specific terminology
+- Better developer experience with familiar terms
 
-**Example Analysis - MCP Protocol**:
+---
+
+**Command Naming Process**:
+
+1. **Read Protocol Content**
+   - Workflow phases: "Define Server", "Configure Endpoints"
+   - Entity names: "Server", "Tool", "Resource"
+   - Operations: "Initialize", "Validate", "Deploy"
+
+2. **Extract Verb + Noun Pairs**
+   - "Define Server" → verb: define, noun: server
+   - "Configure Endpoints" → verb: configure, noun: endpoints
+   - "Validate Configuration" → verb: validate, noun: configuration
+
+3. **Form Domain-Specific Command Names**
+   - Hyphenated: `define-server`, `configure-endpoints`
+   - Or use protocol's exact terminology
+
+---
+
+**Real Project Command Naming Patterns**:
+
+| Project | Pattern | Examples | Insight |
+|---------|---------|----------|---------|
+| **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions become commands |
+| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Protocol's change management terms |
+| **MetaSpec** | Namespaced | `sds.specify`<br>`sdd.clarify`<br>`sdd.plan` | Layered specification system |
+
+**Key Insight**: ❌ No project uses `get-template` or `get-spec` → ✅ All use domain terminology
+
+---
+
+**Command Purpose Categories** (for guidance, NOT fixed names):
+
+| Protocol Contains | Command Purpose | Naming Examples | When to Include |
+|------------------|----------------|-----------------|-----------------|
+| **Workflow phases** | Execute phase actions | MCP: `define-server`, `configure-tools`<br>API: `create-endpoint`, `test-endpoint` | Always (if workflow exists) |
+| **Entity types** | Work with entities | MCP: `init-server`, `add-tool`<br>API: `scaffold-endpoint`, `define-schema` | If 3+ entities |
+| **Validation rules** | Validate outputs | MCP: `validate-server`, `check-config`<br>API: `lint-spec`, `verify-endpoint` | If complex rules |
+| **Multi-step process** | Navigate process | Project: `next-phase`, `show-roadmap`<br>Deploy: `status`, `rollback` | If state machine workflow |
+| **Reference docs** | Access knowledge | Protocol: `show-spec`, `docs server`<br>Standard: `reference`, `help-with` | If complex (20+ pages) |
+
+**Key Principle**: Use protocol's own vocabulary, don't impose generic names
+
+---
+
+**Example Derivation - MCP Protocol**:
 
 ```markdown
-Protocol Analysis (specs/protocol/001-mcp/spec.md):
+## Protocol Analysis (specs/protocol/001-mcp/spec.md)
 
-✅ Complexity: High (5 phases, 20+ validation rules)
-✅ Entities: 5 artifact types (requirements, design, code, tests, deployment)
-✅ Validation: Each entity has JSON schema
-✅ Workflow: Type B - Action sequence per phase
-✅ Examples: Template for each artifact type
+### Workflow Phases (from protocol):
+1. "Define MCP Server"
+2. "Configure Tools and Resources"
+3. "Implement Tool Handlers"
+4. "Test Server"
+5. "Deploy to Production"
 
-Derived Commands (before classification):
-  - get-spec
-  - get-template
-  - validate
-  - get-workflow
-  - get-example
-  - init
-  - define-requirements (from workflow)
-  - create-design (from workflow)
-  - generate-code (from workflow)
+### Derived Command Names (domain-specific):
+
+**From workflow phases** (Type B - Action sequence):
+  ✅ define-server       ← "Define MCP Server"
+  ✅ configure-tools     ← "Configure Tools"
+  ✅ add-resource        ← "Add Resource"
+  ✅ implement-handler   ← "Implement Handler"
+  ✅ test-server         ← "Test Server"
+
+**From entity types** (if needed):
+  ✅ init-server         ← Work with Server entity
+  ✅ add-tool            ← Work with Tool entity
+
+**From validation rules** (if needed):
+  ✅ validate-server     ← Validate against MCP schema
+  ✅ check-config        ← Check configuration
+
+**NOT using**:
+  ❌ get-template        ← Too generic
+  ❌ get-spec            ← Doesn't reflect MCP domain
+  ❌ validate            ← What are we validating?
+```
+
+**Result**: 5-8 domain-specific commands that match MCP terminology
 ```
 
 ---
@@ -796,12 +933,12 @@ AI produces, independent CLI validates:
   - Validates JSON against MCP schema
   - Used independently by user
   
-- ✅ CLI: mcpspeckit get-spec [section]
+- ✅ CLI: mcpspeckit show [section]
   - Displays protocol documentation
   - AI can reference in Slash Command
   
-- ✅ CLI: mcpspeckit get-template <entity>
-  - Returns entity template
+- ✅ CLI: mcpspeckit docs <topic>
+  - Access MCP documentation
   - AI uses as reference
 
 - ✅ Slash: /mcpspeckit.validate.md (optional)
@@ -812,7 +949,7 @@ AI produces, independent CLI validates:
 **Command Counts**:
 - **Slash Commands**: 4-8 (Pure-Execution + Script-Assisted + optional guides)
 - **Helper Scripts**: 1-2 (if using Script-Assisted pattern)
-- **CLI Commands**: 3-5 (validate, get-spec, get-template - independent tools)
+- **CLI Commands**: 3-5 (validate, show, docs, list - independent tools)
 - **Total**: Slash ≥ CLI (normal pattern)
 
 ---
@@ -829,11 +966,25 @@ AI produces, independent CLI validates:
 ### CLI Implementation Checklist
 
 **Independent CLI Tools** (user calls directly):
-- [ ] validate <file>: Validate against protocol schema
-- [ ] get-spec [section]: Display protocol documentation
-- [ ] get-template <entity>: Return entity template
-- [ ] list: List available entities/examples
-- [ ] info: Show protocol information
+
+Based on your toolkit functions, implement:
+
+- [ ] **Validation**: validate <file>, check, lint
+  - Validate against protocol schema
+  - Independent verification tool
+
+- [ ] **Information Display**: show [section], docs <topic>, help
+  - Display protocol documentation
+  - Provide reference information
+
+- [ ] **Query**: list [type], info
+  - List available entities/examples
+  - Show protocol information
+
+**Naming Reminder**:
+- ❌ Don't hardcode: get-spec, get-template, get-example
+- ✅ Choose intuitive: show, docs, list, help
+- ✅ Or domain-specific: show-mcp-spec, list-servers
 
 **Implementation Guidelines**:
 - These are **standalone tools**, not called by Slash Commands

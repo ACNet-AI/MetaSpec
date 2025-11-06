@@ -78,6 +78,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Impact**: AI now has clear methodology to derive appropriate CLI commands based on toolkit purpose, avoiding both over-engineering and missing essential functionality.
 
+#### ⚠️ CRITICAL FIX: Removed Hardcoded Command Names
+
+**Problem Identified**: Previous version contained hardcoded command names throughout:
+- Slash Commands: `get-spec`, `get-template`, `validate`, `get-example` (hardcoded mapping table)
+- CLI Commands: `init`, `create`, `scaffold`, `list`, `show` (hardcoded per toolkit type)
+
+**Why This Was Wrong**:
+- ❌ No real project uses `get-template` or `get-spec`
+- ❌ Generic names lose domain meaning
+- ❌ Contradicts actual implementations (Spec-Kit: `specify`, OpenSpec: `proposal`, MetaSpec: `specify`)
+- ❌ Forces "one-size-fits-all" approach
+
+**What Changed**:
+
+1. **Slash Commands - STEP 2 (Complete Rewrite)**
+   - ❌ Removed: Hardcoded mapping table (Protocol Content → Fixed Command Names)
+   - ✅ Added: Command naming process (3 steps: Read protocol → Extract verbs/nouns → Form domain names)
+   - ✅ Added: Real project patterns (Spec-Kit, OpenSpec, MetaSpec naming examples)
+   - ✅ Added: "Command Purpose Categories" (guidance, NOT fixed names)
+   - ✅ Example: MCP protocol → `define-server`, `configure-tools` (NOT get-template)
+
+2. **CLI Commands - STEP 2 (Complete Rewrite)**
+   - ❌ Removed: Hardcoded command table (Toolkit Type → Fixed CLI Commands)
+   - ✅ Added: CLI command derivation process (Identify functions → Match purposes → Choose names)
+   - ✅ Added: Real project CLI commands (actual implementations from Specify, OpenSpec, MetaSpec)
+   - ✅ Added: "Command Purpose Guidelines" (NOT fixed names)
+   - ✅ Example: MCP-Speckit → `show`, `docs`, `list` (NOT get-spec, get-template)
+
+3. **Updated All Examples**
+   - STEP 3: Protocol parameters (removed get-template, get-spec examples)
+   - Classification Example: Now uses domain-specific names
+   - CLI Implementation Checklist: Removed hardcoded commands, added naming guidance
+
+**Key Principle Now Enforced**:
+```
+❌ DON'T: Use generic/hardcoded names (get-spec, get-template, validate)
+✅ DO: Extract domain-specific names from protocol terminology
+```
+
+**Real Project Alignment**:
+- Spec-Kit: `specify`, `plan`, `implement` ✅
+- OpenSpec: `proposal`, `apply`, `archive` ✅
+- MetaSpec: `specify`, `clarify`, `plan` ✅
+- No project uses: `get-template`, `get-spec` ✅
+
+**Impact**: 
+- Eliminates "template套用" anti-pattern
+- Ensures domain-appropriate naming
+- Aligns with all real-world projects
+- Better developer experience with familiar domain terms
+
 #### Combined Impact - Complete Command Architecture
 
 **Slash Commands** (Protocol-Driven) + **CLI Commands** (Purpose-Driven) = Complete toolkit architecture
