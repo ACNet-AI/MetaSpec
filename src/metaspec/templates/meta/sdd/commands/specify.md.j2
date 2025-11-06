@@ -361,44 +361,202 @@ if not result.valid:
 ```
 \```
 
-##### **Component 3: CLI**
+##### **Component 3: CLI Commands**
+
+**CRITICAL**: CLI commands come from **Toolkit Purpose**, NOT from protocol workflow.
 
 ```markdown
-### CLI Component
+### CLI Commands
 
-**Purpose**: Provide command-line interface for toolkit
+**Key Distinction**:
+- **Slash Commands** → From protocol workflow (define-requirements, create-design)
+- **CLI Commands** → From toolkit function (init, check, list, validate)
 
-**Commands**:
+---
 
-#### `init` - Create new specification
+#### STEP 1: Define Toolkit Type
+
+**Question: What type of tool is this toolkit?**
+
+Select primary toolkit type(s):
+
+- [ ] **Generator/Scaffolder** - Creates projects, initializes structures
+  - Example: Specify (`specify init`), MetaSpec (`metaspec init`)
+  
+- [ ] **Environment Checker** - Verifies system setup, dependencies
+  - Example: Specify (`specify check`)
+  
+- [ ] **Validator** - Validates against protocol schemas
+  - Example: OpenSpec (`openspec validate`)
+  
+- [ ] **Query/Reference Tool** - Provides protocol information
+  - Example: OpenSpec (`openspec show`, `openspec list`)
+  
+- [ ] **State Manager** - Manages project/spec state
+  - Example: OpenSpec (`openspec update`)
+  
+- [ ] **Community Platform** - Connects to package registry
+  - Example: MetaSpec (`metaspec search`, `metaspec install`)
+
+---
+
+#### STEP 2: Derive CLI Commands from Type
+
+**Based on toolkit type, derive commands**:
+
+| Toolkit Type | Derived CLI Commands | Description |
+|-------------|---------------------|-------------|
+| **Generator** | `init <name>`, `create`, `scaffold` | Initialize new projects |
+| **Environment Checker** | `check`, `verify`, `doctor` | Check system requirements |
+| **Validator** | `validate <file>`, `lint`, `check` | Validate against protocol |
+| **Query Tool** | `list`, `show <id>`, `info` | Display information |
+| **State Manager** | `update`, `sync`, `status` | Manage state |
+| **Community** | `search <query>`, `install <name>`, `contribute` | Community features |
+
+**Real Project Examples**:
+
 ```bash
-{toolkit-name} init [filename]
+# Specify (Generator + Checker)
+specify init my-project --ai claude
+specify check
 
-Options:
-  --template [name]  Use specific template
-  --interactive      Interactive mode
+# OpenSpec (Validator + Query + State Manager)
+openspec validate <id>
+openspec list --specs
+openspec show <id>
+openspec update
+
+# MetaSpec (Generator + Community)
+metaspec init my-speckit
+metaspec search "api"
+metaspec install api-speckit
+metaspec contribute my-speckit
 ```
 
-#### `validate` - Validate specification
-```bash
-{toolkit-name} validate [filename]
+---
 
-Options:
-  --strict           Treat warnings as errors
-  --format [json]    Output format
+#### STEP 3: Protocol-Influenced CLI Parameters
+
+**If protocol defines specific content**, customize command parameters:
+
+**Protocol has multiple entities**:
+```bash
+# If protocol defines 5 entity types
+{toolkit-name} get-template <entity>
+# Options: requirements | design | code | tests | deployment
 ```
 
-#### `generate` - Generate artifacts
+**Protocol has examples**:
 ```bash
-{toolkit-name} generate [filename]
-
-Options:
-  --output [dir]     Output directory
-  --template [name]  Template to use
+{toolkit-name} get-example <type>
+# Options derived from protocol example types
 ```
 
-**CLI Framework**: typer or click
-**Output**: Rich formatting with colors and progress
+**Protocol has sections**:
+```bash
+{toolkit-name} get-spec [section]
+# Sections from protocol structure
+```
+
+**Key Principle**: Protocol influences **parameters**, not **command types**
+
+---
+
+#### STEP 4: Define CLI Implementation
+
+**For each derived command, specify**:
+
+```markdown
+### Command: {command-name}
+
+**Purpose**: {What this command does}
+
+**Usage**:
+\```bash
+{toolkit-name} {command} [arguments] [options]
+\```
+
+**Arguments**:
+- arg1: (required) Description
+- arg2: (optional) Description
+
+**Options**:
+- --option1: Description
+- --option2: Description
+
+**Example**:
+\```bash
+{toolkit-name} {command} example-arg --option1 value
+\```
+
+**Implementation Notes**:
+- Uses: {library/framework}
+- Output: {format}
+- Exit codes: 0 (success), 1 (error)
+```
+
+---
+
+#### Example: MCP-Speckit CLI Design
+
+**Toolkit Type**: Validator + Query Tool + Generator
+
+**Derived Commands**:
+
+```bash
+# From Validator type
+mcpspeckit validate <file>
+  --strict              Treat warnings as errors
+  --format json         JSON output
+
+# From Query Tool type  
+mcpspeckit list
+  --type entities       List entity types
+
+mcpspeckit get-spec [section]
+  --format markdown     Output format
+
+mcpspeckit get-template <entity>
+  --output file.json    Save to file
+
+# From Generator type
+mcpspeckit init [project-name]
+  --template default    Template to use
+```
+
+**Note**: These CLI commands are **independent tools**, NOT called by Slash Commands.
+
+---
+
+#### CLI vs Slash Commands Summary
+
+```markdown
+## Command Architecture
+
+### CLI Commands (Independent Tools)
+**Source**: Toolkit Purpose/Function
+**User**: Developers (direct usage)
+**Examples**:
+- specify init, specify check
+- openspec validate, openspec list
+- metaspec init, metaspec search
+
+### Slash Commands (AI Execution Guides)
+**Source**: Protocol Workflow
+**User**: AI Agents (via Cursor, Windsurf, etc.)
+**Examples**:
+- /mcpspeckit.define-requirements
+- /mcpspeckit.create-design
+- /mcpspeckit.generate-code
+
+**Relationship**: Separated by design
+- Slash Commands guide AI content production
+- CLI Commands provide validation/query tools
+- No direct calls between them
+```
+
+**CLI Framework**: typer (Python) or commander (Node.js)
+**Output**: Rich formatting with colors, progress bars
 \```
 
 ##### **Component 4: Slash Commands - Spec-Driven Execution (CRITICAL for AI-Oriented Tools)**
@@ -425,7 +583,54 @@ Options:
 
 ---
 
-#### STEP 1: Analyze Protocol Specification (REQUIRED)
+### 🎯 Dual-Source Architecture (Composable Spec Systems)
+
+**IMPORTANT**: Slash Commands come from **TWO sources** and can be **composed**:
+
+#### Source 1: Protocol-Derived (Custom)
+- **From**: SDS protocol specification (`specs/protocol/`)
+- **Nature**: Dynamic, protocol-specific, tailored
+- **Process**: Analyze protocol → Derive commands
+- **Examples**: `get-template`, `validate`, workflow actions
+
+#### Source 2: Library-Selected (Reusable)
+- **From**: MetaSpec template library (`library/`)
+- **Nature**: Pre-built, domain-specific, reusable
+- **Process**: Select specification system → Adapt to toolkit
+- **Examples**: Generic SD-X, Spec-Kit workflow, OpenSpec evolution
+
+#### Composition Strategy
+
+```
+Choose one or combine:
+
+Option A: Protocol-Only (Custom)
+  → Derive all commands from protocol
+  → Fully tailored to domain
+  → Example: MCP-specific commands
+
+Option B: Library-Only (Reusable)
+  → Use pre-built spec system
+  → Quick start, proven patterns
+  → Example: Generic SD-X workflow
+
+Option C: Composed (Recommended)
+  → Base: Library spec system
+  → Extension: Protocol-derived commands
+  → Example: Generic workflow + MCP entities
+```
+
+**MetaSpec's Composability**:
+- MetaSpec itself uses `meta/` spec system (16 commands)
+- Spec-Kit uses `library/sdd/spec-kit/` spec system
+- OpenSpec uses `library/sdd/openspec/` spec system
+- Your speckit can choose/compose these systems
+
+---
+
+### Source 1: Protocol-Derived Commands (Custom)
+
+#### STEP 1: Analyze Protocol Specification
 
 **Before defining Slash Commands**, analyze the SDS protocol specification in `specs/protocol/`.
 
@@ -487,149 +692,434 @@ Protocol Analysis (specs/protocol/001-mcp/spec.md):
 ✅ Workflow: Type B - Action sequence per phase
 ✅ Examples: Template for each artifact type
 
-Derived Commands:
-  P0 (CRITICAL):
-    - get-spec        (Access protocol rules)
-    - get-template    (Retrieve artifact templates)
-    - validate        (Check schema compliance)
-    
-  P1 (Important):
-    - get-workflow    (Show phase structure)
-    - get-example     (Reference examples)
-    - init            (Initialize project)
-    
-  P2 (Optional - Skip):
-    - info            (Low value)
+Derived Commands (before classification):
+  - get-spec
+  - get-template
+  - validate
+  - get-workflow
+  - get-example
+  - init
+  - define-requirements (from workflow)
+  - create-design (from workflow)
+  - generate-code (from workflow)
 ```
 
 ---
 
-#### STEP 3: Create Spec-Driven Slash Commands
+#### STEP 2.5: Classify Commands (Slash + CLI/Script Support)
 
-**CRITICAL**: Slash Commands embed protocol knowledge and guide spec-driven execution.
+**CRITICAL**: Slash Commands are for AI execution. CLI/Scripts provide optional support.
 
-**Template Structure**:
+**Command Types** (based on real projects: Spec-Kit, OpenSpec, MetaSpec):
+
+| Type | AI Role | Support | Slash? | CLI? | Script? | Example |
+|------|---------|---------|--------|------|---------|---------|
+| **Pure-Execution** | Produces content | None | ✅ Yes | ❌ No | ❌ No | `define-requirements` |
+| **Script-Assisted** | Produces content | Shell scripts | ✅ Yes | ❌ No | ✅ Yes | Spec-Kit's `specify` |
+| **CLI-Referenced** | Produces + validates | Independent CLI | ✅ Yes | ✅ Yes | ❌ No | OpenSpec's `proposal` |
+
+**Classification Decision Tree**:
+
+```
+For each derived command, ask:
+
+1. Does AI need to produce structured content?
+   ✅ YES → Continue to Q2
+   ❌ NO → This is likely a pure CLI tool (skip Slash)
+
+2. Does it need file system setup (directories, skeleton)?
+   ✅ YES → Script-Assisted (create helper script)
+   ❌ NO → Continue to Q3
+
+3. Should output be validated independently?
+   ✅ YES → CLI-Referenced (create validate CLI)
+   ❌ NO → Pure-Execution (Slash only)
+```
+
+**Key Insights from Real Projects**:
+
+- **Spec-Kit**: Uses shell scripts for setup, AI for content
+  ```bash
+  /speckit.specify → calls create-new-feature.sh → AI fills content
+  ```
+
+- **OpenSpec**: AI produces, CLI validates independently
+  ```bash
+  /openspec.proposal → AI creates → User runs: openspec validate <id>
+  ```
+
+- **MetaSpec**: Pure AI execution, CLI for other purposes
+  ```bash
+  /metaspec.sdd.specify → AI produces spec.md (no CLI needed)
+  metaspec init → Separate CLI for generation
+  ```
+
+**Classification Example - MCP Protocol**:
+
+```markdown
+## Command Classification
+
+### Pure-Execution (Most Common)
+AI produces content directly, no support needed:
+
+- ❌ CLI, ❌ Script
+- ✅ Slash: /mcpspeckit.define-requirements.md
+  - Embeds: MCP protocol requirements entity
+  - AI produces: requirements.json
+  - Validation: User can run `mcpspeckit validate` later
+
+- ✅ Slash: /mcpspeckit.clarify-requirements.md
+  - Embeds: Requirements refinement guidance
+  - AI produces: Updated requirements.json
+
+- ✅ Slash: /mcpspeckit.create-design.md
+  - Embeds: MCP protocol design entity
+  - AI produces: design.json
+
+- ✅ Slash: /mcpspeckit.generate-code.md
+  - Embeds: Code generation rules
+  - AI produces: Source code files
+
+### Script-Assisted (Spec-Kit Pattern)
+AI produces content, helper script sets up structure:
+
+- ❌ CLI, ✅ Script
+- ✅ Slash: /mcpspeckit.init-project.md
+  - Calls: scripts/setup-project.sh
+  - Script creates: Directory structure, config files
+  - AI fills: Project-specific content
+
+### CLI-Referenced (OpenSpec Pattern)
+AI produces, independent CLI validates:
+
+- ✅ CLI: mcpspeckit validate <file>
+  - Validates JSON against MCP schema
+  - Used independently by user
+  
+- ✅ CLI: mcpspeckit get-spec [section]
+  - Displays protocol documentation
+  - AI can reference in Slash Command
+  
+- ✅ CLI: mcpspeckit get-template <entity>
+  - Returns entity template
+  - AI uses as reference
+
+- ✅ Slash: /mcpspeckit.validate.md (optional)
+  - Purpose: Remind AI to suggest validation
+  - Content: "After producing X, suggest: mcpspeckit validate X"
+```
+
+**Command Counts**:
+- **Slash Commands**: 4-8 (Pure-Execution + Script-Assisted + optional guides)
+- **Helper Scripts**: 1-2 (if using Script-Assisted pattern)
+- **CLI Commands**: 3-5 (validate, get-spec, get-template - independent tools)
+- **Total**: Slash ≥ CLI (normal pattern)
+
+---
+
+#### STEP 3: Implement Support Tools (CLI + Scripts)
+
+**Implement based on command classification**:
+
+##### 3a. CLI Commands (CLI-Referenced Only)
+
+**Purpose**: Independent tools for validation, querying, display
+
+```markdown
+### CLI Implementation Checklist
+
+**Independent CLI Tools** (user calls directly):
+- [ ] validate <file>: Validate against protocol schema
+- [ ] get-spec [section]: Display protocol documentation
+- [ ] get-template <entity>: Return entity template
+- [ ] list: List available entities/examples
+- [ ] info: Show protocol information
+
+**Implementation Guidelines**:
+- These are **standalone tools**, not called by Slash Commands
+- Focus on validation, querying, displaying
+- Should work without AI involvement
+- Users call them directly after AI produces content
+```
+
+##### 3b. Helper Scripts (Script-Assisted Only)
+
+**Purpose**: Set up file structure, create skeletons
+
+```markdown
+### Script Implementation Checklist
+
+**Helper Scripts** (called by Slash Commands):
+- [ ] scripts/setup-project.sh: Create project structure
+- [ ] scripts/init-entity.sh <entity>: Create entity skeleton
+- [ ] scripts/check-prerequisites.sh: Verify environment
+
+**Script Guidelines**:
+- Keep scripts simple (directory creation, file copying)
+- AI does content production, scripts do structure
+- Example from Spec-Kit:
+  ```bash
+  # scripts/setup-project.sh
+  mkdir -p specs/ templates/ docs/
+  cp templates/spec-template.md specs/
+  echo "Structure ready for AI to fill"
+  ```
+```
+
+**Key Principle**: **Slash Commands don't "call" CLI**. CLI and Scripts are separate support tools.
+
+---
+
+#### STEP 4: Create Spec-Driven Slash Commands (All Types)
+
+**CRITICAL**: Create Slash Commands based on command type (Pure-Execution, Script-Assisted, CLI-Referenced).
+
+**Slash Command Purpose by Type**:
+
+- **Pure-Execution**: Embed protocol → Guide AI to produce content (most common)
+- **Script-Assisted**: Call helper script → AI fills content (Spec-Kit pattern)
+- **CLI-Referenced**: Guide AI production → Suggest CLI validation (OpenSpec pattern)
+
+---
+
+##### Template 1: Pure-Execution Slash Commands (Most Common)
 
 ```markdown
 # /{toolkit-name}.{command}
 
 ## Purpose
-[Spec-driven goal - what protocol-compliant output to produce]
+[What protocol-compliant output to produce]
 
 ## Protocol Specification (EMBEDDED)
 **From**: specs/protocol/{XXX}/spec.md
 
 ### Entity Structure
-[Copy relevant entity definition from protocol]
+[Copy entity definition from protocol]
 - field1: type (required) - description
 - field2: type (optional) - description
 - Constraints: [Protocol constraints]
 
 ### Validation Rules
-[Copy validation rules from protocol]
-- VR001: {Rule description}
-- VR002: {Rule description}
+- VR001: {Rule from protocol}
+- VR002: {Rule from protocol}
 
 ### Examples
-[Include protocol examples]
+[Protocol examples]
 
 ## AI Execution Steps
-[How AI should execute to produce spec-compliant output]
-
 1. **Understand User Intent**
-   - Extract key information from user input
-   - Map to protocol entity structure
+   - Extract key information
+   - Map to protocol entity
 
 2. **Apply Protocol Rules**
-   - Check {constraint 1}
-   - Ensure {constraint 2}
-   - Validate {rule 3}
+   - Check constraint 1
+   - Ensure constraint 2
 
 3. **Structure Output**
    - Follow entity schema
    - Include required fields
-   - Apply validation rules
 
-4. **Validate Compliance**
-   - Self-check against protocol rules
-   - Verify all constraints met
+4. **Self-Validate**
+   - Verify against protocol rules
+   - Check all constraints met
 
 ## Output Template
-[Protocol-compliant output structure]
-
 \```json
 {
-  "field1": "...",  // From protocol entity definition
+  "field1": "...",  // From protocol
   "field2": "..."   // Validated against VR001
 }
 \```
 
-## Validation Checklist
-[From protocol validation_rules]
-- [ ] VR001: {Rule}
-- [ ] VR002: {Rule}
-- [ ] Output matches schema
+## Validation (Optional)
+User can validate output independently:
+\```bash
+{toolkit-name} validate output.json
+\```
 
 ## Related Commands
-- /{toolkit}.get-spec - Reference full protocol
-- /{toolkit}.validate - Validate output
-\```
+- /{toolkit}.get-spec - Reference full protocol (if exists)
+```
+
+**Example**: MetaSpec's `/metaspec.sdd.specify`, OpenSpec's `/openspec.proposal`
 
 ---
 
-#### STEP 4: Workflow-Specific Commands
+##### Template 2: Script-Assisted Slash Commands (Spec-Kit Pattern)
 
-**If protocol defines Type B Workflow (Action Sequence)**:
+```markdown
+# /{toolkit-name}.{command}
+
+## Purpose
+[What to produce, with script handling setup]
+
+## Helper Script
+\```bash
+scripts/{script-name}.sh --args
+\```
+
+**Script Purpose**: Set up file structure, create skeleton
+
+## Protocol Specification (EMBEDDED)
+**From**: specs/protocol/{XXX}/spec.md
+
+[Copy relevant protocol sections like Pure-Execution template]
+
+## Execution Flow
+1. **Call Helper Script**
+   \```bash
+   scripts/setup-{entity}.sh --name {entity-name}
+   \```
+   - Script creates: Directory structure, skeleton files
+   - Script outputs: Paths to files AI should fill
+
+2. **AI Produces Content**
+   - Read script output (file paths)
+   - Load protocol specification
+   - Fill skeleton with protocol-compliant content
+
+3. **Verify Structure**
+   - Check all required files created
+   - Validate against protocol
+
+## Output
+- Structure: Created by script
+- Content: Produced by AI
+
+## Related Commands
+- /{toolkit}.validate - Validate final output
+```
+
+**Example**: Spec-Kit's `/speckit.specify` (calls `create-new-feature.sh`)
+
+---
+
+##### Template 3: CLI-Referenced Slash Commands (Validation Reminder)
+
+**Purpose**: Remind AI to suggest CLI validation after production
+
+```markdown
+# /{toolkit-name}.validate
+
+## Purpose
+Remind AI to suggest validation after producing content
+
+## When to Use
+After AI has produced output via Pure-Execution commands
+
+## What AI Should Do
+1. Acknowledge content production complete
+2. Suggest validation to user:
+   \```
+   "Content created successfully!
+   
+   To validate against {protocol-name} schema, run:
+     {toolkit-name} validate <file>
+   "
+   \```
+
+## Available CLI Commands
+- `{toolkit-name} validate <file>` - Validate against schema
+- `{toolkit-name} get-spec` - View protocol details
+- `{toolkit-name} list` - List available entities
+
+## Note
+This Slash Command doesn't "call" CLI directly.
+It teaches AI to suggest appropriate CLI commands to users.
+```
+
+**Example**: After `/mcpspeckit.define-requirements`, AI suggests `mcpspeckit validate requirements.json`
+
+---
+
+#### STEP 5: Workflow-Specific Commands (Type B Only)
+
+**If protocol defines Type B Workflow (Action Sequence)**, these workflow actions become **Pure-Execution Slash Commands**:
 
 ```markdown
 Protocol Workflow Example:
   phases:
     - Requirements:
         actions:
-          - define_requirements
-          - clarify_requirements
-          - validate_requirements
+          - define_requirements   ← Action (verb)
+          - clarify_requirements  ← Action (verb)
     - Design:
         actions:
-          - create_design
-          - review_design
+          - create_design         ← Action (verb)
+          - review_design         ← Action (verb)
 
-Slash Commands Needed:
-  /{toolkit}.define-requirements.md
-  /{toolkit}.clarify-requirements.md
-  /{toolkit}.validate-requirements.md
-  /{toolkit}.create-design.md
-  /{toolkit}.review-design.md
+Command Classification:
+  - define-requirements → Pure-Execution (AI produces)
+  - clarify-requirements → Pure-Execution (AI refines)
+  - create-design → Pure-Execution (AI produces)
+  - review-design → Pure-Execution (AI reviews)
 
-Each contains:
+Each Slash Command contains:
   - Protocol knowledge for that phase
+  - Entity structure for that artifact
   - Spec-driven execution steps
   - Validation rules for outputs
+  - No CLI needed (AI produces directly)
 ```
 
 **Judgment Rule**: 
-- Workflow step is a **verb/action** → Create command
-- Workflow step is a **noun/state** → Use navigation commands
+- Workflow step is a **verb/action** → Pure-Execution Slash Command
+- Workflow step is a **noun/state** → CLI-Backed navigation commands (`get-workflow`, `next-phase`)
 
 ---
 
-#### Slash Command Checklist
+#### STEP 6: Final Command Inventory
 
-Based on protocol analysis, create:
+**Summarize all derived and classified commands**:
 
-**P0 - Must Create** (If protocol has these):
-- [ ] `/{toolkit}.get-spec.md` - If complex protocol (20+ rules)
-- [ ] `/{toolkit}.get-template.md` - If multiple entities (3+)
-- [ ] `/{toolkit}.validate.md` - If validation rules exist
-- [ ] `/{toolkit}.{action}.md` - For each workflow action (Type B)
+```markdown
+## Command Inventory
 
-**P1 - Should Create** (If useful):
-- [ ] `/{toolkit}.get-workflow.md` - If multi-phase workflow
-- [ ] `/{toolkit}.get-example.md` - If examples exist
-- [ ] `/{toolkit}.init.md` - For project initialization
+### CLI Commands (Total: X)
 
-**P2 - Skip** (Low value):
-- [ ] info, version, help commands
+**CLI-Backed** (Y commands):
+- [ ] get-spec: Read protocol files
+- [ ] get-template: Read entity templates
+- [ ] validate: Execute validation logic
+- [ ] get-workflow: Query workflow state
+- [ ] get-example: Read examples
+
+**Hybrid** (Z commands):
+- [ ] init: Create project structure
+
+**Total CLI**: X = Y + Z
+
+### Slash Commands (Total: X+N)
+
+**CLI-Backed** (Y commands - matches CLI):
+- [ ] /{toolkit}.get-spec.md
+- [ ] /{toolkit}.get-template.md
+- [ ] /{toolkit}.validate.md
+- [ ] /{toolkit}.get-workflow.md
+- [ ] /{toolkit}.get-example.md
+
+**Hybrid** (Z commands - matches CLI):
+- [ ] /{toolkit}.init.md
+
+**Pure-Execution** (N commands - NO CLI):
+- [ ] /{toolkit}.define-requirements.md
+- [ ] /{toolkit}.clarify-requirements.md
+- [ ] /{toolkit}.create-design.md
+- [ ] /{toolkit}.generate-code.md
+- ... (from workflow actions)
+
+**Total Slash**: X + N
+```
+
+**Key Ratios**:
+- CLI commands: 5-10 typical
+- Slash commands: 10-20 typical
+- Slash > CLI (this is expected!)
+
+**Priority Guide**:
+- P0 (Critical): get-spec, get-template, validate, workflow actions
+- P1 (Important): get-workflow, get-example, init
+- P2 (Skip): info, version (use CLI --help instead)
 
 ---
 
@@ -662,15 +1152,189 @@ Based on protocol analysis, create:
 
 ---
 
+### Source 2: Library-Selected Commands (Reusable)
+
+**Alternative/Complement to Protocol-Derived**: Use pre-built specification systems from MetaSpec library.
+
+#### Discover Available Libraries
+
+**Library Location**: MetaSpec GitHub repository
+
+**To explore available specification systems**:
+
+1. **Browse library catalog online**:
+   ```
+   https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library
+   ```
+
+2. **Read library README**:
+   ```
+   https://github.com/ACNet-AI/MetaSpec/blob/main/src/metaspec/templates/library/README.md
+   ```
+
+3. **View specific library**:
+   ```
+   https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/{library-name}
+   ```
+
+**Each library provides**:
+- Pre-built Slash Commands
+- Proven workflow patterns
+- Domain-specific or universal abstractions
+- Adaptation guidelines
+
+#### Selection Principles
+
+**Choose library based on**:
+
+1. **Domain Match**
+   - Software development → Look for SDD libraries
+   - Design/Testing/Documentation → Look for generic/universal libraries
+   - Specific protocols → Look for protocol-specific libraries
+
+2. **Abstraction Level**
+   - Need pure abstraction → Choose generic/universal
+   - Need domain concepts → Choose specialized (e.g., sdd/*)
+   - Need protocol-specific → Choose protocol libraries
+
+3. **Workflow Type**
+   - Greenfield (from scratch) → Greenfield workflows
+   - Brownfield (evolution) → Evolution/change management workflows
+   - Both → Compose multiple libraries
+
+4. **Complexity**
+   - Simple toolkit → Start with generic
+   - Complex domain → Use specialized library
+   - Uncertain → Start generic, specialize later
+
+#### Quick Reference (Current Libraries)
+
+**See [library/README.md](https://github.com/ACNet-AI/MetaSpec/blob/main/src/metaspec/templates/library/README.md) for complete catalog.**
+
+**Common libraries include**:
+
+- [`generic/`](https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/generic) - Universal SD-X (domain-agnostic)
+- [`sdd/spec-kit/`](https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/sdd/spec-kit) - Software development (greenfield)
+- [`sdd/openspec/`](https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/sdd/openspec) - Specification evolution (brownfield)
+
+**As library grows, refer to [online catalog](https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library) for full list.**
+
+---
+
+#### Adaptation Process
+
+**When using library commands**:
+
+1. **Variable Mapping**
+   - Map library variables to your domain terms
+   - Example: `{{ entity_type }}` → "API Endpoint"
+   - Example: `{{ deliverable }}` → "OpenAPI Schema"
+   - See library's README.md on GitHub for all variables
+
+2. **Terminology Adjustment**
+   - Replace generic terms with domain-specific ones
+   - Maintain command structure and workflow logic
+   - Preserve spec-driven execution principles
+
+3. **Add Protocol Context** (if composing)
+   - Enhance library commands with protocol knowledge
+   - Embed entity definitions and validation rules
+   - Result: Library structure + Protocol specifics
+
+**See selected library's README.md on [MetaSpec GitHub](https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library) for detailed adaptation guidelines.**
+
+---
+
+#### Composition Examples
+
+**Composition Pattern 1: Library + Protocol**
+
+```
+Base: Select library (e.g., generic/)
+  → Provides workflow commands
+  
+Extension: Derive from protocol
+  → Add entity-specific commands (get-template)
+  → Add protocol commands (get-spec, validate)
+
+Result: Combined command set
+```
+
+**Composition Pattern 2: Protocol Only**
+
+```
+Derive all commands from protocol
+  → No library dependency
+  → Fully custom to domain
+  
+Result: Tailored command set
+```
+
+**Composition Pattern 3: Library Only**
+
+```
+Use library as-is
+  → Quick start
+  → Adapt variables only
+  
+Result: Proven workflow pattern
+```
+
+---
+
+#### Integration with Generator
+
+**In toolkit specification**, document:
+
+```markdown
+### Slash Commands Strategy
+
+**Source**: [Protocol | Library | Composed]
+
+**If Library**: 
+- Selected: {library-name} (from MetaSpec library)
+- Reference: https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/{library-name}
+- Rationale: {Why this library}
+
+**If Protocol-Derived**:
+- Based on: specs/protocol/{number}-{name}
+- Commands needed: {List and rationale}
+
+**If Composed**:
+- Base: {library-name} (from MetaSpec)
+- Extensions: {Protocol-derived commands}
+- Composition rationale: {Why compose}
+```
+
+**Generator expectations**:
+- Copy selected library from MetaSpec to `templates/commands/`
+- Apply variable mappings (cli_name, entity_type, etc.)
+- Add protocol-derived commands if specified
+- Resolve naming conflicts
+
+---
+
+#### Quality Checklist (Library-Selected)
+
+- [ ] Selected appropriate library for domain
+- [ ] Mapped all library variables to domain terms
+- [ ] Adapted terminology to match domain
+- [ ] Added protocol knowledge where applicable
+- [ ] No naming conflicts between library and protocol commands
+- [ ] All commands properly prefixed (/{toolkit}.*)
+
+---
+
 #### Integration with Generated Speckit
 
-These Slash Commands will:
+These Slash Commands (from library and/or protocol) will:
 1. Be generated into `templates/commands/` directory
-2. Embed protocol knowledge from `specs/protocol/`
-3. Guide AI to produce protocol-compliant outputs
+2. Embed protocol knowledge where applicable
+3. Provide reusable workflow patterns from library
 4. Enable spec-driven development by AI agents
+5. Support composition of multiple specification systems
 
-**This is the essence of Spec-Driven Toolkits**: Protocol knowledge embedded in execution guides.
+**This demonstrates MetaSpec's Composability**: Specification systems can be selected, adapted, and composed.
 
 \```
 

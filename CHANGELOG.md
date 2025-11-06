@@ -45,22 +45,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    - P1 (Important): get-workflow, get-example, init
    - P2 (Skip): info, version, help
 
-#### Updated `/metaspec.sdd.specify`
+#### Updated `/metaspec.sdd.specify` - Slash Commands
 
 **New Section**: Component 4 - Slash Commands - Spec-Driven Execution
-- 4-step process: Analyze → Derive → Create → Workflow-specific
-- Protocol content → command mapping rules
-- Spec-driven template structure with embedded knowledge
-- Design principles for spec-compliant production
 
-#### Impact
+#### Updated `/metaspec.sdd.specify` - CLI Commands
 
-This addresses the core feedback: **commands are no longer套用模板, but derived from protocol specifications**.
+**Major Revision**: Component 3 - CLI Commands completely rewritten with derivation methodology.
 
-**Example**:
+**Key Additions**:
+
+1. **CLI vs Slash Commands Distinction**
+   - Slash Commands = Protocol-Driven (workflow actions)
+   - CLI Commands = Purpose-Driven (toolkit functions)
+   - Clear separation of concerns
+
+2. **Toolkit Type Classification**
+   - 6 toolkit types identified: Generator, Environment Checker, Validator, Query Tool, State Manager, Community Platform
+   - Each type derives specific CLI commands
+   - Real project examples: Specify, OpenSpec, MetaSpec
+
+3. **4-Step CLI Derivation Process**
+   - STEP 1: Define Toolkit Type (Generator? Validator? Query Tool?)
+   - STEP 2: Derive CLI Commands from Type (type → commands mapping)
+   - STEP 3: Protocol-Influenced CLI Parameters (protocol affects parameters, not commands)
+   - STEP 4: Define CLI Implementation (detailed specs for each command)
+
+4. **Real-World Validation**
+   - Analyzed 4 projects: Spec-Kit (shell scripts), OpenSpec (validator+query), MetaSpec (generator+community), Specify (generator+checker)
+   - Confirmed: CLI commands come from toolkit purpose, not protocol workflow
+   - Examples included for each toolkit type
+
+**Impact**: AI now has clear methodology to derive appropriate CLI commands based on toolkit purpose, avoiding both over-engineering and missing essential functionality.
+
+#### Combined Impact - Complete Command Architecture
+
+**Slash Commands** (Protocol-Driven) + **CLI Commands** (Purpose-Driven) = Complete toolkit architecture
+
+**Before** ❌:
+- Generic templates (init, validate, generate)
+- No methodology for command derivation
+- Confusion between CLI and Slash Commands
+
+**After** ✅:
+- Protocol-derived Slash Commands (from workflow, entities, validation rules)
+- Purpose-derived CLI Commands (from toolkit type)
+- Clear separation and derivation methodology
+
+**Example - MCP-Speckit**:
 ```
-Before: init, validate, generate (generic)
-After: get-spec, get-template, validate (derived from MCP protocol)
+Slash Commands (from MCP protocol):
+  /mcpspeckit.define-requirements  ← From protocol workflow
+  /mcpspeckit.create-design        ← From protocol entities
+  /mcpspeckit.generate-code        ← From protocol operations
+
+CLI Commands (from toolkit purpose):
+  mcpspeckit validate <file>       ← Toolkit = Validator
+  mcpspeckit get-spec [section]    ← Toolkit = Query Tool
+  mcpspeckit init [project]        ← Toolkit = Generator
 ```
 
 ### 📚 Documentation
