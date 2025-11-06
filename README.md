@@ -77,17 +77,17 @@ uv pip install -e .
 metaspec init                       # Interactive wizard - guides you through
 ```
 
-**Option 2: Quick start with template**
+**Option 2: Quick start**
 
 ```bash
-metaspec init my-spec-kit --template mcp     # One command, done!
+metaspec init my-spec-kit     # One command, done!
 ```
 
 **Option 3: Preview first**
 
 ```bash
-metaspec init my-spec-kit --template api --dry-run    # Preview
-metaspec init my-spec-kit --template api              # Create
+metaspec init my-spec-kit --dry-run    # Preview
+metaspec init my-spec-kit              # Create
 ```
 
 **Result**: Complete speckit with CLI, parser, validator, templates, and AI agent support!
@@ -154,11 +154,11 @@ Together, these create a **flexible specification network** where AI agents navi
 # Create speckit (interactive)
 metaspec init
 
-# Create with template (fast)
-metaspec init my-api-speckit --template api
+# Create with quick start (fast)
+metaspec init my-api-speckit
 
 # Preview before creating
-metaspec init my-spec-kit --template mcp --dry-run
+metaspec init my-spec-kit --dry-run
 
 # Discover and install speckits
 metaspec search "api"                # Search community
@@ -384,8 +384,8 @@ metaspec version                   # Show MetaSpec version
 
 # Examples
 metaspec init                      # Interactive mode
-metaspec init my-speckit           # Quick start (uses 'default' template)
-metaspec init my-speckit api       # Use 'api' template
+metaspec init my-speckit           # Quick start (uses 'default')
+metaspec init my-speckit default   # Explicit (same as above)
 metaspec search "api"              # Search community
 metaspec install api-speckit       # Install
 metaspec list                      # List installed

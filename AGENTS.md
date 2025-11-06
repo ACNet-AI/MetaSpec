@@ -676,7 +676,7 @@ Creating a speckit is more complex than building an application. Follow these st
 ```bash
 metaspec init                        # Interactive wizard
 metaspec init my-toolkit             # Quick start (uses 'default')
-metaspec init my-toolkit api         # Use 'api' template
+metaspec init my-toolkit default     # Explicit (same as above)
 ```
 
 **Required fields** (if manual):

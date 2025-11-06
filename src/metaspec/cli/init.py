@@ -75,7 +75,7 @@ def init_command(
     ),
     template: str = typer.Argument(
         "default",
-        help="Template to use (default, api, testing, ...). Defaults to 'default'.",
+        help="Template name (currently only 'default' is available).",
     ),
     output: Path | None = typer.Option(
         None,
@@ -115,14 +115,14 @@ def init_command(
         # Quick start with default template
         metaspec init my-spec-kit
 
-        # Use specific template
-        metaspec init my-spec-kit api
+        # Explicit template (same as above)
+        metaspec init my-spec-kit default
 
         # Preview before creating
         metaspec init my-spec-kit --dry-run
 
         # Specify custom output directory
-        metaspec init my-spec-kit default -o ./custom-path
+        metaspec init my-spec-kit -o ./custom-path
     """
     try:
         # Determine toolkit name
