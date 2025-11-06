@@ -135,7 +135,7 @@ def init_command(
             if not toolkit_name:
                 toolkit_name = _prompt_toolkit_name_simple(template)
 
-            meta_spec = _create_from_template(template, toolkit_name)
+            meta_spec = _create_from_preset(template, toolkit_name)
 
         # Mode 2: Interactive mode
         elif not toolkit_name:
@@ -259,21 +259,21 @@ def init_command(
         sys.exit(1)
 
 
-def _create_from_template(template: str, toolkit_name: str) -> MetaSpecDefinition:
-    """Create MetaSpecDefinition from template."""
-    if template not in STARTER_PRESETS:
-        console.print(f"[red]Error:[/red] Unknown template '{template}'")
-        console.print(f"Available templates: {', '.join(STARTER_PRESETS.keys())}")
+def _create_from_preset(preset_name: str, toolkit_name: str) -> MetaSpecDefinition:
+    """Create MetaSpecDefinition from starter preset."""
+    if preset_name not in STARTER_PRESETS:
+        console.print(f"[red]Error:[/red] Unknown preset '{preset_name}'")
+        console.print(f"Available presets: {', '.join(STARTER_PRESETS.keys())}")
         raise typer.Exit(1)
 
-    console.print(f"\n[dim]Using template: {template}[/dim]")
+    console.print(f"\n[dim]Using preset: {preset_name}[/dim]")
 
-    # Get template data
-    template_data = STARTER_PRESETS[template].copy()
-    template_data["name"] = toolkit_name
+    # Get preset data
+    preset_data = STARTER_PRESETS[preset_name].copy()
+    preset_data["name"] = toolkit_name
 
     # Create MetaSpecDefinition directly from dict (no YAML round-trip)
-    meta_spec = MetaSpecDefinition.from_dict(template_data)
+    meta_spec = MetaSpecDefinition.from_dict(preset_data)
     return meta_spec
 
 
