@@ -675,7 +675,8 @@ Creating a speckit is more complex than building an application. Follow these st
 
 ```bash
 metaspec init                        # Interactive wizard
-metaspec init my-toolkit --template default  # Quick start
+metaspec init my-toolkit             # Quick start (uses 'default')
+metaspec init my-toolkit api         # Use 'api' template
 ```
 
 **Required fields** (if manual):
@@ -697,7 +698,7 @@ metaspec init my-toolkit --template default  # Quick start
 **Goal**: Test before generating.
 
 ```bash
-metaspec init my-toolkit --template default --dry-run
+metaspec init my-toolkit --dry-run
 ```
 
 **Checklist**:
@@ -713,7 +714,7 @@ metaspec init my-toolkit --template default --dry-run
 **Goal**: Generate the complete speckit.
 
 ```bash
-metaspec init my-speckit --template default -o ./my-speckit
+metaspec init my-speckit -o ./my-speckit
 ```
 
 **Post-generation**:

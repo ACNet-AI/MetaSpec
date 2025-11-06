@@ -26,7 +26,7 @@ metaspec init
 Use the default template for quick start:
 
 ```bash
-metaspec init my-spec-kit --template default
+metaspec init my-spec-kit
 
 # This generates a toolkit with:
 # - Entity: Spec (name, version, description, status)
@@ -39,7 +39,7 @@ metaspec init my-spec-kit --template default
 Enable spec-driven development for the toolkit itself:
 
 ```bash
-metaspec init my-spec-kit --template default --spec-kit
+metaspec init my-spec-kit --spec-kit
 
 # Adds:
 # - specs/ directory
@@ -50,7 +50,7 @@ metaspec init my-spec-kit --template default --spec-kit
 
 ## 📂 Example Generated Structure
 
-After running `metaspec init my-spec-kit --template default`, you get:
+After running `metaspec init my-spec-kit`, you get:
 
 ```
 my-spec-kit/
@@ -138,7 +138,7 @@ metaspec init
 
 2. **Iterate with --dry-run**
    ```bash
-   metaspec init my-kit --template default --dry-run
+   metaspec init my-kit --dry-run
    ```
 
 3. **Customize After Generation**
