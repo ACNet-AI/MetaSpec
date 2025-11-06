@@ -31,10 +31,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    - Added context explanations in STEP 4a
    - Emphasized cross-reference to Component 3
 
+5. **Added Structure Explanation for Source 1/2** (P2 - Optional)
+   - Source 2: Added explanation of why process is simpler
+   - Clarified: Source 2 reuses proven commands (select + adapt + integrate)
+   - Context: Source 1 = derive from scratch (7 steps), Source 2 = reuse (3 steps)
+
 **Why This Matters**:
 - Eliminates reader confusion about CLI command duplication
 - Clear hierarchical structure for better navigation
 - Explicit cross-references show relationships between sections
+- Justifies design decisions (why Source 2 is intentionally simpler)
 
 **Files Changed**:
 - src/metaspec/templates/meta/sdd/commands/specify.md.j2 (structure improvements)
