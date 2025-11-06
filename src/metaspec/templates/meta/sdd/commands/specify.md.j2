@@ -805,42 +805,15 @@ Option C: Composed (Recommended)
 
 ---
 
-**Example Derivation - MCP Protocol**:
+**Example**: See Component 3 for MCP-Speckit naming examples.
 
+**Quick Reference**:
 ```markdown
-## Protocol Analysis (specs/protocol/001-mcp/spec.md)
+Protocol workflow: "Define Server" → Command: `define-server`
+Protocol entity: "Server" → Command: `init-server`
+Protocol validation: "Validate Config" → Command: `validate-server`
 
-### Workflow Phases (from protocol):
-1. "Define MCP Server"
-2. "Configure Tools and Resources"
-3. "Implement Tool Handlers"
-4. "Test Server"
-5. "Deploy to Production"
-
-### Derived Command Names (domain-specific):
-
-**From workflow phases** (Type B - Action sequence):
-  ✅ define-server       ← "Define MCP Server"
-  ✅ configure-tools     ← "Configure Tools"
-  ✅ add-resource        ← "Add Resource"
-  ✅ implement-handler   ← "Implement Handler"
-  ✅ test-server         ← "Test Server"
-
-**From entity types** (if needed):
-  ✅ init-server         ← Work with Server entity
-  ✅ add-tool            ← Work with Tool entity
-
-**From validation rules** (if needed):
-  ✅ validate-server     ← Validate against MCP schema
-  ✅ check-config        ← Check configuration
-
-**NOT using**:
-  ❌ get-template        ← Too generic
-  ❌ get-spec            ← Doesn't reflect MCP domain
-  ❌ validate            ← What are we validating?
-```
-
-**Result**: 5-8 domain-specific commands that match MCP terminology
+Key principle: Extract verb+noun from protocol terminology
 ```
 
 ---
@@ -893,66 +866,25 @@ For each derived command, ask:
   metaspec init → Separate CLI for generation
   ```
 
-**Classification Example - MCP Protocol**:
+**Classification Result**:
 
 ```markdown
-## Command Classification
+For each derived command, classify as:
 
-### Pure-Execution (Most Common)
-AI produces content directly, no support needed:
-
-- ❌ CLI, ❌ Script
-- ✅ Slash: /mcpspeckit.define-requirements.md
-  - Embeds: MCP protocol requirements entity
-  - AI produces: requirements.json
-  - Validation: User can run `mcpspeckit validate` later
-
-- ✅ Slash: /mcpspeckit.clarify-requirements.md
-  - Embeds: Requirements refinement guidance
-  - AI produces: Updated requirements.json
-
-- ✅ Slash: /mcpspeckit.create-design.md
-  - Embeds: MCP protocol design entity
-  - AI produces: design.json
-
-- ✅ Slash: /mcpspeckit.generate-code.md
-  - Embeds: Code generation rules
-  - AI produces: Source code files
-
-### Script-Assisted (Spec-Kit Pattern)
-AI produces content, helper script sets up structure:
-
-- ❌ CLI, ✅ Script
-- ✅ Slash: /mcpspeckit.init-project.md
-  - Calls: scripts/setup-project.sh
-  - Script creates: Directory structure, config files
-  - AI fills: Project-specific content
-
-### CLI-Referenced (OpenSpec Pattern)
-AI produces, independent CLI validates:
-
-- ✅ CLI: mcpspeckit validate <file>
-  - Validates JSON against MCP schema
-  - Used independently by user
+- **Pure-Execution**: AI produces content → Slash only
+  - Example: define-server, create-design (most common)
   
-- ✅ CLI: mcpspeckit show [section]
-  - Displays protocol documentation
-  - AI can reference in Slash Command
+- **Script-Assisted**: Need structure setup → Script + Slash
+  - Example: init-project (if creating directories)
   
-- ✅ CLI: mcpspeckit docs <topic>
-  - Access MCP documentation
-  - AI uses as reference
+- **CLI-Referenced**: Need independent validation → CLI + Slash
+  - Example: validate command (See Component 3 for CLI design)
 
-- ✅ Slash: /mcpspeckit.validate.md (optional)
-  - Purpose: Remind AI to suggest validation
-  - Content: "After producing X, suggest: mcpspeckit validate X"
+**Typical Counts**:
+- Slash Commands: 4-8
+- Helper Scripts: 1-2 (if Script-Assisted)
+- CLI Commands: 3-5 (if CLI-Referenced, defined in Component 3)
 ```
-
-**Command Counts**:
-- **Slash Commands**: 4-8 (Pure-Execution + Script-Assisted + optional guides)
-- **Helper Scripts**: 1-2 (if using Script-Assisted pattern)
-- **CLI Commands**: 3-5 (validate, show, docs, list - independent tools)
-- **Total**: Slash ≥ CLI (normal pattern)
 
 ---
 
@@ -1042,13 +974,9 @@ Based on your toolkit functions (from Component 3 STEP 1), implement:
 
 #### STEP 5: Create Spec-Driven Slash Commands (All Types)
 
-**CRITICAL**: Create Slash Commands based on command type (Pure-Execution, Script-Assisted, CLI-Referenced).
+**Based on classification in STEP 3**, create appropriate Slash Command templates for each type.
 
-**Slash Command Purpose by Type**:
-
-- **Pure-Execution**: Embed protocol → Guide AI to produce content (most common)
-- **Script-Assisted**: Call helper script → AI fills content (Spec-Kit pattern)
-- **CLI-Referenced**: Guide AI production → Suggest CLI validation (OpenSpec pattern)
+**Reference**: See STEP 3 for command type definitions (Pure-Execution, Script-Assisted, CLI-Referenced).
 
 ---
 

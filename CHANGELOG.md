@@ -36,11 +36,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    - Clarified: Source 2 reuses proven commands (select + adapt + integrate)
    - Context: Source 1 = derive from scratch (7 steps), Source 2 = reuse (3 steps)
 
+6. **Streamlined Redundant Examples** (Content Optimization)
+   - Reduced MCP example repetition (30 mentions → focused usage)
+   - STEP 2: Full MCP example → Quick reference (saved ~25 lines)
+   - STEP 3: Full classification example → Summary (saved ~45 lines)
+   - STEP 5: Command type re-explanation → Reference to STEP 3 (saved ~3 lines)
+   - Total reduction: 1835 → 1762 lines (73 lines, 4% reduction)
+
 **Why This Matters**:
 - Eliminates reader confusion about CLI command duplication
 - Clear hierarchical structure for better navigation
 - Explicit cross-references show relationships between sections
 - Justifies design decisions (why Source 2 is intentionally simpler)
+- Reduces redundancy: More concise, easier to read
+- Maintains completeness: Key information preserved, details referenced
 
 **Files Changed**:
 - src/metaspec/templates/meta/sdd/commands/specify.md.j2 (structure improvements)
