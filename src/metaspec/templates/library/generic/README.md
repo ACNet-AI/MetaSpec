@@ -242,7 +242,7 @@ Rapid iteration                  Controlled evolution
 Assume creating a **design system specification toolkit**:
 
 ```bash
-metaspec init design-system-kit --template generic
+metaspec init design-system-kit --template default
 ```
 
 The generated speckit will include:

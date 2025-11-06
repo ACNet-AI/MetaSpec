@@ -295,7 +295,7 @@ specify init
 
 # Using MetaSpec (SD-X)
 # Creating a design system toolkit:
-metaspec init design-system-kit --template generic
+metaspec init design-system-kit --template default
 # Generates: Complete toolkit for design specifications
 # End users can then create: component-spec.yaml, theme-spec.yaml
 ```
@@ -395,10 +395,10 @@ Use MetaSpec to create your toolkit:
 metaspec init
 
 # Or use template for quick start
-metaspec init api-test-kit --template generic
+metaspec init api-test-kit --template default
 
 # Preview before generating
-metaspec init api-test-kit --template generic --dry-run
+metaspec init api-test-kit --template default --dry-run
 ```
 
 **What you get**:

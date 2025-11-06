@@ -251,7 +251,7 @@ MetaSpec is designed for AI agents with strong reasoning capabilities. Speckit c
 
 ```bash
 # 1️⃣ CREATE: Generate speckit
-metaspec init my-spec-kit --template generic
+metaspec init my-spec-kit --template default
 
 # 2️⃣ DEVELOP: Use built-in MetaSpec slash commands (no installation needed)
 cd my-spec-kit
@@ -295,7 +295,7 @@ MetaSpec is not just a generator—it's a **platform for speckits**:
 
 ```bash
 # Example: Developer workflow
-metaspec init api-speckit --template generic
+metaspec init api-speckit --template default
 cd api-speckit
 # ... develop using MetaSpec commands ...
 metaspec contribute api-speckit
@@ -323,7 +323,7 @@ api-speckit validate my-api.json
 # Step 1: Create speckit (interactive mode)
 metaspec init
 # Or use template mode for quick start
-metaspec init api-spec-kit --template generic
+metaspec init api-spec-kit --template default
 
 # Step 2: What you get
 # api-spec-kit/
@@ -384,7 +384,7 @@ metaspec version                   # Show MetaSpec version
 
 # Examples
 metaspec init                      # Interactive mode
-metaspec init my-speckit --template generic
+metaspec init my-speckit --template default
 metaspec search "api"              # Search community
 metaspec install api-speckit       # Install
 metaspec list                      # List installed

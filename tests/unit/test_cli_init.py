@@ -64,7 +64,7 @@ class TestInitCommand:
         )
         assert result.exit_code == 0
         # Check for template-related content (works with both Rich and plain output)
-        assert "template" in result.stdout.lower() or "generic" in result.stdout.lower()
+        assert "template" in result.stdout.lower() or "default" in result.stdout.lower()
 
     def test_init_dry_run(self, tmp_path: Path) -> None:
         """Test init command with dry-run flag - basic validation."""
@@ -108,10 +108,10 @@ class TestInitCommand:
         assert result.exit_code != 0
 
     @patch("metaspec.cli.init.create_generator")
-    def test_init_generic_template(
+    def test_init_default_template(
         self, mock_gen: MagicMock, tmp_path: Path
     ) -> None:
-        """Test init with generic template."""
+        """Test init with default template."""
         output_dir = tmp_path / "test-kit"
 
         # Mock generator
@@ -127,7 +127,7 @@ class TestInitCommand:
                 "init",
                 "test-kit",
                 "--template",
-                "generic",
+                "default",
                 "--output",
                 str(output_dir),
                 "--dry-run",
@@ -203,7 +203,7 @@ class TestInitCommand:
                 "init",
                 "test-kit",
                 "--template",
-                "generic",
+                "default",
                 "--output",
                 str(output_dir),
                 "--force",

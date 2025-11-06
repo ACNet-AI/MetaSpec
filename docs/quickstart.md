@@ -54,10 +54,10 @@ uv pip install -e .
 metaspec init
 
 # Or quick start with template
-metaspec init my-spec-kit --template generic
+metaspec init my-spec-kit --template default
 
 # Preview (dry-run)
-metaspec init my-spec-kit --template generic --dry-run
+metaspec init my-spec-kit --template default --dry-run
 ```
 
 ---
@@ -115,7 +115,7 @@ uv pip install -e .
 
 ```bash
 # 1. Create speckit
-metaspec init api-kit --template generic && cd api-kit
+metaspec init api-kit --template default && cd api-kit
 
 # 2. Install
 uv pip install -e .
@@ -132,10 +132,10 @@ uv pip install -e .
 
 ```bash
 # Force overwrite existing directory
-metaspec init my-kit --template generic --force
+metaspec init my-kit --template default --force
 
 # Preview (dry-run)
-metaspec init my-kit --template generic --dry-run
+metaspec init my-kit --template default --dry-run
 ```
 
 **Q: Do I need to install spec-kit or openspec?**  

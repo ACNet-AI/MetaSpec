@@ -23,10 +23,10 @@ metaspec init
 
 ### Template Mode (Fast)
 
-Use the generic template for quick start:
+Use the default template for quick start:
 
 ```bash
-metaspec init my-spec-kit --template generic
+metaspec init my-spec-kit --template default
 
 # This generates a toolkit with:
 # - Entity: Spec (name, version, description, status)
@@ -39,7 +39,7 @@ metaspec init my-spec-kit --template generic
 Enable spec-driven development for the toolkit itself:
 
 ```bash
-metaspec init my-spec-kit --template generic --spec-kit
+metaspec init my-spec-kit --template default --spec-kit
 
 # Adds:
 # - specs/ directory
@@ -50,7 +50,7 @@ metaspec init my-spec-kit --template generic --spec-kit
 
 ## 📂 Example Generated Structure
 
-After running `metaspec init my-spec-kit --template generic`, you get:
+After running `metaspec init my-spec-kit --template default`, you get:
 
 ```
 my-spec-kit/
@@ -138,7 +138,7 @@ metaspec init
 
 2. **Iterate with --dry-run**
    ```bash
-   metaspec init my-kit --template generic --dry-run
+   metaspec init my-kit --template default --dry-run
    ```
 
 3. **Customize After Generation**

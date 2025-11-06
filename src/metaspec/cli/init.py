@@ -20,10 +20,10 @@ from metaspec.generator import create_generator
 from metaspec.models import MetaSpecDefinition
 
 # Built-in domain template for quick start
-# Used when: metaspec init <name> --template generic
+# Used when: metaspec init <name> --template default
 # For domain-specific toolkits, use interactive mode or create custom YAML
 DOMAIN_TEMPLATES = {
-    "generic": {
+    "default": {
         "name": "my-speckit",
         "version": "0.1.0",
         "domain": "generic",
@@ -77,7 +77,7 @@ def init_command(
         None,
         "--template",
         "-t",
-        help="Use generic template - skips interactive mode",
+        help="Use default template - skips interactive mode",
     ),
     output: Path | None = typer.Option(
         None,
@@ -117,11 +117,11 @@ def init_command(
         # Quick start with name (still interactive for domain/entity)
         metaspec init my-spec-kit
 
-        # Template mode (skip all prompts, use generic template)
-        metaspec init my-spec-kit --template generic
+        # Template mode (skip all prompts, use default template)
+        metaspec init my-spec-kit --template default
 
         # Preview before creating
-        metaspec init my-spec-kit --template generic --dry-run
+        metaspec init my-spec-kit --template default --dry-run
 
         # Specify custom output directory
         metaspec init my-spec-kit -o ./custom-path
