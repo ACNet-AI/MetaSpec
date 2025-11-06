@@ -163,7 +163,7 @@ Development methodologies organized by lifecycle:
 - `archive.md.j2` - Archive completed changes
 
 **Generated to**: `.metaspec/commands/metaspec.*`
-**Works with**: `specs/changes/` directory
+**Works with**: `changes/` directory (independent from specs/)
 
 #### `meta/templates/` - MetaSpec Output Formats (5)
 

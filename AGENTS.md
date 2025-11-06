@@ -249,7 +249,7 @@ For controlled specification evolution (both SDS and SDD):
 - `/metaspec.apply` - Apply approved changes
 - `/metaspec.archive` - Archive completed changes
 
-**Location**: Works with `specs/changes/` directory
+**Location**: Works with `changes/` directory (independent from specs/)
 
 ### The Relationship
 
@@ -257,12 +257,13 @@ For controlled specification evolution (both SDS and SDD):
 MetaSpec commands (16 total):
   - SDS (5 commands)     → Define protocol specifications (specs/protocol/)
   - SDD (8 commands)     → Develop toolkits (specs/toolkit/)
-  - Evolution (3 shared) → Manage changes (specs/changes/)
+  - Evolution (3 shared) → Manage changes (changes/)
                               ↓
-                    specs/ directory
-                    ├── protocol/   ← SDS manages
-                    ├── toolkit/    ← SDD manages
-                    └── changes/    ← Evolution manages
+                    Project structure:
+                    ├── specs/
+                    │   ├── protocol/   ← SDS manages
+                    │   └── toolkit/    ← SDD manages
+                    └── changes/        ← Evolution manages (independent)
 ```
 
 **Key principle**: Clear separation between protocol specification (SDS) and toolkit development (SDD), with shared evolution commands.
