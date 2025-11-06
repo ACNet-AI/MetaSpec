@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 📚 Documentation
+- **Added `.metaspec/README.md`** for generated speckits:
+  - Comprehensive developer guide for speckit maintainers
+  - Explains 16 MetaSpec commands (SDS, SDD, Evolution layers)
+  - Complete development workflow with examples
+  - Iteration support documentation
+  - Clear audience separation: root docs for users, `.metaspec/` for developers
+- **Updated root `AGENTS.md`** template:
+  - Added "For Speckit Developers" section
+  - Points developers to `.metaspec/README.md` for development guidance
+
+### 🔧 Internal
+- Updated generator to include `.metaspec/README.md` in all generated speckits
+
 ## [0.1.4] - 2025-11-05
 
 ### ✨ New Features - Phase 1: Complete Iteration-Aware Design

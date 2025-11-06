@@ -321,6 +321,9 @@ class Generator:
             output_path = f".metaspec/commands/metaspec.{cmd}.md"
             template_map[source_path] = output_path
 
+        # MetaSpec README.md (Developer guide for speckit developers)
+        template_map["base/.metaspec/README.md.j2"] = ".metaspec/README.md"
+
         # MetaSpec templates (output formats for MetaSpec commands)
         metaspec_templates = [
             "constitution-template.md",  # Constitution template
