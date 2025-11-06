@@ -7,6 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ✨ Major Feature - Spec-Driven Slash Commands
+
+**Revolutionary Change**: Slash Commands redesigned as **spec-driven execution guides**, not CLI wrappers.
+
+#### What Changed
+
+**Previous Understanding** ❌:
+- Slash Commands = "How to use CLI commands"
+- AI reads Slash Command → calls CLI → processes output
+- Generic templates (init, validate, generate)
+
+**New Understanding** ✅:
+- Slash Commands = "Spec-driven execution guides with embedded protocol knowledge"
+- AI reads Slash Command (with protocol knowledge) → produces spec-compliant output
+- Commands derived from protocol specification
+
+#### Key Improvements
+
+1. **Protocol-Driven Command Derivation**
+   - Added STEP 1: Analyze protocol specification
+   - Added STEP 2: Derive commands from protocol content
+   - Mapping rules: entities → get-template, validation_rules → validate, workflows → commands
+   
+2. **Workflow-Aware Command Generation**
+   - Type A (State Machine): Use navigation commands (get-workflow, next-phase)
+   - Type B (Action Sequence): Each action becomes a command (like MetaSpec's specify → clarify → plan)
+   - Judgment rule: verb/action → command, noun/state → navigation
+
+3. **Embedded Protocol Knowledge**
+   - Slash Commands now embed: entity definitions, validation rules, examples
+   - AI can produce compliant output without external reference
+   - Self-validation checklists included
+
+4. **Command Prioritization**
+   - P0 (Critical): get-spec, get-template, validate, workflow actions
+   - P1 (Important): get-workflow, get-example, init
+   - P2 (Skip): info, version, help
+
+#### Updated `/metaspec.sdd.specify`
+
+**New Section**: Component 4 - Slash Commands - Spec-Driven Execution
+- 4-step process: Analyze → Derive → Create → Workflow-specific
+- Protocol content → command mapping rules
+- Spec-driven template structure with embedded knowledge
+- Design principles for spec-compliant production
+
+#### Impact
+
+This addresses the core feedback: **commands are no longer套用模板, but derived from protocol specifications**.
+
+**Example**:
+```
+Before: init, validate, generate (generic)
+After: get-spec, get-template, validate (derived from MCP protocol)
+```
+
 ### 📚 Documentation
 - **Added `.metaspec/README.md`** for generated speckits:
   - Comprehensive developer guide for speckit maintainers

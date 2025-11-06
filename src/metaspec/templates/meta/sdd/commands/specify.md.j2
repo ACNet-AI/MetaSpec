@@ -401,7 +401,280 @@ Options:
 **Output**: Rich formatting with colors and progress
 \```
 
-##### **Component 4: Generator (Optional)**
+##### **Component 4: Slash Commands - Spec-Driven Execution (CRITICAL for AI-Oriented Tools)**
+
+**CRITICAL UNDERSTANDING**: Slash Commands are **NOT** CLI usage manuals. They are **spec-driven execution guides** that embed protocol knowledge and guide AI to produce spec-compliant outputs.
+
+```markdown
+### Slash Commands
+
+**What they are**: Spec-driven execution guides with embedded protocol knowledge
+**Where they go**: `templates/commands/` directory  
+**How AI uses them**: Via `/` prefix in AI chat (Cursor, Windsurf, etc.)
+**Core purpose**: Guide AI to **produce outputs that comply with protocol specifications**
+
+**Key Distinction**:
+- ❌ **NOT**: "How to call CLI commands" (wrapper documentation)
+- ✅ **YES**: "How to execute according to protocol specs" (spec-driven guidance)
+
+**When to Include**:
+- ✅ Primary users are AI agents
+- ✅ Tool enforces a specific protocol/specification
+- ✅ Outputs must comply with validation rules
+- ✅ Multi-step workflows require protocol knowledge
+
+---
+
+#### STEP 1: Analyze Protocol Specification (REQUIRED)
+
+**Before defining Slash Commands**, analyze the SDS protocol specification in `specs/protocol/`.
+
+**Questions to Ask**:
+
+1. **Protocol Complexity**
+   - [ ] Does the protocol define complex rules and constraints?
+   - [ ] Will AI need to reference these rules repeatedly?
+   - **If YES** → Need commands to access protocol knowledge
+
+2. **Entities & Structures**
+   - [ ] Does the protocol define multiple entity types?
+   - [ ] Do entities have specific structures (schemas, fields, validation)?
+   - **If YES** → Need commands to work with entities
+
+3. **Validation Rules**
+   - [ ] Does the protocol specify validation constraints?
+   - [ ] Must outputs be validated against schemas?
+   - **If YES** → Need validation commands
+
+4. **Workflows & Phases**
+   - [ ] Does the protocol define a multi-phase workflow?
+   - [ ] Are there specific actions in each phase?
+   - **If YES** → Analyze workflow type:
+     - **Type A (State Machine)**: Abstract states (draft → review → approved)
+       → Use navigation commands: `get-workflow`, `next-phase`
+     - **Type B (Action Sequence)**: Concrete actions (define → clarify → validate)
+       → Each action becomes a command
+
+5. **Examples & Templates**
+   - [ ] Does the protocol include examples or templates?
+   - [ ] Will AI need to reference these?
+   - **If YES** → Need commands to retrieve examples
+
+---
+
+#### STEP 2: Derive Commands from Protocol
+
+**Mapping Rules**: Protocol content → Commands
+
+| Protocol Content | Indicator | Derived Command | Purpose |
+|-----------------|-----------|-----------------|---------|
+| **Complex rules** | 20+ pages, many constraints | `get-spec [section]` | Access protocol knowledge |
+| **Multiple entities** | 3+ entity definitions | `get-template <entity>` | Retrieve entity structures |
+| **Validation rules** | JSON schemas, constraints | `validate <file>` | Check compliance |
+| **Workflow (Type A)** | States & transitions | `get-workflow`, `next-phase` | Navigate workflow |
+| **Workflow (Type B)** | Action sequences | One command per action | Execute each step |
+| **Examples** | Example library | `get-example <type>` | Reference examples |
+| **Operations** | Interface definitions | `get-spec operations` | Access interface specs |
+
+**Example Analysis - MCP Protocol**:
+
+```markdown
+Protocol Analysis (specs/protocol/001-mcp/spec.md):
+
+✅ Complexity: High (5 phases, 20+ validation rules)
+✅ Entities: 5 artifact types (requirements, design, code, tests, deployment)
+✅ Validation: Each entity has JSON schema
+✅ Workflow: Type B - Action sequence per phase
+✅ Examples: Template for each artifact type
+
+Derived Commands:
+  P0 (CRITICAL):
+    - get-spec        (Access protocol rules)
+    - get-template    (Retrieve artifact templates)
+    - validate        (Check schema compliance)
+    
+  P1 (Important):
+    - get-workflow    (Show phase structure)
+    - get-example     (Reference examples)
+    - init            (Initialize project)
+    
+  P2 (Optional - Skip):
+    - info            (Low value)
+```
+
+---
+
+#### STEP 3: Create Spec-Driven Slash Commands
+
+**CRITICAL**: Slash Commands embed protocol knowledge and guide spec-driven execution.
+
+**Template Structure**:
+
+```markdown
+# /{toolkit-name}.{command}
+
+## Purpose
+[Spec-driven goal - what protocol-compliant output to produce]
+
+## Protocol Specification (EMBEDDED)
+**From**: specs/protocol/{XXX}/spec.md
+
+### Entity Structure
+[Copy relevant entity definition from protocol]
+- field1: type (required) - description
+- field2: type (optional) - description
+- Constraints: [Protocol constraints]
+
+### Validation Rules
+[Copy validation rules from protocol]
+- VR001: {Rule description}
+- VR002: {Rule description}
+
+### Examples
+[Include protocol examples]
+
+## AI Execution Steps
+[How AI should execute to produce spec-compliant output]
+
+1. **Understand User Intent**
+   - Extract key information from user input
+   - Map to protocol entity structure
+
+2. **Apply Protocol Rules**
+   - Check {constraint 1}
+   - Ensure {constraint 2}
+   - Validate {rule 3}
+
+3. **Structure Output**
+   - Follow entity schema
+   - Include required fields
+   - Apply validation rules
+
+4. **Validate Compliance**
+   - Self-check against protocol rules
+   - Verify all constraints met
+
+## Output Template
+[Protocol-compliant output structure]
+
+\```json
+{
+  "field1": "...",  // From protocol entity definition
+  "field2": "..."   // Validated against VR001
+}
+\```
+
+## Validation Checklist
+[From protocol validation_rules]
+- [ ] VR001: {Rule}
+- [ ] VR002: {Rule}
+- [ ] Output matches schema
+
+## Related Commands
+- /{toolkit}.get-spec - Reference full protocol
+- /{toolkit}.validate - Validate output
+\```
+
+---
+
+#### STEP 4: Workflow-Specific Commands
+
+**If protocol defines Type B Workflow (Action Sequence)**:
+
+```markdown
+Protocol Workflow Example:
+  phases:
+    - Requirements:
+        actions:
+          - define_requirements
+          - clarify_requirements
+          - validate_requirements
+    - Design:
+        actions:
+          - create_design
+          - review_design
+
+Slash Commands Needed:
+  /{toolkit}.define-requirements.md
+  /{toolkit}.clarify-requirements.md
+  /{toolkit}.validate-requirements.md
+  /{toolkit}.create-design.md
+  /{toolkit}.review-design.md
+
+Each contains:
+  - Protocol knowledge for that phase
+  - Spec-driven execution steps
+  - Validation rules for outputs
+```
+
+**Judgment Rule**: 
+- Workflow step is a **verb/action** → Create command
+- Workflow step is a **noun/state** → Use navigation commands
+
+---
+
+#### Slash Command Checklist
+
+Based on protocol analysis, create:
+
+**P0 - Must Create** (If protocol has these):
+- [ ] `/{toolkit}.get-spec.md` - If complex protocol (20+ rules)
+- [ ] `/{toolkit}.get-template.md` - If multiple entities (3+)
+- [ ] `/{toolkit}.validate.md` - If validation rules exist
+- [ ] `/{toolkit}.{action}.md` - For each workflow action (Type B)
+
+**P1 - Should Create** (If useful):
+- [ ] `/{toolkit}.get-workflow.md` - If multi-phase workflow
+- [ ] `/{toolkit}.get-example.md` - If examples exist
+- [ ] `/{toolkit}.init.md` - For project initialization
+
+**P2 - Skip** (Low value):
+- [ ] info, version, help commands
+
+---
+
+#### Design Principles: Spec-Driven Execution
+
+1. **Embed Protocol Knowledge**
+   - ✅ Include entity definitions from protocol
+   - ✅ Copy validation rules into commands
+   - ✅ Provide protocol examples
+   - ❌ Don't just say "call this CLI"
+
+2. **Guide Spec-Compliant Production**
+   - ✅ Show how to structure outputs per protocol
+   - ✅ Explain how to apply validation rules
+   - ✅ Provide output templates from protocol
+   - ❌ Don't just describe CLI parameters
+
+3. **Validate Against Protocol**
+   - ✅ Include validation checklists from protocol
+   - ✅ Self-check steps for AI
+   - ✅ Clear compliance criteria
+   - ❌ Don't rely on external validation only
+
+**Quality Checklist**:
+- [ ] Embeds protocol knowledge (entities, rules, constraints)
+- [ ] Guides spec-compliant output production
+- [ ] Includes validation rules from protocol
+- [ ] Provides protocol-based templates
+- [ ] AI can produce compliant output without external reference
+
+---
+
+#### Integration with Generated Speckit
+
+These Slash Commands will:
+1. Be generated into `templates/commands/` directory
+2. Embed protocol knowledge from `specs/protocol/`
+3. Guide AI to produce protocol-compliant outputs
+4. Enable spec-driven development by AI agents
+
+**This is the essence of Spec-Driven Toolkits**: Protocol knowledge embedded in execution guides.
+
+\```
+
+##### **Component 5: Generator (Optional)**
 
 If applicable:
 
