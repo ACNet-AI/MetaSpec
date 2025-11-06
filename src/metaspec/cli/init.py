@@ -73,11 +73,9 @@ def init_command(
         None,
         help="Speckit name (e.g., 'my-spec-kit'). If not provided, starts interactive mode.",
     ),
-    template: str | None = typer.Option(
-        None,
-        "--template",
-        "-t",
-        help="Use default template - skips interactive mode",
+    template: str = typer.Argument(
+        "default",
+        help="Template to use (default, api, testing, ...). Defaults to 'default'.",
     ),
     output: Path | None = typer.Option(
         None,
@@ -114,31 +112,24 @@ def init_command(
         # Interactive mode (recommended - most flexible)
         metaspec init
 
-        # Quick start with name (still interactive for domain/entity)
+        # Quick start with default template
         metaspec init my-spec-kit
 
-        # Template mode (skip all prompts, use default template)
-        metaspec init my-spec-kit --template default
+        # Use specific template
+        metaspec init my-spec-kit api
 
         # Preview before creating
-        metaspec init my-spec-kit --template default --dry-run
+        metaspec init my-spec-kit --dry-run
 
         # Specify custom output directory
-        metaspec init my-spec-kit -o ./custom-path
+        metaspec init my-spec-kit default -o ./custom-path
     """
     try:
         # Determine toolkit name
         toolkit_name = name
 
-        # Mode 1: Template mode (fast path)
-        if template:
-            if not toolkit_name:
-                toolkit_name = _prompt_toolkit_name_simple(template)
-
-            meta_spec = _create_from_preset(template, toolkit_name)
-
-        # Mode 2: Interactive mode
-        elif not toolkit_name:
+        # Mode 1: Interactive mode (no name provided)
+        if not toolkit_name:
             console.print(
                 Panel.fit(
                     "[bold cyan]MetaSpec - Create Spec-Driven Toolkit[/bold cyan]\n\n"
@@ -151,17 +142,9 @@ def init_command(
             meta_spec = _interactive_wizard()
             toolkit_name = meta_spec.name
 
-        # Mode 3: Name only (use interactive with pre-filled name)
+        # Mode 2: Template mode (name provided)
         else:
-            console.print(
-                Panel.fit(
-                    f"[bold cyan]Creating: {toolkit_name}[/bold cyan]\n\n"
-                    "Please provide additional information:",
-                    border_style="cyan",
-                )
-            )
-
-            meta_spec = _interactive_wizard(pre_filled_name=toolkit_name)
+            meta_spec = _create_from_preset(template, toolkit_name)
 
         # Determine output directory
         if output is None:
@@ -340,27 +323,6 @@ def _interactive_wizard(pre_filled_name: str | None = None) -> MetaSpecDefinitio
     # Create MetaSpecDefinition directly from dict (no YAML round-trip)
     meta_spec = MetaSpecDefinition.from_dict(meta_spec_dict)
     return meta_spec
-
-
-def _prompt_toolkit_name_simple(domain: str) -> str:
-    """Simple prompt for speckit name."""
-    default_name = f"{domain}-speckit" if domain != "generic" else "my-speckit"
-
-    while True:
-        name = Prompt.ask("Speckit name", default=default_name)
-
-        # Validate name
-        if not name:
-            console.print("[red]Name cannot be empty[/red]")
-            continue
-
-        if not name.replace("-", "").replace("_", "").isalnum():
-            console.print(
-                "[red]Name must contain only alphanumeric characters, hyphens, and underscores[/red]"
-            )
-            continue
-
-        return name
 
 
 def _show_preview(meta_spec: MetaSpecDefinition, output_dir: Path, spec_kit: bool) -> None:
