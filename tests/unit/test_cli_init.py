@@ -97,8 +97,7 @@ class TestInitCommand:
             [
                 "init",
                 "test-kit",
-                "--template",
-                "nonexistent-template",
+                "nonexistent-template",  # Now a positional argument
                 "--output",
                 str(output_dir),
             ],
@@ -126,8 +125,7 @@ class TestInitCommand:
             [
                 "init",
                 "test-kit",
-                "--template",
-                "default",
+                "default",  # Now a positional argument
                 "--output",
                 str(output_dir),
                 "--dry-run",
@@ -202,8 +200,7 @@ class TestInitCommand:
             [
                 "init",
                 "test-kit",
-                "--template",
-                "default",
+                "default",  # Now a positional argument
                 "--output",
                 str(output_dir),
                 "--force",
