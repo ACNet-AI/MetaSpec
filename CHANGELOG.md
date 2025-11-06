@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🔧 Structure Improvements
+
+**Fixed file structure issues in `/metaspec.sdd.specify`**:
+
+1. **Fixed Heading Hierarchy** (P0 - Critical)
+   - Component 3: Changed STEP 1-4 from `####` (heading level 4) to bold text
+   - Resolved: Sub-sections had higher heading level than parent section
+   - Impact: Clearer document structure, better table of contents
+
+2. **Renumbered Component 4 STEP Sequence** (P0 - Critical)
+   - Before: STEP 1, 2, 2.5, 3, 4, 5, 6 (irregular)
+   - After: STEP 1, 2, 3, 4, 5, 6, 7 (sequential)
+   - Fixed: "STEP 2.5" irregular numbering
+
+3. **Added Cross-References** (P1 - Important)
+   - STEP 4 now explicitly references Component 3
+   - Clarified relationship: STEP 4a is subset of Component 3
+   - Added clear guidance: "CLI commands should be defined in Component 3 first"
+
+4. **Improved Section Titles** (P1 - Important)
+   - STEP 4a: "CLI Commands (CLI-Referenced Only)" → "CLI Commands (CLI-Referenced Pattern)"
+   - Added context explanations in STEP 4a
+   - Emphasized cross-reference to Component 3
+
+**Why This Matters**:
+- Eliminates reader confusion about CLI command duplication
+- Clear hierarchical structure for better navigation
+- Explicit cross-references show relationships between sections
+
+**Files Changed**:
+- src/metaspec/templates/meta/sdd/commands/specify.md.j2 (structure improvements)
+
+---
+
 ### ✨ Major Feature - Spec-Driven Slash Commands
 
 **Revolutionary Change**: Slash Commands redesigned as **spec-driven execution guides**, not CLI wrappers.

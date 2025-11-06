@@ -374,7 +374,7 @@ if not result.valid:
 
 ---
 
-#### STEP 1: Define Toolkit Type
+**STEP 1: Define Toolkit Type**
 
 **Question: What type of tool is this toolkit?**
 
@@ -400,7 +400,7 @@ Select primary toolkit type(s):
 
 ---
 
-#### STEP 2: Derive CLI Commands from Toolkit Purpose
+**STEP 2: Derive CLI Commands from Toolkit Purpose**
 
 **CRITICAL**: ❌ **DON'T use fixed command names** (init, validate, list)  
             ✅ **DO derive commands based on toolkit function and domain**
@@ -504,7 +504,7 @@ api-toolkit check-endpoint spec.yaml
 
 ---
 
-#### STEP 3: Protocol-Influenced CLI Parameters
+**STEP 3: Protocol-Influenced CLI Parameters**
 
 **Protocol content can influence command parameters** (not command names):
 
@@ -535,7 +535,7 @@ api-toolkit check-endpoint spec.yaml
 
 ---
 
-#### STEP 4: Define CLI Implementation
+**STEP 4: Define CLI Implementation**
 
 **For each derived command, specify**:
 
@@ -637,7 +637,9 @@ mcpspeckit init [project-name]
 
 **CLI Framework**: typer (Python) or commander (Node.js)
 **Output**: Rich formatting with colors, progress bars
-\```
+```
+
+---
 
 ##### **Component 4: Slash Commands - Spec-Driven Execution (CRITICAL for AI-Oriented Tools)**
 
@@ -843,7 +845,7 @@ Option C: Composed (Recommended)
 
 ---
 
-#### STEP 2.5: Classify Commands (Slash + CLI/Script Support)
+#### STEP 3: Classify Commands (Slash + CLI/Script Support)
 
 **CRITICAL**: Slash Commands are for AI execution. CLI/Scripts provide optional support.
 
@@ -954,11 +956,28 @@ AI produces, independent CLI validates:
 
 ---
 
-#### STEP 3: Implement Support Tools (CLI + Scripts)
+#### STEP 4: Implement Support Tools (CLI + Scripts)
+
+**IMPORTANT**: CLI commands should be fully defined in **Component 3: CLI Commands** first.  
+This section covers implementation of support tools specifically for Slash Commands.
+
+**Cross-Reference**: See Component 3 for complete CLI command specification (4-STEP derivation process).
+
+**This section covers**:
+- 4a. CLI Commands (CLI-Referenced Pattern only - subset of Component 3)
+- 4b. Helper Scripts (Script-Assisted Pattern only)
+
+---
 
 **Implement based on command classification**:
 
-##### 3a. CLI Commands (CLI-Referenced Only)
+##### 4a. CLI Commands (CLI-Referenced Pattern)
+
+**Cross-Reference**: This is a subset of CLI commands defined in **Component 3**.
+
+**Context**: When STEP 3 identifies "CLI-Referenced Pattern" commands, implement the associated CLI tools here.
+
+**From Component 3**: Follow the 4-STEP process in Component 3 to fully define these CLI commands before implementing.
 
 **Purpose**: Independent tools for validation, querying, display
 
@@ -967,7 +986,7 @@ AI produces, independent CLI validates:
 
 **Independent CLI Tools** (user calls directly):
 
-Based on your toolkit functions, implement:
+Based on your toolkit functions (from Component 3 STEP 1), implement:
 
 - [ ] **Validation**: validate <file>, check, lint
   - Validate against protocol schema
@@ -993,7 +1012,7 @@ Based on your toolkit functions, implement:
 - Users call them directly after AI produces content
 ```
 
-##### 3b. Helper Scripts (Script-Assisted Only)
+##### 4b. Helper Scripts (Script-Assisted Only)
 
 **Purpose**: Set up file structure, create skeletons
 
@@ -1021,7 +1040,7 @@ Based on your toolkit functions, implement:
 
 ---
 
-#### STEP 4: Create Spec-Driven Slash Commands (All Types)
+#### STEP 5: Create Spec-Driven Slash Commands (All Types)
 
 **CRITICAL**: Create Slash Commands based on command type (Pure-Execution, Script-Assisted, CLI-Referenced).
 
@@ -1183,7 +1202,7 @@ It teaches AI to suggest appropriate CLI commands to users.
 
 ---
 
-#### STEP 5: Workflow-Specific Commands (Type B Only)
+#### STEP 6: Workflow-Specific Commands (Type B Only)
 
 **If protocol defines Type B Workflow (Action Sequence)**, these workflow actions become **Pure-Execution Slash Commands**:
 
@@ -1219,7 +1238,7 @@ Each Slash Command contains:
 
 ---
 
-#### STEP 6: Final Command Inventory
+#### STEP 7: Final Command Inventory
 
 **Summarize all derived and classified commands**:
 
