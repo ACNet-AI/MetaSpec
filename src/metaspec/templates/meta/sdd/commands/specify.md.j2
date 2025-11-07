@@ -742,10 +742,11 @@ Option C: Composed (Recommended)
    - Derived commands: `understand-requirements`, `design-architecture`, `build-server`, `validate-implementation`, `deploy-system`, `maintain-service`
    - Pattern: Phase name becomes command verb
    
-   **Example 3 - MCP Server Development**:
-   - Protocol lifecycle: Requirements → Architecture → Endpoints → Testing
-   - Derived commands: `understand-requirements`, `design-endpoints`, `build-handlers`, `test-server`
-   - Pattern: Lifecycle stage → action verb
+   **Example 3 - MetaSpec SDD Workflow** (Real Implementation - Dogfooding):
+   - Development workflow: constitution → specify → clarify → plan → tasks → implement → checklist → analyze
+   - Derived commands: `sdd.constitution`, `sdd.specify`, `sdd.clarify`, `sdd.plan`, `sdd.tasks`, `sdd.implement`, `sdd.checklist`, `sdd.analyze`
+   - Pattern: Workflow action → namespaced command
+   - Note: This is how MetaSpec itself was built (eating our own dog food)
    
    **Key principle**: If protocol phases are **verb-able actions** (can be turned into verbs), derive commands from them directly
 
@@ -828,9 +829,9 @@ VALIDATE implementation → validate            → validate-implementation
 |---------|---------|----------|--------|---------|
 | **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions | Actions become commands |
 | **Project Lifecycle** | Verb-Noun | `understand-requirements`<br>`design-architecture`<br>`build-server`<br>`validate-implementation` | Lifecycle phases | **Phases become commands** |
-| **MCP Server Dev** | Verb-Noun | `understand-requirements`<br>`design-endpoints`<br>`build-handlers` | Development stages | **Stages become verbs** |
+| **MetaSpec SDD** | Namespaced | `sdd.specify`<br>`sdd.clarify`<br>`sdd.plan`<br>`sdd.implement`<br>`sdd.analyze` | Development workflow | **MetaSpec's own workflow** (dogfooding) |
+| **MetaSpec SDS** | Namespaced | `sds.specify`<br>`sds.clarify`<br>`sds.analyze`<br>`sds.checklist` | Specification workflow | Protocol definition flow |
 | **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Change management | Protocol's management terms |
-| **MetaSpec** | Namespaced | `sds.specify`<br>`sdd.clarify`<br>`sdd.plan` | Layered system | Layered specification system |
 
 **Key Insights**: 
 - ❌ No project uses generic `get-template` or `get-spec`

@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🐛 Bug Fixes
 
+**Replaced external project examples with MetaSpec's own implementations**
+
+**Issue**: Example 3 used "MCP Server Development" which:
+- References external protocol (Anthropic's MCP)
+- Makes MetaSpec look like it's built for one specific project
+- Reduces perceived neutrality and generality
+
+**Fix**: Replaced with "MetaSpec SDD Workflow" (real implementation)
+- Shows how MetaSpec itself was built (dogfooding/eating own dog food)
+- Uses actual MetaSpec commands: sdd.specify, sdd.clarify, sdd.plan, sdd.implement
+- Demonstrates "spec-driven tool built with spec-driven approach"
+- Enhanced table with MetaSpec SDD + SDS workflows
+
+**Impact**:
+- ✅ More credible: "We use this ourselves"
+- ✅ Neutral: Not promoting external projects
+- ✅ Educational: Users can verify in MetaSpec source code
+- ✅ Philosophical: Embodies recursive spec-driven development
+
+**Files Changed**:
+- specify.md.j2: Example 3 + table rows
+
+---
+
 **Fixed naming inconsistency in lifecycle phase examples**
 
 **Issue**: Same concept "Project Lifecycle" had different command names in different locations
