@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### ✨ Improvements
+---
+
+## [0.3.0] - 2025-11-07
+
+### ✨ Features
 
 **Enhanced slash command specification with Claude Code best practices**
 
@@ -61,27 +65,6 @@ model: claude-3-5-sonnet-20241022
 
 ### 🐛 Bug Fixes
 
-**Removed hardcoded line number references**
-
-**Issue**: Document contained hardcoded line references that become stale after edits:
-- ❌ "(lines 364-643)" - specific line ranges in cross-references
-- ❌ Line numbers shift when content is added/removed
-- ❌ Creates maintenance burden and confusion
-
-**Fix**: Removed all hardcoded line numbers (2 occurrences):
-- ✅ Line 855: Removed "(lines 364-643)" from Component 3 cross-reference
-- ✅ Line 867: Removed "(lines 364-643)" from Component 3 subset reference
-- ✅ Kept component name references for clarity
-
-**Impact**: 
-- ✅ References won't become stale after edits
-- ✅ Easier to maintain
-- ✅ Still clear (users can search for "Component 3")
-
-**Files Changed**: `specify.md.j2`
-
----
-
 **Removed all MCP-specific examples to ensure framework neutrality**
 
 **Issue**: Document contained 30+ references to MCP (Model Context Protocol) throughout:
@@ -97,16 +80,6 @@ model: claude-3-5-sonnet-20241022
 - ✅ Updated Quick Reference to use universal concepts
 - ✅ Changed all MCP examples to framework-neutral ones
 - ✅ Tables now show: MetaSpec (specify, clarify, plan) and Generic (design, build, test)
-
-**Before**:
-- Component 3: 37 lines of MCP-specific CLI design
-- Tables: MCP examples dominating (define-server, init-server, validate-server)
-- Quick Reference: "Define Server" → define-server
-
-**After**:
-- Component 3: Removed
-- Tables: MetaSpec + Generic examples only
-- Quick Reference: "Specify Feature" → specify
 
 **Impact**: 
 - ✅ **Framework neutral**: No external protocol dependencies
@@ -146,21 +119,48 @@ model: claude-3-5-sonnet-20241022
 
 ---
 
-### 🐛 Bug Fixes
+**Removed hardcoded line number references**
 
-**Replaced external project examples with MetaSpec's own implementations**
+**Issue**: Document contained hardcoded line references that become stale after edits:
+- ❌ "(lines 364-643)" - specific line ranges in cross-references
+- ❌ Line numbers shift when content is added/removed
+- ❌ Creates maintenance burden and confusion
 
-**Issue**: Example 3 used "MCP Server Development" (Anthropic's MCP protocol), making MetaSpec appear project-specific rather than a general framework.
-
-**Fix**: Replaced with "MetaSpec SDD Workflow" showing how MetaSpec itself was built (dogfooding):
-- Example 3: constitution → specify → clarify → plan → tasks → implement → checklist → analyze
-- Table: Added MetaSpec SDD + SDS workflow examples
-- Pattern: Development workflow → namespaced commands
+**Fix**: Removed all hardcoded line numbers (2 occurrences):
+- ✅ Line 855: Removed "(lines 364-643)" from Component 3 cross-reference
+- ✅ Line 867: Removed "(lines 364-643)" from Component 3 subset reference
+- ✅ Kept component name references for clarity
 
 **Impact**: 
-- ✅ More credible (we use this ourselves)
-- ✅ Framework-neutral (not tied to external projects)
-- ✅ Educational (verifiable in MetaSpec source)
+- ✅ References won't become stale after edits
+- ✅ Easier to maintain
+- ✅ Still clear (users can search for "Component 3")
+
+**Files Changed**: `specify.md.j2`
+
+---
+
+### ♻️ Refactoring
+
+**Removed redundant Argument Access descriptions**
+
+**Issue**:
+- "Argument Access" section repeated 4 times in slash command templates
+- Full descriptions duplicated in Template 1, Template 2, and Template 3
+- ~10 lines of redundant content
+
+**Fix**: Simplified to single-line references in templates:
+- ✅ Kept comprehensive description in Frontmatter Fields section (single source of truth)
+- ✅ Template 1: 3 lines → 1 line reference
+- ✅ Template 2: 4 lines → 1 line reference
+- ✅ Template 3: 3 lines → 1 line reference
+
+**After**: `**Argument Access**: $ARGUMENTS, $1, $2, $3 (see Frontmatter Fields above)`
+
+**Impact**: 
+- ✅ Removed 9 lines of redundancy
+- ✅ Easier to maintain (single source of truth)
+- ✅ Users still see relevant variables in templates
 
 **Files Changed**: `specify.md.j2`
 
