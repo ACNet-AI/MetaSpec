@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🔧 Improvements
+
+**Enhanced lifecycle phase guidance in `/metaspec.sdd.specify`** (Based on user feedback)
+
+**What Changed**:
+
+1. **STEP 1: Enhanced Workflows & Phases Analysis** (+27 lines)
+   - Added "OR lifecycle phases" to Type B description
+   - Added 3 complete examples:
+     - Example 1: Development Workflow (specify → plan → implement → test)
+     - Example 2: Project Lifecycle (6 phases: UNDERSTAND → DESIGN → BUILD → VALIDATE → DEPLOY → MAINTAIN)
+     - Example 3: MCP Server Development (Requirements → Architecture → Endpoints → Testing)
+   - Added key principle: "If protocol phases are verb-able actions, derive commands from them directly"
+
+2. **STEP 1: Added Completion Checklist** (+35 lines)
+   - Protocol Understanding checklist
+   - Workflow Analysis checklist (with Type A/B/C)
+   - Type B specific checklist (phase mapping)
+   - Phase-to-command mapping example table
+   - Visual comparison: Skipping vs Complete analysis
+
+3. **STEP 2: Enhanced Command Naming Table** (+2 rows)
+   - Added "Project Lifecycle" example row (plan-project, design-system, build-code)
+   - Added "MCP Server Dev" example row (understand-requirements, design-endpoints, build-handlers)
+   - Added "Source" column to clarify where commands come from
+   - Updated key insights to emphasize lifecycle phases
+
+**Why This Matters**:
+- ✅ **Prevents confusion**: Clear examples of how lifecycle phases become commands
+- ✅ **Enforces process**: Checklist ensures STEP 1 analysis is complete
+- ✅ **Visual guidance**: Table shows multiple lifecycle-to-command patterns
+- ✅ **Better UX**: Users won't skip workflow analysis and default to generic commands
+
+**User Feedback Resolution**:
+- Issue: Missing examples of "lifecycle phases → commands" pattern
+- Solution: 3 concrete examples + checklist + enhanced table
+- Impact: Users can now easily derive commands from protocol lifecycle phases
+
+**Files Changed**:
+- src/metaspec/templates/meta/sdd/commands/specify.md.j2 (+64 lines)
+
+---
+
 ## [0.2.0] - 2025-11-07
 
 ### ✨ Major Feature - User-Centered Toolkit Design

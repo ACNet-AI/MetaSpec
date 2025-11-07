@@ -727,13 +727,68 @@ Option C: Composed (Recommended)
    - **If YES** → Analyze workflow type:
      - **Type A (State Machine)**: Abstract states (draft → review → approved)
        → Use navigation commands: `get-workflow`, `next-phase`
-     - **Type B (Action Sequence)**: Concrete actions (define → clarify → validate)
-       → Each action becomes a command
+     - **Type B (Action Sequence)**: Concrete actions OR lifecycle phases
+       → Each action/phase becomes a command
+   
+   **Examples of Type B**:
+   
+   **Example 1 - Development Workflow**:
+   - Protocol workflow: specify → plan → implement → test
+   - Derived commands: `specify-feature`, `plan-architecture`, `implement-code`, `test-system`
+   - Pattern: Each workflow step becomes a verb
+   
+   **Example 2 - Project Lifecycle** (6 phases):
+   - Protocol phases: UNDERSTAND → DESIGN → BUILD → VALIDATE → DEPLOY → MAINTAIN
+   - Derived commands: `understand-requirements`, `design-architecture`, `build-server`, `validate-implementation`, `deploy-system`, `maintain-service`
+   - Pattern: Phase name becomes command verb
+   
+   **Example 3 - MCP Server Development**:
+   - Protocol lifecycle: Requirements → Architecture → Endpoints → Testing
+   - Derived commands: `understand-requirements`, `design-endpoints`, `build-handlers`, `test-server`
+   - Pattern: Lifecycle stage → action verb
+   
+   **Key principle**: If protocol phases are **verb-able actions** (can be turned into verbs), derive commands from them directly
 
 5. **Examples & Templates**
    - [ ] Does the protocol include examples or templates?
    - [ ] Will AI need to reference these?
    - **If YES** → Need commands to retrieve examples
+
+---
+
+**STEP 1 Checklist** ✅
+
+**Complete this analysis before moving to STEP 2**:
+
+**Protocol Understanding**:
+- [ ] Identified all protocol entities (Server, Tool, Resource, etc.)
+- [ ] Listed all protocol operations (initialize, list, call, etc.)
+- [ ] Documented validation rules (schemas, constraints)
+
+**Workflow Analysis** (CRITICAL):
+- [ ] Determined workflow type:
+  - [ ] Type A (State Machine): Abstract states → navigation commands
+  - [ ] Type B (Action Sequence): Concrete actions/phases → action commands
+  - [ ] Type C (Composed): Both patterns
+  
+**If Type B detected**:
+- [ ] Listed all workflow phases/actions
+- [ ] Confirmed phases are "verb-able" (can become command verbs)
+- [ ] Prepared phase-to-command mapping
+
+**Mapping Example** (for Type B):
+```
+Protocol Phase          → Command Verb        → Command Name
+────────────────────────────────────────────────────────────
+UNDERSTAND requirements → understand          → understand-requirements
+DESIGN architecture     → design              → design-architecture
+BUILD server           → build               → build-server
+VALIDATE implementation → validate            → validate-implementation
+```
+
+**Why This Matters**:
+- ❌ Skipping this analysis → Generic commands (validate, generate)
+- ✅ Complete analysis → Domain-specific commands (validate-implementation, build-server)
 
 ---
 
@@ -769,13 +824,18 @@ Option C: Composed (Recommended)
 
 **Real Project Command Naming Patterns**:
 
-| Project | Pattern | Examples | Insight |
-|---------|---------|----------|---------|
-| **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions become commands |
-| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Protocol's change management terms |
-| **MetaSpec** | Namespaced | `sds.specify`<br>`sdd.clarify`<br>`sdd.plan` | Layered specification system |
+| Project | Pattern | Examples | Source | Insight |
+|---------|---------|----------|--------|---------|
+| **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions | Actions become commands |
+| **Project Lifecycle** | Verb-Noun | `plan-project`<br>`design-system`<br>`build-code`<br>`test-system` | Lifecycle phases | **Phases become commands** |
+| **MCP Server Dev** | Verb-Noun | `understand-requirements`<br>`design-endpoints`<br>`build-handlers` | Development stages | **Stages become verbs** |
+| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Change management | Protocol's management terms |
+| **MetaSpec** | Namespaced | `sds.specify`<br>`sdd.clarify`<br>`sdd.plan` | Layered system | Layered specification system |
 
-**Key Insight**: ❌ No project uses `get-template` or `get-spec` → ✅ All use domain terminology
+**Key Insights**: 
+- ❌ No project uses generic `get-template` or `get-spec`
+- ✅ All use domain-specific terminology
+- ✅ **Lifecycle phases directly become command verbs** (plan-project, design-system, build-code)
 
 ---
 
