@@ -730,23 +730,11 @@ Option C: Composed (Recommended)
      - **Type B (Action Sequence)**: Concrete actions OR lifecycle phases
        → Each action/phase becomes a command
    
-   **Examples of Type B**:
-   
-   **Example 1 - Development Workflow**:
-   - Protocol workflow: specify → plan → implement → test
-   - Derived commands: `specify`, `plan`, `implement`, `test`
-   - Pattern: Workflow action directly becomes command (context in help text, not command name)
-   
-   **Example 2 - Project Lifecycle** (6 phases):
-   - Protocol phases: UNDERSTAND → DESIGN → BUILD → VALIDATE → DEPLOY → MAINTAIN
-   - Derived commands: `understand`, `design`, `build`, `validate`, `deploy`, `maintain`
-   - Pattern: Phase name directly becomes command (simple and memorable)
-   
-   **Example 3 - MetaSpec SDD Workflow** (Real Implementation - Dogfooding):
+   **Example - MetaSpec SDD Workflow** (Real Implementation - Dogfooding):
    - Development workflow: constitution → specify → clarify → plan → tasks → implement → checklist → analyze
    - Derived commands: `sdd.constitution`, `sdd.specify`, `sdd.clarify`, `sdd.plan`, `sdd.tasks`, `sdd.implement`, `sdd.checklist`, `sdd.analyze`
-   - Pattern: Workflow action → namespaced command
-   - Note: This is how MetaSpec itself was built (eating our own dog food)
+   - Pattern: Workflow action → namespaced command (simple verbs with namespace prefix)
+   - Note: This is how MetaSpec itself was built - we eat our own dog food
    
    **Key principle**: If protocol phases are **verb-able actions** (can be turned into verbs), derive commands from them directly
 
@@ -779,20 +767,18 @@ Option C: Composed (Recommended)
 
 **Mapping Example** (for Type B):
 ```
-Protocol Phase          → Command Verb        → Command Name
-────────────────────────────────────────────────────────────
-UNDERSTAND requirements → understand          → understand
-DESIGN architecture     → design              → design
-BUILD server           → build               → build
-VALIDATE implementation → validate            → validate
-DEPLOY system          → deploy              → deploy
-MAINTAIN service       → maintain            → maintain
+Protocol Phase     → Command Verb → Command Name         → With Namespace
+──────────────────────────────────────────────────────────────────────────
+SPECIFY feature    → specify      → specify              → sdd.specify
+CLARIFY ambiguity  → clarify      → clarify              → sdd.clarify
+PLAN architecture  → plan         → plan                 → sdd.plan
+IMPLEMENT code     → implement    → implement            → sdd.implement
 ```
 
 **Why This Matters**:
 - ❌ Skipping this analysis → Generic commands without domain context
 - ✅ Complete analysis → Simple, memorable commands derived from protocol phases
-- 💡 Keep commands short; add context in help text (e.g., `understand --help` shows "understand requirements")
+- 💡 Use simple verbs; add namespace if needed; context goes in help text
 
 ---
 
@@ -830,17 +816,14 @@ MAINTAIN service       → maintain            → maintain
 
 | Project | Pattern | Examples | Source | Insight |
 |---------|---------|----------|--------|---------|
-| **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions | Actions become commands |
-| **Project Lifecycle** | Single Verb | `understand`<br>`design`<br>`build`<br>`validate`<br>`deploy`<br>`maintain` | Lifecycle phases | **Phase verbs directly become commands** |
-| **MetaSpec SDD** | Namespaced | `sdd.specify`<br>`sdd.clarify`<br>`sdd.plan`<br>`sdd.implement`<br>`sdd.analyze` | Development workflow | **MetaSpec's own workflow** (dogfooding) |
-| **MetaSpec SDS** | Namespaced | `sds.specify`<br>`sds.clarify`<br>`sds.analyze`<br>`sds.checklist` | Specification workflow | Protocol definition flow |
-| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Change management | Protocol's management terms |
+| **MetaSpec** | Namespaced Verbs | `sdd.specify`<br>`sdd.clarify`<br>`sdd.plan`<br>`sdd.implement` | Development workflow | **Simple verbs + namespace** (dogfooding) |
+| **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions | **Actions become hyphenated commands** |
+| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Change management | **Single domain-specific verbs** |
 
 **Key Insights**: 
-- ❌ No project uses generic `get-template` or `get-spec`
-- ✅ All use domain-specific terminology
-- ✅ **Keep commands simple**: Single verbs (understand, design, build) not verb-noun pairs
-- ✅ **Protocol phases directly become commands** - context goes in help text, not command names
+- ✅ **Three proven patterns**: Namespaced verbs / Verb-noun / Domain verbs
+- ✅ **All use simple, memorable commands** - no generic `get-template` or `get-spec`
+- ✅ **Context in help text** - not in command names (e.g., `specify --help` not `specify-feature`)
 
 ---
 

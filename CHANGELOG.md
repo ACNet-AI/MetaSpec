@@ -7,29 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### ✨ Improvements
+### ♻️ Refactoring
 
-**Simplified command naming in examples to match real-world patterns**
+**Radically simplified examples to eliminate redundancy**
 
-**Issue**: Examples 1-2 used verbose command names that didn't match the simple style of real projects:
-- ❌ Old: `understand-requirements`, `design-architecture`, `build-server`, `validate-implementation`
-- ❌ Inconsistent with MetaSpec (`specify`, `plan`), OpenSpec (`proposal`, `apply`), Spec-Kit patterns
+**Issue**: Too many redundant examples (8 total) with duplicates:
+- ❌ Example 2 (Project Lifecycle) duplicated in STEP 2 table
+- ❌ Example 3 (MetaSpec SDD) duplicated in STEP 2 table
+- ❌ 5 rows in STEP 2 table, with 2 being duplicates
+- ❌ Multiple abstract examples less valuable than real implementations
 
-**Fix**: Simplified all examples to use single-verb commands:
-- ✅ Example 1: `specify`, `plan`, `implement`, `test`
-- ✅ Example 2: `understand`, `design`, `build`, `validate`, `deploy`, `maintain`
-- ✅ Updated mapping table and checklist
-- ✅ Updated STEP 2 naming patterns table
+**Fix**: Reduced to 4 essential examples (50% reduction):
+- ✅ **STEP 1**: 1 example - MetaSpec SDD (real dogfooding implementation)
+- ✅ **STEP 2 Table**: 3 rows - MetaSpec / Spec-Kit / OpenSpec
+- ✅ Removed: Example 1 (Development Workflow), Example 2 (Project Lifecycle)
+- ✅ Removed: Table rows for Project Lifecycle and MetaSpec SDS
+- ✅ Updated mapping example to use MetaSpec SDD workflow
 
-**Key Insights Added**:
-- Keep commands simple: single verbs preferred over verb-noun pairs
-- Context goes in help text, not command names
-- Matches MetaSpec/OpenSpec/Spec-Kit simplicity
+**Three proven patterns** (STEP 2 Table):
+1. **MetaSpec**: Namespaced Verbs (`sdd.specify`, `sdd.clarify`)
+2. **Spec-Kit**: Verb-Noun (`specify-feature`, `plan-implementation`)
+3. **OpenSpec**: Domain Verbs (`proposal`, `apply`, `archive`)
 
 **Impact**: 
-- ✅ Examples now match real project naming patterns
-- ✅ Easier to remember and type
-- ✅ Consistent guidance throughout the document
+- ✅ **Clearer**: Each example appears once, no duplication
+- ✅ **More valuable**: Real projects only, no abstract examples
+- ✅ **Easier to follow**: 4 examples instead of 8
+- ✅ **Better teaching**: 3 distinct patterns, all from real implementations
 
 **Files Changed**: `specify.md.j2`
 
