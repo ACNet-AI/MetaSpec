@@ -988,9 +988,7 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-**Argument Access**:
-- `$ARGUMENTS` - All arguments as single string
-- `$1`, `$2`, `$3` - Individual positional arguments
+**Argument Access**: `$ARGUMENTS`, `$1`, `$2`, `$3` (see [Frontmatter Fields](#frontmatter-fields-yaml-metadata) above)
 
 ## Purpose
 [What protocol-compliant output to produce]
@@ -1073,10 +1071,7 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-**Argument Access**:
-- `$ARGUMENTS` - All arguments as single string
-- `$1`, `$2`, `$3` - Individual positional arguments
-- `{ARGS}` - Escaped for script execution
+**Argument Access**: `$ARGUMENTS`, `$1`, `$2`, `$3`, `{ARGS}` (see [Frontmatter Fields](#frontmatter-fields-yaml-metadata) above)
 
 ## Purpose
 [What to produce, with script handling setup]
@@ -1148,9 +1143,7 @@ model: claude-3-5-haiku-20241022  # Can use lighter model for simple reminders
 $ARGUMENTS
 \```
 
-**Argument Access**:
-- `$1` - File to validate (if provided)
-- `$ARGUMENTS` - All arguments
+**Argument Access**: `$ARGUMENTS`, `$1` (see [Frontmatter Fields](#frontmatter-fields-yaml-metadata) above)
 
 ## Purpose
 Remind AI to suggest validation after producing content
