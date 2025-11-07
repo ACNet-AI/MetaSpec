@@ -34,7 +34,8 @@ def version_command() -> None:
     """
     Show version information.
     """
-    console.print("MetaSpec version 0.1.3")
+    from metaspec import __version__
+    console.print(f"MetaSpec version {__version__}")
 
 
 @app.callback()

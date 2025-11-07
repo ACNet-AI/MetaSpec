@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-11-07
+
 ### ✨ Major Feature - User-Centered Toolkit Design
 
 **Added User Journey Analysis to `/metaspec.sdd.specify`** (Based on mcp-speckit feedback)
