@@ -814,16 +814,15 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 **Real Project Command Naming Patterns**:
 
-| Project | Pattern | Examples | Source | Insight |
-|---------|---------|----------|--------|---------|
-| **MetaSpec** | Namespaced Verbs | `sdd.specify`<br>`sdd.clarify`<br>`sdd.plan`<br>`sdd.implement` | Development workflow | **Simple verbs + namespace** (dogfooding) |
-| **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions | **Actions become hyphenated commands** |
-| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Change management | **Single domain-specific verbs** |
+| Project | Pattern | Examples | Use Case | Insight |
+|---------|---------|----------|----------|---------|
+| **MetaSpec** | Namespaced Verbs | `sdd.specify`<br>`sdd.clarify`<br>`sdd.plan`<br>`sdd.implement`<br>`sdd.analyze` | Multi-layer systems | **Simple verbs + namespace** (dogfooding) |
+| **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Single-domain tools | **Domain-specific single verbs** |
 
 **Key Insights**: 
-- ✅ **Three proven patterns**: Namespaced verbs / Verb-noun / Domain verbs
-- ✅ **All use simple, memorable commands** - no generic `get-template` or `get-spec`
-- ✅ **Context in help text** - not in command names (e.g., `specify --help` not `specify-feature`)
+- ✅ **Two proven patterns**: Use namespaces for multi-layer systems, domain verbs for focused tools
+- ✅ **Keep verbs simple**: `specify` not `specify-feature`, `plan` not `plan-implementation`
+- ✅ **Context in help text** - not in command names (e.g., `specify --help` shows detailed context)
 
 ---
 
