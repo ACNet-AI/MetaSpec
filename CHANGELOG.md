@@ -7,6 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ✨ Improvements
+
+**Enhanced slash command specification with Claude Code best practices**
+
+**Inspiration**: Adopted proven patterns from [Claude Code slash commands](https://code.claude.com/docs/en/slash-commands)
+
+**New frontmatter fields**:
+1. ✅ **`argument-hint`**: Show expected arguments in `/help` (e.g., `[pr-number] [priority]`)
+2. ✅ **`allowed-tools`**: Restrict command to specific tools for security (e.g., `Bash(git:*), FileEdit(specs/*)`)
+3. ✅ **`model`**: Specify AI model for specific commands (e.g., `claude-3-5-haiku-20241022` for simple tasks)
+4. ✅ **Positional arguments**: Support `$1`, `$2`, `$3` in addition to `$ARGUMENTS`
+
+**Enhancements**:
+- ✅ Updated all 3 slash command templates (Pure-Execution, Script-Assisted, CLI-Referenced)
+- ✅ Added comprehensive frontmatter fields table with examples
+- ✅ Added argument access patterns documentation
+- ✅ Maintained MetaSpec's unique Spec-Driven positioning
+- ✅ Preserved dual-source architecture (Protocol-Derived + Library-Selected)
+
+**Before**:
+```yaml
+---
+description: Create feature spec
+scripts:
+  sh: scripts/bash/script.sh
+---
+```
+
+**After**:
+```yaml
+---
+description: Create feature specification
+argument-hint: [feature-description]
+scripts:
+  sh: scripts/bash/script.sh --json "{ARGS}"
+  ps: scripts/powershell/script.ps1 -Json "{ARGS}"
+allowed-tools: Bash(git:*), FileEdit(specs/*)
+model: claude-3-5-sonnet-20241022
+---
+```
+
+**Impact**: 
+- ✅ **Better UX**: Users see expected arguments in `/help`
+- ✅ **More secure**: Can restrict tools per command
+- ✅ **Cost-optimized**: Can use lighter models for simple commands
+- ✅ **More flexible**: Positional arguments for structured commands
+- ✅ **Industry standard**: Aligns with Claude Code patterns
+
+**Files Changed**: `specify.md.j2`
+
+---
+
 ### 🐛 Bug Fixes
 
 **Removed hardcoded line number references**

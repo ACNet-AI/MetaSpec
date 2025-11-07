@@ -578,6 +578,35 @@ api-toolkit lint openapi.yaml
 
 ---
 
+### 📋 Frontmatter Fields (YAML Metadata)
+
+All slash commands support frontmatter metadata (inspired by [Claude Code slash commands](https://code.claude.com/docs/en/slash-commands)):
+
+| Field | Required | Description | Example |
+|-------|----------|-------------|---------|
+| `description` | ✅ Yes | Brief description (shown in `/help`) | `"Create feature specification"` |
+| `argument-hint` | ⚠️ Recommended | Show expected arguments | `[feature-description]` or `[pr-number] [priority]` |
+| `scripts` | Optional | Cross-platform scripts | `sh: scripts/bash/script.sh`<br>`ps: scripts/powershell/script.ps1` |
+| `allowed-tools` | Optional | Restrict tools (security) | `Bash(git:*), FileEdit(specs/*)` |
+| `model` | Optional | Specify AI model | `claude-3-5-sonnet-20241022` |
+
+**Argument Access Patterns**:
+- `$ARGUMENTS` - All arguments as single string (e.g., "arg1 arg2 arg3")
+- `$1`, `$2`, `$3` - Individual positional arguments (like shell scripts)
+- `{ARGS}` - Escaped for safe script execution
+
+**Example frontmatter**:
+\```yaml
+---
+description: Review pull request with priority
+argument-hint: [pr-number] [priority] [assignee]
+allowed-tools: Bash(git:*), FileEdit(docs/*)
+model: claude-3-5-sonnet-20241022
+---
+\```
+
+---
+
 ### 🎯 Dual-Source Architecture (Composable Spec Systems)
 
 **IMPORTANT**: Slash Commands come from **TWO sources** and can be **composed**:
@@ -942,7 +971,26 @@ Based on your toolkit functions (from **Component 3, STEP 1: Define Toolkit Type
 ##### Template 1: Pure-Execution Slash Commands (Most Common)
 
 ```markdown
+---
+description: Brief description of what this command does
+argument-hint: [arg1] [arg2]  # Optional: show expected arguments
+allowed-tools: Bash(git:*), FileEdit(specs/*)  # Optional: restrict tools
+model: claude-3-5-sonnet-20241022  # Optional: specify model
+---
+
 # /{toolkit-name}.{command}
+
+## User Input
+
+\```text
+$ARGUMENTS
+\```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+**Argument Access**:
+- `$ARGUMENTS` - All arguments as single string
+- `$1`, `$2`, `$3` - Individual positional arguments
 
 ## Purpose
 [What protocol-compliant output to produce]
@@ -1005,14 +1053,43 @@ User can validate output independently:
 ##### Template 2: Script-Assisted Slash Commands (Spec-Kit Pattern)
 
 ```markdown
+---
+description: Brief description of what this command does
+argument-hint: [arg1] [arg2]  # Optional: show expected arguments
+scripts:
+  sh: scripts/bash/{script-name}.sh --json "{ARGS}"
+  ps: scripts/powershell/{script-name}.ps1 -Json "{ARGS}"
+allowed-tools: Bash(*), FileEdit(*)  # Scripts need broader permissions
+model: claude-3-5-sonnet-20241022  # Optional: specify model
+---
+
 # /{toolkit-name}.{command}
+
+## User Input
+
+\```text
+$ARGUMENTS
+\```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+**Argument Access**:
+- `$ARGUMENTS` - All arguments as single string
+- `$1`, `$2`, `$3` - Individual positional arguments
+- `{ARGS}` - Escaped for script execution
 
 ## Purpose
 [What to produce, with script handling setup]
 
 ## Helper Script
+
+**Cross-platform execution**:
 \```bash
-scripts/{script-name}.sh --args
+# Linux/Mac
+scripts/bash/{script-name}.sh --json "$ARGUMENTS"
+
+# Windows
+scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 \```
 
 **Script Purpose**: Set up file structure, create skeleton
@@ -1056,7 +1133,24 @@ scripts/{script-name}.sh --args
 **Purpose**: Remind AI to suggest CLI validation after production
 
 ```markdown
+---
+description: Validate output against protocol specifications
+argument-hint: [file-to-validate]  # Optional: show expected arguments
+allowed-tools: Bash({toolkit-name}:validate:*)  # Only allow validation tools
+model: claude-3-5-haiku-20241022  # Can use lighter model for simple reminders
+---
+
 # /{toolkit-name}.validate
+
+## User Input
+
+\```text
+$ARGUMENTS
+\```
+
+**Argument Access**:
+- `$1` - File to validate (if provided)
+- `$ARGUMENTS` - All arguments
 
 ## Purpose
 Remind AI to suggest validation after producing content
