@@ -11,89 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Replaced external project examples with MetaSpec's own implementations**
 
-**Issue**: Example 3 used "MCP Server Development" which:
-- References external protocol (Anthropic's MCP)
-- Makes MetaSpec look like it's built for one specific project
-- Reduces perceived neutrality and generality
+**Issue**: Example 3 used "MCP Server Development" (Anthropic's MCP protocol), making MetaSpec appear project-specific rather than a general framework.
 
-**Fix**: Replaced with "MetaSpec SDD Workflow" (real implementation)
-- Shows how MetaSpec itself was built (dogfooding/eating own dog food)
-- Uses actual MetaSpec commands: sdd.specify, sdd.clarify, sdd.plan, sdd.implement
-- Demonstrates "spec-driven tool built with spec-driven approach"
-- Enhanced table with MetaSpec SDD + SDS workflows
-
-**Impact**:
-- ✅ More credible: "We use this ourselves"
-- ✅ Neutral: Not promoting external projects
-- ✅ Educational: Users can verify in MetaSpec source code
-- ✅ Philosophical: Embodies recursive spec-driven development
-
-**Files Changed**:
-- specify.md.j2: Example 3 + table rows
-
----
-
-**Fixed naming inconsistency in lifecycle phase examples**
-
-**Issue**: Same concept "Project Lifecycle" had different command names in different locations
-- STEP 1 Example 2: `understand-requirements`, `design-architecture`, `build-server`
-- STEP 1 Checklist: Same as above ✅
-- STEP 2 Table: `plan-project`, `design-system`, `build-code` ❌ (inconsistent)
-
-**Fix**: Unified all "Project Lifecycle" examples to use the same command names
-- STEP 2 Table now matches STEP 1 examples
-- Key Insights section also updated
+**Fix**: Replaced with "MetaSpec SDD Workflow" showing how MetaSpec itself was built (dogfooding):
+- Example 3: constitution → specify → clarify → plan → tasks → implement → checklist → analyze
+- Table: Added MetaSpec SDD + SDS workflow examples
+- Pattern: Development workflow → namespaced commands
 
 **Impact**: 
-- ✅ Eliminates confusion about which command names to use
-- ✅ Consistent learning (same example appears 3 times with same names)
-- ✅ Reinforces the UNDERSTAND → DESIGN → BUILD → VALIDATE pattern
+- ✅ More credible (we use this ourselves)
+- ✅ Framework-neutral (not tied to external projects)
+- ✅ Educational (verifiable in MetaSpec source)
 
-**Files Changed**:
-- specify.md.j2: 2 lines (table row + key insights)
-
----
-
-### 🔧 Improvements
-
-**Enhanced lifecycle phase guidance in `/metaspec.sdd.specify`** (Based on user feedback)
-
-**What Changed**:
-
-1. **STEP 1: Enhanced Workflows & Phases Analysis** (+27 lines)
-   - Added "OR lifecycle phases" to Type B description
-   - Added 3 complete examples:
-     - Example 1: Development Workflow (specify → plan → implement → test)
-     - Example 2: Project Lifecycle (6 phases: UNDERSTAND → DESIGN → BUILD → VALIDATE → DEPLOY → MAINTAIN)
-     - Example 3: MCP Server Development (Requirements → Architecture → Endpoints → Testing)
-   - Added key principle: "If protocol phases are verb-able actions, derive commands from them directly"
-
-2. **STEP 1: Added Completion Checklist** (+35 lines)
-   - Protocol Understanding checklist
-   - Workflow Analysis checklist (with Type A/B/C)
-   - Type B specific checklist (phase mapping)
-   - Phase-to-command mapping example table
-   - Visual comparison: Skipping vs Complete analysis
-
-3. **STEP 2: Enhanced Command Naming Table** (+2 rows)
-   - Added "Project Lifecycle" example row (plan-project, design-system, build-code)
-   - Added "MCP Server Dev" example row (understand-requirements, design-endpoints, build-handlers)
-   - Added "Source" column to clarify where commands come from
-   - Updated key insights to emphasize lifecycle phases
-
-**Why This Matters**:
-- ✅ **Prevents confusion**: Clear examples of how lifecycle phases become commands
-- ✅ **Enforces process**: Checklist ensures STEP 1 analysis is complete
-- ✅ **Visual guidance**: Table shows multiple lifecycle-to-command patterns
-- ✅ **Better UX**: Users won't skip workflow analysis and default to generic commands
-
-**User Feedback Resolution**:
-- Issue: Missing examples of "lifecycle phases → commands" pattern
-- Solution: 3 concrete examples + checklist + enhanced table
-- Impact: Users can now easily derive commands from protocol lifecycle phases
-
-**Files Changed**:
-- src/metaspec/templates/meta/sdd/commands/specify.md.j2 (+64 lines)
+**Files Changed**: `specify.md.j2`
 
 ---
 
