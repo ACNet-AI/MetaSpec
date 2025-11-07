@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+**Fixed naming inconsistency in lifecycle phase examples**
+
+**Issue**: Same concept "Project Lifecycle" had different command names in different locations
+- STEP 1 Example 2: `understand-requirements`, `design-architecture`, `build-server`
+- STEP 1 Checklist: Same as above ✅
+- STEP 2 Table: `plan-project`, `design-system`, `build-code` ❌ (inconsistent)
+
+**Fix**: Unified all "Project Lifecycle" examples to use the same command names
+- STEP 2 Table now matches STEP 1 examples
+- Key Insights section also updated
+
+**Impact**: 
+- ✅ Eliminates confusion about which command names to use
+- ✅ Consistent learning (same example appears 3 times with same names)
+- ✅ Reinforces the UNDERSTAND → DESIGN → BUILD → VALIDATE pattern
+
+**Files Changed**:
+- specify.md.j2: 2 lines (table row + key insights)
+
+---
+
 ### 🔧 Improvements
 
 **Enhanced lifecycle phase guidance in `/metaspec.sdd.specify`** (Based on user feedback)
