@@ -66,7 +66,7 @@ Why this matters:
 
 Based on user input, generate:
 - Short name: `{domain}-{component}`
-- Example: "mcp-parser", "graphql-validator", "oauth-client"
+- Example: "api-validator", "graphql-parser", "spec-analyzer"
 - Check existing `specs/toolkit/` directory structure
 
 **Step 1c: Find Next Available Number**
@@ -91,10 +91,10 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
 
 1. **Dependencies**: Which protocol specs does this toolkit support?
    - **REQUIRED**: Must reference at least one `protocol/XXX-` spec
-   - Example: "Depends on: protocol/001-mcp-core-protocol"
+   - Example: "Depends on: protocol/001-api-specification"
    
 2. **Toolkit Purpose**: What does this toolkit do?
-   - Example: "Parse and validate MCP server definitions"
+   - Example: "Parse and validate specification documents"
    
 3. **Implementation Language** (NEW - CRITICAL 🎯):
    - **Primary language**: Python / TypeScript / Go / Rust / Other?
@@ -461,46 +461,11 @@ Select primary toolkit type(s):
 toolkit validate spec.yaml
 
 # Domain-specific → Domain commands  
-mcp-toolkit validate-server config.json
-api-toolkit check-endpoint spec.yaml
+speckit validate spec.yaml
+api-toolkit lint openapi.yaml
 ```
 
----
-
-**Example Derivation - MCP-Speckit**:
-
-```markdown
-## Toolkit Type Analysis
-
-**Primary Functions**:
-1. Validator (validate MCP server definitions)
-2. Query Tool (show MCP protocol reference)
-3. Generator (optional: scaffold MCP projects)
-
-**Derived CLI Commands**:
-
-### From Validator function:
-✅ validate <file>          # Validate MCP server definition
-   --strict                 # Treat warnings as errors
-   --format json            # Output format
-
-### From Query Tool function:
-✅ show spec [section]      # Display MCP protocol docs
-✅ get template <entity>    # Get entity template
-✅ list examples            # List available examples
-
-### From Generator function (if needed):
-✅ init [project-name]      # Initialize MCP project
-   --template server        # Project template
-
-**Customization Decision**:
-- Keep generic: `validate`, `init` (standard toolkit operations)
-- Or domain-specific: `validate-server`, `init-mcp-project`
-- Choice depends on: toolkit scope, user expectations
-```
-
-**Result**: 3-6 CLI commands based on toolkit functions, not fixed templates
-```
+**Result**: Derive 3-6 CLI commands based on toolkit functions (Validator, Query Tool, Generator)
 
 ---
 
@@ -567,44 +532,6 @@ api-toolkit check-endpoint spec.yaml
 - Output: {format}
 - Exit codes: 0 (success), 1 (error)
 ```
-
----
-
-**Example: MCP-Speckit CLI Design**
-
-**Toolkit Type**: Validator + Query Tool + Generator
-
-**Derived Commands** (domain-appropriate naming):
-
-```bash
-# From Validator type
-mcpspeckit validate <file>
-  --strict              Treat warnings as errors
-  --format json         JSON output
-
-# From Query Tool type  
-mcpspeckit show [section]       # Not "get-spec" - more intuitive
-  --format markdown              # Show MCP protocol docs
-
-mcpspeckit list [type]           # List entities or examples
-  --type servers                 # MCP-specific entity types
-
-mcpspeckit docs <topic>          # Access MCP documentation
-  --search keyword               # Search docs
-
-# From Generator type
-mcpspeckit init [project-name]
-  --template server              # Initialize MCP project
-  --ai-provider anthropic        # Configure AI provider
-```
-
-**Naming Rationale**:
-- ✅ `show` instead of `get-spec` (more intuitive verb)
-- ✅ `docs` for documentation access (common pattern)
-- ✅ `list` stays generic (standard query command)
-- ✅ Parameters reflect MCP domain (`servers`, `server`, `ai-provider`)
-
-**Note**: These CLI commands are **independent tools**, NOT called by Slash Commands.
 
 ---
 
@@ -675,7 +602,7 @@ Choose one or combine:
 Option A: Protocol-Only (Custom)
   → Derive all commands from protocol
   → Fully tailored to domain
-  → Example: MCP-specific commands
+  → Example: Domain-specific commands from protocol phases
 
 Option B: Library-Only (Reusable)
   → Use pre-built spec system
@@ -685,7 +612,7 @@ Option B: Library-Only (Reusable)
 Option C: Composed (Recommended)
   → Base: Library spec system
   → Extension: Protocol-derived commands
-  → Example: Generic workflow + MCP entities
+  → Example: Generic workflow + protocol-specific commands
 ```
 
 **MetaSpec's Composability**:
@@ -806,9 +733,9 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
    - "Configure Endpoints" → verb: configure, noun: endpoints
    - "Validate Configuration" → verb: validate, noun: configuration
 
-3. **Form Domain-Specific Command Names**
-   - Hyphenated: `define-server`, `configure-endpoints`
-   - Or use protocol's exact terminology
+3. **Form Simple Command Names**
+   - Single verbs: `specify`, `plan`, `validate`
+   - Or use protocol's exact terminology (keep simple)
 
 ---
 
@@ -830,25 +757,22 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 | Protocol Contains | Command Purpose | Naming Examples | When to Include |
 |------------------|----------------|-----------------|-----------------|
-| **Workflow phases** | Execute phase actions | MCP: `define-server`, `configure-tools`<br>API: `create-endpoint`, `test-endpoint` | Always (if workflow exists) |
-| **Entity types** | Work with entities | MCP: `init-server`, `add-tool`<br>API: `scaffold-endpoint`, `define-schema` | If 3+ entities |
-| **Validation rules** | Validate outputs | MCP: `validate-server`, `check-config`<br>API: `lint-spec`, `verify-endpoint` | If complex rules |
-| **Multi-step process** | Navigate process | Project: `next-phase`, `show-roadmap`<br>Deploy: `status`, `rollback` | If state machine workflow |
-| **Reference docs** | Access knowledge | Protocol: `show-spec`, `docs server`<br>Standard: `reference`, `help-with` | If complex (20+ pages) |
+| **Workflow phases** | Execute phase actions | MetaSpec: `specify`, `clarify`, `plan`<br>Generic: `design`, `build`, `test` | Always (if workflow exists) |
+| **Validation** | Validate outputs | MetaSpec: `analyze`, `checklist`<br>Generic: `validate`, `verify`, `lint` | If validation rules exist |
+| **Multi-step process** | Navigate process | Generic: `next`, `status`, `rollback`<br>Lifecycle: `init`, `deploy`, `cleanup` | If state machine workflow |
+| **Reference docs** | Access knowledge | Generic: `docs`, `show`, `reference`<br>Query: `list`, `search`, `info` | If complex docs (20+ pages) |
 
 **Key Principle**: Use protocol's own vocabulary, don't impose generic names
 
 ---
 
-**Example**: See **Component 3: Example - MCP-Speckit CLI Design** (line 573) for MCP-Speckit naming examples.
-
 **Quick Reference**:
 ```markdown
-Protocol workflow: "Define Server" → Command: `define-server`
-Protocol entity: "Server" → Command: `init-server`
-Protocol validation: "Validate Config" → Command: `validate-server`
+Protocol workflow: "Specify Feature" → Command: `specify` (simple verb)
+Protocol phases: "Plan Architecture" → Command: `plan` (phase becomes command)
+Protocol validation: "Check Quality" → Command: `checklist` (domain-specific verb)
 
-Key principle: Extract verb+noun from protocol terminology
+Key principle: Extract simple verbs from protocol phases/actions
 ```
 
 ---
@@ -907,7 +831,7 @@ For each derived command, ask:
 For each derived command, classify as:
 
 - **Pure-Execution**: AI produces content → Slash only
-  - Example: define-server, create-design (most common)
+  - Example: specify, plan, design (most common)
   
 - **Script-Assisted**: Need structure setup → Script + Slash
   - Example: init-project (if creating directories)
@@ -970,7 +894,7 @@ Based on your toolkit functions (from **Component 3, STEP 1: Define Toolkit Type
 **Naming Reminder**:
 - ❌ Don't hardcode: get-spec, get-template, get-example
 - ✅ Choose intuitive: show, docs, list, help
-- ✅ Or domain-specific: show-mcp-spec, list-servers
+- ✅ Or domain-specific: show-spec, list-entities
 
 **Implementation Guidelines**:
 - These are **standalone tools**, not called by Slash Commands
@@ -1161,7 +1085,7 @@ This Slash Command doesn't "call" CLI directly.
 It teaches AI to suggest appropriate CLI commands to users.
 ```
 
-**Example**: After `/mcpspeckit.define-requirements`, AI suggests `mcpspeckit validate requirements.json`
+**Example**: After `/speckit.define-requirements`, AI suggests `speckit validate requirements.json`
 
 ---
 

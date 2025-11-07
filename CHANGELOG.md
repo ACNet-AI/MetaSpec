@@ -9,6 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🐛 Bug Fixes
 
+**Removed all MCP-specific examples to ensure framework neutrality**
+
+**Issue**: Document contained 30+ references to MCP (Model Context Protocol) throughout:
+- ❌ Component 3: "MCP-Speckit CLI Design" entire section
+- ❌ Tables: "MCP: define-server, configure-tools, validate-server"
+- ❌ Quick Reference: Using MCP Server concepts
+- ❌ Examples: mcp-parser, mcp-toolkit, mcpspeckit
+- ❌ Made MetaSpec appear MCP-specific, not a general framework
+
+**Fix**: Comprehensive cleanup (30 → 0 references):
+- ✅ Removed Component 3 "MCP-Speckit CLI Design" section entirely
+- ✅ Replaced table examples with MetaSpec's own commands and generic examples
+- ✅ Updated Quick Reference to use universal concepts
+- ✅ Changed all MCP examples to framework-neutral ones
+- ✅ Tables now show: MetaSpec (specify, clarify, plan) and Generic (design, build, test)
+
+**Before**:
+- Component 3: 37 lines of MCP-specific CLI design
+- Tables: MCP examples dominating (define-server, init-server, validate-server)
+- Quick Reference: "Define Server" → define-server
+
+**After**:
+- Component 3: Removed
+- Tables: MetaSpec + Generic examples only
+- Quick Reference: "Specify Feature" → specify
+
+**Impact**: 
+- ✅ **Framework neutral**: No external protocol dependencies
+- ✅ **Dogfooding emphasized**: Uses MetaSpec's own commands as examples
+- ✅ **Clearer positioning**: General meta-framework, not MCP-specific tool
+
+**Files Changed**: `specify.md.j2` (11 locations updated)
+
+---
+
 **Removed incorrect Spec-Kit example from naming patterns table**
 
 **Issue**: Table showed Spec-Kit with incorrect "Verb-Noun" pattern:
