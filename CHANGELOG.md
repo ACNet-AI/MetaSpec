@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🐛 Bug Fixes
 
+**Removed hardcoded line number references**
+
+**Issue**: Document contained hardcoded line references that become stale after edits:
+- ❌ "(lines 364-643)" - specific line ranges in cross-references
+- ❌ Line numbers shift when content is added/removed
+- ❌ Creates maintenance burden and confusion
+
+**Fix**: Removed all hardcoded line numbers (2 occurrences):
+- ✅ Line 855: Removed "(lines 364-643)" from Component 3 cross-reference
+- ✅ Line 867: Removed "(lines 364-643)" from Component 3 subset reference
+- ✅ Kept component name references for clarity
+
+**Impact**: 
+- ✅ References won't become stale after edits
+- ✅ Easier to maintain
+- ✅ Still clear (users can search for "Component 3")
+
+**Files Changed**: `specify.md.j2`
+
+---
+
 **Removed all MCP-specific examples to ensure framework neutrality**
 
 **Issue**: Document contained 30+ references to MCP (Model Context Protocol) throughout:
