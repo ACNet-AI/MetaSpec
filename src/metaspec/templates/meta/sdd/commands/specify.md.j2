@@ -734,13 +734,13 @@ Option C: Composed (Recommended)
    
    **Example 1 - Development Workflow**:
    - Protocol workflow: specify → plan → implement → test
-   - Derived commands: `specify-feature`, `plan-architecture`, `implement-code`, `test-system`
-   - Pattern: Each workflow step becomes a verb
+   - Derived commands: `specify`, `plan`, `implement`, `test`
+   - Pattern: Workflow action directly becomes command (context in help text, not command name)
    
    **Example 2 - Project Lifecycle** (6 phases):
    - Protocol phases: UNDERSTAND → DESIGN → BUILD → VALIDATE → DEPLOY → MAINTAIN
-   - Derived commands: `understand-requirements`, `design-architecture`, `build-server`, `validate-implementation`, `deploy-system`, `maintain-service`
-   - Pattern: Phase name becomes command verb
+   - Derived commands: `understand`, `design`, `build`, `validate`, `deploy`, `maintain`
+   - Pattern: Phase name directly becomes command (simple and memorable)
    
    **Example 3 - MetaSpec SDD Workflow** (Real Implementation - Dogfooding):
    - Development workflow: constitution → specify → clarify → plan → tasks → implement → checklist → analyze
@@ -781,15 +781,18 @@ Option C: Composed (Recommended)
 ```
 Protocol Phase          → Command Verb        → Command Name
 ────────────────────────────────────────────────────────────
-UNDERSTAND requirements → understand          → understand-requirements
-DESIGN architecture     → design              → design-architecture
-BUILD server           → build               → build-server
-VALIDATE implementation → validate            → validate-implementation
+UNDERSTAND requirements → understand          → understand
+DESIGN architecture     → design              → design
+BUILD server           → build               → build
+VALIDATE implementation → validate            → validate
+DEPLOY system          → deploy              → deploy
+MAINTAIN service       → maintain            → maintain
 ```
 
 **Why This Matters**:
-- ❌ Skipping this analysis → Generic commands (validate, generate)
-- ✅ Complete analysis → Domain-specific commands (validate-implementation, build-server)
+- ❌ Skipping this analysis → Generic commands without domain context
+- ✅ Complete analysis → Simple, memorable commands derived from protocol phases
+- 💡 Keep commands short; add context in help text (e.g., `understand --help` shows "understand requirements")
 
 ---
 
@@ -828,7 +831,7 @@ VALIDATE implementation → validate            → validate-implementation
 | Project | Pattern | Examples | Source | Insight |
 |---------|---------|----------|--------|---------|
 | **Spec-Kit** | Verb-Noun | `specify-feature`<br>`plan-implementation`<br>`implement-feature` | Workflow actions | Actions become commands |
-| **Project Lifecycle** | Verb-Noun | `understand-requirements`<br>`design-architecture`<br>`build-server`<br>`validate-implementation` | Lifecycle phases | **Phases become commands** |
+| **Project Lifecycle** | Single Verb | `understand`<br>`design`<br>`build`<br>`validate`<br>`deploy`<br>`maintain` | Lifecycle phases | **Phase verbs directly become commands** |
 | **MetaSpec SDD** | Namespaced | `sdd.specify`<br>`sdd.clarify`<br>`sdd.plan`<br>`sdd.implement`<br>`sdd.analyze` | Development workflow | **MetaSpec's own workflow** (dogfooding) |
 | **MetaSpec SDS** | Namespaced | `sds.specify`<br>`sds.clarify`<br>`sds.analyze`<br>`sds.checklist` | Specification workflow | Protocol definition flow |
 | **OpenSpec** | Domain Verbs | `proposal`<br>`apply`<br>`archive` | Change management | Protocol's management terms |
@@ -836,7 +839,8 @@ VALIDATE implementation → validate            → validate-implementation
 **Key Insights**: 
 - ❌ No project uses generic `get-template` or `get-spec`
 - ✅ All use domain-specific terminology
-- ✅ **Lifecycle phases directly become command verbs** (understand-requirements, design-architecture, build-server)
+- ✅ **Keep commands simple**: Single verbs (understand, design, build) not verb-noun pairs
+- ✅ **Protocol phases directly become commands** - context goes in help text, not command names
 
 ---
 

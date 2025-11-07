@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ✨ Improvements
+
+**Simplified command naming in examples to match real-world patterns**
+
+**Issue**: Examples 1-2 used verbose command names that didn't match the simple style of real projects:
+- ❌ Old: `understand-requirements`, `design-architecture`, `build-server`, `validate-implementation`
+- ❌ Inconsistent with MetaSpec (`specify`, `plan`), OpenSpec (`proposal`, `apply`), Spec-Kit patterns
+
+**Fix**: Simplified all examples to use single-verb commands:
+- ✅ Example 1: `specify`, `plan`, `implement`, `test`
+- ✅ Example 2: `understand`, `design`, `build`, `validate`, `deploy`, `maintain`
+- ✅ Updated mapping table and checklist
+- ✅ Updated STEP 2 naming patterns table
+
+**Key Insights Added**:
+- Keep commands simple: single verbs preferred over verb-noun pairs
+- Context goes in help text, not command names
+- Matches MetaSpec/OpenSpec/Spec-Kit simplicity
+
+**Impact**: 
+- ✅ Examples now match real project naming patterns
+- ✅ Easier to remember and type
+- ✅ Consistent guidance throughout the document
+
+**Files Changed**: `specify.md.j2`
+
+---
+
 ### 🐛 Bug Fixes
 
 **Replaced external project examples with MetaSpec's own implementations**
