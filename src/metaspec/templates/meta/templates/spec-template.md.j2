@@ -26,6 +26,160 @@ Example: "Developer writes API test spec in test.yaml, validates it, then execut
 
 ---
 
+## User Journey Analysis
+
+**Purpose**: Understand who uses this toolkit, their goals, and derive features from real scenarios.
+
+### Primary Users
+
+**User Distribution**:
+- [Percentage]% AI Agents (e.g., Claude, GitHub Copilot, Cursor)
+- [Percentage]% Human Developers
+
+**User Characteristics**:
+- **AI Agents**: [Skill level, context, limitations]  
+  Example: "AI agents need clear rules, examples, and structured commands"
+- **Human Developers**: [Skill level, experience, goals]  
+  Example: "Developers need fast validation, clear error messages, and good docs"
+
+---
+
+### Key Scenarios
+
+**Scenario 1: [Scenario Name]**
+- **User**: [AI Agent | Human Developer | Both]
+- **Context**: [When does this happen?]
+- **Goal**: [What does the user want to achieve?]
+- **Pain Point**: [What problem are they facing?]
+- **Desired Experience**: [What would make this easy?]
+- **Required Features**: [Feature 1, Feature 2, Feature 3]
+
+**Example**:
+```
+Scenario: AI Agent generates specification from natural language
+- User: AI Agent (Claude in Cursor)
+- Context: Developer describes requirement in chat
+- Goal: Generate valid specification file
+- Pain Point: AI doesn't know domain rules
+- Desired Experience: AI accesses protocol reference, gets template, validates output
+- Required Features: show-protocol command, get-template command, validate CLI
+```
+
+---
+
+**Scenario 2: [Scenario Name]**
+- **User**: [AI Agent | Human Developer | Both]
+- **Context**: [When does this happen?]
+- **Goal**: [What does the user want to achieve?]
+- **Pain Point**: [What problem are they facing?]
+- **Desired Experience**: [What would make this easy?]
+- **Required Features**: [Feature 1, Feature 2, Feature 3]
+
+---
+
+**Scenario 3: [Scenario Name]**
+- **User**: [AI Agent | Human Developer | Both]
+- **Context**: [When does this happen?]
+- **Goal**: [What does the user want to achieve?]
+- **Pain Point**: [What problem are they facing?]
+- **Desired Experience**: [What would make this easy?]
+- **Required Features**: [Feature 1, Feature 2, Feature 3]
+
+---
+
+[Add 2-3 more scenarios as needed for complete coverage]
+
+---
+
+### Derived Features
+
+**Feature Categorization**:
+- **Information Access**: Help users understand rules and constraints
+- **Content Generation**: Help users create specifications
+- **Validation**: Help users verify correctness
+- **Developer Experience**: Documentation, error messages, examples
+
+**Priority Matrix**:
+
+**P0 (Must Have)** - Critical for core workflows:
+- [Feature 1]: [Why critical] (Scenarios: [1, 3])
+- [Feature 2]: [Why critical] (Scenarios: [1, 2, 3])
+- [Feature 3]: [Why critical] (Scenarios: [2])
+
+**P1 (Should Have)** - Important for good UX:
+- [Feature 4]: [Why important] (Scenarios: [2, 3])
+- [Feature 5]: [Why important] (Scenarios: [3])
+
+**P2 (Nice to Have)** - Enhancement for advanced users:
+- [Feature 6]: [Why helpful] (Scenarios: [1])
+
+**Example**:
+```
+P0 (Must Have):
+- Protocol reference system: AI needs rules before generating (Scenarios: 1, 3)
+- Template system: Users need starting points (Scenarios: 1, 2)
+- Validation CLI: Critical for both AI and developers (All scenarios)
+
+P1 (Should Have):
+- Error explanation: Helps users fix issues quickly (Scenarios: 2, 3)
+- Interactive wizard: Reduces learning curve (Scenarios: 2)
+
+P2 (Nice to Have):
+- Auto-fix suggestions: Convenience for simple errors (Scenarios: 3)
+```
+
+---
+
+### Command Design Rationale
+
+**CLI Commands** (derived from scenarios):
+- `init`: [Why this command exists] → Addresses Scenario [N]
+- `validate`: [Why this command exists] → Addresses Scenario [N]
+- `[command3]`: [Why this command exists] → Addresses Scenario [N]
+
+**Slash Commands** (for AI agents):
+- `/[toolkit].show-protocol`: [Why this command exists] → Addresses Scenario [N]
+- `/[toolkit].get-template`: [Why this command exists] → Addresses Scenario [N]
+- `/[toolkit].[command3]`: [Why this command exists] → Addresses Scenario [N]
+
+**Templates** (identified from scenarios):
+- `basic-[entity].yaml`: [Why needed] → Used in Scenario [N]
+- `advanced-[entity].yaml`: [Why needed] → Used in Scenario [N]
+
+**Example**:
+```
+CLI Commands:
+- init: Quick project setup for developers → Scenario 2
+- validate: Critical verification for both AI and humans → All scenarios
+- docs: Reference for developers → Scenario 2
+
+Slash Commands:
+- /mcpspeckit.show-protocol: AI needs rules before generating → Scenario 1
+- /mcpspeckit.get-template: AI needs starting structure → Scenario 1
+- /mcpspeckit.validate-json: AI needs to check output → Scenario 1, 3
+
+Templates:
+- basic-server.yaml: Starting point for simple cases → Scenario 1, 2
+- advanced-server.yaml: Complete example with all features → Scenario 2
+```
+
+---
+
+### Scenario Coverage Matrix
+
+| Scenario | CLI Commands | Slash Commands | Templates | Priority |
+|----------|--------------|----------------|-----------|----------|
+| Scenario 1 | validate | show-protocol, get-template | basic-*.yaml | P0 |
+| Scenario 2 | init, validate, docs | - | basic-*.yaml, advanced-*.yaml | P0 |
+| Scenario 3 | validate | validate-json, explain-error | - | P0 |
+
+**Coverage Verification**:
+- ✅ All P0 scenarios have complete feature support
+- ✅ Every feature traces back to at least one scenario
+- ✅ No arbitrary features (all scenario-driven)
+
+---
+
 ## Specification Types
 
 ### [Specification Type 1]
@@ -245,6 +399,175 @@ Example: "Developer writes API test spec in test.yaml, validates it, then execut
 ---
 
 [Add more commands as needed]
+
+---
+
+## Templates & Examples
+
+**Purpose**: Define how templates and examples are organized to embody specification composability.
+
+### Templates Directory Structure
+
+**Core Principle**: Organize by **specification system source**, not by file type.
+
+**Recommended Structure**:
+```
+templates/
+├── [library-spec-1]/       # From MetaSpec library (e.g., generic, spec-kit)
+│   ├── commands/           # Slash Commands from this specification system
+│   │   └── [command-name].md
+│   └── templates/          # Entity/workflow templates from this system
+│       └── [template-name].yaml
+├── [library-spec-2]/       # Another library specification system
+│   ├── commands/
+│   └── templates/
+└── [custom]/               # Custom (derived from protocol specification)
+    ├── commands/           # Protocol-specific Slash Commands
+    │   └── [command-name].md
+    └── templates/          # Protocol entity templates
+        └── [entity-name].yaml
+```
+
+**Example (MCP-Speckit)**:
+```
+templates/
+├── generic/               # From library/generic (brownfield/greenfield)
+│   ├── commands/
+│   │   ├── init.md
+│   │   └── validate.md
+│   └── templates/
+│       └── basic-spec.yaml
+├── spec-kit/              # From library/sdd/spec-kit
+│   ├── commands/
+│   │   ├── plan.md
+│   │   └── implement.md
+│   └── templates/
+│       └── toolkit-spec.yaml
+└── mcp/                   # Custom (from protocol/001-mcp-protocol)
+    ├── commands/
+    │   ├── show-protocol.md
+    │   ├── get-template.md
+    │   └── validate-server.md
+    └── templates/
+        ├── basic-server.yaml
+        ├── advanced-server.yaml
+        └── tool-definition.yaml
+```
+
+---
+
+### Template Mapping
+
+**Map specification systems to directory names**:
+
+| Specification Source | Directory Name | Contents |
+|---------------------|----------------|----------|
+| library/generic/brownfield | `generic/` | Init, validate commands |
+| library/sdd/spec-kit | `spec-kit/` | Spec-driven workflow commands |
+| protocol/001-[domain]-protocol | `[domain]/` | Domain-specific commands & templates |
+| Custom workflow | `[workflow-name]/` | Custom specification system |
+
+---
+
+### P0 Slash Commands
+
+**From Step 2.5 STEP 4 (Command Derivation from Scenarios)**:
+
+**P0 Commands** (Must implement - derived from key scenarios):
+- [ ] `/[toolkit].[command1]` - [Purpose] (Scenario: [N])
+- [ ] `/[toolkit].[command2]` - [Purpose] (Scenario: [N])
+- [ ] `/[toolkit].[command3]` - [Purpose] (Scenario: [N])
+
+**Example**:
+```
+P0 Slash Commands for MCP-Speckit:
+- [ ] /mcpspeckit.show-protocol - Display MCP protocol rules (Scenario: 1, 3)
+- [ ] /mcpspeckit.get-template - Retrieve server template (Scenario: 1, 2)
+- [ ] /mcpspeckit.validate-server - Validate server definition (Scenario: 1, 2, 3)
+```
+
+---
+
+### Entity Templates
+
+**Map protocol entities to template files**:
+
+| Entity | Template File | Purpose | Used In Scenario |
+|--------|--------------|---------|------------------|
+| [PRIMARY_ENTITY] | `basic-[entity].yaml` | Minimal valid example | [1, 2] |
+| [PRIMARY_ENTITY] | `advanced-[entity].yaml` | Complete with all fields | [2] |
+| [SECONDARY_ENTITY] | `[entity].yaml` | Secondary entity template | [1, 3] |
+
+**Example (MCP-Speckit)**:
+```
+| Entity | Template File | Purpose | Used In Scenario |
+|--------|--------------|---------|------------------|
+| Server | basic-server.yaml | Simple MCP server | 1, 2 |
+| Server | advanced-server.yaml | Full featured server | 2 |
+| Tool | tool-definition.yaml | Tool schema template | 1, 3 |
+| Resource | resource-definition.yaml | Resource template | 2, 3 |
+```
+
+---
+
+### Examples Directory
+
+**Separate from templates** - Complete working examples:
+
+```
+examples/
+├── basic/
+│   ├── [example-1].yaml          # Simple example
+│   └── README.md                  # Explanation
+├── advanced/
+│   ├── [example-2].yaml          # Complex example
+│   └── README.md                  # Explanation
+├── use-cases/
+│   ├── [use-case-1]/
+│   │   ├── [spec].yaml
+│   │   └── README.md
+│   └── [use-case-2]/
+│       ├── [spec].yaml
+│       └── README.md
+└── README.md                      # Examples overview
+```
+
+**Example Content**:
+- **basic/**: 1-2 simple examples demonstrating core features
+- **advanced/**: 1-2 complex examples showing all capabilities
+- **use-cases/**: Real-world scenarios from User Journey Analysis
+
+**Requirements**:
+- [ ] At least 1-2 basic examples
+- [ ] At least 1 advanced example
+- [ ] Examples validate successfully
+- [ ] Each example has README explaining usage
+- [ ] Examples cover P0 scenarios from User Journey Analysis
+
+---
+
+### Implementation Checklist
+
+**Templates Directory**:
+- [ ] Library specifications mapped to `templates/[library-name]/`
+- [ ] Custom specification in `templates/[domain]/`
+- [ ] P0 Slash Commands created (from User Journey Analysis)
+- [ ] Entity templates match protocol entities
+- [ ] Each specification system has `commands/` and `templates/` subdirectories
+
+**Examples Directory**:
+- [ ] Examples in top-level `examples/` directory (not under templates/)
+- [ ] At least 1-2 complete working examples
+- [ ] Examples validate successfully with toolkit
+- [ ] Each example has clear README
+- [ ] Examples demonstrate P0 scenarios
+
+**Benefits**:
+- ✅ Clear provenance: Know which spec system provides which commands
+- ✅ Avoid conflicts: Different systems can have same-named commands
+- ✅ Partial replacement: Update one spec system without affecting others
+- ✅ Follows MetaSpec convention: Same pattern as `library/sdd/spec-kit/`
+- ✅ Embodies composability: Specification systems can be selected and composed
 
 ---
 

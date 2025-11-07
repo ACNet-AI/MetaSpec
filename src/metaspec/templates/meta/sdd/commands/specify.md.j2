@@ -570,7 +570,7 @@ api-toolkit check-endpoint spec.yaml
 
 ---
 
-#### Example: MCP-Speckit CLI Design
+**Example: MCP-Speckit CLI Design**
 
 **Toolkit Type**: Validator + Query Tool + Generator
 
@@ -608,40 +608,26 @@ mcpspeckit init [project-name]
 
 ---
 
-#### CLI vs Slash Commands Summary
+**CLI vs Slash Commands Summary**
 
-```markdown
-## Command Architecture
+**Key Distinction**:
+- **CLI Commands**: Independent tools for developers (validate, list, docs)
+- **Slash Commands**: AI execution guides (see **Component 4: Slash Commands** for details)
 
-### CLI Commands (Independent Tools)
-**Source**: Toolkit Purpose/Function
-**User**: Developers (direct usage)
-**Examples**:
-- specify init, specify check
-- openspec validate, openspec list
-- metaspec init, metaspec search
+**Relationship**: Separated by design - no direct calls between them.
 
-### Slash Commands (AI Execution Guides)
-**Source**: Protocol Workflow
-**User**: AI Agents (via Cursor, Windsurf, etc.)
-**Examples**:
-- /mcpspeckit.define-requirements
-- /mcpspeckit.create-design
-- /mcpspeckit.generate-code
+**CLI Implementation**: typer (Python) or commander (Node.js) with rich formatting.
 
-**Relationship**: Separated by design
-- Slash Commands guide AI content production
-- CLI Commands provide validation/query tools
-- No direct calls between them
-```
-
-**CLI Framework**: typer (Python) or commander (Node.js)
-**Output**: Rich formatting with colors, progress bars
 ```
 
 ---
 
 ##### **Component 4: Slash Commands - Spec-Driven Execution (CRITICAL for AI-Oriented Tools)**
+
+**Component Structure**:
+- **Overview**: What Slash Commands are and dual-source architecture
+- **[Source 1](#source-1-protocol-derived-commands-custom)**: Protocol-Derived Commands (7-STEP process)
+- **[Source 2](#source-2-library-selected-commands-reusable)**: Library-Selected Commands (Selection & Adaptation)
 
 **CRITICAL UNDERSTANDING**: Slash Commands are **NOT** CLI usage manuals. They are **spec-driven execution guides** that embed protocol knowledge and guide AI to produce spec-compliant outputs.
 
@@ -710,9 +696,11 @@ Option C: Composed (Recommended)
 
 ---
 
-### Source 1: Protocol-Derived Commands (Custom)
+#### Source 1: Protocol-Derived Commands (Custom)
 
-#### STEP 1: Analyze Protocol Specification
+**Overview**: Derive commands by analyzing your protocol specification and extracting domain-specific terminology.
+
+**STEP 1: Analyze Protocol Specification**
 
 **Before defining Slash Commands**, analyze the SDS protocol specification in `specs/protocol/`.
 
@@ -749,7 +737,7 @@ Option C: Composed (Recommended)
 
 ---
 
-#### STEP 2: Derive Command Names from Protocol
+**STEP 2: Derive Command Names from Protocol**
 
 **CRITICAL**: ❌ **DON'T use generic names** (get-spec, get-template, validate)  
             ✅ **DO extract domain-specific names** from protocol terminology
@@ -805,7 +793,7 @@ Option C: Composed (Recommended)
 
 ---
 
-**Example**: See Component 3 for MCP-Speckit naming examples.
+**Example**: See **Component 3: Example - MCP-Speckit CLI Design** (line 573) for MCP-Speckit naming examples.
 
 **Quick Reference**:
 ```markdown
@@ -818,7 +806,7 @@ Key principle: Extract verb+noun from protocol terminology
 
 ---
 
-#### STEP 3: Classify Commands (Slash + CLI/Script Support)
+**STEP 3: Classify Commands (Slash + CLI/Script Support)**
 
 **CRITICAL**: Slash Commands are for AI execution. CLI/Scripts provide optional support.
 
@@ -878,7 +866,7 @@ For each derived command, classify as:
   - Example: init-project (if creating directories)
   
 - **CLI-Referenced**: Need independent validation → CLI + Slash
-  - Example: validate command (See Component 3 for CLI design)
+  - Example: validate command (See **Component 3, STEP 2: Derive CLI Commands from Toolkit Purpose** for CLI design)
 
 **Typical Counts**:
 - Slash Commands: 4-8
@@ -888,12 +876,12 @@ For each derived command, classify as:
 
 ---
 
-#### STEP 4: Implement Support Tools (CLI + Scripts)
+**STEP 4: Implement Support Tools (CLI + Scripts)**
 
 **IMPORTANT**: CLI commands should be fully defined in **Component 3: CLI Commands** first.  
 This section covers implementation of support tools specifically for Slash Commands.
 
-**Cross-Reference**: See Component 3 for complete CLI command specification (4-STEP derivation process).
+**Cross-Reference**: See **Component 3: CLI Commands** (lines 364-643) for complete CLI command specification.
 
 **This section covers**:
 - 4a. CLI Commands (CLI-Referenced Pattern only - subset of Component 3)
@@ -903,13 +891,13 @@ This section covers implementation of support tools specifically for Slash Comma
 
 **Implement based on command classification**:
 
-##### 4a. CLI Commands (CLI-Referenced Pattern)
+**4a. CLI Commands (CLI-Referenced Pattern)**
 
-**Cross-Reference**: This is a subset of CLI commands defined in **Component 3**.
+**Cross-Reference**: This is a subset of CLI commands defined in **Component 3: CLI Commands** (lines 364-643).
 
 **Context**: When STEP 3 identifies "CLI-Referenced Pattern" commands, implement the associated CLI tools here.
 
-**From Component 3**: Follow the 4-STEP process in Component 3 to fully define these CLI commands before implementing.
+**From Component 3**: Follow the **CLI Command Derivation Process** (Component 3, STEP 1-4) to fully define these CLI commands before implementing.
 
 **Purpose**: Independent tools for validation, querying, display
 
@@ -918,7 +906,7 @@ This section covers implementation of support tools specifically for Slash Comma
 
 **Independent CLI Tools** (user calls directly):
 
-Based on your toolkit functions (from Component 3 STEP 1), implement:
+Based on your toolkit functions (from **Component 3, STEP 1: Define Toolkit Type**), implement:
 
 - [ ] **Validation**: validate <file>, check, lint
   - Validate against protocol schema
@@ -944,7 +932,7 @@ Based on your toolkit functions (from Component 3 STEP 1), implement:
 - Users call them directly after AI produces content
 ```
 
-##### 4b. Helper Scripts (Script-Assisted Only)
+**4b. Helper Scripts (Script-Assisted Only)**
 
 **Purpose**: Set up file structure, create skeletons
 
@@ -972,11 +960,11 @@ Based on your toolkit functions (from Component 3 STEP 1), implement:
 
 ---
 
-#### STEP 5: Create Spec-Driven Slash Commands (All Types)
+**STEP 5: Create Spec-Driven Slash Commands (All Types)**
 
 **Based on classification in STEP 3**, create appropriate Slash Command templates for each type.
 
-**Reference**: See STEP 3 for command type definitions (Pure-Execution, Script-Assisted, CLI-Referenced).
+**Reference**: See **STEP 3: Classify Commands** above for command type definitions (Pure-Execution, Script-Assisted, CLI-Referenced).
 
 ---
 
@@ -1130,7 +1118,7 @@ It teaches AI to suggest appropriate CLI commands to users.
 
 ---
 
-#### STEP 6: Workflow-Specific Commands (Type B Only)
+**STEP 6: Workflow-Specific Commands (Type B Only)**
 
 **If protocol defines Type B Workflow (Action Sequence)**, these workflow actions become **Pure-Execution Slash Commands**:
 
@@ -1166,7 +1154,7 @@ Each Slash Command contains:
 
 ---
 
-#### STEP 7: Final Command Inventory
+**STEP 7: Final Command Inventory**
 
 **Summarize all derived and classified commands**:
 
@@ -1221,7 +1209,7 @@ Each Slash Command contains:
 
 ---
 
-#### Design Principles: Spec-Driven Execution
+**Design Principles: Spec-Driven Execution**
 
 1. **Embed Protocol Knowledge**
    - ✅ Include entity definitions from protocol
@@ -1248,9 +1236,13 @@ Each Slash Command contains:
 - [ ] Provides protocol-based templates
 - [ ] AI can produce compliant output without external reference
 
+**Summary**: Source 1 provides a 7-STEP process to derive custom Slash Commands from your protocol specification, ensuring domain-specific terminology and spec-driven execution.
+
 ---
 
-### Source 2: Library-Selected Commands (Reusable)
+#### Source 2: Library-Selected Commands (Reusable)
+
+**Overview**: Select and adapt pre-built specification systems from MetaSpec's template library.
 
 **Alternative/Complement to Protocol-Derived**: Use pre-built specification systems from MetaSpec library.
 
@@ -1264,7 +1256,7 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
 
 ---
 
-#### Discover Available Libraries
+**Discover Available Libraries**
 
 **Library Location**: MetaSpec GitHub repository
 
@@ -1291,7 +1283,7 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
 - Domain-specific or universal abstractions
 - Adaptation guidelines
 
-#### Selection Principles
+**Selection Principles**
 
 **Choose library based on**:
 
@@ -1315,7 +1307,7 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
    - Complex domain → Use specialized library
    - Uncertain → Start generic, specialize later
 
-#### Quick Reference (Current Libraries)
+**Quick Reference (Current Libraries)**
 
 **See [library/README.md](https://github.com/ACNet-AI/MetaSpec/blob/main/src/metaspec/templates/library/README.md) for complete catalog.**
 
@@ -1329,7 +1321,7 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
 
 ---
 
-#### Adaptation Process
+**Adaptation Process**
 
 **When using library commands**:
 
@@ -1353,7 +1345,7 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
 
 ---
 
-#### Composition Examples
+**Composition Examples**
 
 **Composition Pattern 1: Library + Protocol**
 
@@ -1390,7 +1382,7 @@ Result: Proven workflow pattern
 
 ---
 
-#### Integration with Generator
+**Integration with Generator**
 
 **In toolkit specification**, document:
 
@@ -1422,7 +1414,7 @@ Result: Proven workflow pattern
 
 ---
 
-#### Quality Checklist (Library-Selected)
+**Quality Checklist (Library-Selected)**
 
 - [ ] Selected appropriate library for domain
 - [ ] Mapped all library variables to domain terms
@@ -1433,7 +1425,7 @@ Result: Proven workflow pattern
 
 ---
 
-#### Integration with Generated Speckit
+**Integration with Generated Speckit**
 
 These Slash Commands (from library and/or protocol) will:
 1. Be generated into `templates/commands/` directory
@@ -1443,6 +1435,8 @@ These Slash Commands (from library and/or protocol) will:
 5. Support composition of multiple specification systems
 
 **This demonstrates MetaSpec's Composability**: Specification systems can be selected, adapted, and composed.
+
+**Summary**: Source 2 enables rapid adoption by selecting pre-built specification systems from MetaSpec's library, adapting variables to your domain, and composing with custom commands.
 
 \```
 
@@ -1620,31 +1614,31 @@ Generator ───→ Output Artifacts
 
 ## Dependencies
 
-{Dependencies from step 3}
+{Dependencies from Section 3: Generate Toolkit Specification Content}
 
 ## Overview
 
-{Overview from step 3}
+{Overview from Section 3: Generate Toolkit Specification Content}
 
 ## Components
 
-{Component specifications from step 3}
+{Component specifications from Section 3: Generate Toolkit Specification Content}
 
 ## Architecture
 
-{Architecture design from step 3}
+{Architecture design from Section 3: Generate Toolkit Specification Content}
 
 ## Technical Requirements
 
-{Requirements from step 3}
+{Requirements from Section 3: Generate Toolkit Specification Content}
 
 ## Validation Strategy
 
-{Validation strategy from step 3}
+{Validation strategy from Section 3: Generate Toolkit Specification Content}
 
 ## Success Criteria
 
-{Success criteria from step 3}
+{Success criteria from Section 3: Generate Toolkit Specification Content}
 
 ## Implementation Plan
 

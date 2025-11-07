@@ -337,9 +337,22 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 
 **What to include**:
 - Explicit dependency on protocol specs
+- **User Journey Analysis** (🆕 From Step 2.5)
+  - Primary users (AI Agents vs Human Developers distribution)
+  - Key usage scenarios (3-5 scenarios with User/Context/Goal/Pain Point)
+  - Feature derivation from scenarios (P0/P1/P2 priority matrix)
+  - Command design rationale (why each command exists)
+  - Scenario coverage matrix
 - Parser design (input formats)
 - Validator logic (references protocol rules)
 - CLI commands (init, validate, generate)
+- **Slash Commands** (for AI agents)
+- **Templates & Examples** (🆕 From Component 6)
+  - Templates directory structure (organized by specification system source)
+  - Template mapping (library specs → directories)
+  - Entity templates (protocol entities → template files)
+  - Examples directory (basic/advanced/use-cases)
+  - Implementation checklist
 - Success criteria
 
 **Example**:
@@ -349,13 +362,66 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 ## Dependencies
 - Depends on: protocol/001-mcp-core-protocol
 
+## User Journey Analysis
+### Primary Users
+- 80% AI Agents (Claude in Cursor)
+- 20% Human Developers
+
+### Key Scenarios
+**Scenario 1**: AI Agent generates MCP server from natural language
+- User: AI Agent
+- Goal: Generate valid server definition
+- Required Features: show-protocol command, get-template command, validate CLI
+
+**Scenario 2**: Developer validates server definition manually
+- User: Human Developer
+- Goal: Verify server compliance
+- Required Features: init, validate, docs
+
+### Derived Features (P0)
+- Protocol reference system: AI needs rules before generating (Scenarios: 1)
+- Template system: Users need starting points (Scenarios: 1, 2)
+- Validation CLI: Critical for both AI and developers (All scenarios)
+
+### Command Design Rationale
+- show-protocol: AI needs rules before generating → Scenario 1
+- validate: Critical for both AI and developers → All scenarios
+- init: Developer quick setup → Scenario 2
+
 ## Components
 1. Parser: Parse MCP server definitions
 2. Validator: Verify compliance with protocol spec
 3. CLI: mcp-spec-kit init|validate|generate
+
+## Templates & Examples
+### Templates Directory Structure
+templates/
+├── generic/               # From library/generic
+│   ├── commands/
+│   └── templates/
+├── spec-kit/              # From library/sdd/spec-kit
+│   ├── commands/
+│   └── templates/
+└── mcp/                   # Custom (from protocol/001-mcp-protocol)
+    ├── commands/
+    │   ├── show-protocol.md
+    │   ├── get-template.md
+    │   └── validate-server.md
+    └── templates/
+        ├── basic-server.yaml
+        └── advanced-server.yaml
+
+### Examples Directory
+examples/
+├── basic/
+│   ├── simple-server.yaml
+│   └── README.md
+└── advanced/
+    ├── full-featured-server.yaml
+    └── README.md
 ```
 
-**Key principle**: Toolkit specs explicitly depend on protocol specs and define HOW to implement the toolkit.
+**Key principle**: Toolkit specs explicitly depend on protocol specs, derive features from user scenarios, and define HOW to implement the toolkit.
 
 #### MetaSpec Workflow for SDS + SDD
 

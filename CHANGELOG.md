@@ -7,6 +7,169 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ✨ Major Feature - User-Centered Toolkit Design
+
+**Added User Journey Analysis to `/metaspec.sdd.specify`** (Based on mcp-speckit feedback)
+
+MetaSpec now guides developers to design toolkits from user needs, not just technical specifications.
+
+#### P0: User Journey & Feature Derivation (Step 2.5)
+
+**New Section**: `Step 2.5: User Journey & Feature Derivation` (added between Step 2 and Step 3)
+
+**What Changed**:
+1. **User Analysis** (STEP 1)
+   - Identify primary users (AI Agents / Human Developers / Both)
+   - Define user characteristics (skill level, context, goals)
+   - Example: "80% AI Agents, 20% Human Developers"
+
+2. **Usage Scenarios** (STEP 2)
+   - Define 3-5 key scenarios with complete workflow
+   - Template includes: User, Context, Goal, Pain Point, Desired Experience
+   - Example scenarios: "AI Agent generates MCP server", "Developer validates manually", "AI debugs errors"
+
+3. **Feature Derivation** (STEP 3)
+   - Map scenarios to features with priority matrix
+   - Categorize: Information Access / Content Generation / Validation / Developer Experience
+   - Prioritize: P0 (Must Have) / P1 (Should Have) / P2 (Nice to Have)
+
+4. **Command Derivation from Scenarios** (STEP 4)
+   - Extract CLI commands from user scenarios
+   - Extract Slash Commands from AI agent scenarios
+   - Identify templates needed from scenarios
+
+5. **Document Insights** (STEP 5)
+   - Add "User Journey Analysis" section to toolkit spec
+   - Include rationale for command design decisions
+   - Explain feature prioritization
+
+**Why This Matters**:
+- ✅ **User-driven design**: Features derived from real user needs, not arbitrary technical choices
+- ✅ **Prevents missing features**: Scenario analysis ensures critical functionality isn't overlooked
+- ✅ **Clear prioritization**: P0/P1/P2 system based on scenario frequency and criticality
+- ✅ **Better AI guidance**: AI knows *why* commands exist (mapped to user scenarios)
+- ✅ **Traceability**: Every feature/command traces back to a user scenario
+
+**Example Output**:
+```markdown
+## User Journey Analysis
+
+### Primary Users
+- 80% AI Agents (Claude in Cursor)
+- 20% Human Developers
+
+### Key Scenarios
+1. AI generates MCP server → needs: show-protocol, get-template
+2. Developer validates manually → needs: init, validate, docs
+3. AI debugs errors → needs: validate, explain-error
+
+### Derived Features (P0)
+- Protocol reference system (Scenarios 1, 3)
+- Template system (Scenarios 1, 2)
+- Validation CLI (All scenarios)
+
+### Command Design Rationale
+- `show-protocol`: AI needs rules before generating (Scenario 1)
+- `validate`: Critical for both AI and developers (All scenarios)
+- `init`: Developer quick setup (Scenario 2)
+```
+
+**Impact on Generated Speckits**:
+- Toolkit specifications now include "User Journey Analysis" section
+- Commands are justified by user scenarios (not arbitrary)
+- Feature prioritization is explicit and traceable
+
+---
+
+#### P1: Templates Directory Structure (Component 6) - Embodies Composability
+
+**New Section**: `Component 6: Templates Directory Structure (CRITICAL - Embodies Composability)` (added after Component 5)
+
+**Core Principle**: **Organize by specification system source**, not by file type.
+
+**What Changed**:
+
+1. **Specification Composability Structure**
+   ```bash
+   templates/
+   ├── {library-spec-1}/       # From library (e.g., generic, spec-kit)
+   │   ├── commands/           # Slash Commands from this spec system
+   │   └── templates/          # Templates from this spec system
+   ├── {library-spec-2}/       # Another specification system
+   │   ├── commands/
+   │   └── templates/
+   └── {custom}/               # Custom (from protocol)
+       ├── commands/           # Protocol-specific Slash Commands
+       └── templates/          # Protocol entity templates
+   ```
+
+2. **Key Benefits**:
+   - ✅ **Clear provenance**: Which spec system provides which commands
+   - ✅ **Avoid conflicts**: Different systems can have same-named commands
+   - ✅ **Partial replacement**: Update one spec system without affecting others
+   - ✅ **MetaSpec convention**: Follows `meta/sds/`, `library/sdd/spec-kit/` pattern
+
+3. **Complete Example (MCP-Speckit)**:
+   ```bash
+   templates/
+   ├── generic/               # From library/generic
+   │   ├── commands/
+   │   └── templates/
+   ├── spec-kit/              # From library/sdd/spec-kit
+   │   ├── commands/
+   │   └── templates/
+   └── mcp/                   # Custom (from protocol/001-mcp-protocol)
+       ├── commands/
+       └── templates/
+   ```
+
+4. **Implementation Guide**:
+   - **Library Specifications**: Copy from MetaSpec library → `templates/{library-name}/`
+   - **Custom Specification**: Derive from protocol → `templates/{domain}/`
+   - **Examples**: Separate top-level `examples/` directory (not under `templates/`)
+
+**Why This Matters**:
+- ✅ **Embodies MetaSpec's core value**: Specification composability
+- ✅ **Traceability**: Clear which commands/templates come from which source
+- ✅ **Maintainability**: Update specific specification systems independently
+- ✅ **Discoverability**: AI and developers can navigate by specification source
+- ✅ **Follows MetaSpec convention**: Same pattern as `library/sdd/spec-kit/`
+- ✅ **Aligns with Component 4**: Dual-source architecture consistency
+
+**Checklist Provided**:
+- [ ] Library specifications mapped to `templates/{library-name}/`
+- [ ] Custom specification in `templates/{domain}/`
+- [ ] P0 Slash Commands created (from Step 2.5 STEP 4)
+- [ ] Entity templates match protocol entities
+- [ ] Examples in top-level `examples/` directory
+- [ ] At least 1-2 complete examples
+
+**Implementation Notes**:
+- This is the **recommended target structure** for speckit development
+- Current `metaspec init` may generate flat structure initially
+- Migration path: specify → plan → implement
+
+**Impact on Generated Speckits**:
+- Toolkit specifications now embody specification composability
+- Clear which specification systems are composed together
+- Independent evolution of specification systems enabled
+- Aligns with MetaSpec's own source code organization
+
+---
+
+**Resolution of mcp-speckit Feedback**:
+
+| Issue | Status | Resolution |
+|-------|--------|------------|
+| **❌ P0-1: User Journey 缺失** | ✅ **Resolved** | Step 2.5 added with 5-step analysis |
+| **❌ P0-3: Templates 指导不足** | ✅ **Resolved** | Component 6 added with complete structure |
+| **🟡 P0-1: CLI 从需求推导** | ✅ **Improved** | Commands now derived from scenarios (Step 2.5 STEP 4) |
+| **✅ P0-2: AI Agent Interface** | ✅ **Already Done** | Component 4 (Slash Commands) |
+
+**Overall Resolution**: **100%** (4/4 issues addressed)
+
+---
+
 ### 🔧 Structure Improvements
 
 **Fixed file structure issues in `/metaspec.sdd.specify`**:
@@ -53,6 +216,159 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Files Changed**:
 - src/metaspec/templates/meta/sdd/commands/specify.md.j2 (structure improvements)
+
+---
+
+### 📝 Template Enhancements
+
+**Enhanced `spec-template.md.j2` to reflect new features**:
+
+#### Added: User Journey Analysis Section
+
+**New Section**: `## User Journey Analysis` (inserted after Toolkit Overview)
+
+**Contents**:
+1. **Primary Users**: AI Agents vs Human Developers distribution
+2. **Key Scenarios**: 3-5 scenarios with User, Context, Goal, Pain Point, Desired Experience
+3. **Derived Features**: P0/P1/P2 priority matrix mapped to scenarios
+4. **Command Design Rationale**: Why each CLI/Slash Command exists
+5. **Scenario Coverage Matrix**: Feature coverage verification
+
+**Benefits**:
+- ✅ Aligns with `/metaspec.sdd.specify` Step 2.5 (User Journey & Feature Derivation)
+- ✅ Generated speckits now include user scenario analysis
+- ✅ Features are justified by real user needs
+- ✅ Traceability from scenarios to commands/templates
+
+**Example**: See complete example in [P0: User Journey & Feature Derivation](#p0-user-journey--feature-derivation-step-25) section above.
+
+---
+
+#### Added: Templates & Examples Section
+
+**New Section**: `## Templates & Examples` (inserted after CLI Commands)
+
+**Contents**:
+1. **Templates Directory Structure**: Organized by specification system source
+2. **Template Mapping**: Library specs → directory names
+3. **P0 Slash Commands**: Must-implement commands from scenarios
+4. **Entity Templates**: Protocol entities → template files
+5. **Examples Directory**: Separate structure with basic/advanced/use-cases
+6. **Implementation Checklist**: Verification checklist
+
+**Benefits**:
+- ✅ Aligns with `/metaspec.sdd.specify` Component 6 (Templates Directory Structure)
+- ✅ Embodies specification composability principle
+- ✅ Clear provenance: Know which spec system provides which commands
+- ✅ Follows MetaSpec convention: Same pattern as `library/sdd/spec-kit/`
+
+**Example Structure**:
+```
+templates/
+├── generic/               # From library/generic
+│   ├── commands/
+│   └── templates/
+├── spec-kit/              # From library/sdd/spec-kit
+│   ├── commands/
+│   └── templates/
+└── mcp/                   # Custom (from protocol)
+    ├── commands/
+    └── templates/
+
+examples/
+├── basic/
+├── advanced/
+└── use-cases/
+```
+
+---
+
+#### Impact on Generated Speckits
+
+**Generated `specs/toolkit/001-*/spec.md` now includes**:
+- User Journey Analysis with scenario-to-feature mapping
+- Templates & Examples section with composability structure
+- Clear rationale for every command/feature
+- Implementation checklist for templates and examples
+
+**Backward Compatibility**: ✅ Maintained
+- Existing sections unchanged
+- New sections are additive enhancements
+- Optional - can be filled or left as templates
+
+---
+
+**Files Changed**:
+- src/metaspec/templates/meta/templates/spec-template.md.j2 (added 2 new sections)
+
+**Related Features**:
+- `/metaspec.sdd.specify` Step 2.5: User Journey & Feature Derivation
+- `/metaspec.sdd.specify` Component 6: Templates Directory Structure
+
+---
+
+### 📚 Documentation Updates
+
+**Enhanced `AGENTS.md` to reflect new features**:
+
+#### Updated: Phase 2 Toolkit Specification Section
+
+**Section**: `Phase 2: Toolkit Specification (SDD)` → Recommended Practice: SDS + SDD Separation
+
+**What Changed**:
+
+1. **Expanded "What to include" section** (+7 items):
+   - Added: **User Journey Analysis** (🆕 From Step 2.5)
+     - Primary users distribution
+     - Key usage scenarios (3-5 scenarios)
+     - Feature derivation (P0/P1/P2 priority matrix)
+     - Command design rationale
+     - Scenario coverage matrix
+   - Added: **Templates & Examples** (🆕 From Component 6)
+     - Templates directory structure
+     - Template mapping
+     - Entity templates
+     - Examples directory
+     - Implementation checklist
+
+2. **Enhanced Example** (Added 2 new sections):
+   - **User Journey Analysis section** with:
+     - Primary users (80% AI / 20% Developers)
+     - 2 complete scenarios (AI Agent + Developer)
+     - Derived features with scenario mapping
+     - Command design rationale
+   - **Templates & Examples section** with:
+     - Complete directory structure (generic/spec-kit/mcp)
+     - Slash commands mapping
+     - Examples organization (basic/advanced)
+
+3. **Updated Key Principle**:
+   - Before: "Toolkit specs explicitly depend on protocol specs and define HOW to implement"
+   - After: "Toolkit specs explicitly depend on protocol specs, **derive features from user scenarios**, and define HOW to implement"
+
+**Benefits**:
+- ✅ AI Agents now understand how to use User Journey Analysis
+- ✅ Clear guidance on Templates & Examples organization
+- ✅ Complete example shows new sections in context
+- ✅ Aligns with `/metaspec.sdd.specify` Step 2.5 and Component 6
+
+**What it looks like**: See `AGENTS.md` lines 365-422 for the complete updated example with both User Journey Analysis and Templates & Examples sections.
+
+**Impact**:
+- AI Agents can better guide developers to create user-centered toolkits
+- Clear understanding of scenario-driven feature derivation
+- Templates organization principle is now documented for AI reference
+
+---
+
+**Files Changed**:
+- AGENTS.md (Phase 2 section enhanced with new features)
+
+**Related Features**:
+- `/metaspec.sdd.specify` Step 2.5: User Journey & Feature Derivation
+- `/metaspec.sdd.specify` Component 6: Templates Directory Structure
+- `spec-template.md.j2`: User Journey Analysis section
+- `spec-template.md.j2`: Templates & Examples section
 
 ---
 
