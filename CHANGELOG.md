@@ -65,59 +65,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-**Removed incorrect Spec-Kit example from naming patterns table**
+**Eliminated redundant and incorrect examples (8 → 3, 62.5% reduction)**
 
-**Issue**: Table showed Spec-Kit with incorrect "Verb-Noun" pattern:
-- ❌ Listed: `specify-feature`, `plan-implementation`, `implement-feature`
-- ✅ Actual Spec-Kit commands: `specify`, `plan`, `implement` (single verbs)
-- ❌ Spec-Kit is MetaSpec's internal library, not a different pattern
-- ❌ Created confusion: Same pattern shown twice (with/without namespace)
+**Issues**:
+1. ❌ **Incorrect Spec-Kit pattern**: Table showed false "Verb-Noun" commands (`specify-feature`, `plan-implementation`)
+   - Actual commands are single verbs (`specify`, `plan`, `implement`)
+   - Spec-Kit is MetaSpec's internal library, same pattern as MetaSpec without namespace
+2. ❌ **Redundant examples**: Example 2 (Project Lifecycle) and Example 3 (MetaSpec SDD) duplicated in table
+3. ❌ **Too many examples**: 8 total with multiple abstract examples less valuable than real implementations
 
-**Fix**: Simplified table to show only 2 truly different patterns:
-- ✅ **MetaSpec**: Namespaced Verbs (`sdd.specify`, `sdd.clarify`, `sdd.plan`)
-- ✅ **OpenSpec**: Domain Verbs (`proposal`, `apply`, `archive`)
-- ✅ Removed Spec-Kit row (it's the same pattern as MetaSpec without namespace)
-- ✅ Updated Key Insights: "Two proven patterns" instead of "Three"
+**Fix**: Comprehensive simplification and correction:
+- ✅ **STEP 1**: Reduced from 3 examples to 1 - MetaSpec SDD (real dogfooding implementation)
+- ✅ **STEP 2 Table**: Reduced from 5 rows to 2 - MetaSpec / OpenSpec only
+- ✅ **Removed incorrect**: Spec-Kit row (false verb-noun pattern)
+- ✅ **Removed duplicates**: Example 1 (Development Workflow), Example 2 (Project Lifecycle), MetaSpec SDS
 
-**Why Spec-Kit was removed**:
-- Spec-Kit is MetaSpec's template library, not an independent project
-- Commands are single verbs (`specify`, `plan`), not verb-noun pairs
-- MetaSpec = Spec-Kit commands + namespace (same underlying pattern)
-
-**Impact**: 
-- ✅ **Accurate**: No false examples
-- ✅ **Clearer**: Two distinct patterns, not variants of the same pattern
-- ✅ **Better guidance**: Focus on meaningful differences (namespace vs domain verbs)
-
-**Files Changed**: `specify.md.j2`
-
----
-
-### ♻️ Refactoring
-
-**Radically simplified examples to eliminate redundancy**
-
-**Issue**: Too many redundant examples (8 total) with duplicates:
-- ❌ Example 2 (Project Lifecycle) duplicated in STEP 2 table
-- ❌ Example 3 (MetaSpec SDD) duplicated in STEP 2 table
-- ❌ 5 rows in STEP 2 table, with 2 being duplicates
-- ❌ Multiple abstract examples less valuable than real implementations
-
-**Fix**: Reduced to essential examples (62.5% reduction from 8 to 3):
-- ✅ **STEP 1**: 1 example - MetaSpec SDD (real dogfooding implementation)
-- ✅ **STEP 2 Table**: 2 rows - MetaSpec / OpenSpec (truly different patterns)
-- ✅ Removed: Example 1 (Development Workflow), Example 2 (Project Lifecycle)
-- ✅ Removed: Table rows for Project Lifecycle, MetaSpec SDS, and Spec-Kit
-
-**Two proven patterns** (STEP 2 Table):
-1. **MetaSpec**: Namespaced Verbs (`sdd.specify`, `sdd.clarify`) - for multi-layer systems
+**Two proven patterns retained**:
+1. **MetaSpec**: Namespaced Verbs (`sdd.specify`, `sdd.clarify`, `sdd.plan`) - for multi-layer systems
 2. **OpenSpec**: Domain Verbs (`proposal`, `apply`, `archive`) - for single-domain tools
 
 **Impact**: 
-- ✅ **Clearer**: Each example appears once, no duplication
-- ✅ **More valuable**: Real projects only, no abstract examples
-- ✅ **Easier to follow**: 3 examples instead of 8 (62.5% reduction)
-- ✅ **Better teaching**: 2 distinct patterns with clear use cases
+- ✅ **Accurate**: No false examples (Spec-Kit correction)
+- ✅ **Concise**: 62.5% reduction (8 → 3 examples)
+- ✅ **Clear**: Each example appears once, no duplication
+- ✅ **Valuable**: Real projects only, no abstract examples
 
 **Files Changed**: `specify.md.j2`
 
