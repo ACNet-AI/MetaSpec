@@ -263,9 +263,9 @@ When speckit developer designs workflow:
        template: "templates/endpoint-design-template.md.j2"
 
 4. Implement custom template
-   → Create endpoint-design-template.md in templates/ (development reference)
-   → Create .j2 file in src/*/templates/templates/ (for packaging)
-   → Create command instruction in src/*/templates/commands/ (for packaging)
+   → Create endpoint-design-template.md in templates/{source}/templates/ (development reference)
+   → Create .j2 file in src/*/templates/{source}/templates/ (for packaging)
+   → Create command instruction in src/*/templates/{source}/commands/ (for packaging)
 ```
 
 ---

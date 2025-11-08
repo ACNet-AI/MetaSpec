@@ -216,7 +216,8 @@ class Generator:
             ("base/pyproject.toml.j2", "pyproject.toml"),
             ("base/constitution.md.j2", "memory/constitution.md"),
             ("base/.gitignore.j2", ".gitignore"),
-            ("base/specs/README.md.j2", "specs/README.md"),  # Phase 2: specs/ directory
+            ("base/specs/README.md.j2", "specs/README.md"),  # specs/ directory guide
+            ("base/templates/README.md.j2", "templates/README.md"),  # templates/ directory guide
             (
                 "base/scripts/bash/create-new-feature.sh.j2",
                 "scripts/bash/create-new-feature.sh",
@@ -255,15 +256,17 @@ class Generator:
                     source = f"library/generic/{subdir}"
 
                 # Copy template file (required)
+                # Organize by source to maintain specification system boundaries
                 template_name = f"{sc.name}-template.md"
                 source_template = f"{source}/templates/{template_name}.j2"
-                output_template = f"templates/{template_name}"
+                output_template = f"templates/{sc.source}/templates/{template_name}"
                 template_map[source_template] = output_template
 
                 # Copy command file (optional - some sources like "generic" may not have commands)
+                # Organize by source to avoid naming conflicts
                 command_name = f"{sc.name}.md"
                 source_command = f"{source}/commands/{command_name}.j2"
-                output_command = f"templates/commands/{command_name}"
+                output_command = f"templates/{sc.source}/commands/{command_name}"
                 # Only add to template_map if command file exists
                 # The actual existence check happens during rendering, where missing files are skipped
                 template_map[source_command] = output_command
@@ -444,7 +447,8 @@ class Generator:
 
         # Additional directories
         directories.add(Path("templates"))
-        directories.add(Path("templates/commands"))  # AI slash command files (packaged)
+        # Note: templates/{source}/commands/ and templates/{source}/templates/
+        # are automatically tracked via files dict (Line 414-416)
         directories.add(Path("memory"))
         directories.add(Path("examples"))
         directories.add(Path("specs"))  # Phase 2: Specifications directory

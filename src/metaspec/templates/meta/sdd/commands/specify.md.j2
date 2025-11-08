@@ -562,7 +562,7 @@ api-toolkit lint openapi.yaml
 ### Slash Commands
 
 **What they are**: Spec-driven execution guides with embedded protocol knowledge
-**Where they go**: `templates/commands/` directory  
+**Where they go**: `templates/{source}/commands/` directory (organized by specification system source)  
 **How AI uses them**: Via `/` prefix in AI chat (Cursor, Windsurf, etc.)
 **Core purpose**: Guide AI to **produce outputs that comply with protocol specifications**
 
@@ -1465,10 +1465,10 @@ Result: Proven workflow pattern
 ```
 
 **Generator expectations**:
-- Copy selected library from MetaSpec to `templates/commands/`
+- Copy selected library from MetaSpec to `templates/{source}/commands/`
 - Apply variable mappings (cli_name, entity_type, etc.)
 - Add protocol-derived commands if specified
-- Resolve naming conflicts
+- Source isolation prevents naming conflicts
 
 ---
 
@@ -1486,7 +1486,7 @@ Result: Proven workflow pattern
 **Integration with Generated Speckit**
 
 These Slash Commands (from library and/or protocol) will:
-1. Be generated into `templates/commands/` directory
+1. Be generated into `templates/{source}/commands/` directory (organized by source)
 2. Embed protocol knowledge where applicable
 3. Provide reusable workflow patterns from library
 4. Enable spec-driven development by AI agents

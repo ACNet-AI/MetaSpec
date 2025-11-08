@@ -9,6 +9,132 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] - 2025-11-08
+
+### ✨ Features
+
+**Added templates/README.md for user guidance**
+
+Generated speckits now include a comprehensive README in the `templates/` directory that explains:
+- ✅ New directory structure organized by source
+- ✅ Available templates and slash commands
+- ✅ How to use templates (AI agents, CLI, manual)
+- ✅ How to add custom templates
+- ✅ Why organize by source (provenance, namespace isolation, composability)
+
+**Example content**:
+```markdown
+# Templates Directory
+> Organized by Specification System Source
+
+templates/
+├── generic/              # From MetaSpec library/generic
+│   ├── commands/         # Slash Commands
+│   └── templates/        # Template files
+└── spec-kit/             # From MetaSpec library/sdd/spec-kit
+    ├── commands/
+    └── templates/
+```
+
+**Benefits**:
+- ✅ Reduces user confusion about new structure
+- ✅ Self-documenting directory
+- ✅ Onboarding guide for new users
+- ✅ Reference for adding custom templates
+
+**Files Changed**:
+- `src/metaspec/templates/base/templates/README.md.j2` - New template file
+- `src/metaspec/generator.py` (Line 220) - Add to base templates list
+- `src/metaspec/templates/meta/templates/spec-template.md.j2` - Updated structure examples and checklist
+
+---
+
+### 💥 BREAKING CHANGES
+
+**Templates directory structure now organized by specification system source**
+
+**Issue**: Generator implementation did not match documented design  
+- ❌ Documentation promised: `templates/{source}/commands/` (organized by source)
+- ❌ Implementation generated: `templates/commands/` (flat structure)
+- ❌ Result: Naming conflicts, unclear provenance, violated "specification composability" principle
+
+**Fix**: Restructured templates directory to preserve source hierarchy
+
+**Before** (0.3.0):
+```
+my-speckit/
+└── templates/
+    ├── specify-template.md      # ❌ Flat, no source info
+    ├── plan-template.md
+    └── commands/                # ❌ All commands mixed
+        ├── specify.md           # From generic?
+        └── plan.md              # From spec-kit?
+```
+
+**After** (0.4.0):
+```
+my-speckit/
+└── templates/
+    ├── generic/                 # ✅ Clear source
+    │   ├── commands/
+    │   │   └── specify.md
+    │   └── templates/
+    │       └── specify-template.md
+    └── spec-kit/                # ✅ Clear source
+        ├── commands/
+        │   └── plan.md
+        └── templates/
+            └── plan-template.md
+```
+
+**Benefits**:
+- ✅ **Clear provenance**: Users know which specification system each command comes from
+- ✅ **Namespace isolation**: Different sources can have same-named commands without conflict
+- ✅ **Specification composability**: Embodies MetaSpec's core design principle
+- ✅ **Matches documentation**: Implementation now aligns with spec-template.md.j2
+
+**Migration Guide**:
+
+For existing speckits generated with 0.x.x:
+
+1. **Restructure templates directory**:
+   ```bash
+   cd my-speckit/templates
+   
+   # Create source directories
+   mkdir -p generic/commands generic/templates
+   mkdir -p spec-kit/commands spec-kit/templates
+   
+   # Move files based on their source
+   # (Check your meta-spec.yaml to identify which commands came from which source)
+   mv specify-template.md generic/templates/
+   mv commands/specify.md generic/commands/
+   
+   mv plan-template.md spec-kit/templates/
+   mv commands/plan.md spec-kit/commands/
+   
+   # Remove old flat directories
+   rmdir commands/
+   ```
+
+2. **Update any hardcoded paths in scripts** (if applicable)
+
+**Impact**:
+- ⚠️ **Existing speckits**: Need manual restructuring (see migration guide above)
+- ⚠️ **New speckits**: Automatically use new structure via `metaspec init`
+- ⚠️ **Breaking change in 0.x**: MINOR version bump (0.3.0 → 0.4.0)
+
+**Files Changed**:
+- `src/metaspec/generator.py` (Line 261, 268) - Preserve source in output paths
+- `src/metaspec/templates/meta/sdd/commands/specify.md.j2` (3 locations) - Updated documentation
+- `docs/architecture.md` (Line 266-268) - Updated examples
+
+**References**:
+- Detailed analysis: `ANALYSIS-templates-structure-diff.md`
+- Original specification: `spec-template.md.j2` Line 409-455
+
+---
+
 ## [0.3.0] - 2025-11-07
 
 ### ✨ Features
