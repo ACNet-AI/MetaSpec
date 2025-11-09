@@ -1,0 +1,841 @@
+---
+description: Execute protocol specification writing by processing and completing all tasks from tasks.md
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+**Goal**: Execute specification writing tasks systematically, following task order, respecting dependencies, and tracking progress.
+
+**Important**: This command runs AFTER `/metaspec.sds.tasks`. It is the execution engine for protocol specification development.
+
+### Execution Flow
+
+#### 1. Check Prerequisites
+
+**Required files**:
+- `specs/protocol/001-{name}-protocol/tasks.md` - Task breakdown
+- `specs/protocol/001-{name}-protocol/plan.md` - Architecture plan
+- `specs/protocol/001-{name}-protocol/spec.md` - Initial protocol concept
+
+**If missing**:
+- Stop and instruct user to run `/metaspec.sds.tasks` first
+
+#### 2. Load Specification Context
+
+**Read all planning documents**:
+- `specs/protocol/001-{name}-protocol/tasks.md` - Task list (REQUIRED)
+- `specs/protocol/001-{name}-protocol/plan.md` - Architecture (REQUIRED)
+- `specs/protocol/001-{name}-protocol/spec.md` - Initial concept (REQUIRED)
+- `/memory/constitution.md` - Design principles
+
+**Extract key information**:
+- Protocol domain and purpose
+- Entity definitions
+- Validation rules (initial)
+- Use cases
+- Strategy (single spec vs. multi-spec)
+
+#### 3. Parse tasks.md Structure
+
+**Extract from tasks.md**:
+- Phase list (Core, Phase, Component, Support, Cross-Ref)
+- Task list per phase
+- Task format: `- [ ] [TID] [P?] [LABEL] Description with path`
+- Dependencies (sequential vs parallel)
+- Checkpoints
+
+**Build execution plan**:
+```
+Phase 1: Core Protocol
+  - SDS-T001 [CORE] Refactor to core protocol
+  
+Phase 2: Phase Protocols (if multi-spec)
+  - SDS-T002 [P] [PHASE] Create phase 1 protocol
+  - SDS-T003 [P] [PHASE] Create phase 2 protocol
+  ...
+
+Phase 3: Supporting Protocols
+  - SDS-T008 [SUPPORT] Create support protocol 1
+  ...
+
+Phase 4: Cross-Reference Validation
+  - SDS-T011 [REFINE] Validate integration
+  ...
+```
+
+#### 4. Execute Specification Writing
+
+**Execution rules**:
+
+1. **Phase-by-phase**:
+   - Complete Phase N before starting Phase N+1
+   - Verify checkpoint after each phase
+
+2. **Specification-first approach**:
+   - Write complete specification sections
+   - Include all required elements (entities, operations, validation, examples)
+   - Ensure clarity and completeness
+
+3. **Respect dependencies**:
+   - Sequential tasks: Execute in order
+   - Parallel tasks `[P]`: Can execute simultaneously
+   - Core protocol must be complete before sub-specifications
+
+4. **Progress tracking**:
+   - Mark completed tasks: `- [ ]` → `- [x]`
+   - Report after each task
+   - Save tasks.md after each phase
+
+**Execution order**:
+
+```
+Phase 1: Core Protocol
+  → Execute SDS-T001 (refactor to core overview)
+  → Checkpoint: Core protocol defines integration points
+
+Phase 2: Phase/Component Protocols (if multi-spec)
+  → Execute SDS-T002, T003, T004... in parallel (phase protocols)
+  → Checkpoint: All phase protocols complete
+
+Phase 3: Supporting Protocols
+  → Execute SDS-T008, T009... (supporting protocols)
+  → Checkpoint: All supporting protocols complete
+
+Phase 4: Cross-Reference Validation
+  → Execute SDS-T011, T012, T013 (validation)
+  → Checkpoint: All specifications integrated
+```
+
+#### 5. Task Execution Details
+
+**For each task**:
+
+1. **Parse task**:
+   - Extract: Task ID, Label, Description, File path
+   - Check: Is parallel `[P]`?
+   - Check: Is checkpoint task?
+
+2. **Execute task BASED ON LABEL**:
+   
+   **[CORE] - Core Protocol Refactoring**:
+   - Read existing `specs/protocol/001-{name}-protocol/spec.md`
+   - Extract sections to keep (Overview, Glossary, Use Cases - high-level)
+   - Identify sections to move to sub-specifications (detailed entities, operations)
+   - Add integration points section referencing sub-specifications
+   - Add dependency diagram showing protocol structure
+   - Target: 300-800 lines (overview only)
+   
+   **Output structure**:
+   ```markdown
+   # {Protocol Name} Core Protocol Specification
+   
+   **Version**: 1.0.0
+   **Status**: Draft
+   
+   ## Protocol Overview
+   [Keep: High-level problem, solution, capabilities]
+   
+   ## Glossary
+   [Keep: Key terms]
+   
+   ## Use Cases
+   [Keep: High-level scenarios]
+   
+   ## Core Entities Overview
+   [NEW: Brief entity descriptions, reference sub-specifications]
+   - Entity 1: [Brief description] → See protocol/002-{entity1}-protocol
+   - Entity 2: [Brief description] → See protocol/003-{entity2}-protocol
+   
+   ## Integration Points
+   [NEW: How sub-specifications integrate]
+   - Phase protocols: 002-007
+   - Component protocols: 008-010
+   - Supporting protocols: 011-013
+   
+   ## Protocol Architecture
+   [NEW: Dependency diagram from plan.md]
+   
+   ## Version History
+   [Keep/Add: Version tracking]
+   ```
+   
+   **[PHASE] - Phase Protocol Creation**:
+   - Create new file: `specs/protocol/00X-{phase}-protocol/spec.md`
+   - Use sub-specification template (see below)
+   - Focus: Phase-specific entities, operations, validation rules
+   - Include: Entry/exit criteria, orchestrators, artifacts
+   - Reference: Core protocol for integration
+   - Target: 500-1500 lines
+   
+   **[COMPONENT] - Component Protocol Creation**:
+   - Create new file: `specs/protocol/00X-{component}-protocol/spec.md`
+   - Use sub-specification template
+   - Focus: Component interface, registration, validation
+   - Include: Component examples, usage patterns
+   - Reference: Core protocol
+   - Target: 500-1500 lines
+   
+   **[SUPPORT] - Supporting Protocol Creation**:
+   - Create new file: `specs/protocol/00X-{support}-protocol/spec.md`
+   - Use sub-specification template
+   - Focus: Cross-cutting concern (orchestration, artifacts, communication)
+   - Include: Integration patterns, interfaces
+   - Reference: Core protocol and related sub-specifications
+   - Target: 300-800 lines
+   
+   **[REFINE] - Refinement/Validation Tasks**:
+   - Update existing specification(s)
+   - Add cross-references
+   - Validate consistency (terminology, entity names)
+   - Check dependencies (no cycles)
+   - Ensure completeness
+
+3. **Use Sub-Specification Template**:
+
+```markdown
+# {Sub-Protocol Name} Protocol Specification
+
+**Version**: 1.0.0  
+**Status**: Draft  
+**Last Updated**: {date}
+
+---
+
+## Dependencies
+
+**Protocol Specifications**:
+- **Depends on**: protocol/001-{core}-protocol
+
+### Dependency Rationale
+
+{Explain what this sub-protocol depends on from core protocol:}
+- Entities used: [List core entities referenced]
+- Operations extended: [List operations]
+- Validation rules inherited: [List rules]
+
+---
+
+## Protocol Overview
+
+**Name**: {Sub-Protocol Name}  
+**Domain**: {Specific concern within main protocol}  
+**Purpose**: {What problem this sub-protocol solves}
+
+**Problem Statement**: {Detailed problem description}
+
+**Solution**: {How this sub-protocol addresses the problem}
+
+**Scope**:
+- ✅ Included: {What's in scope}
+- ❌ Excluded: {What's out of scope}
+
+---
+
+## Glossary
+
+{Terms specific to this sub-protocol}
+
+- **{Term 1}**: {Definition}
+  - Example: {Example usage}
+  
+- **{Term 2}**: {Definition}
+
+---
+
+## Use Cases
+
+### Use Case 1: {Scenario Name}
+
+**Scenario**: {Description}
+
+**Actors**:
+- Actor 1: {Role}
+- Actor 2: {Role}
+
+**Flow**:
+1. {Step 1}
+2. {Step 2}
+3. {Step 3}
+
+**Protocol Elements Used**:
+- {Element 1}
+- {Element 2}
+
+**Outcome**: {Expected result}
+
+---
+
+## Core Entities
+
+{Entities specific to this sub-protocol}
+
+### Entity: {EntityName}
+
+**Purpose**: {What this entity represents}
+
+**Schema**:
+```yaml
+entity_name:
+  field1:
+    type: string
+    required: true
+    description: {field description}
+  field2:
+    type: number
+    required: false
+    description: {field description}
+    constraints:
+      - {constraint 1}
+      - {constraint 2}
+```
+
+**Validation Rules**:
+- VR001: {Validation rule 1}
+- VR002: {Validation rule 2}
+
+**Example**:
+```json
+{
+  "field1": "example value",
+  "field2": 42
+}
+```
+
+---
+
+## Workflow
+
+{If this sub-protocol involves state transitions or lifecycle}
+
+### State Machine: {Entity Name}
+
+**States**:
+- `state_1`: {State description}
+- `state_2`: {State description}
+
+**Initial State**: `{initial_state}`
+
+**Allowed Transitions**:
+
+#### `state_1` → `state_2`
+- **Trigger**: {What causes this transition}
+- **Precondition**: {What must be true}
+- **Action**: {What happens}
+- **Postcondition**: {Result state}
+
+**Forbidden Transitions**:
+- ❌ `state_x` → `state_y`: {Reason}
+
+---
+
+## Protocol Operations
+
+{Operations specific to this sub-protocol}
+
+### Operation: {operation_name}
+
+**Purpose**: {What this operation does}
+
+**Request Schema**:
+```yaml
+operation_request:
+  param1:
+    type: string
+    required: true
+  param2:
+    type: object
+    required: false
+```
+
+**Response Schema**:
+```yaml
+operation_response:
+  result:
+    type: string
+  error:
+    type: string
+    required: false
+```
+
+**Validation Rules**:
+- {Rule 1}
+- {Rule 2}
+
+**Example**:
+```json
+// Request
+{
+  "param1": "value"
+}
+
+// Response
+{
+  "result": "success"
+}
+```
+
+---
+
+## Validation Rules
+
+### Entity Validation
+1. **{Entity 1}**: {Validation rules}
+2. **{Entity 2}**: {Validation rules}
+
+### Operation Validation
+1. **{Operation 1}**: {Validation rules}
+2. **{Operation 2}**: {Validation rules}
+
+### Cross-Entity Validation
+1. {Rule 1}
+2. {Rule 2}
+
+---
+
+## Error Handling
+
+### Error Codes
+- `E001`: {Error description}
+- `E002`: {Error description}
+
+### Error Response Format
+```yaml
+error_response:
+  code: string
+  message: string
+  details: object (optional)
+```
+
+---
+
+## Examples
+
+### Example 1: {Scenario Name}
+
+**Context**: {Setup}
+
+**Request**:
+```json
+{example request}
+```
+
+**Response**:
+```json
+{example response}
+```
+
+**Validation**: ✅ All rules pass
+
+### Example 2: {Error Scenario}
+
+**Context**: {Setup with error condition}
+
+**Request**:
+```json
+{example request}
+```
+
+**Response**:
+```json
+{error response}
+```
+
+**Validation**: ❌ {Which rule failed}
+
+---
+
+## Integration with Core Protocol
+
+### Entity References
+
+**From Core Protocol**:
+- {Core Entity 1}: {How used in this sub-protocol}
+- {Core Entity 2}: {How used in this sub-protocol}
+
+### Operation Extensions
+
+**Extends Core Operations**:
+- {Core Operation 1}: {How extended}
+
+**New Operations**:
+- {New Operation 1}: {Why needed}
+
+### Validation Rule Inheritance
+
+**Inherited Rules**:
+- {Core Rule 1}: Applied to {this entity}
+- {Core Rule 2}: Applied to {this entity}
+
+**Extended Rules**:
+- {Extended Rule 1}: {How it extends core rule}
+
+---
+
+## Clarifications
+
+### Session {date}
+
+- **Q**: {Question about ambiguity}
+  **A**: {Resolution}
+
+---
+
+## Version History
+
+- **v1.0.0** ({date}): Initial sub-protocol specification
+  - Defined {N} entities
+  - Specified {N} operations
+  - Established {N} validation rules
+
+---
+
+**Protocol Maintainers**: {Team}  
+**Contributing**: See `/memory/protocol-constitution.md`  
+**License**: {License}
+```
+
+4. **Verify specification completeness**:
+   
+   **For Core Protocol**:
+   - [ ] Protocol overview is clear and concise
+   - [ ] Glossary includes all key terms
+   - [ ] Use cases show protocol value
+   - [ ] Entity overview lists all entities
+   - [ ] Integration points reference all sub-specifications
+   - [ ] Dependency diagram is accurate
+   - [ ] Size: 300-800 lines
+   
+   **For Sub-Specifications**:
+   - [ ] Dependencies section references core protocol
+   - [ ] Purpose and scope are clear
+   - [ ] Entities have complete schemas
+   - [ ] Operations have request/response definitions
+   - [ ] Validation rules are comprehensive
+   - [ ] Examples demonstrate usage
+   - [ ] Integration section explains core protocol relationship
+   - [ ] Size: 300-1500 lines (varies by type)
+   
+   **For Refinement Tasks**:
+   - [ ] Cross-references are correct
+   - [ ] Terminology is consistent
+   - [ ] Dependencies are acyclic
+   - [ ] Entity names match across specifications
+
+5. **Mark complete**:
+   - Update tasks.md: `- [ ] SDS-T001` → `- [x] SDS-T001`
+   - Report: "✅ SDS-T001 complete: Created core protocol overview"
+
+6. **Handle errors**:
+   - If task fails: Report error, suggest fix
+   - If sequential task fails: Halt phase
+   - If parallel task fails: Continue others, report at end
+
+#### 6. Phase Checkpoints
+
+**After each phase**:
+
+1. **Verify checkpoint criteria**:
+   - Phase 1: `✅ Core protocol defines integration points clearly`
+   - Phase 2: `✅ All phase/component protocols complete (500-1500 lines each)`
+   - Phase 3: `✅ All supporting protocols complete (300-800 lines each)`
+   - Phase 4: `✅ All specifications integrated and consistent`
+
+2. **If checkpoint fails**:
+   - Stop phase
+   - Report failing criteria
+   - Suggest fixes
+   - Ask user: "Fix issues and continue? (yes/no)"
+
+3. **If checkpoint passes**:
+   - Report success
+   - Save tasks.md
+   - Proceed to next phase
+
+#### 7. Progress Reporting
+
+**After each task**:
+```
+✅ SDS-T002 complete: Created order-creation protocol
+
+📄 File created:
+   specs/protocol/002-order-creation-protocol/spec.md
+   
+📊 Specification:
+   - Entities: 4 (Order, CartItem, Customer, ValidationRule)
+   - Operations: 3 (initialize_order, validate_cart, create_order)
+   - Validation Rules: 15
+   - Examples: 3
+   - Size: 800 lines
+
+✅ Quality checks:
+   - Dependencies: ✅ References core protocol
+   - Entities: ✅ Complete schemas
+   - Validation: ✅ Comprehensive rules
+   - Examples: ✅ Demonstrates usage
+   - Integration: ✅ Explains core protocol relationship
+```
+
+**After each phase**:
+```
+✅ Phase 2 complete: Phase Protocols
+
+📊 Summary:
+   - Tasks: 7/7 complete
+   - Time: 2.5 days
+   
+   Specifications created:
+   - 002-order-creation-protocol (800 lines) ✅
+   - 003-payment-processing-protocol (950 lines) ✅
+   - 004-fulfillment-protocol (850 lines) ✅
+   - 005-shipping-protocol (780 lines) ✅
+   - 006-delivery-protocol (720 lines) ✅
+   - 007-returns-protocol (680 lines) ✅
+   - 008-refunds-protocol (650 lines) ✅
+   
+   Checkpoint: ✅ All phase protocols complete
+   
+   Next: Phase 3 (Supporting Protocols)
+```
+
+**Overall progress**:
+```
+📊 Specification Progress: 7/13 tasks (54%)
+   Phase 1: ✅ 1/1 (Core Protocol)
+   Phase 2: ✅ 6/6 (Phase Protocols)
+   Phase 3: 🔄 0/3 (Supporting Protocols)
+   Phase 4: ⏳ 0/3 (Cross-Reference Validation)
+```
+
+#### 8. Cross-Reference Validation
+
+**After all specifications written**:
+
+1. **Check core protocol references**:
+   - Verify all sub-specification references are correct
+   - Ensure paths match actual files
+   - Check version references
+
+2. **Check sub-specification dependencies**:
+   - Verify "Depends on" sections reference correct protocols
+   - Check entity references are valid
+   - Ensure operation references are correct
+
+3. **Check terminology consistency**:
+   - Glossary terms used consistently
+   - Entity names match across specifications
+   - No conflicting definitions
+
+4. **Check dependency graph**:
+   - Draw dependency graph
+   - Verify no circular dependencies
+   - Ensure core protocol is at root
+
+5. **Generate cross-reference report**:
+```
+✅ Cross-Reference Validation Complete
+
+📊 Statistics:
+   - Total specifications: 10
+   - Core protocol: 1
+   - Sub-specifications: 9
+   - Cross-references: 47
+
+✅ Validation Results:
+   - Dependency graph: ✅ Acyclic
+   - Entity references: ✅ All valid (47/47)
+   - Operation references: ✅ All valid (23/23)
+   - Terminology: ✅ Consistent (52 terms)
+   - File paths: ✅ All correct
+
+📊 Dependency Summary:
+   Core (001) → 9 sub-specifications
+   - Phase protocols: 002-007 (6 specs)
+   - Supporting protocols: 008-010 (3 specs)
+   
+   No circular dependencies detected ✅
+```
+
+#### 9. Completion Validation
+
+**After all phases**:
+
+1. **Verify completeness**:
+   - [ ] All tasks marked `[x]`
+   - [ ] All checkpoints passed
+   - [ ] All specifications written
+   - [ ] Cross-references validated
+   - [ ] Constitution compliant
+
+2. **Quality checks**:
+   - Total specification size: {X} lines across {N} files
+   - Each specification < 1500 lines
+   - All entities have examples
+   - All validation rules documented
+   - Terminology consistent
+
+3. **Constitution compliance**:
+   - ✅ Minimal Viable Abstraction: Entities have 3-5 core fields
+   - ✅ Specification-First: Protocol defines WHAT, not HOW
+   - ✅ Clear Boundaries: Sub-specifications have distinct responsibilities
+   - ✅ Progressive Enhancement: MVP scope defined (P0 complete)
+   - ✅ Domain Specificity: Domain constraints respected
+
+4. **Generate report**:
+   ```
+   ✅ Protocol specification complete
+   
+   📊 Summary:
+   - Total specifications: 12
+     - Core protocol: 1 (650 lines)
+     - Phase protocols: 7 (650-950 lines each)
+     - Supporting protocols: 4 (550-700 lines each)
+   - Total size: 8,200 lines
+   - Time: 5 days
+   
+   📦 Specifications:
+   - ✅ Core protocol (001-order-protocol)
+   - ✅ Order creation phase (002-order-creation-protocol)
+   - ✅ Payment processing phase (003-payment-processing-protocol)
+   - ✅ Fulfillment phase (004-fulfillment-protocol)
+   - ✅ Shipping phase (005-shipping-protocol)
+   - ✅ Delivery phase (006-delivery-protocol)
+   - ✅ Returns phase (007-returns-protocol)
+   - ✅ Refunds phase (008-refunds-protocol)
+   - ✅ Payment gateway support (009-payment-gateway-protocol)
+   - ✅ Inventory sync support (010-inventory-sync-protocol)
+   - ✅ Notification support (011-notification-protocol)
+   - ✅ Audit log support (012-audit-protocol)
+   
+   ✅ Quality Metrics:
+   - Cross-references: 52 (all valid)
+   - Dependencies: Acyclic (no cycles)
+   - Terminology: Consistent (58 terms)
+   - Examples: 31 (across all specs)
+   - Validation rules: 172 (comprehensive)
+   
+   🎯 MVP Status:
+   - v1.0.0 ready for publication
+   - Core + P0 sub-specifications complete
+   
+   🔄 Next steps:
+   1. Run /metaspec.sds.checklist to verify quality
+   2. Run /metaspec.sds.analyze to check consistency
+   3. Share with stakeholders for review
+   4. Update CHANGELOG.md
+   5. Create git tag v1.0.0
+   
+   💡 Suggested commit message:
+      docs: complete protocol specification system v1.0.0
+   ```
+
+#### 10. Incremental Saves
+
+**Save progress frequently**:
+- Save tasks.md after each phase
+- Commit specifications after each checkpoint
+- Push to git after significant milestones
+
+**Suggested commit messages**:
+```bash
+git commit -m "docs: complete core protocol overview (Phase 1)"
+git commit -m "docs: add phase specifications (Phase 2)"
+git commit -m "docs: add supporting protocols (Phase 3)"
+git commit -m "docs: validate cross-references (Phase 4)"
+```
+
+## Important Notes
+
+1. **Specification quality is paramount**
+   - Write clear, comprehensive specifications
+   - Include concrete examples
+   - Document validation rules completely
+   - Ensure terminology consistency
+
+2. **Phase isolation**
+   - Don't start Phase N+1 until Phase N complete
+   - Verify checkpoint after each phase
+   - Fix issues before proceeding
+
+3. **Parallel execution**
+   - Sub-specifications marked `[P]` can be written in parallel
+   - Only if they are independent
+   - Report all results together
+
+4. **Constitution alignment**
+   - Check principles after each phase
+   - Ensure specifications are minimal and clear
+   - Avoid over-specification
+
+5. **Cross-reference integrity**
+   - Validate references after all specifications written
+   - Fix broken references immediately
+   - Ensure dependency graph is acyclic
+
+6. **Progress visibility**
+   - Report after each task
+   - Show percentage complete
+   - Estimate time remaining
+
+## Example: Phase 2 Execution
+
+**Phase 2: Phase Protocols (7 specifications)**
+
+```
+Starting Phase 2: Phase Protocols (7 tasks, can be parallel)
+
+✅ SDS-T002: Create order-creation protocol
+   File: specs/protocol/002-order-creation-protocol/spec.md
+   Entities: 4 (Order, CartItem, Customer, ValidationRule)
+   Operations: 3 (initialize_order, validate_cart, create_order)
+   Validation rules: 15
+   Examples: 3
+   Size: 800 lines ✅
+
+✅ SDS-T003: Create payment-processing protocol
+   File: specs/protocol/003-payment-processing-protocol/spec.md
+   Entities: 5 (Payment, Transaction, PaymentMethod, Gateway, Receipt)
+   Operations: 4 (authorize, capture, refund, verify)
+   Validation rules: 18
+   Examples: 4
+   Size: 950 lines ✅
+
+✅ SDS-T004: Create fulfillment protocol
+   File: specs/protocol/004-fulfillment-protocol/spec.md
+   Entities: 5 (FulfillmentOrder, InventoryItem, PickList, PackingSlip, Warehouse)
+   Operations: 4 (allocate_inventory, create_picklist, pack_items, mark_shipped)
+   Validation rules: 16
+   Examples: 3
+   Size: 850 lines ✅
+
+✅ SDS-T005: Create shipping protocol
+   [Similar details]
+   Size: 780 lines ✅
+
+✅ SDS-T006: Create delivery protocol
+   [Similar details]
+   Size: 720 lines ✅
+
+✅ SDS-T007: Create returns protocol
+   [Similar details]
+   Size: 680 lines ✅
+
+✅ SDS-T008: Create refunds protocol
+   [Similar details]
+   Size: 650 lines ✅
+
+✅ Phase 2 checkpoint: All phase protocols complete (600-1000 lines each)
+
+Phase 2 complete: 7/7 tasks (2.5 days)
+
+Next: Phase 3 (Supporting Protocols)
+```
+
+

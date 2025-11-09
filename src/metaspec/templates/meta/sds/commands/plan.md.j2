@@ -1,0 +1,504 @@
+---
+description: Plan protocol specification structure by analyzing complexity and organizing sub-specifications
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+**Goal**: Analyze protocol complexity and plan the specification structure, including identifying necessary sub-specifications and their dependencies.
+
+**Important**: This command runs AFTER `/metaspec.sds.specify` when initial protocol concept is defined. It determines whether the protocol needs to be split into multiple sub-specifications.
+
+### Execution Flow
+
+#### 1. Load Protocol Context
+
+**Read primary protocol specification**:
+```bash
+# Find the protocol spec directory
+ls specs/protocol/ | grep -E '^[0-9]{3}-'
+
+# Read the main spec.md
+cat specs/protocol/001-{domain}-protocol/spec.md
+```
+
+**Extract key information**:
+- Protocol name and domain
+- Core entities defined
+- Operations/interfaces
+- Lifecycle phases (if any)
+- Validation rules
+- Use cases
+
+#### 2. Analyze Protocol Complexity
+
+**Complexity Assessment Criteria**:
+
+1. **Entity Count**:
+   - Simple: 1-5 entities
+   - Medium: 6-15 entities
+   - Complex: 16+ entities
+   
+2. **Lifecycle Phases**:
+   - None: Stateless protocol
+   - Few (1-3): Simple workflow
+   - Many (4+): Complex lifecycle requiring phase-specific specs
+
+3. **Document Length**:
+   - Small: <500 lines
+   - Medium: 500-1500 lines
+   - Large: 1500+ lines (⚠️ Consider splitting)
+
+4. **Domain Scope**:
+   - Narrow: Single concern (file operations, authentication)
+   - Broad: Multiple concerns (full development lifecycle, enterprise integration)
+
+5. **Interdependencies**:
+   - Standalone: No external protocols
+   - Dependent: References other protocols
+   - Ecosystem: Part of multi-protocol system
+
+**Decision Matrix**:
+
+| Complexity Level | Document Length | Recommendation |
+|-----------------|----------------|----------------|
+| Simple | <500 lines | ✅ Single spec sufficient |
+| Medium | 500-1500 lines | ⚠️ Consider sub-specifications for major sections |
+| Complex | 1500+ lines | ❌ MUST split into sub-specifications |
+
+#### 3. Identify Sub-Specification Needs
+
+**Common Sub-Specification Patterns**:
+
+##### Pattern A: Lifecycle Phase Specifications
+
+**When to use**: Protocol defines 4+ lifecycle phases
+
+**Example** (Order Management Protocol):
+```
+Core Protocol (001-order-management-protocol)
+  ↓ References
+Phase Protocols:
+  - 002-order-creation-protocol
+  - 003-payment-processing-protocol
+  - 004-fulfillment-protocol
+  - 005-shipping-protocol
+  - 006-delivery-protocol
+  - 007-returns-protocol
+```
+
+**Other examples**: Development workflows, deployment pipelines, data processing stages
+
+**Benefits**:
+- Each phase has detailed methodology
+- Phase-specific validation rules
+- Independent evolution of phases
+
+##### Pattern B: Component Type Specifications
+
+**When to use**: Protocol defines multiple component types (3+)
+
+**Example** (Plugin System Protocol):
+```
+Core Protocol (001-plugin-system-protocol)
+  ↓ References
+Component Protocols:
+  - 002-plugin-interface-protocol
+  - 003-hook-system-protocol
+  - 004-event-bus-protocol
+  - 005-configuration-protocol
+```
+
+**Benefits**:
+- Deep component specifications
+- Component-specific validation
+- Modular protocol evolution
+
+##### Pattern C: Cross-Cutting Concern Specifications
+
+**When to use**: Protocol has supporting systems used across entities
+
+**Example** (API Protocol):
+```
+Core Protocol (001-api-protocol)
+  ↓ References
+Supporting Protocols:
+  - 002-authentication-protocol
+  - 003-error-handling-protocol
+  - 004-versioning-protocol
+  - 005-rate-limiting-protocol
+```
+
+**Benefits**:
+- Reusable across entities
+- Consistent patterns
+- Clear separation of concerns
+
+##### Pattern D: Layered Architecture Specifications
+
+**When to use**: Protocol has distinct architectural layers
+
+**Example** (Communication Protocol):
+```
+Core Protocol (001-messaging-protocol)
+  ↓ References
+Layer Protocols:
+  - 002-transport-layer-protocol (HTTP, WebSocket, gRPC)
+  - 003-message-format-protocol (JSON, Protobuf)
+  - 004-security-layer-protocol (TLS, Authentication)
+  - 005-reliability-protocol (Retry, Circuit Breaker)
+```
+
+**Benefits**:
+- Layer independence
+- Technology alternatives
+- Clear boundaries
+
+#### 4. Design Protocol Architecture
+
+**Create architecture plan**:
+
+```markdown
+# Protocol Architecture Plan
+
+## Overview
+- **Protocol Name**: [name]
+- **Domain**: [domain]
+- **Complexity**: [Simple/Medium/Complex]
+- **Primary Pattern**: [Lifecycle/Component/CrossCutting/Layered]
+
+## Core Protocol (001-{name}-protocol)
+
+**Purpose**: High-level overview and integration point
+
+**Scope**:
+- Protocol overview and problem statement
+- Glossary of key terms
+- Use cases
+- Entity overview (high-level, not detailed)
+- Integration points to sub-specifications
+- Validation overview
+
+**Size**: 300-800 lines (overview only)
+
+## Sub-Specifications
+
+### Sub-Spec 1: [name] (002-{name})
+
+**Purpose**: [specific concern]
+
+**Dependencies**: 
+- Depends on: 001-core-protocol
+
+**Scope**:
+- [Entity/Phase/Component] detailed definition
+- Detailed schemas and field specifications
+- Specific validation rules
+- Concrete examples
+- Error handling specifics
+
+**Estimated Size**: [X] lines
+
+**Priority**: P0 (Critical) / P1 (Important) / P2 (Nice-to-have)
+
+### Sub-Spec 2: [name] (003-{name})
+
+[Same structure as Sub-Spec 1]
+
+## Dependency Graph
+
+```mermaid
+graph TD
+    001[Core Protocol] --> 002[Sub-Spec 1]
+    001 --> 003[Sub-Spec 2]
+    002 --> 005[Sub-Spec 4]
+    003 --> 005
+    001 --> 004[Sub-Spec 3]
+```
+
+## Implementation Order
+
+**Phase 1: Core Foundation**
+- [ ] 001-core-protocol (base specification)
+
+**Phase 2: Primary Specifications** (P0)
+- [ ] 002-[name] (critical dependency)
+- [ ] 003-[name] (critical dependency)
+
+**Phase 3: Supporting Specifications** (P1)
+- [ ] 004-[name] (important feature)
+- [ ] 005-[name] (important feature)
+
+**Phase 4: Advanced Specifications** (P2)
+- [ ] 006-[name] (nice-to-have)
+
+## Cross-References
+
+**How sub-specifications reference core**:
+```markdown
+## Dependencies
+- **Depends on**: protocol/001-core-protocol
+- **Uses entities from**: Core Protocol (Server, Client)
+- **Extends validation from**: Core Protocol Section 5.2
+```
+
+## Success Criteria
+
+- [ ] Core protocol defines integration points clearly
+- [ ] Each sub-specification has clear scope
+- [ ] Dependencies are acyclic (no circular references)
+- [ ] Total specification size manageable (<10 sub-specs ideal)
+- [ ] Each sub-specification can evolve independently
+```
+
+#### 5. Refinement: Evaluate Alternatives
+
+**Question to consider**:
+
+1. **Is splitting necessary?**
+   - Current spec length: [X] lines
+   - Is it already readable and maintainable?
+   - Would splitting add unnecessary complexity?
+
+2. **Is the split logical?**
+   - Do sub-specifications have clear boundaries?
+   - Are dependencies minimal and clear?
+   - Can each sub-spec stand alone?
+
+3. **Is this future-proof?**
+   - Can new phases/components be added easily?
+   - Does the structure support protocol evolution?
+   - Are there natural extension points?
+
+**Recommendation**:
+- ✅ Proceed with split if protocol is 1500+ lines
+- ⚠️ Defer split if protocol is 500-1500 lines (manageable as single spec)
+- ✅ Keep single spec if protocol is <500 lines
+
+#### 6. Generate plan.md
+
+**Output location**: `specs/protocol/001-{name}-protocol/plan.md`
+
+**Structure**:
+```markdown
+# [Protocol Name] - Architecture Plan
+
+**Version**: 1.0.0  
+**Created**: [date]  
+**Status**: Draft
+
+---
+
+## Protocol Complexity Assessment
+
+### Metrics
+- **Entity Count**: [N] entities
+- **Lifecycle Phases**: [N] phases
+- **Document Length**: [N] lines
+- **Domain Scope**: [Narrow/Broad]
+- **Interdependencies**: [Standalone/Dependent/Ecosystem]
+
+### Complexity Rating
+[Simple/Medium/Complex]
+
+### Recommendation
+[Keep single spec / Split into sub-specifications]
+
+**Rationale**: [Why this decision]
+
+---
+
+## Protocol Architecture (IF SPLITTING)
+
+[Include sections from Step 4: Design Protocol Architecture]
+
+---
+
+## Protocol Structure (IF KEEPING SINGLE SPEC)
+
+### Suggested Organization
+```markdown
+001-{name}-protocol/spec.md:
+  1. Protocol Overview (lines 1-50)
+  2. Glossary (lines 51-100)
+  3. Use Cases (lines 101-200)
+  4. Core Entities (lines 201-500)
+     - Entity 1 (detailed)
+     - Entity 2 (detailed)
+     - ...
+  5. Lifecycle/Workflow (lines 501-800)
+  6. Operations (lines 801-1000)
+  7. Validation Rules (lines 1001-1200)
+  8. Examples (lines 1201-1400)
+```
+
+---
+
+## Implementation Strategy
+
+[From Step 4: Implementation Order]
+
+---
+
+## Quality Guidelines
+
+### Specification Size Targets
+- **Core protocol**: 300-800 lines (overview)
+- **Sub-specification**: 500-1500 lines (detailed)
+- **Total system**: <10,000 lines
+
+### Maintainability Principles
+1. Each specification should be readable in <30 minutes
+2. Dependencies should form a DAG (no cycles)
+3. Common patterns should be in core protocol
+4. Each sub-spec should be independently testable
+
+### Evolution Strategy
+- Core protocol changes require major version bump
+- Sub-specification changes can be independent
+- Deprecation policy: 12 months notice
+- Migration guides required for breaking changes
+```
+
+#### 7. Validation and Review
+
+**Check plan quality**:
+
+- [ ] Complexity assessment is data-driven (entity count, document length)
+- [ ] Split recommendation is justified with rationale
+- [ ] Sub-specification boundaries are clear and logical
+- [ ] Dependencies are explicitly documented
+- [ ] Implementation order respects dependencies
+- [ ] Each sub-specification has defined scope and estimated size
+
+**If plan looks good**:
+- Save to `specs/protocol/001-{name}-protocol/plan.md`
+- Proceed to `/metaspec.sds.tasks`
+
+**If plan needs refinement**:
+- Discuss with user
+- Adjust sub-specification boundaries
+- Re-evaluate dependencies
+- Update plan
+
+#### 8. Report Completion
+
+```
+✅ Protocol architecture plan complete
+
+📋 Assessment:
+- Protocol: [name]
+- Complexity: [Simple/Medium/Complex]
+- Recommendation: [Keep single spec / Split into N sub-specifications]
+
+📁 Generated:
+- specs/protocol/001-{name}-protocol/plan.md
+
+📊 Architecture Summary:
+[IF KEEPING SINGLE SPEC]:
+- Single specification with organized sections
+- Estimated size: [X] lines
+- Maintainability: High
+
+[IF SPLITTING]:
+- Core protocol: 001-{name}-protocol
+- Sub-specifications: N sub-specs
+  - Priority P0: [N] specs (critical)
+  - Priority P1: [N] specs (important)
+  - Priority P2: [N] specs (nice-to-have)
+- Total estimated size: [X] lines across [N] files
+- Maintainability: High (modular)
+
+🔄 Next steps:
+1. Review plan with stakeholders
+2. Run /metaspec.sds.tasks to break down specification work
+3. Run /metaspec.sds.implement to write specifications
+
+💡 Suggested commit message:
+   docs: add protocol architecture plan for [protocol-name]
+```
+
+## Key Principles
+
+1. **Data-Driven Decisions**
+   - Use objective metrics (entity count, document length)
+   - Don't split prematurely
+   - Consider maintainability vs. fragmentation trade-offs
+
+2. **Clear Boundaries**
+   - Each sub-specification has distinct responsibility
+   - Minimal cross-references between sub-specs
+   - Dependencies form a clear hierarchy
+
+3. **Future-Proof**
+   - Structure supports adding new phases/components
+   - Evolution doesn't require restructuring
+   - Extension points are explicit
+
+4. **Pragmatic**
+   - Split only when necessary (1500+ lines)
+   - Keep related concerns together
+   - Balance granularity with usability
+
+## Examples
+
+### Example 1: Simple Protocol (Keep Single Spec)
+
+**Authentication Protocol**:
+- Entities: 3 (User, Token, Session)
+- Document length: 450 lines
+- **Decision**: Keep as single spec
+- **Rationale**: Small, focused domain; splitting would add unnecessary complexity
+
+### Example 2: Complex Protocol (Split)
+
+**E-commerce Order Protocol**:
+- Entities: 15+ (Order, Payment, Inventory, Shipping, Customer, etc.)
+- Lifecycle phases: 7 (Creation → Returns)
+- Document length: 2800+ lines
+- **Decision**: Split into 12 sub-specifications
+  - Core: 001-order-protocol (overview)
+  - Phases: 002-008 (phase-specific protocols)
+  - Support: 009-012 (payment, inventory, notification, audit)
+- **Rationale**: Each phase has complex business rules; single spec would be unmanageable
+
+**Alternative example**: Large development workflow protocol (6+ phases), healthcare patient journey protocol (10+ stages)
+
+### Example 3: Medium Protocol (Defer Split)
+
+**File System Protocol**:
+- Entities: 8 (File, Directory, Permission, etc.)
+- Document length: 900 lines
+- **Decision**: Keep single spec for now, plan for future split
+- **Rationale**: Currently manageable; can split later if grows beyond 1500 lines
+
+## Important Notes
+
+1. **Splitting is a design decision, not implementation**
+   - Planning doesn't create files
+   - `/metaspec.sds.implement` actually writes specifications
+   - Plan guides the implementation process
+
+2. **Avoid premature splitting**
+   - Start with single spec unless clearly necessary
+   - Split when specification exceeds 1500 lines
+   - Splitting too early adds complexity
+
+3. **Think about consumers**
+   - Will users read the entire protocol?
+   - Do different audiences need different specifications?
+   - Is modular documentation valuable?
+
+4. **Consider evolution**
+   - Will parts of the protocol evolve at different rates?
+   - Do some sections need stricter stability guarantees?
+   - Is independent versioning valuable?
+
+

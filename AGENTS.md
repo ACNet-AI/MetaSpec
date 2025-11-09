@@ -98,7 +98,7 @@ Generated **speckits** (spec-driven toolkits) include **MetaSpec commands** in `
 - Include built-in MetaSpec commands for development
 - Follow spec-driven architecture patterns
 
-These commands provide a complete workflow from specification definition to controlled evolution (16 commands total).
+These commands provide a complete workflow from specification definition to controlled evolution (19 commands total: 8 SDS + 8 SDD + 3 Evolution).
 
 See [MetaSpec Commands section](#-metaspec-commands-specification-lifecycle-management) for the complete command reference.
 
@@ -112,12 +112,15 @@ When you generate a speckit, it includes MetaSpec (Spec-Driven X) commands in th
 
 MetaSpec uses a three-layer architecture to separate concerns:
 
-#### SDS (Spec-Driven Specification) - 5 Commands
+#### SDS (Spec-Driven Specification) - 8 Commands
 For defining domain protocol specifications:
 
 - `/metaspec.sds.constitution` - Define protocol design principles
 - `/metaspec.sds.specify` - Define protocol entities, operations, validation rules
 - `/metaspec.sds.clarify` - Resolve ambiguities in protocol specification
+- `/metaspec.sds.plan` - Plan protocol architecture and sub-specifications
+- `/metaspec.sds.tasks` - Break down protocol specification work
+- `/metaspec.sds.implement` - Write protocol specification documents
 - `/metaspec.sds.checklist` - Generate quality checklist for protocol specification
 - `/metaspec.sds.analyze` - Check protocol consistency
 
@@ -254,8 +257,8 @@ For controlled specification evolution (both SDS and SDD):
 ### The Relationship
 
 ```
-MetaSpec commands (16 total):
-  - SDS (5 commands)     → Define protocol specifications (specs/protocol/)
+MetaSpec commands (19 total):
+  - SDS (8 commands)     → Define protocol specifications (specs/protocol/)
   - SDD (8 commands)     → Develop toolkits (specs/toolkit/)
   - Evolution (3 shared) → Manage changes (changes/)
                               ↓
@@ -430,6 +433,9 @@ examples/
 /metaspec.sds.constitution  # Define protocol principles
 /metaspec.sds.specify       # Create specs/protocol/001-{domain}-protocol/spec.md
 /metaspec.sds.clarify       # Resolve protocol ambiguities
+/metaspec.sds.plan          # Plan protocol architecture (if complex)
+/metaspec.sds.tasks         # Break down specification work
+/metaspec.sds.implement     # Write protocol specification documents
 /metaspec.sds.checklist     # Generate quality checklist for protocol
 /metaspec.sds.analyze       # Check protocol consistency
 

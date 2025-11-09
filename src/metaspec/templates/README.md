@@ -125,13 +125,16 @@ Development methodologies organized by lifecycle:
 
 #### Three Layers
 
-##### `meta/sds/commands/` - Spec-Driven Specification (5 commands)
+##### `meta/sds/commands/` - Spec-Driven Specification (8 commands)
 
 **Purpose**: Define domain protocol specifications
 
 - `constitution.md.j2` - Define protocol design principles
 - `specify.md.j2` - Define protocol entities, operations, validation rules
 - `clarify.md.j2` - Resolve protocol ambiguities
+- `plan.md.j2` - Plan protocol architecture and sub-specifications
+- `tasks.md.j2` - Break down protocol specification work
+- `implement.md.j2` - Write protocol specification documents
 - `checklist.md.j2` - Generate quality checklist for protocol specification
 - `analyze.md.j2` - Check protocol consistency
 
@@ -200,10 +203,11 @@ my-speckit/
     ├── commands/
     │   ├── metaspec.sds.constitution.md    # from meta/sds/commands/
     │   ├── metaspec.sds.specify.md         # from meta/sds/commands/
+    │   ├── metaspec.sds.plan.md            # from meta/sds/commands/
     │   ├── metaspec.sdd.constitution.md    # from meta/sdd/commands/
     │   ├── metaspec.sdd.plan.md            # from meta/sdd/commands/
     │   ├── metaspec.proposal.md            # from meta/evolution/commands/
-    │   └── ... (16 commands total: 5 SDS + 8 SDD + 3 Evolution)
+    │   └── ... (19 commands total: 8 SDS + 8 SDD + 3 Evolution)
     └── templates/
         ├── constitution-template.md   # from meta/templates/
         ├── spec-template.md           # from meta/templates/
