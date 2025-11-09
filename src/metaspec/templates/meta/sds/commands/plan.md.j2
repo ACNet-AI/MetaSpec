@@ -20,22 +20,59 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 #### 1. Load Protocol Context
 
-**Read primary protocol specification**:
-```bash
-# Find the protocol spec directory
-ls specs/protocol/ | grep -E '^[0-9]{3}-'
+**Step 1a: Determine Current Protocol**
 
-# Read the main spec.md
-cat specs/protocol/001-{domain}-protocol/spec.md
+Get current protocol from Git branch or SPECIFY_FEATURE:
+```bash
+# From Git branch
+current_protocol=$(git branch --show-current)
+# Or from environment variable
+current_protocol=$SPECIFY_FEATURE
+
+# Example: "003-payment-processing"
 ```
 
-**Extract key information**:
+**Step 1b: Read Protocol Specification**
+
+Read the spec.md for current protocol:
+```bash
+# Read the spec.md
+cat specs/protocol/${current_protocol}/spec.md
+```
+
+**Step 1c: Extract Metadata** (from YAML frontmatter)
+
+Parse frontmatter to understand context:
+```yaml
+---
+protocol_id: 003-payment-processing
+parent: 001-order-protocol
+root: 001-order-protocol
+type: parent  # or leaf or root
+---
+```
+
+**Store context**:
+- `current_id`: protocol_id (e.g., "003-payment-processing")
+- `parent_id`: parent (e.g., "001-order-protocol" or null)
+- `root_id`: root (e.g., "001-order-protocol")
+- `current_type`: type (e.g., "parent", "leaf", "root")
+
+**This tells us**:
+- Where this protocol is in the hierarchy
+- Can inform numbering for sub-protocols
+- Understand if this is already a sub-protocol (can have sub-sub-protocols)
+
+**Step 1d: Extract Specification Content**
+
+From spec.md body, extract:
 - Protocol name and domain
 - Core entities defined
 - Operations/interfaces
 - Lifecycle phases (if any)
 - Validation rules
 - Use cases
+- Current document length (line count)
 
 #### 2. Analyze Protocol Complexity
 
@@ -73,7 +110,83 @@ cat specs/protocol/001-{domain}-protocol/spec.md
 | Medium | 500-1500 lines | ⚠️ Consider sub-specifications for major sections |
 | Complex | 1500+ lines | ❌ MUST split into sub-specifications |
 
-#### 3. Identify Sub-Specification Needs
+**Calculate Complexity Score**:
+```
+complexity_score = 
+  (line_count / 600) * 0.4 +
+  (entity_count / 6) * 0.3 +
+  (operation_count / 12) * 0.3
+
+If complexity_score < 1.0: KEEP_SINGLE (< 1500 lines typically)
+If complexity_score < 2.0: CONSIDER_SPLIT (1500-3000 lines)
+If complexity_score >= 2.0: MUST_SPLIT (> 3000 lines)
+
+Note: Adjusted to align with 1500-line threshold mentioned in Decision Matrix
+```
+
+#### 3. Make Decision
+
+**Output format (both cases)**:
+```
+Protocol Analysis: {protocol_id}
+
+📊 Complexity Assessment:
+   - Lines: {line_count}
+   - Entities: {entity_count}
+   - Operations: {operation_count}
+   - Complexity Score: {score:.2f}
+```
+
+---
+
+**If complexity_score < 1.0** (Simple):
+
+**DO NOT create plan.md**. Instead, output:
+
+```
+✅ Decision: KEEP SINGLE SPECIFICATION
+
+Reason: Specification is manageable (complexity: {score:.2f})
+
+This protocol does not need to be split into sub-specifications.
+It is a **leaf protocol** - a complete, self-contained specification.
+
+Next Steps:
+✅ Specification is ready
+✅ No need for /metaspec.sds.tasks or /metaspec.sds.implement
+✅ Proceed to use this specification as-is
+
+(No plan.md file created)
+```
+
+**Exit without creating plan.md** ← IMPORTANT
+
+---
+
+**If complexity_score >= 1.0** (Medium or Complex):
+
+**DO create plan.md**. Output:
+
+```
+❌ Decision: SPLIT INTO SUB-SPECIFICATIONS
+
+Reason: {complexity_score >= 1.0: moderate} or {>= 2.0: high complexity}
+
+This protocol should be split into sub-specifications for better maintainability.
+
+Next Steps:
+1. Review the generated plan.md
+2. Run /metaspec.sds.tasks to break down work
+3. Run /metaspec.sds.implement to create sub-specifications
+
+Generating plan.md...
+```
+
+Continue to Step 4 to generate plan.md.
+
+---
+
+#### 4. Identify Sub-Specification Pattern (Only if splitting)
 
 **Common Sub-Specification Patterns**:
 

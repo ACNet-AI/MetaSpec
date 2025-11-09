@@ -30,10 +30,45 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 #### 2. Load Specification Context
 
+**Step 2a: Determine Current Protocol**
+
+Get current protocol from Git branch or SPECIFY_FEATURE:
+```bash
+# From Git branch
+current_protocol=$(git branch --show-current)
+# Or from environment variable
+current_protocol=$SPECIFY_FEATURE
+
+# Example: "003-payment-processing"
+```
+
+**Step 2b: Read Current Protocol Metadata**
+
+Read frontmatter from current protocol's spec.md:
+```yaml
+---
+protocol_id: 003-payment-processing
+parent: 001-order-protocol
+root: 001-order-protocol
+type: parent
+---
+```
+
+**Store context for sub-protocol creation**:
+- `current_id`: "003-payment-processing"
+- `parent_id`: "001-order-protocol" or null
+- `root_id`: "001-order-protocol"
+
+**This context will be passed to specify** when creating sub-protocols:
+- Sub-protocols will have: parent={current_id}, root={root_id}
+- Example: If current=003, sub-protocol 013 will have parent=003, root=001
+
+**Step 2c: Read Planning Documents**
+
 **Read all planning documents**:
-- `specs/protocol/001-{name}-protocol/tasks.md` - Task list (REQUIRED)
-- `specs/protocol/001-{name}-protocol/plan.md` - Architecture (REQUIRED)
-- `specs/protocol/001-{name}-protocol/spec.md` - Initial concept (REQUIRED)
+- `specs/protocol/{current_id}/tasks.md` - Task list (REQUIRED)
+- `specs/protocol/{current_id}/plan.md` - Architecture (REQUIRED)
+- `specs/protocol/{current_id}/spec.md` - Initial concept (REQUIRED)
 - `/memory/constitution.md` - Design principles
 
 **Extract key information**:
@@ -167,29 +202,73 @@ Phase 4: Cross-Reference Validation
    [Keep/Add: Version tracking]
    ```
    
-   **[PHASE] - Phase Protocol Creation**:
-   - Create new file: `specs/protocol/00X-{phase}-protocol/spec.md`
-   - Use sub-specification template (see below)
-   - Focus: Phase-specific entities, operations, validation rules
-   - Include: Entry/exit criteria, orchestrators, artifacts
-   - Reference: Core protocol for integration
-   - Target: 500-1500 lines
+   **[PHASE] - Phase Protocol Creation (CREATE NEW FEATURE)**:
    
-   **[COMPONENT] - Component Protocol Creation**:
-   - Create new file: `specs/protocol/00X-{component}-protocol/spec.md`
-   - Use sub-specification template
-   - Focus: Component interface, registration, validation
-   - Include: Component examples, usage patterns
-   - Reference: Core protocol
-   - Target: 500-1500 lines
+   **IMPORTANT**: This creates a NEW protocol FEATURE, not just a file.
    
-   **[SUPPORT] - Supporting Protocol Creation**:
-   - Create new file: `specs/protocol/00X-{support}-protocol/spec.md`
-   - Use sub-specification template
-   - Focus: Cross-cutting concern (orchestration, artifacts, communication)
-   - Include: Integration patterns, interfaces
-   - Reference: Core protocol and related sub-specifications
-   - Target: 300-800 lines
+   **Step-by-step**:
+   
+   a. **Extract task context** (from tasks.md):
+      ```
+      - [ ] SDS-T002 [P] [PHASE] Create 013-credit-card-payment protocol
+        - Context: parent=003-payment-processing, root=001-order-protocol
+        - Protocol: Credit card payment processing
+        - Entities: CreditCardPayment, CardValidationResult
+        - Operations: process_credit_card_payment, validate_card
+      ```
+   
+   b. **Set environment variables** for specify:
+      ```bash
+      export PARENT_PROTOCOL_ID="003-payment-processing"  # From task context
+      export ROOT_PROTOCOL_ID="001-order-protocol"        # From task context
+      export PROTOCOL_NUMBER="013"                       # From task description
+      ```
+   
+   c. **Call /metaspec.sds.specify internally**:
+      - Pass task scope, entities, operations to specify
+      - specify will detect context (PARENT_PROTOCOL_ID set)
+      - specify will create 013-credit-card-payment/ with correct frontmatter
+      - specify generates spec.md with parent chain
+   
+   d. **Verify sub-protocol created**:
+      ```yaml
+      # Generated in specs/protocol/013-credit-card-payment/spec.md
+      ---
+      protocol_id: 013-credit-card-payment
+      parent: 003-payment-processing
+      root: 001-order-protocol
+      type: leaf
+      ---
+      
+      # Credit Card Payment Protocol
+      
+      **Parent chain**: 001-order-protocol > 003-payment-processing > 013-credit-card-payment
+      ```
+   
+   e. **Update current protocol** (003-payment-processing/spec.md):
+      - Read current spec.md
+      - Find or create "## Sub-Specifications" section
+      - Add 013 to the table:
+        ```markdown
+        | ID | Payment Method | Status |
+        |----|---------------|--------|
+        | [013](../013-credit-card-payment/spec.md) | Credit Card | Stable |
+        ```
+      - Update type in frontmatter: `type: parent` (if not already)
+   
+   f. **Mark task complete**:
+      - Update tasks.md: `- [ ]` → `- [x]`
+   
+   **Target**: Sub-protocol with 500-1500 lines (complete specification)
+   
+   **[COMPONENT] / [SUPPORT] - Create Sub-Protocol FEATURE**:
+   
+   **Same process as [PHASE] above**. Only differences are:
+   
+   | Type | Focus | Target Lines |
+   |------|-------|--------------|
+   | **[COMPONENT]** | Component interface, registration, validation | 500-1500 |
+   | **[SUPPORT]** | Cross-cutting concerns (orchestration, artifacts) | 300-800 |
    
    **[REFINE] - Refinement/Validation Tasks**:
    - Update existing specification(s)

@@ -20,9 +20,45 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 #### 1. Load Planning Context
 
+**Step 1a: Determine Current Protocol**
+
+Get current protocol from Git branch or SPECIFY_FEATURE:
+```bash
+# From Git branch
+current_protocol=$(git branch --show-current)
+# Or from environment variable
+current_protocol=$SPECIFY_FEATURE
+
+# Example: "003-payment-processing"
+```
+
+**Step 1b: Read Current Protocol Metadata**
+
+Read frontmatter from current protocol's spec.md:
+```yaml
+---
+protocol_id: 003-payment-processing
+parent: 001-order-protocol
+root: 001-order-protocol
+type: parent
+---
+```
+
+**Store context**:
+- `current_id`: "003-payment-processing"
+- `parent_id`: "001-order-protocol" or null
+- `root_id`: "001-order-protocol"
+
+**This is important for**:
+- Determining numbering for sub-protocols
+- Constructing parent chains
+- Understanding hierarchy depth
+
+**Step 1c: Load Planning Documents**
+
 **Required**:
-- `specs/protocol/001-{name}-protocol/plan.md` - Architecture plan
-- `specs/protocol/001-{name}-protocol/spec.md` - Initial protocol concept
+- `specs/protocol/{current_id}/plan.md` - Architecture plan
+- `specs/protocol/{current_id}/spec.md` - Protocol specification
 
 **Extract from plan.md**:
 - Split decision (single spec vs. sub-specifications)
@@ -30,6 +66,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - Dependencies between sub-specifications
 - Implementation order (Phase 1, 2, 3...)
 - Priority levels (P0, P1, P2)
+- Recommended numbering for sub-protocols
 
 #### 2. Determine Task Strategy
 
@@ -66,6 +103,8 @@ You **MUST** consider the user input before proceeding (if not empty).
 Every task MUST follow:
 ```
 - [ ] [TaskID] [P] [SPEC] Description with spec path
+  - Context: parent={parent}, root={root}
+  - Details: ...
 ```
 
 **Format Components**:
@@ -74,11 +113,30 @@ Every task MUST follow:
 3. **[P] marker**: ONLY if parallelizable (independent sub-specs)
 4. **[SPEC] label**: [CORE], [PHASE], [COMPONENT], [SUPPORT], [REFINE]
 5. **Description**: Clear action with spec file path
+6. **Context** (NEW for sub-protocols): parent and root IDs
+7. **Details**: Scope, entities, operations
 
-**Examples**:
-- ✅ `- [ ] SDS-T001 [CORE] Create core protocol overview in specs/protocol/001-{domain}-protocol/spec.md`
-- ✅ `- [ ] SDS-T005 [P] [PHASE] Define {phase-name} protocol in specs/protocol/002-{phase}-protocol/spec.md`
-- ✅ `- [ ] SDS-T012 [SUPPORT] Define {support-system} protocol in specs/protocol/008-{support}-protocol/spec.md`
+**Examples for Creating Sub-Protocols** (NEW):
+- ✅ `- [ ] SDS-T002 [P] [PHASE] Create 013-credit-card-payment protocol`
+  - Context: parent=003-payment-processing, root=001-order-protocol
+  - Protocol: Credit card payment processing
+  - Entities: CreditCardPayment, CardValidationResult
+  - Operations: process_credit_card_payment, validate_card
+
+- ✅ `- [ ] SDS-T003 [P] [PHASE] Create 014-digital-wallet-payment protocol`
+  - Context: parent=003-payment-processing, root=001-order-protocol
+  - Protocol: Digital wallet payment (PayPal, Apple Pay, Google Pay)
+  - Entities: WalletPayment, WalletProvider
+  - Operations: process_wallet_payment, link_wallet
+
+**Examples for Refining Current Protocol**:
+- ✅ `- [ ] SDS-T001 [CORE] Refactor current protocol to overview`
+  - Keep: Overview, common concepts
+  - Remove: Detailed implementations (move to sub-protocols)
+  - Add: Sub-protocol index
+
+**Legacy format** (still valid for non-splitting scenarios):
+- ✅ `- [ ] SDS-T001 [REFINE] Expand Protocol Overview section`
 - ❌ `- [ ] Write protocol` (missing ID, SPEC label, file path)
 
 #### 4. Task Organization for Single Spec (Strategy A)

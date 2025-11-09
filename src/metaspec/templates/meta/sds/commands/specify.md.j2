@@ -26,6 +26,57 @@ This command is for defining **domain protocols, rules, and standards**:
 
 Follow this execution flow:
 
+### 0. Check Invocation Context (NEW - Critical for Recursive Structure)
+
+**Determine if this is**:
+- **Direct invocation**: User called `/metaspec.sds.specify` directly
+- **From implement**: Called by `/metaspec.sds.implement` internally
+
+**How to detect**:
+
+Check for environment variables or context passed by implement:
+- `$PARENT_PROTOCOL_ID` - Parent protocol ID (if called by implement)
+- `$ROOT_PROTOCOL_ID` - Root protocol ID (if called by implement)
+- `$PROTOCOL_NUMBER` - Assigned protocol number (if called by implement)
+
+**Implementation Note for AI**:
+
+When implement calls specify "internally", context is passed through the conversation:
+- implement extracts context from task (parent, root, number)
+- implement **mentions these values** when invoking specify
+- specify reads context from the conversation flow
+- No actual environment variables needed in AI context
+
+**If from implement** (has parent context):
+```bash
+# Context provided by implement
+PARENT_PROTOCOL_ID="003-payment-processing"
+ROOT_PROTOCOL_ID="001-order-protocol"
+PROTOCOL_NUMBER="013"
+
+# This means:
+# - We're creating a sub-protocol of 003
+# - The root is 001
+# - Use number 013 (don't auto-find)
+```
+
+**If direct invocation** (no parent):
+```bash
+# No context variables set
+# This means:
+# - We're creating a root or independent protocol
+# - Need to find next available number
+# - parent: null, root: self
+```
+
+**Store context for later steps**:
+- `is_sub_protocol`: true | false
+- `parent_id`: {parent-id} or null
+- `root_id`: {root-id} or {self-id}
+- `assigned_number`: {number} or null
+
+---
+
 ### 1. Determine Protocol and Load Existing Specification
 
 **Step 1a: Generate Protocol Name**
@@ -35,10 +86,17 @@ Based on user input, generate:
 - Example: "mcp-core-protocol", "graphql-schema", "oauth2-flow"
 - Check existing `specs/protocol/` directory structure
 
-**Step 1b: Find Next Available Number**
+**Step 1b: Determine Protocol Number**
 
+**If `assigned_number` is set** (from implement context):
 ```bash
-# List existing protocol specs
+# Use the number provided by implement
+protocol_number=$PROTOCOL_NUMBER  # e.g., "013"
+```
+
+**If `assigned_number` is NOT set** (direct invocation):
+```bash
+# Find next available number
 ls specs/protocol/ | grep -E '^[0-9]{3}-' | sort -n
 # Find next number (e.g., if 001, 002 exist, use 003)
 ```
@@ -375,6 +433,56 @@ Provide complete protocol examples:
 ### 4. Write Specification File
 
 **Location**: `specs/protocol/{number}-{name}/spec.md`
+
+**IMPORTANT**: Add YAML frontmatter for recursive structure tracking
+
+**Step 4a: Generate Frontmatter and Header**
+
+Based on context from Step 0, generate spec.md with:
+
+**1. YAML Frontmatter**:
+
+- **If direct invocation** (root protocol):
+  ```yaml
+  ---
+  protocol_id: {number}-{name}
+  parent: null
+  root: {number}-{name}
+  type: root
+  ---
+  ```
+
+- **If from implement** (sub-protocol):
+  ```yaml
+  ---
+  protocol_id: {number}-{name}
+  parent: {parent_id}
+  root: {root_id}
+  type: leaf
+  ---
+  ```
+
+**2. Header with Parent Chain** (if sub-protocol):
+
+- **If direct invocation** (root):
+  ```markdown
+  # {Protocol Name}
+  
+  **Type**: Root Protocol
+  **Version**: 1.0.0
+  ```
+
+- **If from implement** (sub-protocol):
+  ```markdown
+  # {Protocol Name}
+  
+  **Parent chain**: [{root_name}](../{root_id}/spec.md) > [{parent_name}](../{parent_id}/spec.md) > {current_id}
+  
+  **Type**: Leaf Protocol (complete specification)
+  **Version**: 1.0.0
+  ```
+
+**Step 4b: Populate Template**
 
 **Use template**: `meta/templates/protocol-spec-template.md.j2`
 

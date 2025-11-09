@@ -126,6 +126,48 @@ For defining domain protocol specifications:
 
 **Location**: Works with `specs/protocol/` directory
 
+#### 🌳 Recursive Tree Structure (NEW)
+
+**SDS supports recursive protocol hierarchy**:
+
+```
+001-order-protocol (root)
+  ├── 002-order-creation (leaf)
+  ├── 003-payment-processing (parent)
+  │     ├── 013-credit-card-payment (leaf)
+  │     ├── 014-digital-wallet-payment (leaf)
+  │     └── 015-bank-transfer-payment (leaf)
+  └── 004-fulfillment (leaf)
+```
+
+**Key features**:
+- **Any protocol can be a parent**: If complex, run plan → tasks → implement to create sub-protocols
+- **Unlimited depth**: Sub-protocols can have their own sub-protocols
+- **Context tracking**: Via YAML frontmatter (protocol_id, parent, root, type)
+- **Unified commands**: Same commands work at all levels
+
+**Example workflow** (Level 2 splitting):
+```bash
+# At root (001)
+/metaspec.sds.specify → 001-order-protocol/spec.md
+/metaspec.sds.plan → Decides to split
+/metaspec.sds.implement → Creates 002-008
+
+# At level 2 (003 is also complex)
+cd specs/protocol/003-payment-processing/
+/metaspec.sds.plan → Decides to split again
+/metaspec.sds.implement → Creates 013-015
+```
+
+**Protocol relationships**:
+- **Parent → Child**: Parent's spec.md lists sub-protocols in "Sub-Specifications" section
+- **Child → Parent**: Child's frontmatter declares `parent: {parent-id}`
+- **Parent chain**: Tracked in frontmatter and displayed as breadcrumb
+
+**See [Recommended Practice: Two-Feature Architecture](#recommended-practice-two-feature-architecture) for protocol + toolkit separation.**
+
+---
+
 #### ⚠️ CRITICAL PRINCIPLE: Protocol First, Toolkit Second
 
 **Every speckit MUST have a protocol specification before toolkit development.**
