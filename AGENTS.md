@@ -130,21 +130,57 @@ For defining domain protocol specifications:
 
 **SDS supports recursive protocol hierarchy**:
 
+**IMPORTANT**: Physical structure is **FLAT**, logical structure is **TREE**.
+
+**Physical Structure** (flat directory layout):
+```bash
+specs/protocol/
+├── 001-order-protocol/          # All at same level
+├── 002-order-creation/
+├── 003-payment-processing/
+├── 013-credit-card-payment/     # Same level, not nested
+├── 014-digital-wallet-payment/
+└── 015-bank-transfer-payment/
+```
+
+**Logical Structure** (tree via frontmatter):
 ```
 001-order-protocol (root)
   ├── 002-order-creation (leaf)
   ├── 003-payment-processing (parent)
-  │     ├── 013-credit-card-payment (leaf)
-  │     ├── 014-digital-wallet-payment (leaf)
-  │     └── 015-bank-transfer-payment (leaf)
+  │   ├── 013-credit-card-payment (leaf)
+  │   ├── 014-digital-wallet-payment (leaf)
+  │   └── 015-bank-transfer-payment (leaf)
   └── 004-fulfillment (leaf)
 ```
+
+**Why flat physical structure?**
+- ✅ Simple paths: `specs/protocol/013-credit-card-payment/`
+- ✅ FEATURE independence: Each protocol is a standalone FEATURE
+- ✅ Flexible numbering: 003's children can be 013-015 (skip 004-012)
+- ✅ Git branch friendly: Branch name = directory name
+- ✅ Easy reorganization: Change parent in frontmatter, no file moves
 
 **Key features**:
 - **Any protocol can be a parent**: If complex, run plan → tasks → implement to create sub-protocols
 - **Unlimited depth**: Sub-protocols can have their own sub-protocols
 - **Context tracking**: Via YAML frontmatter (protocol_id, parent, root, type)
 - **Unified commands**: Same commands work at all levels
+
+**How relationships are maintained**:
+- **Physical**: All protocols are sibling directories under `specs/protocol/`
+- **Logical**: Parent-child relationships declared in YAML frontmatter
+  ```yaml
+  ---
+  protocol_id: 013-credit-card-payment
+  parent: 003-payment-processing    # ← Declares logical parent
+  root: 001-order-protocol
+  type: leaf
+  ---
+  ```
+- **Parent → Child**: Parent's `spec.md` lists sub-protocols in "Sub-Specifications" table
+- **Child → Parent**: Child's `spec.md` shows "Parent chain" breadcrumb navigation
+- **Benefit**: Change relationships by editing frontmatter, no directory restructuring needed
 
 **Example workflow** (Level 2 splitting):
 ```bash
@@ -159,10 +195,11 @@ cd specs/protocol/003-payment-processing/
 /metaspec.sds.implement → Creates 013-015
 ```
 
-**Protocol relationships**:
-- **Parent → Child**: Parent's spec.md lists sub-protocols in "Sub-Specifications" section
+**Protocol relationships** (logical, not physical):
+- **Parent → Child**: Parent's `spec.md` lists sub-protocols in "Sub-Specifications" table
 - **Child → Parent**: Child's frontmatter declares `parent: {parent-id}`
-- **Parent chain**: Tracked in frontmatter and displayed as breadcrumb
+- **Parent chain**: Tracked in frontmatter, displayed as breadcrumb in child's `spec.md`
+- **All protocols are sibling directories**: Relationships exist in metadata, not file structure
 
 **See [Recommended Practice: Two-Feature Architecture](#recommended-practice-two-feature-architecture) for protocol + toolkit separation.**
 
