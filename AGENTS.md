@@ -54,7 +54,7 @@ Developer (validates MCP servers against spec)
 
 **This means**: MetaSpec is not just "spec-driven development" - it's a framework that **generates speckits** (spec-driven toolkits) for any domain.
 
-**See [Recommended Practice: Two-Feature Architecture](#recommended-practice-two-feature-architecture) in MetaSpec Commands section for how speckits separate protocol specs from implementation.**
+**See [Recommended Practice: SDS + SDD Separation](#recommended-practice-sds--sdd-separation) in MetaSpec Commands section for how speckits separate protocol specs from implementation.**
 
 ---
 
@@ -195,13 +195,14 @@ cd specs/protocol/003-payment-processing/
 /metaspec.sds.implement → Creates 013-015
 ```
 
-**Protocol relationships** (logical, not physical):
-- **Parent → Child**: Parent's `spec.md` lists sub-protocols in "Sub-Specifications" table
-- **Child → Parent**: Child's frontmatter declares `parent: {parent-id}`
-- **Parent chain**: Tracked in frontmatter, displayed as breadcrumb in child's `spec.md`
-- **All protocols are sibling directories**: Relationships exist in metadata, not file structure
+**Numbering strategy**:
+- Root protocol starts at 001
+- First-level children: 002-009 (reserve 001 for root)
+- Second-level children: 010-099 (e.g., 003's children are 013-015)
+- Third-level children: 100-999
+- Benefits: Clear hierarchy, flexible expansion, easy identification
 
-**See [Recommended Practice: Two-Feature Architecture](#recommended-practice-two-feature-architecture) for protocol + toolkit separation.**
+**See [Recommended Practice: SDS + SDD Separation](#recommended-practice-sds--sdd-separation) for protocol + toolkit separation.**
 
 ---
 
@@ -772,7 +773,7 @@ See [Decision Guide](docs/evolution-guide.md) for when to use which.
 
 This section describes **how to generate a speckit** using `metaspec init`.
 
-**Note**: This is different from **developing a speckit** (which uses MetaSpec commands and [Two-Feature Architecture](#recommended-practice-two-feature-architecture) practice).
+**Note**: This is different from **developing a speckit** (which uses MetaSpec commands and [SDS + SDD Separation](#recommended-practice-sds--sdd-separation) practice).
 
 ### Two Workflows
 

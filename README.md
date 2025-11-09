@@ -182,12 +182,12 @@ cd my-speckit
 my-speckit info                # Use directly (no metaspec prefix!)
 
 # Generated speckits include built-in MetaSpec commands (AI-assisted development)
-# MetaSpec Commands: /metaspec.sds.*, /metaspec.sdd.*, /metaspec.* (16 commands total)
+# MetaSpec Commands: /metaspec.sds.*, /metaspec.sdd.*, /metaspec.* (19 commands total)
 ```
 
 **Key Principle**: MetaSpec is a **generator**, not a runtime. Generated speckits are independent tools.
 
-**Built-in MetaSpec Workflow**: Every speckit includes 16 MetaSpec commands for complete development lifecycle (5 SDS + 8 SDD + 3 Evolution)
+**Built-in MetaSpec Workflow**: Every speckit includes 19 MetaSpec commands for complete development lifecycle (8 SDS + 8 SDD + 3 Evolution)
 
 **Iteration-Aware Design**: Commands check for existing output and support update/new/append modes, preserving history and tracking progress across iterations ([Constitution Principle #6](memory/constitution.md#6-iteration-aware-design))
 
@@ -245,7 +245,7 @@ MetaSpec is designed for AI agents with strong reasoning capabilities. Speckit c
 
 | Tool | Purpose | Built-in? | Access Method |
 |------|---------|-----------|--------------|
-| **MetaSpec Commands** | Complete spec-driven workflow (16 commands) | ✅ Yes | `/metaspec.sds.*`, `/metaspec.sdd.*`, `/metaspec.*` slash commands in generated speckits |
+| **MetaSpec Commands** | Complete spec-driven workflow (19 commands) | ✅ Yes | `/metaspec.sds.*`, `/metaspec.sdd.*`, `/metaspec.*` slash commands in generated speckits |
 
 **Complete Workflow**:
 
@@ -256,10 +256,13 @@ metaspec init my-spec-kit
 # 2️⃣ DEVELOP: Use built-in MetaSpec slash commands (no installation needed)
 cd my-spec-kit
 
-# SDS Commands (5) - Define protocol specification
+# SDS Commands (8) - Define protocol specification
 # /metaspec.sds.constitution - Define protocol principles
 # /metaspec.sds.specify      - Define protocol entities and operations
 # /metaspec.sds.clarify      - Resolve protocol ambiguities
+# /metaspec.sds.plan         - Plan protocol architecture and sub-specifications
+# /metaspec.sds.tasks        - Break down protocol specification work
+# /metaspec.sds.implement    - Write protocol specification documents
 # /metaspec.sds.checklist    - Generate quality checklist for protocol
 # /metaspec.sds.analyze      - Check protocol consistency
 
@@ -352,6 +355,9 @@ pip install -e .
 # Phase 1: Define protocol (SDS)
 # /metaspec.sds.constitution  - Define protocol principles
 # /metaspec.sds.specify       - Define protocol entities and operations
+# /metaspec.sds.plan          - Plan protocol architecture (if complex)
+# /metaspec.sds.tasks         - Break down specification work
+# /metaspec.sds.implement     - Write protocol specification documents
 # /metaspec.sds.analyze       - Check protocol consistency
 
 # Phase 2: Develop toolkit (SDD)
@@ -432,7 +438,7 @@ uv run mypy src/metaspec       # Type check
 
 **v0.1.0** - Alpha Release 🎉
 
-Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (16 commands: 5 SDS + 8 SDD + 3 Evolution), unified spec interface.
+Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (19 commands: 8 SDS + 8 SDD + 3 Evolution), unified spec interface.
 
 ---
 
