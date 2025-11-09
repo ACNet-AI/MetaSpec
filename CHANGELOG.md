@@ -1072,7 +1072,7 @@ metaspec search → metaspec install → speckit cmd
 - `metaspec spec` unified interface (deprecated in 0.2.0)
 - `metaspec register` local registration (deprecated in 0.2.0)
 - Community registry integration
-- MetaSpec workflow commands (16 commands: 5 SDS + 8 SDD + 3 Evolution)
+- MetaSpec workflow commands (19 commands: 8 SDS + 8 SDD + 3 Evolution)
 - Generic and dev templates
 - AGENTS.md for AI assistant guidance
 

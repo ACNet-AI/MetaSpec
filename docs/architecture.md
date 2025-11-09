@@ -56,8 +56,8 @@ src/metaspec/templates/
 api-test-kit/                       # Generated speckit
 │
 ├── .metaspec/
-│   ├── commands/                   # MetaSpec development commands (16 commands)
-│   │   ├── metaspec.sds.*.md      # Protocol specification (5 commands)
+│   ├── commands/                   # MetaSpec development commands (19 commands)
+│   │   ├── metaspec.sds.*.md      # Protocol specification (8 commands)
 │   │   ├── metaspec.sdd.*.md      # Speckit development (8 commands)
 │   │   └── metaspec.*.md          # Evolution management (3 commands)
 │   └── templates/                  # MetaSpec shared output templates (5 files)
