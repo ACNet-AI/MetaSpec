@@ -9,6 +9,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.0] - 2025-11-09
+
+### ✨ Features
+
+**Recursive Tree Structure for SDS Protocols**
+
+SDS now supports hierarchical protocol specifications with unlimited depth:
+
+- **Physical Structure**: Flat directory layout under `specs/protocol/`
+  - All protocols are sibling directories (e.g., `001-root/`, `002-child/`, `013-grandchild/`)
+  - Simple paths, FEATURE independence, Git branch friendly
+  
+- **Logical Structure**: Tree hierarchy via YAML frontmatter
+  - Parent-child relationships declared in `spec.md` frontmatter
+  - Context tracking: `protocol_id`, `parent`, `root`, `type` (leaf/parent/root)
+  - Parent → Child: Listed in "Sub-Specifications" table
+  - Child → Parent: Shown in "Parent chain" breadcrumb
+
+- **Numbering Strategy**:
+  - Root: 001
+  - First-level children: 002-009
+  - Second-level children: 010-099
+  - Third-level children: 100-999
+  - Benefits: Clear hierarchy, flexible expansion, easy identification
+
+**New SDS Commands** (8 total, up from 5)
+
+Added 3 new commands for complex protocol specification:
+
+1. `/metaspec.sds.plan` - Plan protocol architecture and sub-specifications
+   - Assess complexity score (line count, entities, operations)
+   - Decide: Keep single specification vs Split into sub-protocols
+   - Design sub-specification structure if complex
+   
+2. `/metaspec.sds.tasks` - Break down protocol specification work
+   - Generate actionable task list organized by sub-specification
+   - Track dependencies between sub-protocols
+   - Include parent/root context for recursive structure
+   
+3. `/metaspec.sds.implement` - Write protocol specification documents
+   - Create new protocol FEATUREs (independent `00X-` directories)
+   - Call `/metaspec.sds.specify` internally with context
+   - Update parent protocol's "Sub-Specifications" section
+   - Support recursive splitting at any depth
+
+**Command Total**: 19 commands (8 SDS + 8 SDD + 3 Evolution)
+
+### 📚 Documentation
+
+**Clarity and Consistency Improvements**
+
+- **Removed redundancy**: Eliminated duplicate "Protocol relationships" section in AGENTS.md
+- **Fixed anchor links**: Updated 3 broken references from "Two-Feature Architecture" to "SDS + SDD Separation"
+- **Added numbering strategy**: Explained protocol numbering logic (001, 002-009, 010-099, 100-999)
+- **Updated command counts**: Synchronized across all files (README.md, CHANGELOG.md, architecture.md, templates)
+- **Clarified design decision**: Emphasized flat physical structure with tree logical structure
+
+**Files Updated**:
+- `AGENTS.md` - Recursive tree structure section, fixed redundancy and links
+- `README.md` - Updated command counts and examples
+- `CHANGELOG.md` - Version history consistency
+- `docs/architecture.md` - Command count updates
+- `src/metaspec/templates/README.md` - SDS command list
+- `src/metaspec/templates/meta/sds/commands/*.md.j2` - New command templates
+- `src/metaspec/templates/meta/sdd/commands/specify.md.j2` - Command count reference
+
+### 🎯 Design Principles
+
+**Why Flat Physical + Tree Logical?**
+
+1. **Simple paths**: `specs/protocol/013-credit-card-payment/` (not deeply nested)
+2. **FEATURE independence**: Each protocol is a standalone FEATURE with its own lifecycle
+3. **Flexible numbering**: Sub-protocols can use any available numbers (skip ranges)
+4. **Git branch friendly**: Branch name = directory name = protocol_id
+5. **Easy reorganization**: Change relationships via frontmatter, no file moves
+6. **Unlimited depth**: Any protocol can be a parent with its own sub-protocols
+
+---
+
 ## [0.4.0] - 2025-11-08
 
 ### ✨ Features
