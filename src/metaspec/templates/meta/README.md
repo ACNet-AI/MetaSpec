@@ -29,7 +29,7 @@ meta/ adopts a clear three-layer architecture, separating commands at different 
 
 ```
 meta/
-├── sds/              # Spec-Driven Specification (5 commands)
+├── sds/              # Spec-Driven Specification (8 commands)
 │   ├── commands/     # Protocol specification definition commands
 │   └── templates/    # (Current commands reference protocol templates under shared templates/)
 │
@@ -120,7 +120,7 @@ See: `/metaspec.sdd.specify`, `/metaspec.sdd.plan`, `/metaspec.sdd.implement`
 
 ## Command List
 
-### SDS Commands (4) - Protocol Specification
+### SDS Commands (8) - Protocol Specification
 
 Generated command prefix: `/metaspec.sds.*`
 
@@ -129,10 +129,15 @@ Generated command prefix: `/metaspec.sds.*`
 | `constitution` | Define protocol design principles | memory/constitution.md |
 | `specify` | Define protocol entities and rules | specs/protocol/00X-name/spec.md |
 | `clarify` | Resolve protocol ambiguities | Update spec.md |
+| `plan` | Plan protocol architecture and sub-specifications | specs/protocol/00X-name/plan.md |
+| `tasks` | Break down protocol specification work | specs/protocol/00X-name/tasks.md |
+| `implement` | Write protocol specification documents | Create/update spec files |
+| `checklist` | Generate quality checklist for protocol | specs/protocol/00X-name/checklists/ |
 | `analyze` | Check protocol consistency | Analysis report |
 
 **Use Cases**:
 - Define domain protocols (e.g., MCP, GraphQL)
+- Plan and implement complex protocol hierarchies
 - Define validation rules and constraints
 - Implementation-independent specifications
 

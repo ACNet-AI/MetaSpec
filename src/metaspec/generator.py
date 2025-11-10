@@ -274,16 +274,20 @@ class Generator:
         # 3. MetaSpec commands and templates for speckit development → .metaspec/
         # These provide AI-assisted workflow for developing the speckit itself
         # Three-layer architecture:
-        #   - SDS (Spec-Driven Specification): 4 commands for protocol definition
+        #   - SDS (Spec-Driven Specification): 8 commands for protocol definition
         #   - SDD (Spec-Driven Development): 8 commands for toolkit development
         #   - Evolution: 3 shared commands for specification evolution
 
-        # SDS commands (4): Protocol specification definition
+        # SDS commands (8): Protocol specification definition
         # File naming: metaspec.sds.{command}.md to use /metaspec.sds.{command} prefix
         sds_commands = [
             "constitution",  # Define protocol principles
-            "specify",  # Define protocol entities
+            "specify",  # Define protocol entities and operations
             "clarify",  # Resolve protocol ambiguities
+            "plan",  # Plan protocol architecture and sub-specifications
+            "tasks",  # Break down protocol specification work
+            "implement",  # Write protocol specification documents
+            "checklist",  # Generate quality checklist for protocol
             "analyze",  # Check protocol consistency
         ]
 
