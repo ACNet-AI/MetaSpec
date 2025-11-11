@@ -240,7 +240,7 @@ Beyond Five - More Possibilities:
 ├── SD-Data (Data pipelines, schemas, governance)
 ├── SD-Marketing (Campaign specs, content workflows)
 ├── SD-HR (Hiring workflows, onboarding specs)
-├── SD-Research (Experiment protocols, analysis)
+├── SD-Research (Experiment specifications, analysis)
 └── SD-{YourDomain} (Any structured workflow)
 ```
 
@@ -611,11 +611,11 @@ toolkit verify specs/api-endpoint.yaml
 
 ## 🤖 AI Agent Integration: The AI-Native Perspective
 
-### Core Insight: SD-X as AI's Working Protocol
+### Core Insight: SD-X as AI's Working Specification
 
 **Deep Understanding**:
-- **SDD (Specification-Driven Development)** = AI's "rational coding" protocol (vs "vibe coding")
-- **SD-X (Specification-Driven X)** = AI's working protocol in **any domain**
+- **SDD (Specification-Driven Development)** = AI's "rational coding" approach (vs "vibe coding")
+- **SD-X (Specification-Driven X)** = AI's working specification in **any domain**
 - **Purpose**: Ensure AI output follows specifications and meets expectations
 
 ```
@@ -715,7 +715,7 @@ AI: "I've created a test specification. Let me validate it..."
 AI: "Specification is valid. Would you like me to execute the test?"
 ```
 
-> **Deep Dive**: For a comprehensive understanding of how SD-X serves as AI's native working protocol, see [AI-Native Perspective](./AI_NATIVE_PERSPECTIVE.md).
+> **Deep Dive**: For a comprehensive understanding of how SD-X serves as AI's native working specification, see [AI-Native Perspective](./AI_NATIVE_PERSPECTIVE.md).
 
 ---
 
@@ -787,7 +787,7 @@ AI: "Specification is valid. Would you like me to execute the test?"
 
 ### Example 1: MCP Server Development
 
-**Problem**: Building Model Context Protocol (MCP) servers requires understanding complex protocol specifications.
+**Problem**: Building Model Context Protocol (MCP) servers requires understanding complex specification specifications.
 
 **SD-X Solution**: Create an MCP toolkit with:
 
@@ -815,7 +815,7 @@ resources:
 ```
 
 **Benefits**:
-- Validate against MCP protocol
+- Validate against MCP specification
 - Generate server boilerplate
 - Auto-generate documentation
 - Type-safe implementations

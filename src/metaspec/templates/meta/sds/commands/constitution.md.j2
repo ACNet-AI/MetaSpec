@@ -12,7 +12,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-You are creating or updating the **protocol constitution** at `/memory/protocol-constitution.md`. This document defines the foundational principles that govern how this domain protocol is specified, ensuring it remains clear, implementable, and maintainable.
+You are creating or updating the **specification constitution** at `/memory/specification-constitution.md`. This document defines the foundational principles that govern how this domain specification is specified, ensuring it remains clear, implementable, and maintainable.
 
 Unlike toolkit development principles, this constitution focuses on **specification quality** - it guides decisions about entity definitions, validation rules, operation interfaces, and error handling specifications.
 
@@ -20,24 +20,24 @@ Follow this execution flow:
 
 ### 1. Load existing constitution (if any)
 
-- Check for `/memory/protocol-constitution.md`
+- Check for `/memory/specification-constitution.md`
 - If exists, load it and identify placeholder tokens `[ALL_CAPS_IDENTIFIER]`
-- If new, use the protocol constitution template structure
+- If new, use the specification constitution template structure
 
-### 2. Understand the protocol domain
+### 2. Understand the specification domain
 
-**Critical**: Before defining principles, understand what protocol this specification defines:
-- What domain does this protocol serve? (APIs, Data Formats, Communication Protocols?)
+**Critical**: Before defining principles, understand what specification this specification defines:
+- What domain does this specification serve? (APIs, Data Formats, Communication Specifications?)
 - What entities are needed? (Server, Tool, Resource, Message?)
 - What operations are defined? (CRUD, Events, RPC?)
-- What validation rules govern the protocol?
+- What validation rules govern the specification?
 
 **Ask clarifying questions if unclear**:
-- "What domain does this protocol target?"
-- "What are the core protocol entities?"
-- "What operations/interfaces does the protocol define?"
+- "What domain does this specification target?"
+- "What are the core specification entities?"
+- "What operations/interfaces does the specification define?"
 
-### 3. Derive protocol-specific principles
+### 3. Derive specification-specific principles
 
 Based on the user input and specification domain, populate these **standard specification design principles**:
 
@@ -66,12 +66,12 @@ Based on the user input and specification domain, populate these **standard spec
 **Rationale**: Well-defined operations enable interoperable implementations.
 
 #### **IV. Implementation Neutrality**
-- Protocol doesn't mandate specific technologies
+- Specification doesn't mandate specific technologies
 - Focuses on WHAT, not HOW
 - Platform-agnostic specifications
 - Multiple implementations possible
 
-**Rationale**: Technology-neutral protocols have longer lifespans and wider adoption.
+**Rationale**: Technology-neutral specifications have longer lifespans and wider adoption.
 
 #### **V. Extensibility Design**
 - Extension points clearly marked
@@ -79,7 +79,7 @@ Based on the user input and specification domain, populate these **standard spec
 - Versioning strategy specified
 - Deprecation process documented
 
-**Rationale**: Protocols must evolve without breaking existing implementations.
+**Rationale**: Specifications must evolve without breaking existing implementations.
 
 #### **VI. Domain Fidelity**
 - Respects domain standards and conventions
@@ -87,12 +87,12 @@ Based on the user input and specification domain, populate these **standard spec
 - Domain terminology consistently used
 - Domain constraints explicitly stated
 
-**Rationale**: Domain-faithful protocols are easier to adopt and understand.
+**Rationale**: Domain-faithful specifications are easier to adopt and understand.
 
 ### 4. Collect/derive values for placeholders
 
-- `[PROTOCOL_NAME]` - e.g., "MCP", "OpenAPI", "GraphQL"
-- `[PROTOCOL_DOMAIN]` - e.g., "AI Model Communication", "API Specification", "Data Query"
+- `[SPECIFICATION_NAME]` - e.g., "MCP", "OpenAPI", "GraphQL"
+- `[SPECIFICATION_DOMAIN]` - e.g., "AI Model Communication", "API Specification", "Data Query"
 - `[PRIMARY_ENTITIES]` - e.g., "Server, Tool, Resource", "Path, Operation, Schema"
 - `[PRINCIPLE_N_NAME]` - Use standard specification design principles above
 - `[PRINCIPLE_N_DESCRIPTION]` - Detailed description with specification-specific examples
@@ -112,30 +112,30 @@ Replace all placeholders with concrete text. The constitution should include:
 
 #### Structure:
 ```markdown
-# [PROTOCOL_NAME] Constitution
+# [SPECIFICATION_NAME] Constitution
 
-## Protocol Purpose
-[Brief description of what this protocol defines and what domain it serves]
+## Specification Purpose
+[Brief description of what this specification defines and what domain it serves]
 
 ## Core Principles
 
 ### I. Entity Clarity
-[How entity definitions must be specified for this protocol]
+[How entity definitions must be specified for this specification]
 
 ### II. Validation Completeness
 [What validation rules must be documented]
 
 ### III. Operation Semantics
-[How protocol operations must be defined]
+[How specification operations must be defined]
 
 ### IV. Implementation Neutrality
 [How to ensure technology independence]
 
 ### V. Extensibility Design
-[How protocol evolution is managed]
+[How specification evolution is managed]
 
 ### VI. Domain Fidelity
-[Domain standards this protocol adheres to]
+[Domain standards this specification adheres to]
 
 ## Additional Principles
 [Any domain-specific principles beyond the standard 6]
@@ -153,15 +153,15 @@ Replace all placeholders with concrete text. The constitution should include:
 
 Update these files to align with the constitution:
 
-- `/specs/domain/001-protocol-spec/spec.md` - Ensure entity definitions match Entity Clarity principle
+- `/specs/domain/001-{domain}-spec/spec.md` - Ensure entity definitions match Entity Clarity principle
 - `/.metaspec/commands/sds.specify.md` - Reference constitution principles
-- `/README.md` - Update protocol overview section
+- `/README.md` - Update specification overview section
 
 **For each file**:
 - Read the file
 - Identify sections that reference principles
 - Update to match new/changed principles
-- Mark with `<!-- Updated per protocol constitution v[VERSION] -->`
+- Mark with `<!-- Updated per specification constitution v[VERSION] -->`
 
 ### 7. Generate Sync Impact Report
 
@@ -169,7 +169,7 @@ Prepend this as an HTML comment at the top of constitution file:
 
 ```html
 <!--
-Protocol Constitution Update Report
+Specification Constitution Update Report
 ====================================
 Version Change: [OLD_VERSION] → [NEW_VERSION]
 Rationale: [MAJOR|MINOR|PATCH bump reason]
@@ -186,10 +186,10 @@ Removed Principles:
 
 Affected Files:
 ✅ /specs/domain/spec.md - Updated entity requirements
-⚠️  /README.md - Pending manual update for protocol overview
+⚠️  /README.md - Pending manual update for specification overview
 
 Follow-up TODOs:
-- [ ] Update protocol examples
+- [ ] Update specification examples
 - [ ] Review existing specifications against new principles
 
 Generated: [ISO_DATE]
@@ -212,7 +212,7 @@ Before finalizing:
 
 ### 9. Write constitution file
 
-- Write to `/memory/protocol-constitution.md`
+- Write to `/memory/specification-constitution.md`
 - Ensure proper Markdown formatting
 - No trailing whitespace
 - Single blank line between sections
@@ -223,7 +223,7 @@ Before finalizing:
 Provide:
 
 ```
-✅ Protocol constitution updated to v[VERSION]
+✅ Specification constitution updated to v[VERSION]
 
 📋 Changes:
 - [Summary of what changed]
@@ -231,26 +231,26 @@ Provide:
 - [Modified principles]
 
 📁 Updated files:
-- /memory/protocol-constitution.md
+- /memory/specification-constitution.md
 - /specs/domain/spec.md (if exists)
 
 ⚠️  Files needing manual review:
 - [List any files that couldn't be auto-updated]
 
 🔄 Next steps:
-1. Review the constitution in /memory/protocol-constitution.md
-2. Use /metaspec.sds.specify to define protocol entities aligned with these principles
+1. Review the constitution in /memory/specification-constitution.md
+2. Use /metaspec.sds.specify to define specification entities aligned with these principles
 3. Reference these principles during specification design
 
 💡 Suggested commit message:
-   docs: adopt protocol constitution v[VERSION] ([principle summary])
+   docs: adopt specification constitution v[VERSION] ([principle summary])
 ```
 
 ## Important Notes
 
-1. **Constitution is for the protocol, not implementations**
-   - This defines how to SPECIFY the protocol
-   - It does NOT define how to IMPLEMENT the protocol
+1. **Constitution is for the specification, not implementations**
+   - This defines how to SPECIFY the specification
+   - It does NOT define how to IMPLEMENT the specification
    - Focus on entity definitions, validation rules, operation interfaces
 
 2. **Standard vs Domain-Specific Principles**
@@ -259,8 +259,8 @@ Provide:
    - Don't remove standard principles without strong justification
 
 3. **Examples Matter**
-   - Each principle should include protocol-specific examples
-   - Examples should use the actual entities from this protocol
+   - Each principle should include specification-specific examples
+   - Examples should use the actual entities from this specification
    - Bad: "Entities should be clear"
    - Good: "Entity `Tool` must specify `name` (string, required), `description` (string, required), `inputSchema` (JSON Schema, required)"
 

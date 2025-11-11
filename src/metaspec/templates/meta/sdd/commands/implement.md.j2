@@ -240,7 +240,7 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    
    **For Python**:
    - **SETUP tasks**: Create files/directories, initialize pyproject.toml
-   - **MODELS tasks**: Generate Pydantic models from protocol entities
+   - **MODELS tasks**: Generate Pydantic models from specification entities
    - **PARSER tasks**: Implement parse_spec() using PyYAML/pydantic-yaml
    - **VALIDATOR tasks**: Implement validation using Pydantic validators
    - **CLI tasks**: Create Typer commands, Rich output formatting
@@ -249,7 +249,7 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    
    **For TypeScript**:
    - **SETUP tasks**: Create files/directories, initialize package.json
-   - **MODELS tasks**: Generate Zod schemas or interfaces from protocol entities
+   - **MODELS tasks**: Generate Zod schemas or interfaces from specification entities
    - **PARSER tasks**: Implement parseSpec() using js-yaml
    - **VALIDATOR tasks**: Implement validation using Zod/Yup
    - **CLI tasks**: Create Commander.js commands
@@ -258,7 +258,7 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    
    **For Go**:
    - **SETUP tasks**: Create files/directories, initialize go.mod
-   - **MODELS tasks**: Generate Go structs from protocol entities
+   - **MODELS tasks**: Generate Go structs from specification entities
    - **PARSER tasks**: Implement ParseSpec() using gopkg.in/yaml.v3
    - **VALIDATOR tasks**: Implement validation using validator package
    - **CLI tasks**: Create Cobra commands
@@ -267,7 +267,7 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    
    **For Rust**:
    - **SETUP tasks**: Create files/directories, initialize Cargo.toml
-   - **MODELS tasks**: Generate Rust structs with Serde from protocol entities
+   - **MODELS tasks**: Generate Rust structs with Serde from specification entities
    - **PARSER tasks**: Implement parse_spec() using serde_yaml
    - **VALIDATOR tasks**: Implement validation using validator crate
    - **CLI tasks**: Create Clap commands
@@ -275,18 +275,18 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    - **DOCS tasks**: Write Markdown + rustdoc
 
    **Code Generation Strategy**:
-   - Read protocol/001-*/spec.md for entity definitions
-   - Generate models/types/structs that match protocol entities
+   - Read domain/001-*/spec.md for entity definitions
+   - Generate models/types/structs that match specification entities
    - Implement parser that creates instances of these models
-   - Implement validator that enforces protocol rules
+   - Implement validator that enforces specification rules
    - Implement CLI commands defined in toolkit spec
    - Follow architecture from plan.md
 
 3. **Verify task**:
    - **SETUP**: Files created, configs valid, dependencies installable
-   - **MODELS**: Models instantiable, match protocol entities
+   - **MODELS**: Models instantiable, match specification entities
    - **PARSER**: Can parse valid/invalid specs, error handling works
-   - **VALIDATOR**: Enforces all protocol rules, error messages clear
+   - **VALIDATOR**: Enforces all specification rules, error messages clear
    - **CLI**: Commands execute, help text clear, output formatted
    - **TESTS**: Tests pass, coverage adequate
    - **DOCS**: Documentation complete, examples work

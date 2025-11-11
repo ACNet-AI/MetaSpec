@@ -40,7 +40,7 @@ src/metaspec/templates/
 │   └── generic/             # Second layer: Universal SD-X templates
 │
 └── meta/                     # Third layer: MetaSpec self-development (SDS + SDD)
-    ├── sds/                 # Protocol specification commands
+    ├── sds/                 # Domain specification commands
     │   └── commands/        # /metaspec.sds.* (5 commands)
     └── sdd/                 # Speckit development commands
         └── commands/        # /metaspec.sdd.* (8 commands)
@@ -57,7 +57,7 @@ api-test-kit/                       # Generated speckit
 │
 ├── .metaspec/
 │   ├── commands/                   # MetaSpec development commands (19 commands)
-│   │   ├── metaspec.sds.*.md      # Protocol specification (8 commands)
+│   │   ├── metaspec.sds.*.md      # Domain specification (8 commands)
 │   │   ├── metaspec.sdd.*.md      # Speckit development (8 commands)
 │   │   └── metaspec.*.md          # Evolution management (3 commands)
 │   └── templates/                  # MetaSpec shared output templates (5 files)
@@ -76,7 +76,7 @@ api-test-kit/                       # Generated speckit
 │   └── agent-file-template.md
 │
 ├── specs/                          # Development workspace (.gitignore)
-│   ├── protocol/                  # SDS: Protocol specifications
+│   ├── domain/                  # SDS: Domain specifications
 │   └── toolkit/                   # SDD: Toolkit specifications
 │
 ├── changes/                        # Evolution: Change proposals (parallel to specs/)
@@ -111,7 +111,7 @@ api-test-kit/                       # Generated speckit
 - ✅ `.metaspec/commands/` contains 15 MetaSpec development commands
 - ✅ `.metaspec/templates/` contains 5 shared output templates
 - ✅ `templates/` (root) contains development reference templates (flat structure)
-- ✅ `specs/` has 2 subdirectories: `protocol/` (SDS), `toolkit/` (SDD)
+- ✅ `specs/` has 2 subdirectories: `domain/` (SDS), `toolkit/` (SDD)
 - ✅ `changes/` is **parallel to specs/** - temporary workspace for evolution proposals
 - ✅ `src/{package}/` contains CLI, parser, validator stubs
 
@@ -190,7 +190,7 @@ $ cd api-test-kit
 # Use MetaSpec SDD command to specify speckit
 $ /metaspec.sdd.specify "Define APITest entity and validator"
 → Read .metaspec/commands/metaspec.sdd.specify.md
-→ Reference metaspec template protocol
+→ Reference metaspec template specification
 → Generate specs/toolkit/001-api-test-kit/spec.md
 
 # Plan implementation
@@ -292,10 +292,10 @@ api-test-kit/
     └── custom-template.md      # Custom and library templates at same level
 ```
 
-### 2. Unified Protocol
+### 2. Unified Specification
 
 All templates (whether from library or custom) follow:
-- Slash Command Template Protocol
+- Slash Command Template Specification
 - Same file structure
 - Same variable naming
 - Same usage pattern
@@ -315,7 +315,7 @@ All templates (whether from library or custom) follow:
 
 ## 📚 References
 
-- [Slash Command Template Protocol](./slash-cmd-protocol.md)
+- [Slash Command Template Specification](./slash-cmd-protocol.md)
 - [AGENTS.md Guide](../AGENTS.md)
 - [MetaSpec README](../README.md)
 

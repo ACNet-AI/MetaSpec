@@ -30,8 +30,8 @@ meta/ adopts a clear three-layer architecture, separating commands at different 
 ```
 meta/
 ├── sds/              # Spec-Driven Specification (8 commands)
-│   ├── commands/     # Protocol specification definition commands
-│   └── templates/    # (Current commands reference protocol templates under shared templates/)
+│   ├── commands/     # Domain specification definition commands
+│   └── templates/    # (Current commands reference specification templates under shared templates/)
 │
 ├── sdd/              # Spec-Driven Development (8 commands)
 │   ├── commands/     # Toolkit development commands
@@ -47,7 +47,7 @@ meta/
     ├── plan-template.md.j2           # Toolkit planning
     ├── tasks-template.md.j2          # Toolkit task breakdown
     ├── checklist-template.md.j2      # Toolkit quality check
-    └── protocol-spec-template.md.j2  # Protocol specification (SDS output: YAML frontmatter + Markdown)
+    └── domain-spec-template.md.j2  # Domain specification (SDS output: YAML frontmatter + Markdown)
 ```
 
 ### Why Three Layers?
@@ -69,16 +69,16 @@ meta/
    - Output: `changes/` directory (at same level as specs/)
    - Characteristics: SDS and SDD share the same evolution mechanism
 
-### ⚠️ Key Principle: Protocol First, Toolkit Second
+### ⚠️ Key Principle: Specification First, Toolkit Second
 
 **MetaSpec's core value lies in specification management**:
 
-- Protocol (specification) is the **core asset**, exists independently, can be published separately
-- Toolkit is a **supporting tool**, must depend on Protocol
-- Toolkit without Protocol = ordinary code generator
+- Specification (specification) is the **core asset**, exists independently, can be published separately
+- Toolkit is a **supporting tool**, must depend on Specification
+- Toolkit without Specification = ordinary code generator
 
 **Mandatory Requirements**:
-- SDD commands check if Protocol exists
+- SDD commands check if Specification exists
 - If not exists, **block** and require running SDS commands first
 - Toolkit spec.md must have Dependencies section
 - analyze marks missing dependencies as CRITICAL
@@ -90,7 +90,7 @@ meta/
 
 MetaSpec realizes toolkit value through a three-stage process:
 
-**1. Define Protocol (SDS)** → Define WHAT  
+**1. Define Specification (SDS)** → Define WHAT  
 **2. Define Toolkit (SDD)** → Define HOW  
 **3. Generate Code (SDD)** → Generate implementation
 
@@ -172,7 +172,7 @@ Generated command prefix: `/metaspec.*` (no sds/sdd prefix)
 | `archive` | Archive completed changes | changes/archive/ | `--type sds\|sdd` |
 
 **Use Cases**:
-- Protocol specification evolution after stabilization (`--type sds`)
+- Domain specification evolution after stabilization (`--type sds`)
 - Toolkit evolution after stabilization (`--type sdd`)
 - Team collaboration and change control
 
@@ -211,31 +211,31 @@ generated-speckit/
 
 ### Detailed specs/ Directory Structure
 
-#### protocol/ - Protocol Specifications (SDS Output)
+#### domain/ - Domain Specifications (SDS Output)
 
 ```
 specs/domain/
-├── 001-mcp-core-protocol/
-│   ├── spec.md              # Protocol entity definitions
+├── 001-mcp-core-spec/
+│   ├── spec.md              # Specification entity definitions
 │   │                        # - Server interface
 │   │                        # - Tool interface
 │   │                        # - Resource interface
 │   │                        # - Data type definitions
 │   │                        # - Validation rules
-│   └── README.md            # Protocol overview
+│   └── README.md            # Specification overview
 │
 ├── 002-graphql-schema/
-│   ├── spec.md              # GraphQL protocol definition
+│   ├── spec.md              # GraphQL specification definition
 │   └── schema.graphql       # Schema file (optional)
 │
 └── 003-validation-rules/
-    └── spec.md              # Protocol validation rules
+    └── spec.md              # Specification validation rules
 ```
 
 **Characteristics**:
 - Numbered directories: 001-, 002-, 003-
-- Pure protocol definitions, no implementation details
-- Define WHAT (what the protocol is)
+- Pure specification definitions, no implementation details
+- Define WHAT (what the specification is)
 
 #### toolkit/ - Toolkit Specifications (SDD Output)
 
@@ -243,7 +243,7 @@ specs/domain/
 specs/toolkit/
 ├── 001-mcp-parser/
 │   ├── spec.md              # Parser functionality specification
-│   │                        # - Dependency: protocol/001-mcp-core-protocol
+│   │                        # - Dependency: domain/001-mcp-core-spec
 │   │                        # - Input format
 │   │                        # - Output format
 │   │                        # - Error handling
@@ -259,7 +259,7 @@ specs/toolkit/
 │
 ├── 002-mcp-validator/
 │   ├── spec.md              # Validator functionality specification
-│   │                        # - Dependency: protocol/001-mcp-core-protocol
+│   │                        # - Dependency: domain/001-mcp-core-spec
 │   │                        # - Dependency: toolkit/001-mcp-parser
 │   ├── plan.md
 │   ├── tasks.md
@@ -275,23 +275,23 @@ specs/toolkit/
 **Characteristics**:
 - Numbered directories: 001-, 002-, 003-
 - Contains implementation plans and tasks
-- Explicitly declares dependencies on protocol/
+- Explicitly declares dependencies on specification/
 - Define HOW (how to implement the toolkit)
 
 #### changes/ - Change Management (Evolution Output)
 
 ```
 changes/
-├── add-websocket-support/         # Change proposal (for protocol)
+├── add-websocket-support/         # Change proposal (for specification)
 │   ├── proposal.md                # Change proposal
-│   │                              # - Type: protocol (SDS)
-│   │                              # - Target: protocol/001-mcp-core-protocol
+│   │                              # - Type: specification (SDS)
+│   │                              # - Target: domain/001-mcp-core-spec
 │   │                              # - Change reason
 │   │                              # - Impact analysis
 │   ├── tasks.md                   # Implementation tasks
 │   ├── impact.md                  # Impact assessment
 │   └── specs/
-│       └── protocol/
+│       └── domain/
 │           └── mcp-core/
 │               └── spec.md        # Spec Delta
 │                                  # - ## ADDED
@@ -326,25 +326,25 @@ changes/
 - Contains proposal, tasks, impact
 - specs/ subdirectory contains delta (incremental changes)
 - archive/ stores completed change history
-- Can target protocol or toolkit
+- Can target specification or toolkit
 
 ### Relationship Between Three Directories
 
 ```
 Project root
 ├── specs/
-│   ├── protocol/           (Protocol definition - WHAT)
+│   ├── domain/           (Specification definition - WHAT)
 │   │                       - Pure specification, independently publishable
 │   │                       - Define entities, interfaces, validation rules
 │   │
 │   └── toolkit/            (Tool implementation - HOW)
-│       │                   - Implementation specification, references protocol/
+│       │                   - Implementation specification, references specification/
 │       │                   - Parser, Validator, CLI
 │       │
-│       └─ depends ────────> protocol/
+│       └─ depends ────────> domain/
 │
 └── changes/                (Evolution control - change history)
-    │                       - Can change protocol/
+    │                       - Can change domain/
     │                       - Can change toolkit/
     │                       - Version tracking, approval process
     │
@@ -354,7 +354,7 @@ Project root
 
 **Key Principles**:
 1. **specs/domain/** - Independent domain specifications, can be published and referenced separately
-2. **specs/toolkit/** - Explicitly depends on protocol/, implements specific tools
+2. **specs/toolkit/** - Explicitly depends on specification/, implements specific tools
 3. **changes/** - Manages evolution of both, maintains change history (at project root)
 
 **Why is changes/ at the same level as specs/?**
@@ -366,11 +366,11 @@ Project root
 ```yaml
 # specs/toolkit/001-parser/spec.md
 dependencies:
-  - protocol/001-mcp-core-protocol  # Reference protocol
+  - domain/001-mcp-core-spec  # Reference specification
 
 # changes/add-websocket/proposal.md
-type: protocol                      # Change type
-target: protocol/001-mcp-core       # Change target (relative to specs/)
+type: specification                      # Change type
+target: domain/001-mcp-core       # Change target (relative to specs/)
 ```
 
 ## Typical Workflow
@@ -394,7 +394,7 @@ target: protocol/001-mcp-core       # Change target (relative to specs/)
 /metaspec.sds.analyze
 ```
 
-**Output**: `specs/domain/001-xxx/spec.md` - Pure protocol definition
+**Output**: `specs/domain/001-xxx/spec.md` - Pure specification definition
 
 #### Phase 2: Toolkit Specification (SDD)
 
@@ -402,7 +402,7 @@ target: protocol/001-mcp-core       # Change target (relative to specs/)
 # Define toolkit principles
 /metaspec.sdd.constitution
 
-# Create toolkit specification (explicitly depends on protocol/001-xxx)
+# Create toolkit specification (explicitly depends on domain/001-xxx)
 /metaspec.sdd.specify "MCP Parser"
 # Output: specs/toolkit/001-mcp-parser/spec.md
 
@@ -427,7 +427,7 @@ target: protocol/001-mcp-core       # Change target (relative to specs/)
 #### Phase 3: Evolution (After Specifications Stabilize)
 
 ```bash
-# Propose protocol changes
+# Propose specification changes
 /metaspec.proposal "Add WebSocket support" --type sds
 
 # Or propose toolkit changes
@@ -447,7 +447,7 @@ target: protocol/001-mcp-core       # Change target (relative to specs/)
 ```
 templates/
 ├── meta/              # MetaSpec self-development (this directory)
-│   ├── sds/           # Protocol specification definition
+│   ├── sds/           # Domain specification definition
 │   ├── sdd/           # Toolkit development
 │   └── evolution/     # Specification evolution
 │
@@ -469,7 +469,7 @@ templates/
 
 ### Command Prefixes
 
-- SDS: `/metaspec.sds.*` - Clearly indicates protocol definition
+- SDS: `/metaspec.sds.*` - Clearly indicates specification definition
 - SDD: `/metaspec.sdd.*` - Clearly indicates toolkit development
 - Evolution: `/metaspec.*` - Shared commands, distinguished by `--type` parameter
 
@@ -498,7 +498,7 @@ Because Evolution is a **shared** mechanism for SDS and SDD:
 # Phase 2: Develop MCP Parser (SDD)
 /metaspec.sdd.specify "MCP Request Parser"
 # → specs/toolkit/001-mcp-request-parser/spec.md
-# → Explicit reference: depends on protocol/001-mcp-specification-core
+# → Explicit reference: depends on domain/001-mcp-specification-core
 
 /metaspec.sdd.plan          # Plan implementation
 /metaspec.sdd.tasks         # Break down tasks
@@ -538,7 +538,7 @@ Because Evolution is a **shared** mechanism for SDS and SDD:
 ### 2. Clear Conceptual Separation
 
 SDS and SDD are completely different conceptual levels:
-- **SDS**: Define protocol (WHAT)
+- **SDS**: Define specification (WHAT)
 - **SDD**: Implement tools (HOW)
 
 ### 3. Explicit Dependencies
@@ -547,7 +547,7 @@ SDD specifications should explicitly declare dependencies on SDS specifications:
 ```yaml
 # specs/toolkit/001-parser/spec.md
 dependencies:
-  - protocol/001-mcp-core
+  - domain/001-mcp-core
 ```
 
 ### 4. Shared Evolution Mechanism
@@ -557,7 +557,7 @@ Evolution commands apply to both SDS and SDD, avoiding duplication.
 ### 5. AI-Friendly
 
 Command prefixes help AI understand current context:
-- See `metaspec.sds.*` → Know defining protocol
+- See `metaspec.sds.*` → Know defining specification
 - See `metaspec.sdd.*` → Know developing tools
 
 ---

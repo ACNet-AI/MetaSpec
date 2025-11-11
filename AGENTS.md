@@ -47,7 +47,7 @@ Used to develop domain projects
 ```
 MetaSpec (meta-spec)
     ↓ generates
-MCP-Spec-Kit (carries MCP protocol spec)
+MCP-Spec-Kit (carries MCP specification spec)
     ↓ used by
 Developer (validates MCP servers against spec)
 ```
@@ -344,7 +344,7 @@ MetaSpec commands (19 total):
                               ↓
                     Project structure:
                     ├── specs/
-                    │   ├── protocol/   ← SDS manages (domain specifications)
+                    │   ├── domain/   ← SDS manages (domain specifications)
                     │   └── toolkit/    ← SDD manages (toolkit implementation)
                     └── changes/        ← Evolution manages (independent)
 ```
@@ -443,7 +443,7 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 # specs/toolkit/001-mcp-parser/spec.md
 
 ## Dependencies
-- Depends on: protocol/001-mcp-core-specification
+- Depends on: domain/001-mcp-core-spec
 
 ## User Journey Analysis
 ### Primary Users
@@ -454,7 +454,7 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 **Scenario 1**: AI Agent generates MCP server from natural language
 - User: AI Agent
 - Goal: Generate valid server definition
-- Required Features: show-protocol command, get-template command, validate CLI
+- Required Features: show-spec command, get-template command, validate CLI
 
 **Scenario 2**: Developer validates server definition manually
 - User: Human Developer
@@ -462,18 +462,18 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 - Required Features: init, validate, docs
 
 ### Derived Features (P0)
-- Protocol reference system: AI needs rules before generating (Scenarios: 1)
+- Specification reference system: AI needs rules before generating (Scenarios: 1)
 - Template system: Users need starting points (Scenarios: 1, 2)
 - Validation CLI: Critical for both AI and developers (All scenarios)
 
 ### Command Design Rationale
-- show-protocol: AI needs rules before generating → Scenario 1
+- show-spec: AI needs rules before generating → Scenario 1
 - validate: Critical for both AI and developers → All scenarios
 - init: Developer quick setup → Scenario 2
 
 ## Components
 1. Parser: Parse MCP server definitions
-2. Validator: Verify compliance with protocol spec
+2. Validator: Verify compliance with specification
 3. CLI: mcp-spec-kit init|validate|generate
 
 ## Templates & Examples
@@ -485,9 +485,9 @@ templates/
 ├── spec-kit/              # From library/sdd/spec-kit
 │   ├── commands/
 │   └── templates/
-└── mcp/                   # Custom (from protocol/001-mcp-protocol)
+└── mcp/                   # Custom (from domain/001-mcp-spec)
     ├── commands/
-    │   ├── show-protocol.md
+    │   ├── show-spec.md
     │   ├── get-template.md
     │   └── validate-server.md
     └── templates/
@@ -522,7 +522,7 @@ examples/
 # Phase 2: Toolkit Specification (SDD)
 /metaspec.sdd.constitution  # Define toolkit principles
 /metaspec.sdd.specify       # Create specs/toolkit/001-parser/spec.md
-                           # Must reference: protocol/001-{domain}-specification
+                           # Must reference: domain/001-{domain}-spec
 /metaspec.sdd.plan          # Plan toolkit architecture
 /metaspec.sdd.tasks         # Break down implementation
 /metaspec.sdd.implement     # Build src/ code based on toolkit spec
@@ -637,11 +637,11 @@ When you run a validation command and output already exists, you should ask the 
 
 ### Iteration Workflow Example
 
-**Scenario**: User improves protocol based on checklist feedback
+**Scenario**: User improves specification based on checklist feedback
 
 ```bash
 # Step 1: Initial validation
-User: "Run checklist to validate protocol quality"
+User: "Run checklist to validate specification quality"
 AI: /metaspec.sds.checklist
 
 Output:

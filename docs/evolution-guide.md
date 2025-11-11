@@ -124,15 +124,15 @@ Need to change specification?
 ### Workflow 1: Draft Toolkit - Iterative Refinement
 
 ```bash
-1. User writes initial protocol spec
-   $ vim specs/domain/001-mcp-protocol/spec.md
+1. User writes initial specification spec
+   $ vim specs/domain/001-mcp-spec/spec.md
 
 2. User validates quality
    $ /metaspec.sds.checklist
    → Result: ❌ CHK003 - Missing field types
 
 3. User fixes directly (minor improvement)
-   $ vim specs/domain/001-mcp-protocol/spec.md
+   $ vim specs/domain/001-mcp-spec/spec.md
    # Add missing type definitions
 
 4. User re-validates
@@ -152,7 +152,7 @@ Need to change specification?
 ### Workflow 2: Draft Toolkit - Major Feature Addition
 
 ```bash
-1. User has a working draft protocol (v0.2.0)
+1. User has a working draft specification (v0.2.0)
 
 2. User wants to add GraphQL support (major feature)
    $ /metaspec.proposal "Add GraphQL query support" --type sds

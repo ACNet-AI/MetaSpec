@@ -35,9 +35,9 @@ Follow this execution flow:
 **How to detect**:
 
 Check for environment variables or context passed by implement:
-- `$PARENT_PROTOCOL_ID` - Parent protocol ID (if called by implement)
-- `$ROOT_PROTOCOL_ID` - Root protocol ID (if called by implement)
-- `$PROTOCOL_NUMBER` - Assigned protocol number (if called by implement)
+- `$PARENT_SPEC_ID` - Parent specification ID (if called by implement)
+- `$ROOT_SPEC_ID` - Root specification ID (if called by implement)
+- `$SPEC_NUMBER` - Assigned specification number (if called by implement)
 
 **Implementation Note for AI**:
 
@@ -50,12 +50,12 @@ When implement calls specify "internally", context is passed through the convers
 **If from implement** (has parent context):
 ```bash
 # Context provided by implement
-PARENT_PROTOCOL_ID="003-payment-processing"
-ROOT_PROTOCOL_ID="001-order-protocol"
-PROTOCOL_NUMBER="013"
+PARENT_SPEC_ID="003-payment-processing"
+ROOT_SPEC_ID="001-order-spec"
+SPEC_NUMBER="013"
 
 # This means:
-# - We're creating a sub-protocol of 003
+# - We're creating a sub-specification of 003
 # - The root is 001
 # - Use number 013 (don't auto-find)
 ```
@@ -64,34 +64,34 @@ PROTOCOL_NUMBER="013"
 ```bash
 # No context variables set
 # This means:
-# - We're creating a root or independent protocol
+# - We're creating a root or independent specification
 # - Need to find next available number
 # - parent: null, root: self
 ```
 
 **Store context for later steps**:
-- `is_sub_protocol`: true | false
+- `is_sub_specification`: true | false
 - `parent_id`: {parent-id} or null
 - `root_id`: {root-id} or {self-id}
 - `assigned_number`: {number} or null
 
 ---
 
-### 1. Determine Protocol and Load Existing Specification
+### 1. Determine Specification and Load Existing Specification
 
-**Step 1a: Generate Protocol Name**
+**Step 1a: Generate Specification Name**
 
 Based on user input, generate:
-- Short name: `{domain}-{component}-protocol`
-- Example: "mcp-core-protocol", "graphql-schema", "oauth2-flow"
+- Short name: `{domain}-{component}-spec`
+- Example: "mcp-core-spec", "graphql-schema", "oauth2-flow"
 - Check existing `specs/domain/` directory structure
 
-**Step 1b: Determine Protocol Number**
+**Step 1b: Determine Specification Number**
 
 **If `assigned_number` is set** (from implement context):
 ```bash
 # Use the number provided by implement
-protocol_number=$PROTOCOL_NUMBER  # e.g., "013"
+specification_number=$SPEC_NUMBER  # e.g., "013"
 ```
 
 **If `assigned_number` is NOT set** (direct invocation):
@@ -107,19 +107,19 @@ ls specs/domain/ | grep -E '^[0-9]{3}-' | sort -n
 - If exists, load for updating
 - If new, create new directory structure
 
-### 2. Gather Protocol Specification Content
+### 2. Gather Domain Specification Content
 
-**Focus**: Define the domain protocol, entities, schemas, and validation rules.
+**Focus**: Define the domain specification, entities, schemas, and validation rules.
 
 **Critical Questions**:
 
-1. **Protocol Name**: What is this protocol called?
-   - Example: "MCP (Model Context Protocol)"
+1. **Specification Name**: What is this specification called?
+   - Example: "MCP (Model Context Specification)"
    
-2. **Protocol Purpose**: What problem does this protocol solve?
+2. **Specification Purpose**: What problem does this specification solve?
    - Example: "Enable AI models to interact with external tools and resources"
    
-3. **Core Entities**: What are the main entities in this protocol?
+3. **Core Entities**: What are the main entities in this specification?
    - Example: Server, Tool, Resource, Prompt
    
 4. **Entity Schemas**: What fields/properties does each entity have?
@@ -128,29 +128,29 @@ ls specs/domain/ | grep -E '^[0-9]{3}-' | sort -n
 5. **Validation Rules**: What are the constraints and requirements?
    - Example: "Tool name must be unique", "inputSchema must be valid JSON Schema"
 
-6. **Protocol Operations**: What operations/interfaces does the protocol define?
+6. **Specification Operations**: What operations/interfaces does the specification define?
    - Example: `initialize`, `tools/list`, `tools/call`
 
 **Important Notes**:
-- This is SDS (Spec-Driven Specification) - focus on protocol definition only
+- This is SDS (Spec-Driven Specification) - focus on specification definition only
 - Do NOT include implementation details (Parser, Validator, CLI)
 - For toolkit development, use `/metaspec.sdd.specify` instead
 
 **If user input is vague**, make informed guesses based on domain standards and document assumptions.
 
-### 3. Generate Protocol Specification Content
+### 3. Generate Domain Specification Content
 
-Generate **Domain Protocol Specification** with these sections:
+Generate **Domain Specification** with these sections:
 
-#### **Protocol Overview**
-- Protocol name and version
+#### **Specification Overview**
+- Specification name and version
 - Problem it solves
 - Core capabilities
-- Example: "MCP (Model Context Protocol) v1.0 enables standardized communication between AI models and external tools/resources."
+- Example: "MCP (Model Context Specification) v1.0 enables standardized communication between AI models and external tools/resources."
 
 #### **Glossary** (Optional but Recommended)
 
-Define key terms used in the protocol to help all audiences understand:
+Define key terms used in the specification to help all audiences understand:
 
 **Template**:
 ```markdown
@@ -160,25 +160,25 @@ Define key terms used in the protocol to help all audiences understand:
   - Example: "Tool: A callable function exposed by the server that can be invoked by AI agents"
   
 - **{Term 2}**: {Clear, concise definition}
-  - Example: "Resource: A data source or file that can be accessed through the protocol"
+  - Example: "Resource: A data source or file that can be accessed through the specification"
   
 - **{Term 3}**: {Clear, concise definition}
 ```
 
 **When to include**:
-- Protocol contains domain-specific terminology
+- Specification contains domain-specific terminology
 - Audience includes non-technical stakeholders
 - Terms might be ambiguous or have multiple meanings
 
 **Best practices**:
 - Keep definitions concise (1-2 sentences)
 - Provide examples where helpful
-- Focus on protocol-specific meanings
+- Focus on specification-specific meanings
 - Avoid overly technical jargon in definitions
 
 #### **Use Cases** (Optional but Recommended)
 
-Describe real-world scenarios where this protocol applies:
+Describe real-world scenarios where this specification applies:
 
 **Template**:
 ```markdown
@@ -197,7 +197,7 @@ Describe real-world scenarios where this protocol applies:
 2. {Step 2}
 3. {Step 3}
 
-**Protocol Elements Used**:
+**Specification Elements Used**:
 - {Entity or Operation 1}
 - {Entity or Operation 2}
 
@@ -208,7 +208,7 @@ Describe real-world scenarios where this protocol applies:
 ```
 
 **When to include**:
-- Protocol purpose might not be immediately clear
+- Specification purpose might not be immediately clear
 - Need to demonstrate practical value
 - Want to guide implementation priorities
 
@@ -226,7 +226,7 @@ Define specification entities (NOT toolkit entities):
 ```markdown
 ### Entity: {EntityName}
 
-**Purpose**: {What this entity represents in the protocol}
+**Purpose**: {What this entity represents in the specification}
 
 **Schema**:
 ```yaml
@@ -256,12 +256,12 @@ entity_name:
 
 **Repeat for each entity**.
 
-#### **Workflow** (Optional but Recommended for Stateful Protocols)
+#### **Workflow** (Optional but Recommended for Stateful Specifications)
 
 Define state machines and transition rules for entities with lifecycle:
 
 **When to include**:
-- Protocol involves state management (e.g., Order, Session, Device)
+- Specification involves state management (e.g., Order, Session, Device)
 - Entities have lifecycle or status changes
 - Operations have sequential dependencies
 - Need to define allowed/forbidden transitions
@@ -322,7 +322,7 @@ stateDiagram-v2
 **Note**: 
 - Multiple entities can have their own state machines
 - Define one state machine per entity that has lifecycle
-- Focus on protocol-level states (WHAT), not implementation details (HOW)
+- Focus on specification-level states (WHAT), not implementation details (HOW)
 \```
 
 **Best practices**:
@@ -332,7 +332,7 @@ stateDiagram-v2
 - Use clear, business-meaningful state names
 - Consider using state diagrams for complex workflows
 
-#### **Protocol Operations**
+#### **Specification Operations**
 
 Define operations/interfaces:
 
@@ -370,7 +370,7 @@ operation_name_response:
 
 #### **Validation Rules Summary**
 
-Comprehensive list of all protocol constraints:
+Comprehensive list of all specification constraints:
 
 ```markdown
 ## Validation Rules
@@ -410,21 +410,21 @@ error_response:
 
 #### **Examples**
 
-Provide complete protocol examples:
+Provide complete specification examples:
 
 ```markdown
-## Protocol Examples
+## Specification Examples
 
 ### Example 1: {Scenario Name}
 
 **Request**:
 ```json
-{protocol request example}
+{specification request example}
 ```
 
 **Response**:
 ```json
-{protocol response example}
+{specification response example}
 ```
 
 **Validation**: All rules pass ✅
@@ -442,87 +442,87 @@ Based on context from Step 0, generate spec.md with:
 
 **1. YAML Frontmatter**:
 
-- **If direct invocation** (root protocol):
+- **If direct invocation** (root specification):
   ```yaml
   ---
-  protocol_id: {number}-{name}
+  spec_id: {number}-{name}
   parent: null
   root: {number}-{name}
   type: root
   ---
   ```
 
-- **If from implement** (sub-protocol):
+- **If from implement** (sub-specification):
   ```yaml
   ---
-  protocol_id: {number}-{name}
+  spec_id: {number}-{name}
   parent: {parent_id}
   root: {root_id}
   type: leaf
   ---
   ```
 
-**2. Header with Parent Chain** (if sub-protocol):
+**2. Header with Parent Chain** (if sub-specification):
 
 - **If direct invocation** (root):
   ```markdown
-  # {Protocol Name}
+  # {Specification Name}
   
-  **Type**: Root Protocol
+  **Type**: Root Specification
   **Version**: 1.0.0
   ```
 
-- **If from implement** (sub-protocol):
+- **If from implement** (sub-specification):
   ```markdown
-  # {Protocol Name}
+  # {Specification Name}
   
   **Parent chain**: [{root_name}](../{root_id}/spec.md) > [{parent_name}](../{parent_id}/spec.md) > {current_id}
   
-  **Type**: Leaf Protocol (complete specification)
+  **Type**: Leaf Specification (complete specification)
   **Version**: 1.0.0
   ```
 
 **Step 4b: Populate Template**
 
-**Use template**: `meta/templates/protocol-spec-template.md.j2`
+**Use template**: `meta/templates/domain-spec-template.md.j2`
 
 Populate the template with the following variables:
 
 - `metadata`
-  - `name`: Protocol name (e.g., "MCP Core Protocol")
+  - `name`: Specification name (e.g., "MCP Core Specification")
   - `version`: Semantic version (start with `1.0.0`)
   - `status`: Draft | Stable | Deprecated
   - `created`: ISO date (`{{ today }}`)
   - `summary`: 3-5 sentence overview (from Step 3)
 - `glossary`: List of `{ term, definition, example }` (optional)
 - `use_cases`: List of use case dictionaries (name, scenario, actors, flow, elements, outcome)
-- `entities`: For each protocol entity collected in Step 3:
+- `entities`: For each specification entity collected in Step 3:
   - `name`, `purpose`
   - `fields`: `[{ name, type, required, description, constraints }]`
   - `schema_example`: YAML snippet (optional)
   - `validation`: Bullet list of entity-specific rules
   - `examples`: JSON examples (optional)
 - `workflows`: State machines (if applicable) with `states`, `transitions`, `forbidden`, `validation`
-- `operations`: Protocol operations/interfaces with request/response schemas
+- `operations`: Specification operations/interfaces with request/response schemas
 - `validation_rules`: Flat list of cross-cutting rules (`id`, `description`, `type`, `target`, `scope`, `details`)
 - `error_handling`: `{ codes: [...], format: yaml_snippet }` (optional)
 - `examples`: End-to-end examples (request/response pairs)
-- `references`: External resources or related protocols
+- `references`: External resources or related specifications
 
 The template automatically renders:
-- YAML frontmatter (`protocol`, `entities`, `operations`, `validation_rules`, etc.) for machine-readable specs
+- YAML frontmatter (spec_type, `entities`, `operations`, `validation_rules`, etc.) for machine-readable specs
 - Markdown body (Overview, Entities, Workflow, Operations, Validation, Examples) for human-readable docs
 
 ✅ Ensure all required sections are populated. Optional sections (Glossary, Use Cases, Workflow, Error Handling) can be omitted if not applicable—the template handles empty lists gracefully.
 
 ### 5. Create README.md (Optional)
 
-If this is a new protocol spec, create `specs/domain/{number}-{name}/README.md`:
+If this is a new specification spec, create `specs/domain/{number}-{name}/README.md`:
 
 ```markdown
-# {Protocol Name}
+# {Specification Name}
 
-Brief overview of the protocol.
+Brief overview of the specification.
 
 ## Files
 
@@ -540,26 +540,26 @@ Brief overview of the protocol.
 
 ### 6. Update Dependencies (If needed)
 
-If this protocol depends on other protocols, document in spec.md:
+If this specification depends on other specifications, document in spec.md:
 
 ```markdown
 ## Dependencies
 
-- **protocol/001-base-protocol** - Core protocol definitions
-- **protocol/002-auth-protocol** - Authentication mechanisms
+- **domain/001-base-spec** - Core specification definitions
+- **domain/002-auth-spec** - Authentication mechanisms
 ```
 
 ### 7. Success Output
 
 ```
-✅ Protocol specification created/updated:
+✅ Domain specification created/updated:
 
 📁 Location:
    specs/domain/{number}-{name}/spec.md
 
-📋 Protocol: {Protocol Name} v{version}
+📋 Specification: {Specification Name} v{version}
 
-🧾 YAML Frontmatter: protocol metadata, entities, operations, validation_rules captured
+🧾 YAML Frontmatter: specification metadata, entities, operations, validation_rules captured
 
 📖 Glossary: {count} terms defined (if included)
    - {Term 1}
@@ -596,10 +596,10 @@ If this protocol depends on other protocols, document in spec.md:
 
 ## Best Practices
 
-### Protocol Specification Focus
+### Domain Specification Focus
 
 ✅ **DO**:
-- Define WHAT the protocol is
+- Define WHAT the specification is
 - Specify entities, schemas, validation rules
 - Define operations and interfaces
 - Keep implementation-agnostic
@@ -609,18 +609,18 @@ If this protocol depends on other protocols, document in spec.md:
 - Include implementation code
 - Specify Parser/Validator details
 - Define CLI commands
-- Mix protocol and toolkit concerns
+- Mix specification and toolkit concerns
 
 ### Naming Conventions
 
-- **Protocol names**: `{domain}-{component}-protocol`
+- **Specification names**: `{domain}-{component}-spec`
 - **Entity names**: PascalCase (e.g., `ServerInfo`, `ToolDefinition`)
 - **Operations**: snake_case (e.g., `tools/list`, `initialize`)
 - **Fields**: camelCase (e.g., `userName`, `isActive`)
 
 ### Version Control
 
-- Start with v1.0 for new protocols
+- Start with v1.0 for new specifications
 - Use semantic versioning
 - Document breaking changes
 - Mark deprecated fields clearly
@@ -637,21 +637,21 @@ If this protocol depends on other protocols, document in spec.md:
 Before finalizing, verify against `memory/constitution.md`:
 
 ```bash
-# Check protocol spec against constitution
+# Check specification spec against constitution
 grep -A 5 "Entity Clarity" memory/constitution.md
 grep -A 5 "Minimal Viable Abstraction" memory/constitution.md
 ```
 
 **Ensure**:
-- Protocol entities are minimal and clear
+- Specification entities are minimal and clear
 - No over-engineering
 - Progressive enhancement is possible
 - Domain specificity is maintained
 
 ## Troubleshooting
 
-**If protocol seems too complex**:
-→ Break into multiple protocol specs (e.g., core + extensions)
+**If specification seems too complex**:
+→ Break into multiple specification specs (e.g., core + extensions)
 
 **If overlapping with toolkit**:
 → Move implementation concerns to `specs/toolkit/` using `/metaspec.sdd.specify`
@@ -659,5 +659,5 @@ grep -A 5 "Minimal Viable Abstraction" memory/constitution.md
 **If unclear validation rules**:
 → Use `/metaspec.sds.clarify` to resolve ambiguities
 
-**If protocol dependencies are complex**:
+**If specification dependencies are complex**:
 → Document in `Dependencies` section and consider using `/metaspec.sds.analyze`

@@ -438,7 +438,7 @@ uv run mypy src/metaspec       # Type check
 
 **v0.5.0** - Alpha Release 🎉
 
-Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (19 commands: 8 SDS + 8 SDD + 3 Evolution), recursive tree structure for protocols, unified spec interface.
+Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (19 commands: 8 SDS + 8 SDD + 3 Evolution), recursive tree structure for specifications, unified spec interface.
 
 ---
 

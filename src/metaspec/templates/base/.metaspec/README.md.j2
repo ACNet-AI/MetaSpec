@@ -24,11 +24,11 @@ This speckit includes 16 AI-assisted development commands organized in three lay
 
 Define domain domain specifications:
 
-- `/metaspec.sds.constitution` - Define protocol design principles
-- `/metaspec.sds.specify` - Define protocol entities, operations, validation rules
+- `/metaspec.sds.constitution` - Define specification design principles
+- `/metaspec.sds.specify` - Define specification entities, operations, validation rules
 - `/metaspec.sds.clarify` - Resolve ambiguities in domain specification
-- `/metaspec.sds.checklist` - Generate quality checklist for protocol
-- `/metaspec.sds.analyze` - Check protocol consistency
+- `/metaspec.sds.checklist` - Generate quality checklist for specification
+- `/metaspec.sds.analyze` - Check specification consistency
 
 **Output**: `specs/domain/` directory
 
@@ -61,21 +61,21 @@ Manage specification changes:
 
 ## 🚀 Development Workflow
 
-### Phase 1: Define Protocol (SDS)
+### Phase 1: Define Specification (SDS)
 
 ```bash
-# Step 1: Define protocol principles
+# Step 1: Define specification principles
 /metaspec.sds.constitution
 
-# Step 2: Define protocol entities
+# Step 2: Define specification entities
 /metaspec.sds.specify
 
-# Step 3: Validate protocol quality
+# Step 3: Validate specification quality
 /metaspec.sds.checklist
 /metaspec.sds.analyze
 ```
 
-**Output**: `specs/domain/001-{domain}-protocol/spec.md`
+**Output**: `specs/domain/001-{domain}-spec/spec.md`
 
 ### Phase 2: Design Toolkit (SDD)
 
@@ -111,7 +111,7 @@ Manage specification changes:
 ### Phase 4: Evolve (When Stable)
 
 ```bash
-# Propose protocol change
+# Propose specification change
 /metaspec.proposal "Add GraphQL support" --type sds
 
 # Propose toolkit change
@@ -154,8 +154,8 @@ MetaSpec commands support iteration modes to track progress:
 ```
 {{ name }}/
 ├── specs/
-│   ├── protocol/          ← SDS commands work here
-│   │   └── 001-{domain}-protocol/
+│   ├── domain/          ← SDS commands work here
+│   │   └── 001-{domain}-spec/
 │   │       └── spec.md
 │   └── toolkit/           ← SDD commands work here
 │       └── 001-{name}/
@@ -177,14 +177,14 @@ MetaSpec commands support iteration modes to track progress:
 ## 🎯 When to Use What
 
 **Use SDS commands** when:
-- ✅ Defining domain protocols from scratch
-- ✅ Specifying protocol entities, operations, validation rules
-- ✅ Creating protocol specs independent of implementation
+- ✅ Defining domain specifications from scratch
+- ✅ Specifying specification entities, operations, validation rules
+- ✅ Creating specification specs independent of implementation
 
 **Use SDD commands** when:
 - ✅ Developing toolkit features
 - ✅ Planning and implementing parsers, validators, CLI
-- ✅ Building tools to support a protocol
+- ✅ Building tools to support a specification
 
 **Use Evolution commands** when:
 - ✅ Specification is stable and in use

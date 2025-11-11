@@ -52,7 +52,7 @@ Found 3 speckit(s)
 ┃ Name         ┃ Description        ┃ Author   ┃ Tags       ┃
 ┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━┩
 │ api-speckit  │ REST API validator │ John Doe │ api, rest  │
-│ mcp-speckit  │ MCP protocol kit   │ Jane     │ mcp, ai    │
+│ mcp-speckit  │ MCP specification kit   │ Jane     │ mcp, ai    │
 └──────────────┴────────────────────┴──────────┴────────────┘
 ```
 

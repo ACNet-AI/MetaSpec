@@ -104,7 +104,7 @@ cd my-spec-kit
 uv pip install -e .
 
 # Use 16 built-in MetaSpec commands (in AI editor)
-# SDS: /metaspec.sds.* (5 commands) - Define protocol
+# SDS: /metaspec.sds.* (8 commands) - Define specification
 # SDD: /metaspec.sdd.* (8 commands) - Develop toolkit
 # Evolution: /metaspec.* (3 commands) - Manage changes
 ```
@@ -121,7 +121,7 @@ metaspec init api-kit && cd api-kit
 uv pip install -e .
 
 # 3. Develop with built-in commands (in AI editor)
-# /metaspec.sds.specify  - Define API protocol
+# /metaspec.sds.specify  - Define API specification
 # /metaspec.sdd.plan     - Design toolkit architecture
 # /metaspec.sdd.implement - Implement toolkit code
 ```

@@ -32,7 +32,7 @@ current_spec=$SPECIFY_FEATURE
 # Example: "003-payment-processing"
 ```
 
-**Step 1b: Read Protocol Specification**
+**Step 1b: Read Domain Specification**
 
 Read the spec.md for current specification:
 ```bash
@@ -46,16 +46,16 @@ Parse frontmatter to understand context:
 ```yaml
 ---
 spec_id: 003-payment-processing
-parent: 001-order-protocol
-root: 001-order-protocol
+parent: 001-order-spec
+root: 001-order-spec
 type: parent  # or leaf or root
 ---
 ```
 
 **Store context**:
 - `current_id`: spec_id (e.g., "003-payment-processing")
-- `parent_id`: parent (e.g., "001-order-protocol" or null)
-- `root_id`: root (e.g., "001-order-protocol")
+- `parent_id`: parent (e.g., "001-order-spec" or null)
+- `root_id`: root (e.g., "001-order-spec")
 - `current_type`: type (e.g., "parent", "leaf", "root")
 
 **This tells us**:
@@ -66,7 +66,7 @@ type: parent  # or leaf or root
 **Step 1d: Extract Specification Content**
 
 From spec.md body, extract:
-- Protocol name and domain
+- Specification name and domain
 - Core entities defined
 - Operations/interfaces
 - Lifecycle phases (if any)
@@ -74,7 +74,7 @@ From spec.md body, extract:
 - Use cases
 - Current document length (line count)
 
-#### 2. Analyze Protocol Complexity
+#### 2. Analyze Specification Complexity
 
 **Complexity Assessment Criteria**:
 
@@ -84,7 +84,7 @@ From spec.md body, extract:
    - Complex: 16+ entities
    
 2. **Lifecycle Phases**:
-   - None: Stateless protocol
+   - None: Stateless specification
    - Few (1-3): Simple workflow
    - Many (4+): Complex lifecycle requiring phase-specific specs
 
@@ -98,9 +98,9 @@ From spec.md body, extract:
    - Broad: Multiple concerns (full development lifecycle, enterprise integration)
 
 5. **Interdependencies**:
-   - Standalone: No external protocols
-   - Dependent: References other protocols
-   - Ecosystem: Part of multi-protocol system
+   - Standalone: No external specifications
+   - Dependent: References other specifications
+   - Ecosystem: Part of multi-specification system
 
 **Decision Matrix**:
 
@@ -128,7 +128,7 @@ Note: Adjusted to align with 1500-line threshold mentioned in Decision Matrix
 
 **Output format (both cases)**:
 ```
-Protocol Analysis: {spec_id}
+Specification Analysis: {spec_id}
 
 📊 Complexity Assessment:
    - Lines: {line_count}
@@ -148,7 +148,7 @@ Protocol Analysis: {spec_id}
 
 Reason: Specification is manageable (complexity: {score:.2f})
 
-This protocol does not need to be split into sub-specifications.
+This specification does not need to be split into sub-specifications.
 It is a **leaf specification** - a complete, self-contained specification.
 
 Next Steps:
@@ -172,7 +172,7 @@ Next Steps:
 
 Reason: {complexity_score >= 1.0: moderate} or {>= 2.0: high complexity}
 
-This protocol should be split into sub-specifications for better maintainability.
+This specification should be split into sub-specifications for better maintainability.
 
 Next Steps:
 1. Review the generated plan.md
@@ -192,19 +192,19 @@ Continue to Step 4 to generate plan.md.
 
 ##### Pattern A: Lifecycle Phase Specifications
 
-**When to use**: Protocol defines 4+ lifecycle phases
+**When to use**: Specification defines 4+ lifecycle phases
 
-**Example** (Order Management Protocol):
+**Example** (Order Management Specification):
 ```
-Core Protocol (001-order-management-protocol)
+Core Specification (001-order-management-spec)
   ↓ References
-Phase Protocols:
-  - 002-order-creation-protocol
-  - 003-payment-processing-protocol
-  - 004-fulfillment-protocol
-  - 005-shipping-protocol
-  - 006-delivery-protocol
-  - 007-returns-protocol
+Phase Specifications:
+  - 002-order-creation-spec
+  - 003-payment-processing-spec
+  - 004-fulfillment-spec
+  - 005-shipping-spec
+  - 006-delivery-spec
+  - 007-returns-spec
 ```
 
 **Other examples**: Development workflows, deployment pipelines, data processing stages
@@ -216,37 +216,37 @@ Phase Protocols:
 
 ##### Pattern B: Component Type Specifications
 
-**When to use**: Protocol defines multiple component types (3+)
+**When to use**: Specification defines multiple component types (3+)
 
-**Example** (Plugin System Protocol):
+**Example** (Plugin System Specification):
 ```
-Core Protocol (001-plugin-system-protocol)
+Core Specification (001-plugin-system-spec)
   ↓ References
-Component Protocols:
-  - 002-plugin-interface-protocol
-  - 003-hook-system-protocol
-  - 004-event-bus-protocol
-  - 005-configuration-protocol
+Component Specifications:
+  - 002-plugin-interface-spec
+  - 003-hook-system-spec
+  - 004-event-bus-spec
+  - 005-configuration-spec
 ```
 
 **Benefits**:
 - Deep component specifications
 - Component-specific validation
-- Modular protocol evolution
+- Modular specification evolution
 
 ##### Pattern C: Cross-Cutting Concern Specifications
 
-**When to use**: Protocol has supporting systems used across entities
+**When to use**: Specification has supporting systems used across entities
 
-**Example** (API Protocol):
+**Example** (API Specification):
 ```
-Core Protocol (001-api-protocol)
+Core Specification (001-api-spec)
   ↓ References
-Supporting Protocols:
-  - 002-authentication-protocol
-  - 003-error-handling-protocol
-  - 004-versioning-protocol
-  - 005-rate-limiting-protocol
+Supporting Specifications:
+  - 002-authentication-spec
+  - 003-error-handling-spec
+  - 004-versioning-spec
+  - 005-rate-limiting-spec
 ```
 
 **Benefits**:
@@ -256,17 +256,17 @@ Supporting Protocols:
 
 ##### Pattern D: Layered Architecture Specifications
 
-**When to use**: Protocol has distinct architectural layers
+**When to use**: Specification has distinct architectural layers
 
-**Example** (Communication Protocol):
+**Example** (Communication Specification):
 ```
-Core Protocol (001-messaging-protocol)
+Core Specification (001-messaging-spec)
   ↓ References
-Layer Protocols:
-  - 002-transport-layer-protocol (HTTP, WebSocket, gRPC)
-  - 003-message-format-protocol (JSON, Protobuf)
-  - 004-security-layer-protocol (TLS, Authentication)
-  - 005-reliability-protocol (Retry, Circuit Breaker)
+Layer Specifications:
+  - 002-transport-layer-spec (HTTP, WebSocket, gRPC)
+  - 003-message-format-spec (JSON, Protobuf)
+  - 004-security-layer-spec (TLS, Authentication)
+  - 005-reliability-spec (Retry, Circuit Breaker)
 ```
 
 **Benefits**:
@@ -274,25 +274,25 @@ Layer Protocols:
 - Technology alternatives
 - Clear boundaries
 
-#### 4. Design Protocol Architecture
+#### 4. Design Specification Architecture
 
 **Create architecture plan**:
 
 ```markdown
-# Protocol Architecture Plan
+# Specification Architecture Plan
 
 ## Overview
-- **Protocol Name**: [name]
+- **Specification Name**: [name]
 - **Domain**: [domain]
 - **Complexity**: [Simple/Medium/Complex]
 - **Primary Pattern**: [Lifecycle/Component/CrossCutting/Layered]
 
-## Core Protocol (001-{name}-protocol)
+## Core Specification (001-{name}-spec)
 
 **Purpose**: High-level overview and integration point
 
 **Scope**:
-- Protocol overview and problem statement
+- Specification overview and problem statement
 - Glossary of key terms
 - Use cases
 - Entity overview (high-level, not detailed)
@@ -308,7 +308,7 @@ Layer Protocols:
 **Purpose**: [specific concern]
 
 **Dependencies**: 
-- Depends on: 001-core-protocol
+- Depends on: 001-core-spec
 
 **Scope**:
 - [Entity/Phase/Component] detailed definition
@@ -329,7 +329,7 @@ Layer Protocols:
 
 ```mermaid
 graph TD
-    001[Core Protocol] --> 002[Sub-Spec 1]
+    001[Core Specification] --> 002[Sub-Spec 1]
     001 --> 003[Sub-Spec 2]
     002 --> 005[Sub-Spec 4]
     003 --> 005
@@ -339,7 +339,7 @@ graph TD
 ## Implementation Order
 
 **Phase 1: Core Foundation**
-- [ ] 001-core-protocol (base specification)
+- [ ] 001-core-spec (base specification)
 
 **Phase 2: Primary Specifications** (P0)
 - [ ] 002-[name] (critical dependency)
@@ -357,14 +357,14 @@ graph TD
 **How sub-specifications reference core**:
 ```markdown
 ## Dependencies
-- **Depends on**: protocol/001-core-protocol
-- **Uses entities from**: Core Protocol (Server, Client)
-- **Extends validation from**: Core Protocol Section 5.2
+- **Depends on**: domain/001-core-spec
+- **Uses entities from**: Core Specification (Server, Client)
+- **Extends validation from**: Core Specification Section 5.2
 ```
 
 ## Success Criteria
 
-- [ ] Core protocol defines integration points clearly
+- [ ] Core specification defines integration points clearly
 - [ ] Each sub-specification has clear scope
 - [ ] Dependencies are acyclic (no circular references)
 - [ ] Total specification size manageable (<10 sub-specs ideal)
@@ -387,21 +387,21 @@ graph TD
 
 3. **Is this future-proof?**
    - Can new phases/components be added easily?
-   - Does the structure support protocol evolution?
+   - Does the structure support specification evolution?
    - Are there natural extension points?
 
 **Recommendation**:
-- ✅ Proceed with split if protocol is 1500+ lines
-- ⚠️ Defer split if protocol is 500-1500 lines (manageable as single spec)
-- ✅ Keep single spec if protocol is <500 lines
+- ✅ Proceed with split if specification is 1500+ lines
+- ⚠️ Defer split if specification is 500-1500 lines (manageable as single spec)
+- ✅ Keep single spec if specification is <500 lines
 
 #### 6. Generate plan.md
 
-**Output location**: `specs/domain/001-{name}-protocol/plan.md`
+**Output location**: `specs/domain/001-{name}-spec/plan.md`
 
 **Structure**:
 ```markdown
-# [Protocol Name] - Architecture Plan
+# [Specification Name] - Architecture Plan
 
 **Version**: 1.0.0  
 **Created**: [date]  
@@ -409,7 +409,7 @@ graph TD
 
 ---
 
-## Protocol Complexity Assessment
+## Specification Complexity Assessment
 
 ### Metrics
 - **Entity Count**: [N] entities
@@ -428,18 +428,18 @@ graph TD
 
 ---
 
-## Protocol Architecture (IF SPLITTING)
+## Specification Architecture (IF SPLITTING)
 
-[Include sections from Step 4: Design Protocol Architecture]
+[Include sections from Step 4: Design Specification Architecture]
 
 ---
 
-## Protocol Structure (IF KEEPING SINGLE SPEC)
+## Specification Structure (IF KEEPING SINGLE SPEC)
 
 ### Suggested Organization
 ```markdown
-001-{name}-protocol/spec.md:
-  1. Protocol Overview (lines 1-50)
+001-{name}-spec/spec.md:
+  1. Specification Overview (lines 1-50)
   2. Glossary (lines 51-100)
   3. Use Cases (lines 101-200)
   4. Core Entities (lines 201-500)
@@ -463,18 +463,18 @@ graph TD
 ## Quality Guidelines
 
 ### Specification Size Targets
-- **Core protocol**: 300-800 lines (overview)
+- **Core specification**: 300-800 lines (overview)
 - **Sub-specification**: 500-1500 lines (detailed)
 - **Total system**: <10,000 lines
 
 ### Maintainability Principles
 1. Each specification should be readable in <30 minutes
 2. Dependencies should form a DAG (no cycles)
-3. Common patterns should be in core protocol
+3. Common patterns should be in core specification
 4. Each sub-spec should be independently testable
 
 ### Evolution Strategy
-- Core protocol changes require major version bump
+- Core specification changes require major version bump
 - Sub-specification changes can be independent
 - Deprecation policy: 12 months notice
 - Migration guides required for breaking changes
@@ -492,7 +492,7 @@ graph TD
 - [ ] Each sub-specification has defined scope and estimated size
 
 **If plan looks good**:
-- Save to `specs/domain/001-{name}-protocol/plan.md`
+- Save to `specs/domain/001-{name}-spec/plan.md`
 - Proceed to `/metaspec.sds.tasks`
 
 **If plan needs refinement**:
@@ -504,15 +504,15 @@ graph TD
 #### 8. Report Completion
 
 ```
-✅ Protocol architecture plan complete
+✅ Specification architecture plan complete
 
 📋 Assessment:
-- Protocol: [name]
+- Specification: [name]
 - Complexity: [Simple/Medium/Complex]
 - Recommendation: [Keep single spec / Split into N sub-specifications]
 
 📁 Generated:
-- specs/domain/001-{name}-protocol/plan.md
+- specs/domain/001-{name}-spec/plan.md
 
 📊 Architecture Summary:
 [IF KEEPING SINGLE SPEC]:
@@ -521,7 +521,7 @@ graph TD
 - Maintainability: High
 
 [IF SPLITTING]:
-- Core protocol: 001-{name}-protocol
+- Core specification: 001-{name}-spec
 - Sub-specifications: N sub-specs
   - Priority P0: [N] specs (critical)
   - Priority P1: [N] specs (important)
@@ -535,7 +535,7 @@ graph TD
 3. Run /metaspec.sds.implement to write specifications
 
 💡 Suggested commit message:
-   docs: add protocol architecture plan for [protocol-name]
+   docs: add specification architecture plan for [specification-name]
 ```
 
 ## Key Principles
@@ -562,31 +562,31 @@ graph TD
 
 ## Examples
 
-### Example 1: Simple Protocol (Keep Single Spec)
+### Example 1: Simple Specification (Keep Single Spec)
 
-**Authentication Protocol**:
+**Authentication Specification**:
 - Entities: 3 (User, Token, Session)
 - Document length: 450 lines
 - **Decision**: Keep as single spec
 - **Rationale**: Small, focused domain; splitting would add unnecessary complexity
 
-### Example 2: Complex Protocol (Split)
+### Example 2: Complex Specification (Split)
 
-**E-commerce Order Protocol**:
+**E-commerce Order Specification**:
 - Entities: 15+ (Order, Payment, Inventory, Shipping, Customer, etc.)
 - Lifecycle phases: 7 (Creation → Returns)
 - Document length: 2800+ lines
 - **Decision**: Split into 12 sub-specifications
-  - Core: 001-order-protocol (overview)
-  - Phases: 002-008 (phase-specific protocols)
+  - Core: 001-order-spec (overview)
+  - Phases: 002-008 (phase-specific specifications)
   - Support: 009-012 (payment, inventory, notification, audit)
 - **Rationale**: Each phase has complex business rules; single spec would be unmanageable
 
-**Alternative example**: Large development workflow protocol (6+ phases), healthcare patient journey protocol (10+ stages)
+**Alternative example**: Large development workflow specification (6+ phases), healthcare patient journey specification (10+ stages)
 
-### Example 3: Medium Protocol (Defer Split)
+### Example 3: Medium Specification (Defer Split)
 
-**File System Protocol**:
+**File System Specification**:
 - Entities: 8 (File, Directory, Permission, etc.)
 - Document length: 900 lines
 - **Decision**: Keep single spec for now, plan for future split
@@ -605,7 +605,7 @@ graph TD
    - Splitting too early adds complexity
 
 3. **Think about consumers**
-   - Will users read the entire protocol?
+   - Will users read the entire specification?
    - Do different audiences need different specifications?
    - Is modular documentation valuable?
 

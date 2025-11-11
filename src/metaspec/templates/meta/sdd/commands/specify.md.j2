@@ -19,25 +19,25 @@ The text the user typed after `/metaspec.sdd.specify` is the **toolkit specifica
 This command is for defining **toolkit implementation specifications**:
 - Focus: HOW to implement the toolkit
 - Output: `specs/toolkit/001-{name}/spec.md`
-- Must depend on protocol specs
+- Must depend on specification specs
 - Implementation-focused
 
-**NOT for protocol definition** - Use `/metaspec.sds.specify` for that.
+**NOT for specification definition** - Use `/metaspec.sds.specify` for that.
 
 Follow this execution flow:
 
 ### 1. Determine Toolkit and Load Existing Specification
 
-**Step 1a: Verify Protocol Dependency (REQUIRED)**
+**Step 1a: Verify Specification Dependency (REQUIRED)**
 
 ```bash
-# Check if protocol specs exist
+# Check if specification specs exist
 ls specs/domain/ | grep -E '^[0-9]{3}-'
 ```
 
-**CRITICAL REQUIREMENT**: Toolkit specs MUST depend on at least one protocol spec.
+**CRITICAL REQUIREMENT**: Toolkit specs MUST depend on at least one specification spec.
 
-If no protocol specs exist, **STOP** and show this error:
+If no specification specs exist, **STOP** and show this error:
 
 ```
 ❌ ERROR: Cannot create toolkit without domain specification
@@ -54,13 +54,13 @@ Then return to create toolkit with:
   /metaspec.sdd.specify "Create {toolkit} for {domain}"
 
 Why this matters:
-- Protocol is the specification (core asset)
+- Specification is the specification (core asset)
 - Toolkit is the implementation (supporting tool)
-- Without protocol, this becomes a generic code generator
+- Without specification, this becomes a generic code generator
 - MetaSpec's value is in spec-driven development
 ```
 
-**Do not proceed** if no protocol specs exist.
+**Do not proceed** if no specification specs exist.
 
 **Step 1b: Generate Toolkit Name**
 
@@ -85,13 +85,13 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
 
 ### 2. Gather Toolkit Specification Content
 
-**Focus**: Define how to implement tools to support the protocol.
+**Focus**: Define how to implement tools to support the specification.
 
 **Critical Questions**:
 
-1. **Dependencies**: Which protocol specs does this toolkit support?
-   - **REQUIRED**: Must reference at least one `protocol/XXX-` spec
-   - Example: "Depends on: protocol/001-api-specification"
+1. **Dependencies**: Which specification specs does this toolkit support?
+   - **REQUIRED**: Must reference at least one `domain/XXX-` spec
+   - Example: "Depends on: domain/001-api-specification"
    
 2. **Toolkit Purpose**: What does this toolkit do?
    - Example: "Parse and validate specification documents"
@@ -112,8 +112,8 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
      - Needed if: Users write specs in files (YAML/JSON/TOML)
      - Not needed if: Specs are generated programmatically
    
-   - [ ] **Validator** - Validate against protocol rules
-     - Needed if: Need to enforce protocol compliance
+   - [ ] **Validator** - Validate against specification rules
+     - Needed if: Need to enforce specification compliance
      - Always recommended for spec-driven toolkits
    
    - [ ] **CLI** - Command-line interface
@@ -141,7 +141,7 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
    - Output format (Objects, AST, IR)?
    
 7. **Validator Component** (if needed): What validation will it perform?
-   - Must validate against protocol rules
+   - Must validate against specification rules
    - What error messages/codes?
    
 8. **CLI Commands** (if needed): What commands will users run?
@@ -158,8 +158,8 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
 
 **Important Notes**:
 - This is SDD (Spec-Driven Development) - focus on implementation
-- Must explicitly depend on protocol specs
-- For protocol definition, use `/metaspec.sds.specify` instead
+- Must explicitly depend on specification specs
+- For specification definition, use `/metaspec.sds.specify` instead
 
 **If user input is vague**, make informed guesses based on domain standards and document assumptions.
 
@@ -175,7 +175,7 @@ Generate **Toolkit Implementation Specification** with these sections:
 ## Dependencies
 
 **Domain Specifications**:
-- **protocol/001-{domain}-specification** - {Brief description of what specification defines}
+- **domain/001-{domain}-specification** - {Brief description of what specification defines}
 
 ### Dependency Rationale
 
@@ -203,7 +203,7 @@ Generate **Toolkit Implementation Specification** with these sections:
 
 **Purpose**: {What this toolkit does}
 
-**Target Protocol**: Implements support for protocol/001-{domain}-protocol
+**Target Specification**: Implements support for domain/001-{domain}-spec
 
 **Primary Use Cases**:
 1. {Use case 1}
@@ -321,12 +321,12 @@ spec = parse_spec(spec_dict, format="dict")
 ```markdown
 ### Validator Component
 
-**Purpose**: Validate specifications against protocol rules (from protocol/001-xxx)
+**Purpose**: Validate specifications against specification rules (from domain/001-xxx)
 
-**Validation Rules** (Reference protocol spec):
-1. {Rule from protocol/001-xxx}
-2. {Rule from protocol/001-xxx}
-3. {Rule from protocol/001-xxx}
+**Validation Rules** (Reference specification spec):
+1. {Rule from domain/001-xxx}
+2. {Rule from domain/001-xxx}
+3. {Rule from domain/001-xxx}
 
 **Validation Levels**:
 - **Error**: Violations that prevent usage
@@ -363,13 +363,13 @@ if not result.valid:
 
 ##### **Component 3: CLI Commands**
 
-**CRITICAL**: CLI commands come from **Toolkit Purpose**, NOT from protocol workflow.
+**CRITICAL**: CLI commands come from **Toolkit Purpose**, NOT from specification workflow.
 
 ```markdown
 ### CLI Commands
 
 **Key Distinction**:
-- **Slash Commands** → From protocol workflow (define-requirements, create-design)
+- **Slash Commands** → From specification workflow (define-requirements, create-design)
 - **CLI Commands** → From toolkit function (init, check, list, validate)
 
 ---
@@ -386,10 +386,10 @@ Select primary toolkit type(s):
 - [ ] **Environment Checker** - Verifies system setup, dependencies
   - Example: Specify (`specify check`)
   
-- [ ] **Validator** - Validates against protocol schemas
+- [ ] **Validator** - Validates against specification schemas
   - Example: OpenSpec (`openspec validate`)
   
-- [ ] **Query/Reference Tool** - Provides protocol information
+- [ ] **Query/Reference Tool** - Provides specification information
   - Example: OpenSpec (`openspec show`, `openspec list`)
   
 - [ ] **State Manager** - Manages project/spec state
@@ -555,34 +555,34 @@ check-transition
 
 ---
 
-**STEP 3: Protocol-Influenced CLI Parameters**
+**STEP 3: Specification-Influenced CLI Parameters**
 
-**Protocol content can influence command parameters** (not command names):
+**Specification content can influence command parameters** (not command names):
 
-**If protocol defines entity types**:
+**If specification defines entity types**:
 ```bash
-# Protocol has: Server, Tool, Resource entities
+# Specification has: Server, Tool, Resource entities
 {toolkit-name} show <entity-type>     # show server | tool | resource
 {toolkit-name} init <entity-type>     # init server | tool
 ```
 
-**If protocol has structured sections**:
+**If specification has structured sections**:
 ```bash
-# Protocol has: Overview, Entities, Operations, Examples sections
+# Specification has: Overview, Entities, Operations, Examples sections
 {toolkit-name} docs [section]         # docs entities | docs operations
 ```
 
-**If protocol defines workflow phases**:
+**If specification defines workflow phases**:
 ```bash
-# Protocol has: Phase 1, Phase 2, Phase 3
+# Specification has: Phase 1, Phase 2, Phase 3
 {toolkit-name} status                 # Show current phase
 {toolkit-name} next                   # Move to next phase
 ```
 
 **Key Principle**: 
-- Protocol influences **parameters and options**
+- Specification influences **parameters and options**
 - NOT command names (those come from toolkit purpose)
-- Use protocol's actual terminology in parameters
+- Use specification's actual terminology in parameters
 
 ---
 
@@ -639,28 +639,28 @@ check-transition
 
 **Component Structure**:
 - **Overview**: What Slash Commands are and dual-source architecture
-- **[Source 1](#source-1-protocol-derived-commands-custom)**: Protocol-Derived Commands (7-STEP process)
+- **[Source 1](#source-1-specification-derived-commands-custom)**: Specification-Derived Commands (7-STEP process)
 - **[Source 2](#source-2-library-selected-commands-reusable)**: Library-Selected Commands (Selection & Adaptation)
 
-**CRITICAL UNDERSTANDING**: Slash Commands are **NOT** CLI usage manuals. They are **spec-driven execution guides** that embed protocol knowledge and guide AI to produce spec-compliant outputs.
+**CRITICAL UNDERSTANDING**: Slash Commands are **NOT** CLI usage manuals. They are **spec-driven execution guides** that embed specification knowledge and guide AI to produce spec-compliant outputs.
 
 ```markdown
 ### Slash Commands
 
-**What they are**: Spec-driven execution guides with embedded protocol knowledge
+**What they are**: Spec-driven execution guides with embedded specification knowledge
 **Where they go**: `templates/{source}/commands/` directory (organized by specification system source)  
 **How AI uses them**: Via `/` prefix in AI chat (Cursor, Windsurf, etc.)
 **Core purpose**: Guide AI to **produce outputs that comply with domain specifications**
 
 **Key Distinction**:
 - ❌ **NOT**: "How to call CLI commands" (wrapper documentation)
-- ✅ **YES**: "How to execute according to protocol specs" (spec-driven guidance)
+- ✅ **YES**: "How to execute according to specification specs" (spec-driven guidance)
 
 **When to Include**:
 - ✅ Primary users are AI agents
-- ✅ Tool enforces a specific protocol/specification
+- ✅ Tool enforces a specific specification/specification
 - ✅ Outputs must comply with validation rules
-- ✅ Multi-step workflows require protocol knowledge
+- ✅ Multi-step workflows require specification knowledge
 
 ---
 
@@ -697,10 +697,10 @@ model: claude-3-5-sonnet-20241022
 
 **IMPORTANT**: Slash Commands come from **TWO sources** and can be **composed**:
 
-#### Source 1: Protocol-Derived (Custom)
+#### Source 1: Specification-Derived (Custom)
 - **From**: SDS domain specification (`specs/domain/`)
-- **Nature**: Dynamic, protocol-specific, tailored
-- **Process**: Analyze protocol → Derive commands
+- **Nature**: Dynamic, specification-specific, tailored
+- **Process**: Analyze specification → Derive commands
 - **Examples**: `get-template`, `validate`, workflow actions
 
 #### Source 2: Library-Selected (Reusable)
@@ -714,10 +714,10 @@ model: claude-3-5-sonnet-20241022
 ```
 Choose one or combine:
 
-Option A: Protocol-Only (Custom)
-  → Derive all commands from protocol
+Option A: Specification-Only (Custom)
+  → Derive all commands from specification
   → Fully tailored to domain
-  → Example: Domain-specific commands from protocol phases
+  → Example: Domain-specific commands from specification phases
 
 Option B: Library-Only (Reusable)
   → Use pre-built spec system
@@ -726,8 +726,8 @@ Option B: Library-Only (Reusable)
 
 Option C: Composed (Recommended)
   → Base: Library spec system
-  → Extension: Protocol-derived commands
-  → Example: Generic workflow + protocol-specific commands
+  → Extension: Specification-derived commands
+  → Example: Generic workflow + specification-specific commands
 ```
 
 **MetaSpec's Composability**:
@@ -738,33 +738,33 @@ Option C: Composed (Recommended)
 
 ---
 
-#### Source 1: Protocol-Derived Commands (Custom)
+#### Source 1: Specification-Derived Commands (Custom)
 
 **Overview**: Derive commands by analyzing your domain specification and extracting domain-specific terminology.
 
-**STEP 1: Analyze Protocol Specification**
+**STEP 1: Analyze Domain Specification**
 
 **Before defining Slash Commands**, analyze the SDS domain specification in `specs/domain/`.
 
 **Questions to Ask**:
 
-1. **Protocol Complexity**
-   - [ ] Does the protocol define complex rules and constraints?
+1. **Specification Complexity**
+   - [ ] Does the specification define complex rules and constraints?
    - [ ] Will AI need to reference these rules repeatedly?
-   - **If YES** → Need commands to access protocol knowledge
+   - **If YES** → Need commands to access specification knowledge
 
 2. **Entities & Structures**
-   - [ ] Does the protocol define multiple entity types?
+   - [ ] Does the specification define multiple entity types?
    - [ ] Do entities have specific structures (schemas, fields, validation)?
    - **If YES** → Need commands to work with entities
 
 3. **Validation Rules**
-   - [ ] Does the protocol specify validation constraints?
+   - [ ] Does the specification specify validation constraints?
    - [ ] Must outputs be validated against schemas?
    - **If YES** → Need validation commands
 
 4. **Workflows & Phases**
-   - [ ] Does the protocol define a multi-phase workflow?
+   - [ ] Does the specification define a multi-phase workflow?
    - [ ] Are there specific actions in each phase?
    - **If YES** → Analyze workflow type:
      - **Type A (State Machine)**: Abstract states (draft → review → approved)
@@ -778,10 +778,10 @@ Option C: Composed (Recommended)
    - Pattern: Workflow action → namespaced command (simple verbs with namespace prefix)
    - Note: This is how MetaSpec itself was built - we eat our own dog food
    
-   **Key principle**: If protocol phases are **verb-able actions** (can be turned into verbs), derive commands from them directly
+   **Key principle**: If specification phases are **verb-able actions** (can be turned into verbs), derive commands from them directly
 
 5. **Examples & Templates**
-   - [ ] Does the protocol include examples or templates?
+   - [ ] Does the specification include examples or templates?
    - [ ] Will AI need to reference these?
    - **If YES** → Need commands to retrieve examples
 
@@ -791,9 +791,9 @@ Option C: Composed (Recommended)
 
 **Complete this analysis before moving to STEP 2**:
 
-**Protocol Understanding**:
-- [ ] Identified all protocol entities (Server, Tool, Resource, etc.)
-- [ ] Listed all protocol operations (initialize, list, call, etc.)
+**Specification Understanding**:
+- [ ] Identified all specification entities (Server, Tool, Resource, etc.)
+- [ ] Listed all specification operations (initialize, list, call, etc.)
 - [ ] Documented validation rules (schemas, constraints)
 
 **Workflow Analysis** (CRITICAL):
@@ -809,7 +809,7 @@ Option C: Composed (Recommended)
 
 **Mapping Example** (for Type B):
 ```
-Protocol Phase     → Command Verb → Command Name         → With Namespace
+Specification Phase     → Command Verb → Command Name         → With Namespace
 ──────────────────────────────────────────────────────────────────────────
 SPECIFY feature    → specify      → specify              → sdd.specify
 CLARIFY ambiguity  → clarify      → clarify              → sdd.clarify
@@ -819,15 +819,15 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 **Why This Matters**:
 - ❌ Skipping this analysis → Generic commands without domain context
-- ✅ Complete analysis → Simple, memorable commands derived from protocol phases
+- ✅ Complete analysis → Simple, memorable commands derived from specification phases
 - 💡 Use simple verbs; add namespace if needed; context goes in help text
 
 ---
 
-**STEP 2: Derive Command Names from Protocol**
+**STEP 2: Derive Command Names from Specification**
 
 **CRITICAL**: ❌ **DON'T use generic names** (get-spec, get-template, validate)  
-            ✅ **DO extract domain-specific names** from protocol terminology
+            ✅ **DO extract domain-specific names** from specification terminology
 
 **Why This Matters**:
 - Generic names lose domain meaning
@@ -838,7 +838,7 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 **Command Naming Process**:
 
-1. **Read Protocol Content**
+1. **Read Specification Content**
    - Workflow phases: "Define Server", "Configure Endpoints"
    - Entity names: "Server", "Tool", "Resource"
    - Operations: "Initialize", "Validate", "Deploy"
@@ -850,7 +850,7 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 3. **Form Simple Command Names**
    - Single verbs: `specify`, `plan`, `validate`
-   - Or use protocol's exact terminology (keep simple)
+   - Or use specification's exact terminology (keep simple)
 
 ---
 
@@ -870,24 +870,24 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 **Command Purpose Categories** (for guidance, NOT fixed names):
 
-| Protocol Contains | Command Purpose | Naming Examples | When to Include |
+| Specification Contains | Command Purpose | Naming Examples | When to Include |
 |------------------|----------------|-----------------|-----------------|
 | **Workflow phases** | Execute phase actions | MetaSpec: `specify`, `clarify`, `plan`<br>Generic: `design`, `build`, `test` | Always (if workflow exists) |
 | **Validation** | Validate outputs | MetaSpec: `analyze`, `checklist`<br>Generic: `validate`, `verify`, `lint` | If validation rules exist |
 | **Multi-step process** | Navigate process | Generic: `next`, `status`, `rollback`<br>Lifecycle: `init`, `deploy`, `cleanup` | If state machine workflow |
 | **Reference docs** | Access knowledge | Generic: `docs`, `show`, `reference`<br>Query: `list`, `search`, `info` | If complex docs (20+ pages) |
 
-**Key Principle**: Use protocol's own vocabulary, don't impose generic names
+**Key Principle**: Use specification's own vocabulary, don't impose generic names
 
 ---
 
 **Quick Reference**:
 ```markdown
-Protocol workflow: "Specify Feature" → Command: `specify` (simple verb)
-Protocol phases: "Plan Architecture" → Command: `plan` (phase becomes command)
-Protocol validation: "Check Quality" → Command: `checklist` (domain-specific verb)
+Specification workflow: "Specify Feature" → Command: `specify` (simple verb)
+Specification phases: "Plan Architecture" → Command: `plan` (phase becomes command)
+Specification validation: "Check Quality" → Command: `checklist` (domain-specific verb)
 
-Key principle: Extract simple verbs from protocol phases/actions
+Key principle: Extract simple verbs from specification phases/actions
 ```
 
 ---
@@ -995,16 +995,16 @@ This section covers implementation of support tools specifically for Slash Comma
 Based on your toolkit functions (from **Component 3, STEP 1: Define Toolkit Type**), implement:
 
 - [ ] **Validation**: validate <file>, check, lint
-  - Validate against protocol schema
+  - Validate against specification schema
   - Independent verification tool
 
 - [ ] **Information Display**: show [section], docs <topic>, help
-  - Display protocol documentation
+  - Display specification documentation
   - Provide reference information
 
 - [ ] **Query**: list [type], info
   - List available entities/examples
-  - Show protocol information
+  - Show specification information
 
 **Naming Reminder**:
 - ❌ Don't hardcode: get-spec, get-template, get-example
@@ -1077,30 +1077,30 @@ You **MUST** consider the user input before proceeding (if not empty).
 **Argument Access**: `$ARGUMENTS`, `$1`, `$2`, `$3` (see [Frontmatter Fields](#frontmatter-fields-yaml-metadata) above)
 
 ## Purpose
-[What protocol-compliant output to produce]
+[What specification-compliant output to produce]
 
-## Protocol Specification (EMBEDDED)
+## Domain Specification (EMBEDDED)
 **From**: specs/domain/{XXX}/spec.md
 
 ### Entity Structure
-[Copy entity definition from protocol]
+[Copy entity definition from specification]
 - field1: type (required) - description
 - field2: type (optional) - description
-- Constraints: [Protocol constraints]
+- Constraints: [Specification constraints]
 
 ### Validation Rules
-- VR001: {Rule from protocol}
-- VR002: {Rule from protocol}
+- VR001: {Rule from specification}
+- VR002: {Rule from specification}
 
 ### Examples
-[Protocol examples]
+[Specification examples]
 
 ## AI Execution Steps
 1. **Understand User Intent**
    - Extract key information
-   - Map to protocol entity
+   - Map to specification entity
 
-2. **Apply Protocol Rules**
+2. **Apply Specification Rules**
    - Check constraint 1
    - Ensure constraint 2
 
@@ -1109,13 +1109,13 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Include required fields
 
 4. **Self-Validate**
-   - Verify against protocol rules
+   - Verify against specification rules
    - Check all constraints met
 
 ## Output Template
 \```json
 {
-  "field1": "...",  // From protocol
+  "field1": "...",  // From specification
   "field2": "..."   // Validated against VR001
 }
 \```
@@ -1127,7 +1127,7 @@ User can validate output independently:
 \```
 
 ## Related Commands
-- /{toolkit}.get-spec - Reference full protocol (if exists)
+- /{toolkit}.get-spec - Reference full specification (if exists)
 ```
 
 **Example**: MetaSpec's `/metaspec.sdd.specify`, OpenSpec's `/openspec.proposal`
@@ -1175,10 +1175,10 @@ scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 
 **Script Purpose**: Set up file structure, create skeleton
 
-## Protocol Specification (EMBEDDED)
+## Domain Specification (EMBEDDED)
 **From**: specs/domain/{XXX}/spec.md
 
-[Copy relevant protocol sections like Pure-Execution template]
+[Copy relevant specification sections like Pure-Execution template]
 
 ## Execution Flow
 1. **Call Helper Script**
@@ -1191,11 +1191,11 @@ scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 2. **AI Produces Content**
    - Read script output (file paths)
    - Load domain specification
-   - Fill skeleton with protocol-compliant content
+   - Fill skeleton with specification-compliant content
 
 3. **Verify Structure**
    - Check all required files created
-   - Validate against protocol
+   - Validate against specification
 
 ## Output
 - Structure: Created by script
@@ -1243,14 +1243,14 @@ After AI has produced output via Pure-Execution commands
    \```
    "Content created successfully!
    
-   To validate against {protocol-name} schema, run:
+   To validate against {specification-name} schema, run:
      {toolkit-name} validate <file>
    "
    \```
 
 ## Available CLI Commands
 - `{toolkit-name} validate <file>` - Validate against schema
-- `{toolkit-name} get-spec` - View protocol details
+- `{toolkit-name} get-spec` - View specification details
 - `{toolkit-name} list` - List available entities
 
 ## Note
@@ -1264,10 +1264,10 @@ It teaches AI to suggest appropriate CLI commands to users.
 
 **STEP 6: Workflow-Specific Commands (Type B Only)**
 
-**If protocol defines Type B Workflow (Action Sequence)**, these workflow actions become **Pure-Execution Slash Commands**:
+**If specification defines Type B Workflow (Action Sequence)**, these workflow actions become **Pure-Execution Slash Commands**:
 
 ```markdown
-Protocol Workflow Example:
+Specification Workflow Example:
   phases:
     - Requirements:
         actions:
@@ -1285,7 +1285,7 @@ Command Classification:
   - review-design → Pure-Execution (AI reviews)
 
 Each Slash Command contains:
-  - Protocol knowledge for that phase
+  - Specification knowledge for that phase
   - Entity structure for that artifact
   - Spec-driven execution steps
   - Validation rules for outputs
@@ -1308,7 +1308,7 @@ Each Slash Command contains:
 ### CLI Commands (Total: X)
 
 **CLI-Backed** (Y commands):
-- [ ] get-spec: Read protocol files
+- [ ] get-spec: Read specification files
 - [ ] get-template: Read entity templates
 - [ ] validate: Execute validation logic
 - [ ] get-workflow: Query workflow state
@@ -1355,29 +1355,29 @@ Each Slash Command contains:
 
 **Design Principles: Spec-Driven Execution**
 
-1. **Embed Protocol Knowledge**
-   - ✅ Include entity definitions from protocol
+1. **Embed Specification Knowledge**
+   - ✅ Include entity definitions from specification
    - ✅ Copy validation rules into commands
-   - ✅ Provide protocol examples
+   - ✅ Provide specification examples
    - ❌ Don't just say "call this CLI"
 
 2. **Guide Spec-Compliant Production**
-   - ✅ Show how to structure outputs per protocol
+   - ✅ Show how to structure outputs per specification
    - ✅ Explain how to apply validation rules
-   - ✅ Provide output templates from protocol
+   - ✅ Provide output templates from specification
    - ❌ Don't just describe CLI parameters
 
-3. **Validate Against Protocol**
-   - ✅ Include validation checklists from protocol
+3. **Validate Against Specification**
+   - ✅ Include validation checklists from specification
    - ✅ Self-check steps for AI
    - ✅ Clear compliance criteria
    - ❌ Don't rely on external validation only
 
 **Quality Checklist**:
-- [ ] Embeds protocol knowledge (entities, rules, constraints)
+- [ ] Embeds specification knowledge (entities, rules, constraints)
 - [ ] Guides spec-compliant output production
-- [ ] Includes validation rules from protocol
-- [ ] Provides protocol-based templates
+- [ ] Includes validation rules from specification
+- [ ] Provides specification-based templates
 - [ ] AI can produce compliant output without external reference
 
 **Summary**: Source 1 provides a 7-STEP process to derive custom Slash Commands from your domain specification, ensuring domain-specific terminology and spec-driven execution.
@@ -1388,7 +1388,7 @@ Each Slash Command contains:
 
 **Overview**: Select and adapt pre-built specification systems from MetaSpec's template library.
 
-**Alternative/Complement to Protocol-Derived**: Use pre-built specification systems from MetaSpec library.
+**Alternative/Complement to Specification-Derived**: Use pre-built specification systems from MetaSpec library.
 
 **Why Simpler Process?**  
 Unlike Source 1 (derive from scratch), Source 2 reuses proven commands. The process is:
@@ -1434,12 +1434,12 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
 1. **Domain Match**
    - Software development → Look for SDD libraries
    - Design/Testing/Documentation → Look for generic/universal libraries
-   - Specific protocols → Look for protocol-specific libraries
+   - Specific specifications → Look for specification-specific libraries
 
 2. **Abstraction Level**
    - Need pure abstraction → Choose generic/universal
    - Need domain concepts → Choose specialized (e.g., sdd/*)
-   - Need protocol-specific → Choose protocol libraries
+   - Need specification-specific → Choose specification libraries
 
 3. **Workflow Type**
    - Greenfield (from scratch) → Greenfield workflows
@@ -1480,10 +1480,10 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
    - Maintain command structure and workflow logic
    - Preserve spec-driven execution principles
 
-3. **Add Protocol Context** (if composing)
-   - Enhance library commands with protocol knowledge
+3. **Add Specification Context** (if composing)
+   - Enhance library commands with specification knowledge
    - Embed entity definitions and validation rules
-   - Result: Library structure + Protocol specifics
+   - Result: Library structure + Specification specifics
 
 **See selected library's README.md on [MetaSpec GitHub](https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library) for detailed adaptation guidelines.**
 
@@ -1491,23 +1491,23 @@ This is intentionally simpler than Source 1's 7-STEP derivation process.
 
 **Composition Examples**
 
-**Composition Pattern 1: Library + Protocol**
+**Composition Pattern 1: Library + Specification**
 
 ```
 Base: Select library (e.g., generic/)
   → Provides workflow commands
   
-Extension: Derive from protocol
+Extension: Derive from specification
   → Add entity-specific commands (get-template)
-  → Add protocol commands (get-spec, validate)
+  → Add specification commands (get-spec, validate)
 
 Result: Combined command set
 ```
 
-**Composition Pattern 2: Protocol Only**
+**Composition Pattern 2: Specification Only**
 
 ```
-Derive all commands from protocol
+Derive all commands from specification
   → No library dependency
   → Fully custom to domain
   
@@ -1533,27 +1533,27 @@ Result: Proven workflow pattern
 ```markdown
 ### Slash Commands Strategy
 
-**Source**: [Protocol | Library | Composed]
+**Source**: [Specification | Library | Composed]
 
 **If Library**: 
 - Selected: {library-name} (from MetaSpec library)
 - Reference: https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/{library-name}
 - Rationale: {Why this library}
 
-**If Protocol-Derived**:
+**If Specification-Derived**:
 - Based on: specs/domain/{number}-{name}
 - Commands needed: {List and rationale}
 
 **If Composed**:
 - Base: {library-name} (from MetaSpec)
-- Extensions: {Protocol-derived commands}
+- Extensions: {Specification-derived commands}
 - Composition rationale: {Why compose}
 ```
 
 **Generator expectations**:
 - Copy selected library from MetaSpec to `templates/{source}/commands/`
 - Apply variable mappings (cli_name, entity_type, etc.)
-- Add protocol-derived commands if specified
+- Add specification-derived commands if specified
 - Source isolation prevents naming conflicts
 
 ---
@@ -1563,17 +1563,17 @@ Result: Proven workflow pattern
 - [ ] Selected appropriate library for domain
 - [ ] Mapped all library variables to domain terms
 - [ ] Adapted terminology to match domain
-- [ ] Added protocol knowledge where applicable
-- [ ] No naming conflicts between library and protocol commands
+- [ ] Added specification knowledge where applicable
+- [ ] No naming conflicts between library and specification commands
 - [ ] All commands properly prefixed (/{toolkit}.*)
 
 ---
 
 **Integration with Generated Speckit**
 
-These Slash Commands (from library and/or protocol) will:
+These Slash Commands (from library and/or specification) will:
 1. Be generated into `templates/{source}/commands/` directory (organized by source)
-2. Embed protocol knowledge where applicable
+2. Embed specification knowledge where applicable
 3. Provide reusable workflow patterns from library
 4. Enable spec-driven development by AI agents
 5. Support composition of multiple specification systems
@@ -1694,7 +1694,7 @@ Generator ───→ Output Artifacts
    - Edge cases (empty files, large files)
 
 2. **Validator Tests**:
-   - Each validation rule from protocol spec
+   - Each validation rule from specification spec
    - Error message quality
    - Multiple errors handling
 
@@ -1804,8 +1804,8 @@ See `tasks.md` (created via `/metaspec.sdd.tasks`)
 🎯 Toolkit: {Toolkit Name} v{version}
 
 📦 Dependencies:
-   → protocol/{dependency-1}
-   → protocol/{dependency-2}
+   → domain/{dependency-1}
+   → domain/{dependency-2}
 
 🔧 Components: {count} components defined
    - {Component 1}
@@ -1830,21 +1830,21 @@ See `tasks.md` (created via `/metaspec.sdd.tasks`)
 ✅ **DO**:
 - Define HOW to implement the toolkit
 - Specify Parser, Validator, CLI, Generator
-- Reference protocol specs explicitly
+- Reference specification specs explicitly
 - Include architecture and validation strategy
 - Focus on user experience
 
 ❌ **DON'T**:
-- Redefine the protocol (belongs in protocol specs)
+- Redefine the specification (belongs in specification specs)
 - Skip dependency declarations
-- Mix protocol and toolkit concerns
+- Mix specification and toolkit concerns
 - Over-specify implementation details
 
 ### Dependency Management
 
-- **Always** declare protocol dependencies at the top
-- Reference specific protocol/XXX- specs
-- Document which protocol features are supported
+- **Always** declare specification dependencies at the top
+- Reference specific specification/XXX- specs
+- Document which specification features are supported
 - Note version compatibility if relevant
 
 ### Component Design
@@ -1884,8 +1884,8 @@ grep -A 5 "AI-First Design" memory/constitution.md
 
 ## Troubleshooting
 
-**If no protocol specs exist**:
-→ Prompt user to create protocol spec first with `/metaspec.sds.specify`
+**If no specification specs exist**:
+→ Prompt user to create specification spec first with `/metaspec.sds.specify`
 
 **If toolkit seems too complex**:
 → Break into multiple toolkit specs (e.g., parser-only, validator-only)

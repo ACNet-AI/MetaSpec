@@ -10,7 +10,7 @@
 
 ---
 
-## 📐 Architecture & Protocols
+## 📐 Architecture & Specifications
 
 - **[architecture.md](./architecture.md)** - Three-layer template architecture
 - **[slash-cmd-protocol.md](./slash-cmd-protocol.md)** - Slash command dual-layer architecture

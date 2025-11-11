@@ -50,24 +50,24 @@ ls specs/toolkit/XXX-name/analysis/
 
 **Step 1a: Determine Feature Context**
 - Check current directory structure
-- Identify if analyzing Feature 1 (Protocol) or Feature 2 (Toolkit)
+- Identify if analyzing Feature 1 (Specification) or Feature 2 (Toolkit)
 
 **Step 1b: Load Appropriate Artifacts**
 
-**For Feature 1 (Protocol Spec)**:
+**For Feature 1 (Specification Spec)**:
 - **Required**:
-  - `specs/domain/001-{domain}-protocol/spec.md` (protocol definition)
+  - `specs/domain/001-{domain}-spec/spec.md` (specification definition)
   - `/memory/constitution.md` (domain principles)
 - **Optional**:
-  - `specs/domain/001-{domain}-protocol/checklists/`
-- **Skip**: plan.md, tasks.md (not needed for protocol specs)
+  - `specs/domain/001-{domain}-spec/checklists/`
+- **Skip**: plan.md, tasks.md (not needed for specification specs)
 
 **For Feature 2 (Toolkit Spec)**:
 - **Required**:
   - `specs/toolkit/001-toolkit/spec.md` (toolkit definition)
   - `specs/toolkit/001-toolkit/plan.md` (architecture)
   - `specs/toolkit/001-toolkit/tasks.md` (task breakdown)
-  - `specs/domain/001-{domain}-protocol/spec.md` (dependency!)
+  - `specs/domain/001-{domain}-spec/spec.md` (dependency!)
   - `/memory/constitution.md` (design principles)
 - **Optional**:
   - `specs/toolkit/001-toolkit/architecture.md`
@@ -108,10 +108,10 @@ ls specs/toolkit/XXX-name/analysis/
 **For Feature 2 (Toolkit Spec)** - Check dependency on Feature 1:
 
 **Check**:
-1. ✅ Feature 1 exists: `specs/domain/001-{domain}-protocol/spec.md`
+1. ✅ Feature 1 exists: `specs/domain/001-{domain}-spec/spec.md`
 2. ✅ Feature 2 declares dependency:
    - Has a "Dependencies" section
-   - References "001-{domain}-protocol-spec"
+   - References "001-{domain}-spec"
 3. ✅ Feature 2 components reference Feature 1:
    - Validator references Feature 1 validation rules
    - Parser handles Feature 1 entities
@@ -124,23 +124,23 @@ ls specs/toolkit/XXX-name/analysis/
 ❌ CRITICAL: Feature 2 lacks "Dependencies" section in spec.md
    → ACTION REQUIRED: Add Dependencies section before /metaspec.sdd.implement
    → This violates the Spec-Driven principle
-   → Toolkit without protocol is not a valid speckit
+   → Toolkit without specification is not a valid speckit
 
-❌ CRITICAL: Feature 1 (protocol) does not exist
-   → ACTION REQUIRED: Run /metaspec.sds.specify first to define protocol
-   → Cannot proceed with toolkit development without protocol
+❌ CRITICAL: Feature 1 (specification) does not exist
+   → ACTION REQUIRED: Run /metaspec.sds.specify first to define specification
+   → Cannot proceed with toolkit development without specification
    
 ❌ HIGH: Feature 2 Validator doesn't reference Feature 1 validation rules
-   → ACTION RECOMMENDED: Update Validator section to reference protocol rules
+   → ACTION RECOMMENDED: Update Validator section to reference specification rules
 
-✅ Feature 1 exists: specs/domain/001-mcp-protocol-spec/spec.md
-✅ Feature 2 declares dependency: "Depends on: 001-mcp-protocol-spec"
-✅ Validator references Feature 1: "Validates against MCP protocol rules"
+✅ Feature 1 exists: specs/domain/001-mcp-spec/spec.md
+✅ Feature 2 declares dependency: "Depends on: 001-mcp-spec"
+✅ Validator references Feature 1: "Validates against MCP specification rules"
 ```
 
 **CRITICAL errors must be fixed before implementation.**
 
-**Skip this check for Feature 1** (Protocol specs don't have dependencies)
+**Skip this check for Feature 1** (Specification specs don't have dependencies)
 
 #### B. Entity Definition Quality
 

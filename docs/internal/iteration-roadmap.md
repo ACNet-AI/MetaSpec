@@ -27,7 +27,7 @@ A command does NOT need iteration if:
 
 **Why needs iteration**:
 - ✅ Generates `checklists/comprehensive-quality.md`
-- ✅ User re-runs to verify protocol improvements
+- ✅ User re-runs to verify specification improvements
 - ✅ Tracking: Iteration 1 vs Iteration 2 very valuable
 
 **Modes**:
@@ -46,7 +46,7 @@ A command does NOT need iteration if:
 - Each run overwrites previous analysis
 
 **Why needs iteration**:
-- ✅ User improves protocol based on analysis
+- ✅ User improves specification based on analysis
 - ✅ Re-runs to verify issues are fixed
 - ✅ Before/after comparison valuable
 - ✅ Track: "Issue X: ❌ → ✅ (fixed in Iteration 2)"
@@ -58,7 +58,7 @@ A command does NOT need iteration if:
 
 **Example output**:
 ```markdown
-# Protocol Consistency Analysis
+# Specification Consistency Analysis
 
 ## Iteration 1: 2025-11-03
 - ❌ ISSUE-001: Field naming inconsistent (camelCase vs snake_case)
@@ -81,7 +81,7 @@ A command does NOT need iteration if:
 **Status**: ⚠️ **Needs Iteration Support**
 
 **Current behavior**:
-- Identifies ambiguities in protocol spec
+- Identifies ambiguities in specification spec
 - Provides clarification suggestions
 - No tracking of what was clarified
 
@@ -98,7 +98,7 @@ A command does NOT need iteration if:
 
 **Example output**:
 ```markdown
-# Protocol Clarification Report
+# Specification Clarification Report
 
 ## Iteration 1: 2025-11-03
 - ❌ AMB-001: "must be valid" - What does "valid" mean?
@@ -117,7 +117,7 @@ A command does NOT need iteration if:
 
 ---
 
-### ❌ 4. `/metaspec.sds.specify` - Define Protocol Spec
+### ❌ 4. `/metaspec.sds.specify` - Define Specification Spec
 
 **Status**: ❌ **Does NOT Need Iteration**
 
@@ -128,15 +128,15 @@ A command does NOT need iteration if:
 
 **Workflow**:
 ```bash
-$ /metaspec.sds.specify "Define MCP protocol"
-  → Creates specs/domain/001-mcp-protocol/spec.md
+$ /metaspec.sds.specify "Define MCP specification"
+  → Creates specs/domain/001-mcp-spec/spec.md
 $ vim spec.md  # User edits directly
 $ /metaspec.sds.checklist  # Validate (with iteration)
 ```
 
 ---
 
-### ⚠️ 5. `/metaspec.sds.constitution` - Define Protocol Principles
+### ⚠️ 5. `/metaspec.sds.constitution` - Define Specification Principles
 
 **Status**: ⚠️ **Probably Does NOT Need Iteration**
 
@@ -341,7 +341,7 @@ ls specs/domain/XXX-name/[output-directory]/
 
 | Mode | Action | When to Use |
 |------|--------|-------------|
-| **update** | Update results, add iteration section | Protocol improved, want to track progress |
+| **update** | Update results, add iteration section | Specification improved, want to track progress |
 | **new** | Create new output (backup existing) | Complete restart, different focus |
 | **append** | Add supplementary analysis | Existing output still valid, new aspect |
 
@@ -354,7 +354,7 @@ ls specs/domain/XXX-name/[output-directory]/
 ## 📊 Iteration N: [Date]
 
 ### Changes Since Last Check
-- [List protocol improvements]
+- [List specification improvements]
 
 ### Updated Results
 - [Show before/after comparison]

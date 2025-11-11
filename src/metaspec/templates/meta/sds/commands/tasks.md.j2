@@ -20,9 +20,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 #### 1. Load Planning Context
 
-**Step 1a: Determine Current Protocol**
+**Step 1a: Determine Current Specification**
 
-Get current protocol from Git branch or SPECIFY_FEATURE:
+Get current specification from Git branch or SPECIFY_FEATURE:
 ```bash
 # From Git branch
 current_spec=$(git branch --show-current)
@@ -32,22 +32,22 @@ current_spec=$SPECIFY_FEATURE
 # Example: "003-payment-processing"
 ```
 
-**Step 1b: Read Current Protocol Metadata**
+**Step 1b: Read Current Specification Metadata**
 
-Read frontmatter from current protocol's spec.md:
+Read frontmatter from current specification's spec.md:
 ```yaml
 ---
-protocol_id: 003-payment-processing
-parent: 001-order-protocol
-root: 001-order-protocol
+spec_id: 003-payment-processing
+parent: 001-order-spec
+root: 001-order-spec
 type: parent
 ---
 ```
 
 **Store context**:
 - `current_id`: "003-payment-processing"
-- `parent_id`: "001-order-protocol" or null
-- `root_id`: "001-order-protocol"
+- `parent_id`: "001-order-spec" or null
+- `root_id`: "001-order-spec"
 
 **This is important for**:
 - Determining numbering for sub-specifications
@@ -58,7 +58,7 @@ type: parent
 
 **Required**:
 - `specs/domain/{current_id}/plan.md` - Architecture plan
-- `specs/domain/{current_id}/spec.md` - Protocol specification
+- `specs/domain/{current_id}/spec.md` - Domain specification
 
 **Extract from plan.md**:
 - Split decision (single spec vs. sub-specifications)
@@ -88,7 +88,7 @@ type: parent
 **When**: plan.md recommends splitting (1500+ lines)
 
 **Tasks**:
-- Create core protocol (overview)
+- Create core specification (overview)
 - Create each sub-specification
 - Define cross-references
 - Ensure consistency
@@ -116,34 +116,34 @@ Every task MUST follow:
 6. **Context** (NEW for sub-specifications): parent and root IDs
 7. **Details**: Scope, entities, operations
 
-**Examples for Creating Sub-Protocols** (NEW):
-- ✅ `- [ ] SDS-T002 [P] [PHASE] Create 013-credit-card-payment protocol`
-  - Context: parent=003-payment-processing, root=001-order-protocol
-  - Protocol: Credit card payment processing
+**Examples for Creating Sub-Specifications** (NEW):
+- ✅ `- [ ] SDS-T002 [P] [PHASE] Create 013-credit-card-payment specification`
+  - Context: parent=003-payment-processing, root=001-order-spec
+  - Specification: Credit card payment processing
   - Entities: CreditCardPayment, CardValidationResult
   - Operations: process_credit_card_payment, validate_card
 
-- ✅ `- [ ] SDS-T003 [P] [PHASE] Create 014-digital-wallet-payment protocol`
-  - Context: parent=003-payment-processing, root=001-order-protocol
-  - Protocol: Digital wallet payment (PayPal, Apple Pay, Google Pay)
+- ✅ `- [ ] SDS-T003 [P] [PHASE] Create 014-digital-wallet-payment specification`
+  - Context: parent=003-payment-processing, root=001-order-spec
+  - Specification: Digital wallet payment (PayPal, Apple Pay, Google Pay)
   - Entities: WalletPayment, WalletProvider
   - Operations: process_wallet_payment, link_wallet
 
-**Examples for Refining Current Protocol**:
-- ✅ `- [ ] SDS-T001 [CORE] Refactor current protocol to overview`
+**Examples for Refining Current Specification**:
+- ✅ `- [ ] SDS-T001 [CORE] Refactor current specification to overview`
   - Keep: Overview, common concepts
   - Remove: Detailed implementations (move to sub-specifications)
-  - Add: Sub-protocol index
+  - Add: Sub-specification index
 
 **Legacy format** (still valid for non-splitting scenarios):
-- ✅ `- [ ] SDS-T001 [REFINE] Expand Protocol Overview section`
-- ❌ `- [ ] Write protocol` (missing ID, SPEC label, file path)
+- ✅ `- [ ] SDS-T001 [REFINE] Expand Specification Overview section`
+- ❌ `- [ ] Write specification` (missing ID, SPEC label, file path)
 
 #### 4. Task Organization for Single Spec (Strategy A)
 
 **Phase 1: Section Refinement**
 
-- [ ] SDS-T001 [REFINE] Expand Protocol Overview section
+- [ ] SDS-T001 [REFINE] Expand Specification Overview section
   - Add detailed problem statement
   - Clarify solution approach
   - Define scope boundaries
@@ -156,7 +156,7 @@ Every task MUST follow:
 - [ ] SDS-T003 [REFINE] Elaborate Use Cases section
   - Add 2-3 additional use cases
   - Detail actor interactions
-  - Show protocol element usage
+  - Show specification element usage
 
 - [ ] SDS-T004 [REFINE] Detail Core Entities section
   - Expand entity schemas with all fields
@@ -189,83 +189,83 @@ Every task MUST follow:
 
 #### 5. Task Organization for Multi-Spec (Strategy B)
 
-**Phase 1: Core Protocol Creation**
+**Phase 1: Core Specification Creation**
 
 **Goal**: Create overview specification that integrates all sub-specifications
 
-- [ ] SDS-T001 [CORE] Refactor existing spec.md to core protocol overview
-  - Keep: Protocol Overview, Glossary, Use Cases (high-level)
+- [ ] SDS-T001 [CORE] Refactor existing spec.md to core specification overview
+  - Keep: Specification Overview, Glossary, Use Cases (high-level)
   - Remove: Detailed entity definitions (move to sub-specs)
   - Add: Integration points to sub-specifications
   - Target size: 300-800 lines
 
-**Checkpoint**: Core protocol defines integration points
+**Checkpoint**: Core specification defines integration points
 
-**Phase 2: Phase-Specific Protocols** (if using Lifecycle pattern)
+**Phase 2: Phase-Specific Specifications** (if using Lifecycle pattern)
 
 **Goal**: Create detailed specifications for each lifecycle phase
 
-- [ ] SDS-T002 [P] [PHASE] Create specs/domain/002-{phase1}-protocol/spec.md
+- [ ] SDS-T002 [P] [PHASE] Create specs/domain/002-{phase1}-spec/spec.md
   - Define phase purpose and objectives
   - Detail phase entry/exit criteria
   - Specify phase-specific entities
   - Define phase operations
   - Add phase validation rules
   - Provide phase examples
-  - Reference: Core protocol for integration
+  - Reference: Core specification for integration
 
-- [ ] SDS-T003 [P] [PHASE] Create specs/domain/003-{phase2}-protocol/spec.md
+- [ ] SDS-T003 [P] [PHASE] Create specs/domain/003-{phase2}-spec/spec.md
   [Same structure as SDS-T002]
 
-- [ ] SDS-T004 [P] [PHASE] Create specs/domain/004-{phase3}-protocol/spec.md
+- [ ] SDS-T004 [P] [PHASE] Create specs/domain/004-{phase3}-spec/spec.md
   [Same structure as SDS-T002]
 
 [... Continue for all phases ...]
 
-**Checkpoint**: All phase protocols complete (500-1500 lines each)
+**Checkpoint**: All phase specifications complete (500-1500 lines each)
 
-**Phase 3: Component Protocols** (if using Component pattern)
+**Phase 3: Component Specifications** (if using Component pattern)
 
 **Goal**: Create detailed specifications for each component type
 
-- [ ] SDS-T008 [P] [COMPONENT] Create specs/domain/00X-{component1}-protocol/spec.md
+- [ ] SDS-T008 [P] [COMPONENT] Create specs/domain/00X-{component1}-spec/spec.md
   - Define component purpose
   - Specify component interface
   - Detail component registration pattern
   - Define component validation rules
   - Provide component examples
 
-- [ ] SDS-T009 [P] [COMPONENT] Create specs/domain/00X-{component2}-protocol/spec.md
+- [ ] SDS-T009 [P] [COMPONENT] Create specs/domain/00X-{component2}-spec/spec.md
   [Same structure]
 
-**Checkpoint**: All component protocols complete
+**Checkpoint**: All component specifications complete
 
-**Phase 4: Supporting Protocols**
+**Phase 4: Supporting Specifications**
 
 **Goal**: Create cross-cutting concern specifications
 
-- [ ] SDS-T012 [SUPPORT] Create specs/domain/00X-{support1}-protocol/spec.md
+- [ ] SDS-T012 [SUPPORT] Create specs/domain/00X-{support1}-spec/spec.md
   - Define supporting system purpose
   - Specify interfaces and patterns
   - Detail integration with core entities
   - Provide usage examples
 
-- [ ] SDS-T013 [SUPPORT] Create specs/domain/00X-{support2}-protocol/spec.md
+- [ ] SDS-T013 [SUPPORT] Create specs/domain/00X-{support2}-spec/spec.md
   [Same structure]
 
-**Checkpoint**: All supporting protocols complete
+**Checkpoint**: All supporting specifications complete
 
 **Phase 5: Cross-Reference Validation**
 
 **Goal**: Ensure all sub-specifications are properly integrated
 
-- [ ] SDS-T016 [REFINE] Validate core protocol integration points
+- [ ] SDS-T016 [REFINE] Validate core specification integration points
   - Check all sub-spec references are correct
   - Ensure dependency graph is acyclic
   - Verify version compatibility statements
 
 - [ ] SDS-T017 [REFINE] Add cross-references in sub-specifications
-  - Each sub-spec references core protocol
+  - Each sub-spec references core specification
   - Sub-specs reference related sub-specs where needed
   - Cross-references use correct paths
 
@@ -281,26 +281,26 @@ Every task MUST follow:
 **For each sub-specification task, use this template**:
 
 ```markdown
-**Task**: Create specs/domain/00X-{name}-protocol/spec.md
+**Task**: Create specs/domain/00X-{name}-spec/spec.md
 
 **Structure**:
 ```markdown
-# {Sub-Protocol Name} Protocol Specification
+# {Sub-Specification Name} Domain Specification
 
 **Version**: 1.0.0
 **Status**: Draft
-**Dependencies**: protocol/001-{core}-protocol
+**Dependencies**: domain/001-{core}-spec
 
 ---
 
-## Protocol Overview
+## Specification Overview
 
 **Purpose**: [Specific concern this sub-specification addresses]
 
 **Scope**: [What's included and excluded]
 
 **Dependencies**: 
-- **Depends on**: protocol/001-{core}-protocol
+- **Depends on**: domain/001-{core}-spec
 - **Uses entities from**: [Entity references]
 - **Extends**: [What it extends from core]
 
@@ -330,9 +330,9 @@ Every task MUST follow:
 
 ---
 
-## Integration with Core Protocol
+## Integration with Core Specification
 
-[Explain how this sub-specification integrates with core protocol]
+[Explain how this sub-specification integrates with core specification]
 ```
 
 **Estimated size**: 500-1500 lines
@@ -340,7 +340,7 @@ Every task MUST follow:
 **Priority**: [P0/P1/P2]
 
 **Dependencies**: 
-- Must complete: SDS-T001 (core protocol)
+- Must complete: SDS-T001 (core specification)
 - Can parallelize with: [Other sub-spec tasks]
 ```
 
@@ -366,15 +366,15 @@ All COMPONENT tasks can be parallel
 - Best: Sequential refinement
 
 **Strategy B (Multi-Spec)**:
-- Phase protocols can be written in parallel
-- Component protocols can be written in parallel
-- Supporting protocols can be written after phases/components
+- Phase specifications can be written in parallel
+- Component specifications can be written in parallel
+- Supporting specifications can be written after phases/components
 
 #### 8. Generate tasks.md
 
 **Structure**:
 ```markdown
-# Protocol Specification Tasks: [Protocol Name]
+# Domain Specification Tasks: [Specification Name]
 
 ## Overview
 - **Total Tasks**: [N]
@@ -404,15 +404,15 @@ All COMPONENT tasks can be parallel
 **Within Phase 2**:
 ```bash
 # Can run in parallel:
-- SDS-T002 (phase 1 protocol)
-- SDS-T003 (phase 2 protocol)
-- SDS-T004 (phase 3 protocol)
+- SDS-T002 (phase 1 specification)
+- SDS-T003 (phase 2 specification)
+- SDS-T004 (phase 3 specification)
 ```
 
 ## MVP Scope
 
-**Minimum Viable Protocol** (for initial release):
-- Phase 1: Core protocol ✅
+**Minimum Viable Specification** (for initial release):
+- Phase 1: Core specification ✅
 - Phase 2: Critical sub-specifications (P0) ✅
 
 **Deferred to v1.1**:
@@ -422,7 +422,7 @@ All COMPONENT tasks can be parallel
 ## Quality Standards
 
 ### Specification Size Targets
-- **Core protocol**: 300-800 lines
+- **Core specification**: 300-800 lines
 - **Sub-specification**: 500-1500 lines
 - **Total**: <10,000 lines
 
@@ -442,7 +442,7 @@ All COMPONENT tasks can be parallel
 
 #### 9. Generate tasks.md File
 
-- Write to `specs/domain/001-{name}-protocol/tasks.md`
+- Write to `specs/domain/001-{name}-spec/tasks.md`
 - Use task template structure
 - Include all phases
 - Add checkpoint criteria
@@ -463,12 +463,12 @@ All COMPONENT tasks can be parallel
 #### 11. Report Completion
 
 ```
-✅ Protocol specification task breakdown complete
+✅ Domain specification task breakdown complete
 
 📊 Summary:
 - Strategy: [Single Spec / Multi-Spec]
 - Total Tasks: [N]
-- Core Protocol: [X] tasks
+- Core Specification: [X] tasks
 - Sub-Specifications: [X] tasks
 - Cross-References: [X] tasks
 - Quality Checks: [X] tasks
@@ -481,19 +481,19 @@ All COMPONENT tasks can be parallel
 - Phase 3: [X] support specs can be written in parallel
 
 📦 MVP Scope (v1.0.0):
-- Core protocol + Priority P0 sub-specs
+- Core specification + Priority P0 sub-specs
 - Estimated: [X] days
 
 🔄 Next release (v1.1.0):
 - Priority P1 sub-specifications
 - Estimated: [X] days
 
-📁 Generated: specs/domain/001-{name}-protocol/tasks.md
+📁 Generated: specs/domain/001-{name}-spec/tasks.md
 
 🔄 Next step: /metaspec.sds.implement (write specifications)
 
 💡 Suggested commit message:
-   docs: add specification task breakdown for [protocol-name]
+   docs: add specification task breakdown for [specification-name]
 ```
 
 ## Task Templates
@@ -507,9 +507,9 @@ All COMPONENT tasks can be parallel
   - Target: [X]-[Y] lines
 ```
 
-### Core Protocol Task Template
+### Core Specification Task Template
 ```
-- [ ] SDS-T001 [CORE] Refactor to core protocol overview:
+- [ ] SDS-T001 [CORE] Refactor to core specification overview:
   - Keep: High-level overview, glossary, use cases
   - Move to sub-specs: Detailed entity definitions
   - Add: Integration points to [N] sub-specifications
@@ -517,11 +517,11 @@ All COMPONENT tasks can be parallel
   - Target: 300-800 lines
 ```
 
-### Phase Protocol Task Template
+### Phase Specification Task Template
 ```
-- [ ] SDS-T00X [P] [PHASE] Create [Phase Name] protocol:
-  - File: specs/domain/00X-{phase}-protocol/spec.md
-  - Dependencies: protocol/001-core-protocol
+- [ ] SDS-T00X [P] [PHASE] Create [Phase Name] specification:
+  - File: specs/domain/00X-{phase}-spec/spec.md
+  - Dependencies: domain/001-core-spec
   - Entities: [List phase-specific entities]
   - Operations: [List phase operations]
   - Validation: [Phase-specific rules]
@@ -529,11 +529,11 @@ All COMPONENT tasks can be parallel
   - Target: 500-1500 lines
 ```
 
-### Component Protocol Task Template
+### Component Specification Task Template
 ```
-- [ ] SDS-T00X [P] [COMPONENT] Create [Component Type] protocol:
-  - File: specs/domain/00X-{component}-protocol/spec.md
-  - Dependencies: protocol/001-core-protocol
+- [ ] SDS-T00X [P] [COMPONENT] Create [Component Type] specification:
+  - File: specs/domain/00X-{component}-spec/spec.md
+  - Dependencies: domain/001-core-spec
   - Purpose: [Component purpose]
   - Interface: [Component interface definition]
   - Registration: [How components are registered]
@@ -542,11 +542,11 @@ All COMPONENT tasks can be parallel
   - Target: 500-1500 lines
 ```
 
-### Supporting Protocol Task Template
+### Supporting Specification Task Template
 ```
-- [ ] SDS-T00X [SUPPORT] Create [Support System] protocol:
-  - File: specs/domain/00X-{support}-protocol/spec.md
-  - Dependencies: protocol/001-core-protocol, [others]
+- [ ] SDS-T00X [SUPPORT] Create [Support System] specification:
+  - File: specs/domain/00X-{support}-spec/spec.md
+  - Dependencies: domain/001-core-spec, [others]
   - Purpose: [Cross-cutting concern addressed]
   - Interfaces: [System interfaces]
   - Integration: [How it integrates with entities]
@@ -558,7 +558,7 @@ All COMPONENT tasks can be parallel
 
 1. **Specification-based organization**
    - Not code-based (that's SDD)
-   - Organize by protocol concerns (phases, components, layers)
+   - Organize by specification concerns (phases, components, layers)
    - Each specification is independently readable
 
 2. **Documentation quality matters**
@@ -574,42 +574,42 @@ All COMPONENT tasks can be parallel
 4. **Parallel execution**
    - Sub-specifications can be written in parallel
    - Different writers can work on different specs
-   - Core protocol must be complete first
+   - Core specification must be complete first
 
 5. **MVP first**
    - Focus on P0 sub-specifications
    - Defer P1/P2 specs to later versions
-   - Get working protocol quickly
+   - Get working specification quickly
 
-## Example: E-commerce Order Protocol Tasks
+## Example: E-commerce Order Specification Tasks
 
-### Phase 1: Core Protocol
+### Phase 1: Core Specification
 ```
-- [ ] SDS-T001 [CORE] Refactor to core protocol overview
+- [ ] SDS-T001 [CORE] Refactor to core specification overview
   - Keep: Overview, glossary, use cases
-  - Move: Phase details to phase protocols
+  - Move: Phase details to phase specifications
   - Add: 7 phase integration points
   - Target: 650 lines
 ```
 
-### Phase 2: Lifecycle Phase Protocols (P0)
+### Phase 2: Lifecycle Phase Specifications (P0)
 ```
-- [ ] SDS-T002 [P] [PHASE] Create order-creation protocol
-  - File: specs/domain/002-order-creation-protocol/spec.md
+- [ ] SDS-T002 [P] [PHASE] Create order-creation specification
+  - File: specs/domain/002-order-creation-spec/spec.md
   - Order initialization rules
   - Cart to order transformation
   - Customer validation
   - Target: 800 lines
 
-- [ ] SDS-T003 [P] [PHASE] Create payment-processing protocol
-  - File: specs/domain/003-payment-processing-protocol/spec.md
+- [ ] SDS-T003 [P] [PHASE] Create payment-processing specification
+  - File: specs/domain/003-payment-processing-spec/spec.md
   - Payment method specifications
   - Transaction flow
   - Security requirements
   - Target: 950 lines
 
-- [ ] SDS-T004 [P] [PHASE] Create fulfillment protocol
-  - File: specs/domain/004-fulfillment-protocol/spec.md
+- [ ] SDS-T004 [P] [PHASE] Create fulfillment specification
+  - File: specs/domain/004-fulfillment-spec/spec.md
   - Inventory allocation
   - Pick-pack-ship workflow
   - Quality checks
@@ -618,44 +618,44 @@ All COMPONENT tasks can be parallel
 [... SDS-T005-008 for shipping, delivery, returns, refunds phases ...]
 ```
 
-**Checkpoint**: All 7 phase protocols complete (600-1000 lines each)
+**Checkpoint**: All 7 phase specifications complete (600-1000 lines each)
 
-### Phase 3: Supporting Protocols (P1)
+### Phase 3: Supporting Specifications (P1)
 ```
-- [ ] SDS-T009 [SUPPORT] Create payment-gateway protocol
-  - File: specs/domain/009-payment-gateway-protocol/spec.md
+- [ ] SDS-T009 [SUPPORT] Create payment-gateway specification
+  - File: specs/domain/009-payment-gateway-spec/spec.md
   - Gateway integration patterns
   - Webhook specifications
   - Retry mechanisms
   - Target: 700 lines
 
-- [ ] SDS-T010 [SUPPORT] Create inventory-sync protocol
-  - File: specs/domain/010-inventory-sync-protocol/spec.md
+- [ ] SDS-T010 [SUPPORT] Create inventory-sync specification
+  - File: specs/domain/010-inventory-sync-spec/spec.md
   - Real-time sync mechanisms
   - Conflict resolution
   - Cache strategies
   - Target: 650 lines
 
-- [ ] SDS-T011 [SUPPORT] Create notification protocol
-  - File: specs/domain/011-notification-protocol/spec.md
+- [ ] SDS-T011 [SUPPORT] Create notification specification
+  - File: specs/domain/011-notification-spec/spec.md
   - Email/SMS templates
   - Trigger conditions
   - Delivery guarantees
   - Target: 550 lines
 ```
 
-**Checkpoint**: All supporting protocols complete
+**Checkpoint**: All supporting specifications complete
 
 ### Phase 4: Cross-Reference Validation
 ```
-- [ ] SDS-T012 [REFINE] Validate core protocol integration
+- [ ] SDS-T012 [REFINE] Validate core specification integration
   - Check 10 sub-spec references
   - Verify dependency DAG
   - Update version compatibility
 
 - [ ] SDS-T013 [REFINE] Add cross-references
-  - Phase protocols → Core protocol
-  - Phase protocols → Supporting protocols
+  - Phase specifications → Core specification
+  - Phase specifications → Supporting specifications
   - Bidirectional references
 
 - [ ] SDS-T014 [REFINE] Ensure consistency

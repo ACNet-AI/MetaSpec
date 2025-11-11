@@ -20,9 +20,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 This command must handle two types of specifications:
 
-**Feature 1 (Protocol Spec)**: Usually doesn't need a plan.md
-- Protocol specifications are primarily **documentation**
-- No code implementation needed for the protocol itself
+**Feature 1 (Specification Spec)**: Usually doesn't need a plan.md
+- Domain specifications are primarily **documentation**
+- No code implementation needed for the specification itself
 - **Skip plan generation** unless explicitly requested
 
 **Feature 2 (Toolkit Spec)**: Requires a plan.md
@@ -36,15 +36,15 @@ This command must handle two types of specifications:
 
 **Step 1a: Determine which Feature** you're planning:
 - Check current directory: `specs/domain/001-*` or `specs/toolkit/001-*`?
-- Read spec.md to understand if it's protocol or toolkit
+- Read spec.md to understand if it's specification or toolkit
 
 **Step 1b: For Feature 2 (Toolkit Spec)**:
 - ✅ Read `specs/toolkit/001-toolkit/spec.md` (the WHAT)
-- ✅ **Verify Feature 1 exists**: Check `specs/domain/001-{domain}-protocol/spec.md`
+- ✅ **Verify Feature 1 exists**: Check `specs/domain/001-{domain}-spec/spec.md`
 - ✅ Read `/memory/constitution.md` (the principles)
 - ✅ Create `specs/toolkit/001-toolkit/plan.md` (the HOW)
 
-**Step 1c: For Feature 1 (Protocol Spec)** :
+**Step 1c: For Feature 1 (Specification Spec)** :
 - ⚠️ **Ask user**: "Feature 1 is a domain specification and typically doesn't need a plan.md. Are you sure you want to create one?"
 - If yes, proceed with simplified planning
 - If no, suggest: "Run `/metaspec.plan` in Feature 2 (toolkit spec) instead"
@@ -54,11 +54,11 @@ This command must handle two types of specifications:
 **For Feature 2 (Toolkit Spec)**:
 
 **Critical Validation**:
-1. ✅ Feature 1 spec exists at `specs/domain/001-{domain}-protocol/spec.md`
+1. ✅ Feature 1 spec exists at `specs/domain/001-{domain}-spec/spec.md`
 2. ✅ Feature 2 spec declares dependency in a **Dependencies** section:
    ```markdown
    ## Dependencies
-   - **Depends on**: 001-{domain}-protocol-spec
+   - **Depends on**: 001-{domain}-spec
    ```
 3. ✅ Components reference Feature 1 validation rules
 
@@ -151,8 +151,8 @@ Extensibility: Custom validator plugins via entry points
 **Custom Context** (from spec.md):
 ```markdown
 **Domain**: [from spec.md]
-**Primary Entity**: [from protocol spec]
-**Validation Strategy**: [from spec.md - based on protocol rules]
+**Primary Entity**: [from specification spec]
+**Validation Strategy**: [from spec.md - based on specification rules]
 **Performance Targets**: [from spec.md quality criteria]
 **Extensibility Requirements**: [from spec.md - plugin system/hooks]
 ```

@@ -1,5 +1,5 @@
 ---
-protocol:
+specification:
   name: {{ metadata.name }}
   version: {{ metadata.version }}
   status: {{ metadata.status | default("Draft") }}
@@ -124,7 +124,7 @@ references: {{ references | default([]) | tojson }}
 
 {% endif %}
 {% if case.elements %}
-**Protocol Elements Used**:
+**Specification Elements Used**:
 {% for element in case.elements %}
 - {{ element }}
 {% endfor %}
@@ -235,7 +235,7 @@ references: {{ references | default([]) | tojson }}
 {% endif %}
 
 {% if operations %}
-## Protocol Operations
+## Specification Operations
 
 {% for operation in operations %}
 ### Operation: {{ operation.name }}
@@ -309,7 +309,7 @@ references: {{ references | default([]) | tojson }}
 {% endif %}
 
 {% if examples %}
-## Protocol Examples
+## Specification Examples
 
 {% for example in examples %}
 ### {{ example.name }}

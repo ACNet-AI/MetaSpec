@@ -20,7 +20,7 @@ Identify inconsistencies, ambiguities, and gaps in domain specifications. **READ
 
 **STRICTLY READ-ONLY**: Do NOT modify any files. Output structured analysis report only.
 
-**Constitution Authority**: constitution.md defines protocol design principles. Violations are CRITICAL.
+**Constitution Authority**: constitution.md defines specification design principles. Violations are CRITICAL.
 
 ## Execution Flow
 
@@ -36,7 +36,7 @@ ls specs/domain/XXX-name/analysis/
 
 | Mode | Action | When to Use |
 |------|--------|-------------|
-| **update** | Update results, add iteration section | Protocol improved, want to track progress |
+| **update** | Update results, add iteration section | Specification improved, want to track progress |
 | **new** | Create new analysis (backup existing) | Complete restart, different focus |
 | **append** | Add supplementary analysis | Existing analysis still valid, new aspect |
 
@@ -46,35 +46,35 @@ ls specs/domain/XXX-name/analysis/
 
 ---
 
-### 2. Load Protocol Artifacts
+### 2. Load Specification Artifacts
 
 **Required Files**:
-- `specs/domain/XXX-{name}/spec.md` - Protocol specification
-- `/memory/constitution.md` - Protocol design principles
+- `specs/domain/XXX-{name}/spec.md` - Domain specification
+- `/memory/constitution.md` - Specification design principles
 
 **Optional Files**:
-- `specs/domain/XXX-{name}/README.md` - Protocol overview
-- `specs/domain/XXX-{name}/examples/` - Protocol examples
-- `specs/domain/XXX-{name}/checklists/` - Protocol quality checklists
+- `specs/domain/XXX-{name}/README.md` - Specification overview
+- `specs/domain/XXX-{name}/examples/` - Specification examples
+- `specs/domain/XXX-{name}/checklists/` - Specification quality checklists
 
 **DO NOT load** (these are toolkit-specific):
 - ❌ plan.md (toolkit architecture)
 - ❌ tasks.md (implementation tasks)
 - ❌ Any files in `specs/toolkit/`
 
-### 3. Extract Protocol Elements
+### 3. Extract Specification Elements
 
 **From spec.md**:
-- Protocol overview and purpose
+- Specification overview and purpose
 - Core entities (name, schema, fields)
 - Entity validation rules
-- Protocol operations (requests/responses)
+- Specification operations (requests/responses)
 - Error codes and handling
-- Protocol examples
+- Specification examples
 
 **From constitution.md**:
-- Protocol design principles
-- MUST/SHOULD requirements specific to protocols
+- Specification design principles
+- MUST/SHOULD requirements specific to specifications
 - Quality standards for specifications
 
 ### 4. Detection Passes
@@ -114,7 +114,7 @@ ls specs/domain/XXX-name/analysis/
 ✅ All validation rules have corresponding error codes
 ```
 
-#### C. Protocol Operations Completeness
+#### C. Specification Operations Completeness
 
 **Check each operation**:
 - ✅ Operation purpose clearly stated
@@ -192,13 +192,13 @@ ls specs/domain/XXX-name/analysis/
 ✅ All entity references are valid
 ```
 
-#### H. Constitution Alignment (Protocol-Specific)
+#### H. Constitution Alignment (Specification-Specific)
 
-**Check protocol against constitution**:
+**Check specification against constitution**:
 - ✅ Entity-First: Entities have 3-5 core fields?
 - ✅ Clear Semantics: Field names self-explanatory?
-- ✅ Minimal Viable: Protocol includes only essential operations?
-- ✅ Extensibility: Protocol allows for future extensions?
+- ✅ Minimal Viable: Specification includes only essential operations?
+- ✅ Extensibility: Specification allows for future extensions?
 - ✅ AI-Friendly: Schema descriptions clear for AI agents?
 - ✅ Domain Standards: Follows established domain conventions?
 
@@ -206,7 +206,7 @@ ls specs/domain/XXX-name/analysis/
 ```
 ❌ CRITICAL: Entity 'Server' has 8 required fields, violates Entity-First principle (3-5 max) [Constitution]
 ❌ HIGH: Field name 'opts' is not self-explanatory, violates Clear Semantics [Constitution]
-✅ Protocol follows REST-like operation naming conventions
+✅ Specification follows REST-like operation naming conventions
 ```
 
 #### I. Ambiguity Detection
@@ -251,10 +251,10 @@ ls specs/domain/XXX-name/analysis/
 **Output format**:
 
 ```markdown
-# Protocol Specification Analysis Report
+# Domain Specification Analysis Report
 
 **Date**: [DATE]
-**Protocol**: [NAME]
+**Specification**: [NAME]
 **Version**: [VERSION]
 **Analyzed Files**:
 - specs/domain/XXX-{name}/spec.md
@@ -267,7 +267,7 @@ ls specs/domain/XXX-name/analysis/
 **ONLY include this section when mode = `update`**
 
 ### Changes Since Last Analysis
-- [List protocol improvements made]
+- [List specification improvements made]
 - [What sections were modified]
 
 ### Updated Results
@@ -419,13 +419,13 @@ ls specs/domain/XXX-name/analysis/
 ## Next Steps
 
 - [ ] **If CRITICAL issues exist**: Fix before proceeding to toolkit development
-- [ ] **If HIGH issues exist**: Consider fixing to ensure protocol clarity
+- [ ] **If HIGH issues exist**: Consider fixing to ensure specification clarity
 - [ ] **MEDIUM/LOW issues**: Can be addressed during toolkit implementation
 
 **Recommendation**: 
 ⚠️ Fix CRITICAL issues (C1, C2) before running /metaspec.sdd.specify
 
-Protocol is the foundation. A clear protocol enables better toolkit implementation.
+Specification is the foundation. A clear specification enables better toolkit implementation.
 
 Run /metaspec.sds.clarify or manually edit spec.md to address issues.
 
@@ -470,7 +470,7 @@ Would you like me to suggest concrete fixes for the top 5 issues?
    - No vague terms tolerated
 
 5. **Examples Matter**
-   - Examples prove the protocol is usable
+   - Examples prove the specification is usable
    - Missing examples = specification gap
    - Examples should cover edge cases
 
@@ -478,7 +478,7 @@ Would you like me to suggest concrete fixes for the top 5 issues?
 
 **For new analysis**:
 ```
-✅ Protocol Analysis Complete
+✅ Specification Analysis Complete
 
 📊 Summary:
 - Total Issues: 8

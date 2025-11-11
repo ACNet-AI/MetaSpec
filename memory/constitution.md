@@ -69,7 +69,7 @@ We believe that:
 
 ```yaml
 ✅ For MCP domain:
-  - Validate MCP protocol compliance
+  - Validate MCP specification compliance
   - Check manifest.json schema
   - Verify tool/resource/prompt structure
 
@@ -150,7 +150,7 @@ We believe that:
 ### Anti-Pattern 3: Ignoring Domain Constraints
 
 ```yaml
-❌ Don't violate protocol specifications (e.g., MCP protocol)
+❌ Don't violate specification specifications (e.g., MCP specification)
 ❌ Don't skip validation for "convenience"
 ❌ Don't assume domain knowledge without research
 ```

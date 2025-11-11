@@ -17,7 +17,7 @@ templates/
 │   │   └── openspec/   # From OpenSpec (1→n Brownfield)
 │   └── generic/    # Universal feature specification templates
 └── meta/           # MetaSpec three-layer command architecture
-    ├── sds/        # Spec-Driven Specification (protocol definition)
+    ├── sds/        # Spec-Driven Specification (specification definition)
     ├── sdd/        # Spec-Driven Development (toolkit development)
     └── evolution/  # Shared specification evolution commands
 ```
@@ -299,7 +299,7 @@ Templates are selected dynamically based on `slash_commands[].source`:
 ## 📚 References
 
 - [Architecture Documentation](../../../docs/architecture.md)
-- [Slash Command Protocol](../../../docs/slash-cmd-protocol.md)
+- [Slash Command Specification](../../../docs/slash-cmd-protocol.md)
 - [AGENTS.md](../../../AGENTS.md) - AI Agent usage guide
 
 ---

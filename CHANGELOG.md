@@ -9,6 +9,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.1] - 2025-11-11
+
+### 🔄 Refactoring
+
+**Terminology Unification: Protocol → Specification**
+
+Complete codebase-wide terminology standardization for better clarity and consistency.
+
+**BREAKING CHANGES**:
+- **Directory**: `specs/protocol/` renamed to `specs/domain/`
+- **Variables**: `protocol_id` → `spec_id`, `PROTOCOL_NUMBER` → `SPEC_NUMBER`, etc.
+- **Commands**: `show-protocol` → `show-spec`
+- **Files**: `protocol-spec-template.md.j2` → `domain-spec-template.md.j2`
+- **YAML**: `protocol:` → `specification:` (frontmatter field)
+
+**Statistics**:
+- ✅ Processed: **362 occurrences** (97.6%)
+- ✅ Reserved: **9 occurrences** (proper nouns: Model Context Protocol, Protocol Buffers, MCP Protocol)
+- ✅ Files affected: 100+
+- ✅ Templates updated: SDS (8), SDD (3), Base templates
+
+**Impact**:
+- All MetaSpec commands and templates now use consistent "specification" terminology
+- Domain specifications located in `specs/domain/` (previously `specs/protocol/`)
+- All variable names, commands, and documentation updated accordingly
+- Preserved technical terms where "protocol" is part of a proper noun
+
+**Migration Guide**:
+- Update any custom scripts referencing `specs/protocol/` to `specs/domain/`
+- Replace `protocol_id` with `spec_id` in custom specifications
+- Update command references from `show-protocol` to `show-spec`
+
+---
+
 ## [0.5.0] - 2025-11-09
 
 ### ✨ Features
@@ -60,9 +94,9 @@ Added 3 new commands for complex specification definition:
 
 **Clarity and Consistency Improvements**
 
-- **Removed redundancy**: Eliminated duplicate "Protocol relationships" section in AGENTS.md
+- **Removed redundancy**: Eliminated duplicate "Specification relationships" section in AGENTS.md
 - **Fixed anchor links**: Updated 3 broken references from "Two-Feature Architecture" to "SDS + SDD Separation"
-- **Added numbering strategy**: Explained protocol numbering logic (001, 002-009, 010-099, 100-999)
+- **Added numbering strategy**: Explained specification numbering logic (001, 002-009, 010-099, 100-999)
 - **Updated command counts**: Synchronized across all files (README.md, CHANGELOG.md, architecture.md, templates)
 - **Clarified design decision**: Emphasized flat physical structure with tree logical structure
 
@@ -80,11 +114,11 @@ Added 3 new commands for complex specification definition:
 **Why Flat Physical + Tree Logical?**
 
 1. **Simple paths**: `specs/domain/013-credit-card-payment/` (not deeply nested)
-2. **FEATURE independence**: Each protocol is a standalone FEATURE with its own lifecycle
-3. **Flexible numbering**: Sub-protocols can use any available numbers (skip ranges)
-4. **Git branch friendly**: Branch name = directory name = protocol_id
+2. **FEATURE independence**: Each specification is a standalone FEATURE with its own lifecycle
+3. **Flexible numbering**: Sub-specifications can use any available numbers (skip ranges)
+4. **Git branch friendly**: Branch name = directory name = spec_id
 5. **Easy reorganization**: Change relationships via frontmatter, no file moves
-6. **Unlimited depth**: Any protocol can be a parent with its own sub-protocols
+6. **Unlimited depth**: Any specification can be a parent with its own sub-specifications
 
 ---
 
@@ -233,7 +267,7 @@ For existing speckits generated with 0.x.x:
 - ✅ Added comprehensive frontmatter fields table with examples
 - ✅ Added argument access patterns documentation
 - ✅ Maintained MetaSpec's unique Spec-Driven positioning
-- ✅ Preserved dual-source architecture (Protocol-Derived + Library-Selected)
+- ✅ Preserved dual-source architecture (Specification-Derived + Library-Selected)
 
 **Before**:
 ```yaml
@@ -287,7 +321,7 @@ model: claude-3-5-sonnet-20241022
 - ✅ Tables now show: MetaSpec (specify, clarify, plan) and Generic (design, build, test)
 
 **Impact**: 
-- ✅ **Framework neutral**: No external protocol dependencies
+- ✅ **Framework neutral**: No external specification dependencies
 - ✅ **Dogfooding emphasized**: Uses MetaSpec's own commands as examples
 - ✅ **Clearer positioning**: General meta-framework, not MCP-specific tool
 
@@ -425,17 +459,17 @@ MetaSpec now guides developers to design toolkits from user needs, not just tech
 - 20% Human Developers
 
 ### Key Scenarios
-1. AI generates MCP server → needs: show-protocol, get-template
+1. AI generates MCP server → needs: show-spec, get-template
 2. Developer validates manually → needs: init, validate, docs
 3. AI debugs errors → needs: validate, explain-error
 
 ### Derived Features (P0)
-- Protocol reference system (Scenarios 1, 3)
+- Specification reference system (Scenarios 1, 3)
 - Template system (Scenarios 1, 2)
 - Validation CLI (All scenarios)
 
 ### Command Design Rationale
-- `show-protocol`: AI needs rules before generating (Scenario 1)
+- `show-spec`: AI needs rules before generating (Scenario 1)
 - `validate`: Critical for both AI and developers (All scenarios)
 - `init`: Developer quick setup (Scenario 2)
 ```
@@ -464,9 +498,9 @@ MetaSpec now guides developers to design toolkits from user needs, not just tech
    ├── {library-spec-2}/       # Another specification system
    │   ├── commands/
    │   └── templates/
-   └── {custom}/               # Custom (from protocol)
-       ├── commands/           # Protocol-specific Slash Commands
-       └── templates/          # Protocol entity templates
+   └── {custom}/               # Custom (from domain specification)
+       ├── commands/           # Specification-specific Slash Commands
+       └── templates/          # Specification entity templates
    ```
 
 2. **Key Benefits**:
@@ -484,14 +518,14 @@ MetaSpec now guides developers to design toolkits from user needs, not just tech
    ├── spec-kit/              # From library/sdd/spec-kit
    │   ├── commands/
    │   └── templates/
-   └── mcp/                   # Custom (from protocol/001-mcp-protocol)
+   └── mcp/                   # Custom (from domain/001-mcp-spec)
        ├── commands/
        └── templates/
    ```
 
 4. **Implementation Guide**:
    - **Library Specifications**: Copy from MetaSpec library → `templates/{library-name}/`
-   - **Custom Specification**: Derive from protocol → `templates/{domain}/`
+   - **Custom Specification**: Derive from domain specification → `templates/{domain}/`
    - **Examples**: Separate top-level `examples/` directory (not under `templates/`)
 
 **Why This Matters**:
@@ -506,7 +540,7 @@ MetaSpec now guides developers to design toolkits from user needs, not just tech
 - [ ] Library specifications mapped to `templates/{library-name}/`
 - [ ] Custom specification in `templates/{domain}/`
 - [ ] P0 Slash Commands created (from Step 2.5 STEP 4)
-- [ ] Entity templates match protocol entities
+- [ ] Entity templates match specification entities
 - [ ] Examples in top-level `examples/` directory
 - [ ] At least 1-2 complete examples
 
@@ -618,7 +652,7 @@ MetaSpec now guides developers to design toolkits from user needs, not just tech
 1. **Templates Directory Structure**: Organized by specification system source
 2. **Template Mapping**: Library specs → directory names
 3. **P0 Slash Commands**: Must-implement commands from scenarios
-4. **Entity Templates**: Protocol entities → template files
+4. **Entity Templates**: Specification entities → template files
 5. **Examples Directory**: Separate structure with basic/advanced/use-cases
 6. **Implementation Checklist**: Verification checklist
 
@@ -637,7 +671,7 @@ templates/
 ├── spec-kit/              # From library/sdd/spec-kit
 │   ├── commands/
 │   └── templates/
-└── mcp/                   # Custom (from protocol)
+└── mcp/                   # Custom (from domain specification)
     ├── commands/
     └── templates/
 
@@ -709,8 +743,8 @@ examples/
      - Examples organization (basic/advanced)
 
 3. **Updated Key Principle**:
-   - Before: "Toolkit specs explicitly depend on protocol specs and define HOW to implement"
-   - After: "Toolkit specs explicitly depend on protocol specs, **derive features from user scenarios**, and define HOW to implement"
+   - Before: "Toolkit specs explicitly depend on specifications and define HOW to implement"
+   - After: "Toolkit specs explicitly depend on specifications, **derive features from user scenarios**, and define HOW to implement"
 
 **Benefits**:
 - ✅ AI Agents now understand how to use User Journey Analysis
@@ -766,7 +800,7 @@ examples/
    - Type B (Action Sequence): Each action becomes a command (like MetaSpec's specify → clarify → plan)
    - Judgment rule: verb/action → command, noun/state → navigation
 
-3. **Embedded Protocol Knowledge**
+3. **Embedded Specification Knowledge**
    - Slash Commands now embed: entity definitions, validation rules, examples
    - AI can produce compliant output without external reference
    - Self-validation checklists included
@@ -787,7 +821,7 @@ examples/
 **Key Additions**:
 
 1. **CLI vs Slash Commands Distinction**
-   - Slash Commands = Protocol-Driven (workflow actions)
+   - Slash Commands = Specification-Driven (workflow actions)
    - CLI Commands = Purpose-Driven (toolkit functions)
    - Clear separation of concerns
 
@@ -799,12 +833,12 @@ examples/
 3. **4-Step CLI Derivation Process**
    - STEP 1: Define Toolkit Type (Generator? Validator? Query Tool?)
    - STEP 2: Derive CLI Commands from Type (type → commands mapping)
-   - STEP 3: Protocol-Influenced CLI Parameters (protocol affects parameters, not commands)
+   - STEP 3: Specification-Influenced CLI Parameters (specification affects parameters, not commands)
    - STEP 4: Define CLI Implementation (detailed specs for each command)
 
 4. **Real-World Validation**
    - Analyzed 4 projects: Spec-Kit (shell scripts), OpenSpec (validator+query), MetaSpec (generator+community), Specify (generator+checker)
-   - Confirmed: CLI commands come from toolkit purpose, not protocol workflow
+   - Confirmed: CLI commands come from toolkit purpose, not specification workflow
    - Examples included for each toolkit type
 
 **Impact**: AI now has clear methodology to derive appropriate CLI commands based on toolkit purpose, avoiding both over-engineering and missing essential functionality.
@@ -824,11 +858,11 @@ examples/
 **What Changed**:
 
 1. **Slash Commands - STEP 2 (Complete Rewrite)**
-   - ❌ Removed: Hardcoded mapping table (Protocol Content → Fixed Command Names)
-   - ✅ Added: Command naming process (3 steps: Read protocol → Extract verbs/nouns → Form domain names)
+   - ❌ Removed: Hardcoded mapping table (Specification Content → Fixed Command Names)
+   - ✅ Added: Command naming process (3 steps: Read specification → Extract verbs/nouns → Form domain names)
    - ✅ Added: Real project patterns (Spec-Kit, OpenSpec, MetaSpec naming examples)
    - ✅ Added: "Command Purpose Categories" (guidance, NOT fixed names)
-   - ✅ Example: MCP protocol → `define-server`, `configure-tools` (NOT get-template)
+   - ✅ Example: MCP specification → `define-server`, `configure-tools` (NOT get-template)
 
 2. **CLI Commands - STEP 2 (Complete Rewrite)**
    - ❌ Removed: Hardcoded command table (Toolkit Type → Fixed CLI Commands)
@@ -838,14 +872,14 @@ examples/
    - ✅ Example: MCP-Speckit → `show`, `docs`, `list` (NOT get-spec, get-template)
 
 3. **Updated All Examples**
-   - STEP 3: Protocol parameters (removed get-template, get-spec examples)
+   - STEP 3: Specification parameters (removed get-template, get-spec examples)
    - Classification Example: Now uses domain-specific names
    - CLI Implementation Checklist: Removed hardcoded commands, added naming guidance
 
 **Key Principle Now Enforced**:
 ```
 ❌ DON'T: Use generic/hardcoded names (get-spec, get-template, validate)
-✅ DO: Extract domain-specific names from protocol terminology
+✅ DO: Extract domain-specific names from specification terminology
 ```
 
 **Real Project Alignment**:
@@ -862,7 +896,7 @@ examples/
 
 #### Combined Impact - Complete Command Architecture
 
-**Slash Commands** (Protocol-Driven) + **CLI Commands** (Purpose-Driven) = Complete toolkit architecture
+**Slash Commands** (Specification-Driven) + **CLI Commands** (Purpose-Driven) = Complete toolkit architecture
 
 **Before** ❌:
 - Generic templates (init, validate, generate)
@@ -870,16 +904,16 @@ examples/
 - Confusion between CLI and Slash Commands
 
 **After** ✅:
-- Protocol-derived Slash Commands (from workflow, entities, validation rules)
+- Specification-derived Slash Commands (from workflow, entities, validation rules)
 - Purpose-derived CLI Commands (from toolkit type)
 - Clear separation and derivation methodology
 
 **Example - MCP-Speckit**:
 ```
-Slash Commands (from MCP protocol):
-  /mcpspeckit.define-requirements  ← From protocol workflow
-  /mcpspeckit.create-design        ← From protocol entities
-  /mcpspeckit.generate-code        ← From protocol operations
+Slash Commands (from MCP specification):
+  /mcpspeckit.define-requirements  ← From specification workflow
+  /mcpspeckit.create-design        ← From specification entities
+  /mcpspeckit.generate-code        ← From specification operations
 
 CLI Commands (from toolkit purpose):
   mcpspeckit validate <file>       ← Toolkit = Validator
@@ -905,9 +939,9 @@ CLI Commands (from toolkit purpose):
 
 ### ✨ New Features - Phase 1: Complete Iteration-Aware Design
 - **All Validation/Analysis Commands** now support iterative refinement:
-  - `/metaspec.sds.checklist` - Protocol quality validation with iteration tracking
-  - `/metaspec.sds.analyze` - Protocol consistency analysis with progress comparison
-  - `/metaspec.sds.clarify` - Protocol ambiguity resolution with resolved item tracking
+  - `/metaspec.sds.checklist` - Specification quality validation with iteration tracking
+  - `/metaspec.sds.analyze` - Specification consistency analysis with progress comparison
+  - `/metaspec.sds.clarify` - Specification ambiguity resolution with resolved item tracking
   - `/metaspec.sdd.checklist` - Toolkit quality validation with iteration tracking
   - `/metaspec.sdd.analyze` - Toolkit consistency analysis with progress comparison
   - `/metaspec.sdd.clarify` - Toolkit ambiguity resolution with resolved item tracking
@@ -976,7 +1010,7 @@ CLI Commands (from toolkit purpose):
   - Template files now properly included in distribution
 
 ### 🎯 Improvements
-- **SDS/SDD Symmetry**: Better alignment between protocol and toolkit workflows
+- **SDS/SDD Symmetry**: Better alignment between specification and toolkit workflows
 - **Quality Assurance**: Comprehensive quality validation for both SDS and SDD layers
 
 ## [0.1.2] - 2025-11-04

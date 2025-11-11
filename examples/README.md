@@ -123,7 +123,7 @@ metaspec init
 ## 📖 Learning Resources
 
 - **Getting Started**: See [quickstart.md](../docs/quickstart.md)
-- **Slash Command Protocol**: [slash-cmd-protocol.md](../docs/slash-cmd-protocol.md)
+- **Slash Command Specification**: [slash-cmd-protocol.md](../docs/slash-cmd-protocol.md)
 - **Architecture**: [architecture.md](../docs/architecture.md)
 - **AI Agent Guide**: [AGENTS.md](../AGENTS.md)
 
