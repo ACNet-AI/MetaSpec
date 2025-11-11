@@ -572,13 +572,13 @@ examples/
 cd my-speckit
 # Phase 1: Define specification
 /metaspec.sds.constitution  # Define specification design principles
-/metaspec.sds.specify "Define MCP specification"  # Specification entities
+/metaspec.sds.specify "Define domain specification"  # Specification entities
 /metaspec.sds.checklist  # Generate quality checklist
 /metaspec.sds.analyze  # Check specification consistency
 
 # Phase 2: Design toolkit
 /metaspec.sdd.constitution  # Define toolkit principles
-/metaspec.sdd.specify "Define MCP parser and validator"  # Toolkit spec
+/metaspec.sdd.specify "Define parser and validator"  # Toolkit spec
 /metaspec.sdd.plan  # Architecture design
 ```
 

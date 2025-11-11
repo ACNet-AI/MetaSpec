@@ -52,10 +52,10 @@ meta/
 
 ### Why Three Layers?
 
-1. **SDS (Spec-Driven Specification)** - Define protocol specifications
-   - Goal: Define WHAT (what the protocol is)
+1. **SDS (Spec-Driven Specification)** - Define domain specifications
+   - Goal: Define WHAT (what the specification is)
    - Output: `specs/protocol/` directory
-   - Examples: Define MCP protocol, OpenAPI specification
+   - Examples: Define MCP specification, OpenAPI specification
    - **Status**: Primary, core asset
 
 2. **SDD (Spec-Driven Development)** - Develop toolkits
@@ -109,7 +109,7 @@ MetaSpec realizes toolkit value through a three-stage process:
 
 **Actual Usage**:
 ```bash
-/metaspec.sds.specify "MCP protocol"   # Protocol
+/metaspec.sds.specify "MCP specification"   # Specification
 /metaspec.sdd.specify "TS toolkit"     # Toolkit (select language, components)
 /metaspec.sdd.plan                      # Design architecture
 /metaspec.sdd.implement                 # Generate code
@@ -120,24 +120,24 @@ See: `/metaspec.sdd.specify`, `/metaspec.sdd.plan`, `/metaspec.sdd.implement`
 
 ## Command List
 
-### SDS Commands (8) - Protocol Specification
+### SDS Commands (8) - Domain Specification
 
 Generated command prefix: `/metaspec.sds.*`
 
 | Command | Purpose | Output |
 |------|------|------|
-| `constitution` | Define protocol design principles | memory/constitution.md |
-| `specify` | Define protocol entities and rules | specs/protocol/00X-name/spec.md |
-| `clarify` | Resolve protocol ambiguities | Update spec.md |
-| `plan` | Plan protocol architecture and sub-specifications | specs/protocol/00X-name/plan.md |
-| `tasks` | Break down protocol specification work | specs/protocol/00X-name/tasks.md |
-| `implement` | Write protocol specification documents | Create/update spec files |
-| `checklist` | Generate quality checklist for protocol | specs/protocol/00X-name/checklists/ |
-| `analyze` | Check protocol consistency | Analysis report |
+| `constitution` | Define specification design principles | memory/constitution.md |
+| `specify` | Define specification entities and rules | specs/protocol/00X-name/spec.md |
+| `clarify` | Resolve specification ambiguities | Update spec.md |
+| `plan` | Plan specification architecture and sub-specifications | specs/protocol/00X-name/plan.md |
+| `tasks` | Break down specification work | specs/protocol/00X-name/tasks.md |
+| `implement` | Write specification documents | Create/update spec files |
+| `checklist` | Generate quality checklist for specification | specs/protocol/00X-name/checklists/ |
+| `analyze` | Check specification consistency | Analysis report |
 
 **Use Cases**:
-- Define domain protocols (e.g., MCP, GraphQL)
-- Plan and implement complex protocol hierarchies
+- Define domain specifications (e.g., MCP, GraphQL)
+- Plan and implement complex specification hierarchies
 - Define validation rules and constraints
 - Implementation-independent specifications
 
@@ -377,15 +377,15 @@ target: protocol/001-mcp-core       # Change target (relative to specs/)
 
 ### Recommended Practice: SDS + SDD Separation
 
-#### Phase 1: Protocol Specification (SDS)
+#### Phase 1: Domain Specification (SDS)
 
 ```bash
-# Define protocol principles
+# Define specification design principles
 /metaspec.sds.constitution
 
-# Create protocol specification
-/metaspec.sds.specify "MCP Server Protocol"
-# Output: specs/protocol/001-mcp-server-protocol/spec.md
+# Create domain specification
+/metaspec.sds.specify "MCP Server Specification"
+# Output: specs/protocol/001-mcp-server-specification/spec.md
 
 # Clarify details
 /metaspec.sds.clarify
@@ -490,15 +490,15 @@ Because Evolution is a **shared** mechanism for SDS and SDD:
 ## Example: Using MetaSpec to Develop MCP Speckit
 
 ```bash
-# Phase 1: Define MCP protocol (SDS)
-/metaspec.sds.constitution  # Define protocol principles
-/metaspec.sds.specify "MCP Protocol Core"
-# → specs/protocol/001-mcp-protocol-core/spec.md
+# Phase 1: Define MCP specification (SDS)
+/metaspec.sds.constitution  # Define specification design principles
+/metaspec.sds.specify "MCP Specification Core"
+# → specs/protocol/001-mcp-specification-core/spec.md
 
 # Phase 2: Develop MCP Parser (SDD)
 /metaspec.sdd.specify "MCP Request Parser"
 # → specs/toolkit/001-mcp-request-parser/spec.md
-# → Explicit reference: depends on protocol/001-mcp-protocol-core
+# → Explicit reference: depends on protocol/001-mcp-specification-core
 
 /metaspec.sdd.plan          # Plan implementation
 /metaspec.sdd.tasks         # Break down tasks
