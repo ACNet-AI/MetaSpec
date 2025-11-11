@@ -300,7 +300,7 @@ src/{package_name}/
 **Example outcome**:
 ```bash
 $ cd my-speckit
-$ /metaspec.sds.specify  # Define MCP specification
+$ /metaspec.sds.specify  # Define domain specification
 $ /metaspec.sdd.specify  # Choose Python, Parser+Validator+CLI
 $ /metaspec.sdd.plan     # Design Python architecture
 $ /metaspec.sdd.implement # Generate code
