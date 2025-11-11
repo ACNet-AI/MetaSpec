@@ -9,6 +9,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.3] - 2025-11-11
+
+### ✅ Testing
+
+**Test Coverage Enhancement**
+
+Significantly improved test coverage for CLI modules, enhancing code quality and reliability.
+
+**Coverage Improvements**:
+- **Overall Coverage**: 74.00% → 90.99% (+16.99%)
+- **cli/init.py**: 35.12% → 88.02% (+52.90%)
+- **cli/contribute.py**: 21.62% → 90.54% (+68.92%)
+
+**New Test Cases** (15 new tests):
+
+*cli/init.py* (8 new tests):
+- `test_init_interactive_minimal_path` - Minimal user interaction flow
+- `test_init_interactive_full_path` - Full customization flow
+- `test_init_generation_flow` - Complete generation process
+- `test_init_force_overwrites_existing` - Force overwrite functionality
+- `test_init_fails_without_force_on_existing` - Directory conflict handling
+- `test_init_interactive_user_cancels` - User cancellation handling
+- `test_init_interactive_keyboard_interrupt` - Keyboard interrupt handling
+- Full mock coverage for interactive prompts and generators
+
+*cli/contribute.py* (7 new tests):
+- `test_contribute_interactive_full_flow` - Complete contribution workflow
+- `test_contribute_with_detected_commands` - Auto-detection of CLI commands
+- `test_contribute_command_not_in_path_continue` - Missing command handling
+- `test_contribute_custom_commands` - Custom command definition
+- `test_contribute_non_interactive_fails` - Non-interactive mode validation
+- `test_contribute_no_command_interactive_prompt` - Missing command prompt
+- Full mock coverage for registry, prompts, and file operations
+
+**Test Results**:
+- ✅ 151/151 tests passing
+- ✅ 90.99% coverage (exceeds 69% requirement by 21.99%)
+- ✅ All critical user interaction paths covered
+
+---
+
 ## [0.5.2] - 2025-11-11
 
 ### 🐛 Bug Fixes
