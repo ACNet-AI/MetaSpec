@@ -256,15 +256,15 @@ metaspec init my-spec-kit
 # 2️⃣ DEVELOP: Use built-in MetaSpec slash commands (no installation needed)
 cd my-spec-kit
 
-# SDS Commands (8) - Define protocol specification
-# /metaspec.sds.constitution - Define protocol principles
-# /metaspec.sds.specify      - Define protocol entities and operations
-# /metaspec.sds.clarify      - Resolve protocol ambiguities
-# /metaspec.sds.plan         - Plan protocol architecture and sub-specifications
-# /metaspec.sds.tasks        - Break down protocol specification work
-# /metaspec.sds.implement    - Write protocol specification documents
-# /metaspec.sds.checklist    - Generate quality checklist for protocol
-# /metaspec.sds.analyze      - Check protocol consistency
+# SDS Commands (8) - Define domain specification
+# /metaspec.sds.constitution - Define specification design principles
+# /metaspec.sds.specify      - Define specification entities and operations
+# /metaspec.sds.clarify      - Resolve specification ambiguities
+# /metaspec.sds.plan         - Plan specification architecture and sub-specifications
+# /metaspec.sds.tasks        - Break down specification work
+# /metaspec.sds.implement    - Write specification documents
+# /metaspec.sds.checklist    - Generate quality checklist for specification
+# /metaspec.sds.analyze      - Check specification consistency
 
 # SDD Commands (8) - Develop spec-driven toolkit
 # /metaspec.sdd.constitution - Define toolkit principles
@@ -352,13 +352,13 @@ cd api-spec-kit
 pip install -e .
 
 # Step 4: Define and implement using MetaSpec commands (in Cursor/AI editor)
-# Phase 1: Define protocol (SDS)
-# /metaspec.sds.constitution  - Define protocol principles
-# /metaspec.sds.specify       - Define protocol entities and operations
-# /metaspec.sds.plan          - Plan protocol architecture (if complex)
+# Phase 1: Define specification (SDS)
+# /metaspec.sds.constitution  - Define specification design principles
+# /metaspec.sds.specify       - Define specification entities and operations
+# /metaspec.sds.plan          - Plan specification architecture (if complex)
 # /metaspec.sds.tasks         - Break down specification work
-# /metaspec.sds.implement     - Write protocol specification documents
-# /metaspec.sds.analyze       - Check protocol consistency
+# /metaspec.sds.implement     - Write specification documents
+# /metaspec.sds.analyze       - Check specification consistency
 
 # Phase 2: Develop toolkit (SDD)
 # /metaspec.sdd.constitution  - Define toolkit principles

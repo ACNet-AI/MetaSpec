@@ -13,17 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ✨ Features
 
-**Recursive Tree Structure for SDS Protocols**
+**Recursive Tree Structure for SDS Specifications**
 
-SDS now supports hierarchical protocol specifications with unlimited depth:
+SDS now supports hierarchical domain specifications with unlimited depth:
 
 - **Physical Structure**: Flat directory layout under `specs/protocol/`
-  - All protocols are sibling directories (e.g., `001-root/`, `002-child/`, `013-grandchild/`)
+  - All specifications are sibling directories (e.g., `001-root/`, `002-child/`, `013-grandchild/`)
   - Simple paths, FEATURE independence, Git branch friendly
   
 - **Logical Structure**: Tree hierarchy via YAML frontmatter
   - Parent-child relationships declared in `spec.md` frontmatter
-  - Context tracking: `protocol_id`, `parent`, `root`, `type` (leaf/parent/root)
+  - Context tracking: `spec_id`, `parent`, `root`, `type` (leaf/parent/root)
   - Parent → Child: Listed in "Sub-Specifications" table
   - Child → Parent: Shown in "Parent chain" breadcrumb
 
@@ -36,22 +36,22 @@ SDS now supports hierarchical protocol specifications with unlimited depth:
 
 **New SDS Commands** (8 total, up from 5)
 
-Added 3 new commands for complex protocol specification:
+Added 3 new commands for complex specification definition:
 
-1. `/metaspec.sds.plan` - Plan protocol architecture and sub-specifications
+1. `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
    - Assess complexity score (line count, entities, operations)
-   - Decide: Keep single specification vs Split into sub-protocols
+   - Decide: Keep single specification vs Split into sub-specifications
    - Design sub-specification structure if complex
    
-2. `/metaspec.sds.tasks` - Break down protocol specification work
+2. `/metaspec.sds.tasks` - Break down specification work
    - Generate actionable task list organized by sub-specification
-   - Track dependencies between sub-protocols
+   - Track dependencies between sub-specifications
    - Include parent/root context for recursive structure
    
-3. `/metaspec.sds.implement` - Write protocol specification documents
-   - Create new protocol FEATUREs (independent `00X-` directories)
+3. `/metaspec.sds.implement` - Write specification documents
+   - Create new specification FEATUREs (independent `00X-` directories)
    - Call `/metaspec.sds.specify` internally with context
-   - Update parent protocol's "Sub-Specifications" section
+   - Update parent specification's "Sub-Specifications" section
    - Support recursive splitting at any depth
 
 **Command Total**: 19 commands (8 SDS + 8 SDD + 3 Evolution)
@@ -750,15 +750,15 @@ examples/
 - Generic templates (init, validate, generate)
 
 **New Understanding** ✅:
-- Slash Commands = "Spec-driven execution guides with embedded protocol knowledge"
-- AI reads Slash Command (with protocol knowledge) → produces spec-compliant output
-- Commands derived from protocol specification
+- Slash Commands = "Spec-driven execution guides with embedded specification knowledge"
+- AI reads Slash Command (with specification knowledge) → produces spec-compliant output
+- Commands derived from domain specification
 
 #### Key Improvements
 
-1. **Protocol-Driven Command Derivation**
-   - Added STEP 1: Analyze protocol specification
-   - Added STEP 2: Derive commands from protocol content
+1. **Specification-Driven Command Derivation**
+   - Added STEP 1: Analyze domain specification
+   - Added STEP 2: Derive commands from specification content
    - Mapping rules: entities → get-template, validation_rules → validate, workflows → commands
    
 2. **Workflow-Aware Command Generation**
@@ -958,8 +958,8 @@ CLI Commands (from toolkit purpose):
 ## [0.1.3] - 2025-11-05
 
 ### ✨ New Features
-- **SDS Commands**: Added `/metaspec.sds.checklist` command for protocol quality validation
-  - Generates systematic quality checklists for protocol specifications
+- **SDS Commands**: Added `/metaspec.sds.checklist` command for specification quality validation
+  - Generates systematic quality checklists for domain specifications
   - Validates entity definitions, operations, validation rules, error handling
   - Complements `/metaspec.sds.analyze` with human review framework
   - Aligns with GitHub spec-kit best practices
