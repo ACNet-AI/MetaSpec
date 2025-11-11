@@ -400,72 +400,158 @@ Select primary toolkit type(s):
 
 ---
 
-**STEP 2: Derive CLI Commands from Toolkit Purpose**
+**STEP 2: CLI Command Naming Principles**
 
-**CRITICAL**: ❌ **DON'T use fixed command names** (init, validate, list)  
-            ✅ **DO derive commands based on toolkit function and domain**
+#### 🏆 Golden Reference: GitHub spec-kit
 
-**Why This Matters**:
-- CLI commands serve toolkit-specific purposes
-- Names should reflect what the toolkit actually does
-- Real projects show diverse command naming
+**Before designing commands, study the gold standard**: [GitHub spec-kit](https://github.com/github/spec-kit)
 
----
+**Why spec-kit is the reference**:
+- ✅ Only 2 commands: `init`, `check`
+- ✅ Minimalist but feature-complete
+- ✅ Excellent user experience
+- ✅ Widely adopted in production
 
-**CLI Command Derivation Process**:
+**Key lessons**:
+1. `init` provides complete project initialization
+2. `check` unifies ALL validation functions (not split into validate/verify/lint)
+3. Extend via parameters, don't create new commands
+4. Command names are natural and intuitive
 
-1. **Identify Toolkit Functions**
-   - What does this toolkit DO?
-   - Generator: Creates projects/files
-   - Validator: Checks compliance
-   - Query: Displays information
-   - Manager: Tracks/updates state
-
-2. **Match Functions to Command Purposes**
-   - Don't copy "init, validate, list"
-   - Think: What actions do users need?
-
-3. **Choose Domain-Appropriate Names**
-   - Match domain terminology
-   - Keep commands intuitive
+**Design principle**: Unless you have a compelling reason, follow spec-kit's minimalist design
 
 ---
 
-**Real Project CLI Commands** (learn from these):
+#### Core Naming Principles
+
+**1. Prioritize Industry Best Practices**
+
+Some command names are **industry standards**, not "fixed names to avoid":
+
+| Standard Command | Use For | Examples |
+|-----------------|---------|----------|
+| `init` | Project generation | spec-kit, MetaSpec, Specify |
+| `check`/`validate` | Validation/verification | spec-kit, OpenSpec |
+| `list`/`show` | Query/display | OpenSpec, MetaSpec |
+| `search`/`install` | Community platform | MetaSpec, npm, pip |
+
+**✅ DO**: Use standard names when they fit  
+**❌ DON'T**: Create unnecessary variations (`examine`, `inspect`, `verify`) just to be "different"
+
+**2. Prefer Unified Commands (spec-kit approach)**
+
+❌ **Don't**: `validate-req`, `validate-design`, `validate-project` (3 commands)  
+✅ **Do**: `check <target> [--type TYPE]` (1 unified command)
+
+💡 **See detailed guidelines** in "Unified vs Specialized Commands" section below
+
+---
+
+#### Real Project Examples
 
 | Project | Toolkit Type | Actual Commands | Insight |
 |---------|-------------|-----------------|---------|
-| **Specify** | Generator<br>+ Checker | `init` - Create project<br>`check` - Verify tools | Simple, focused |
+| **🏆 spec-kit** (GitHub) | Workflow Tool | `init` - Initialize project<br>`check` - Unified validation | **Gold standard**: 2 commands, minimalist design |
+| **Specify** | Generator<br>+ Checker | `init` - Create project<br>`check` - Verify tools | Follows spec-kit pattern |
 | **OpenSpec** | Validator<br>+ Query<br>+ Manager | `validate` - Check proposal<br>`list` - Show proposals<br>`show` - Display details<br>`update` - Sync state | State-management oriented |
-| **MetaSpec** | Generator<br>+ Community | `init` - Generate speckit<br>`search` - Find packages<br>`install` - Get from community<br>`contribute` - Share speckit | Community platform |
-| **Spec-Kit** | Workflow Tool | No CLI (shell scripts only)<br>`specify.sh`, `plan.sh` | Script-based approach |
+| **MetaSpec** | Generator<br>+ Community | `init` - Generate speckit<br>`search` - Find packages<br>`install` - Get from community<br>`contribute` - Share speckit<br>`list`, `info`, `version` | Community platform (7 commands justified) |
 
-**Key Insight**: Commands reflect toolkit purpose, not generic patterns
+**Key Insight**: spec-kit shows that 2 well-designed commands can be complete
 
 ---
 
-**Command Purpose Guidelines** (NOT fixed names):
+#### Unified vs Specialized Commands
 
-| Toolkit Function | Command Purpose | Naming Examples | When to Include |
-|-----------------|----------------|-----------------|-----------------|
-| **Project Generation** | Create/initialize | `init`, `create`, `new`, `scaffold` | If toolkit creates projects |
-| **Environment Setup** | Check prerequisites | `check`, `verify`, `doctor`, `setup` | If toolkit needs environment |
-| **Protocol Validation** | Validate compliance | `validate`, `check`, `lint`, `verify` | If protocol has rules |
-| **Information Query** | Display data | `list`, `show`, `info`, `get`, `display` | If toolkit manages content |
-| **State Management** | Update/sync | `update`, `sync`, `refresh`, `pull` | If toolkit tracks state |
-| **Community Integration** | Package operations | `search`, `install`, `publish`, `contribute` | If ecosystem exists |
+**Critical design decision**: When to combine functions into one command vs splitting into multiple commands
 
-**Customization Based on Domain**:
+**When to UNIFY into one command** ✅:
+
+**1. Similar functions, different objects**
 ```bash
-# Generic toolkit → Generic commands
-toolkit validate spec.yaml
+# ❌ Over-specialized (3 commands)
+validate-requirements
+validate-design
+validate-project
 
-# Domain-specific → Domain commands  
-speckit validate spec.yaml
-api-toolkit lint openapi.yaml
+# ✅ Unified (1 command)
+check <target> [--type TYPE]
 ```
 
-**Result**: Derive 3-6 CLI commands based on toolkit functions (Validator, Query Tool, Generator)
+**2. Sequential workflow, users run together**
+```bash
+# ❌ Split (2 commands)
+validate
+check-transition
+
+# ✅ Unified (1 command)
+check [--phase PHASE]
+```
+
+**3. Same underlying logic**
+```bash
+# ❌ Separated (multiple commands)
+list-servers
+list-tools
+list-resources
+
+# ✅ Unified (1 command)
+list <entity-type>
+```
+
+**When to SPLIT into separate commands** ✅:
+
+**1. Completely different functions**
+```bash
+# ✅ Keep separate
+init      # Creates project
+check     # Validates project
+# These are fundamentally different operations
+```
+
+**2. Different user contexts**
+```bash
+# ✅ Keep separate  
+search    # Browse community (discovery)
+install   # Get package (action)
+# Users have different mindsets for these
+```
+
+**3. Different permission levels**
+```bash
+# ✅ Keep separate
+validate  # Read-only
+publish   # Requires credentials
+```
+
+**Real-world example: spec-kit's `check` command**
+
+spec-kit unifies ALL validation into one command:
+```bash
+check requirements
+check design  
+check project
+check transition
+# All use the same underlying validation logic
+```
+
+This is better than:
+```bash
+# ❌ Over-engineered
+validate-requirements
+validate-design
+validate-project
+check-transition
+```
+
+**Command Count Guidance**:
+
+| Toolkit Type | Recommended Count | Rationale |
+|-------------|------------------|-----------|
+| **Workflow Tool** | 1-2 commands | spec-kit model: `init` + unified `check` |
+| **Validator + Query** | 2-3 commands | Add `list`/`show` if needed |
+| **Community Platform** | 5-7 commands | Social features need dedicated commands |
+
+⚠️ **Warning**: If you have >7 commands, reconsider if some can be unified
 
 ---
 
