@@ -8,6 +8,7 @@ MetaSpecDefinition into complete SpecKitProject structures.
 import re
 import textwrap
 from datetime import datetime
+from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
@@ -109,6 +110,19 @@ class Generator:
 
         return project
 
+    def _get_metaspec_version(self) -> str:
+        """
+        Get the MetaSpec package version from metadata.
+
+        Returns:
+            Version string (e.g., "0.5.1")
+        """
+        try:
+            return version("meta-spec")
+        except Exception:
+            # Fallback to a default version if package metadata is not available
+            return "0.0.0"
+
     def _create_template_context(self, meta_spec: MetaSpecDefinition) -> dict[str, Any]:
         """
         Create template rendering context from MetaSpecDefinition.
@@ -188,7 +202,7 @@ class Generator:
             "dependencies": meta_spec.dependencies or [],
             "year": datetime.now().year,
             "date": datetime.now().date().isoformat(),
-            "metaspec_version": "0.1.0",  # TODO: Get from package metadata
+            "metaspec_version": self._get_metaspec_version(),
         }
 
     def _select_templates(self, meta_spec: MetaSpecDefinition) -> dict[str, str]:
@@ -497,18 +511,34 @@ class Generator:
                 )
             else:
                 # Generate function with options if present
+                params_list = ["spec_file: str"]
+                option_prints = ['console.print(f"[green]{cmd_name.title()}:[/green] {{spec_file}}")']
+
                 if cmd.get("options"):
-                    # TODO: Handle options properly
-                    params = "spec_file: str"
-                else:
-                    params = "spec_file: str"
+                    for opt in cmd["options"]:
+                        opt_name = opt["name"]
+                        opt_type = opt["type"]
+                        opt_required = opt.get("required", False)
+
+                        # Build parameter declaration
+                        if opt_required:
+                            params_list.append(f"{opt_name}: {opt_type}")
+                        else:
+                            # Optional parameter with default None
+                            params_list.append(f"{opt_name}: {opt_type} = None")
+
+                        # Add print statement for the option
+                        option_prints.append(f'console.print(f"[blue]{opt_name.title()}:[/blue] {{{opt_name}}}")')
+
+                params = ", ".join(params_list)
+                option_code = "\n                        ".join(option_prints)
 
                 command_functions.append(
                     textwrap.dedent(f'''
                     @app.command()
                     def {cmd_name}({params}):
                         """{cmd_desc}"""
-                        console.print(f"[green]{cmd_name.title()}:[/green] {{spec_file}}")
+                        {option_code}
                         # TODO: Implement {cmd_name}
                 ''').strip()
                 )

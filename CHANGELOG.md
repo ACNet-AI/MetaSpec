@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.2] - 2025-11-11
+
+### 🐛 Bug Fixes
+
+**Technical Debt Cleanup**
+
+Resolved 2 TODO items in the generator module:
+
+1. **Dynamic Version Retrieval**: Now automatically gets MetaSpec version from package metadata using `importlib.metadata.version()`
+   - Previously hardcoded as "0.1.0"
+   - Now reflects the actual installed version (0.5.2)
+   - Includes fallback to "0.0.0" if metadata unavailable
+
+2. **Command Options Handling**: Properly generates CLI command parameters from options
+   - Supports both required and optional parameters
+   - Correctly handles parameter types
+   - Generates appropriate default values for optional parameters
+   - Adds display output for each option
+
+**Changes**:
+- `generator.py`: Added `_get_metaspec_version()` method
+- `generator.py`: Enhanced command generation to properly handle options with types and requirements
+- Fixed linter warnings (removed unused variables, cleaned blank lines)
+
+---
+
 ## [0.5.1] - 2025-11-11
 
 ### 🔄 Refactoring
