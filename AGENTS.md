@@ -54,7 +54,7 @@ Developer (validates MCP servers against spec)
 
 **This means**: MetaSpec is not just "spec-driven development" - it's a framework that **generates speckits** (spec-driven toolkits) for any domain.
 
-**See [Recommended Practice: SDS + SDD Separation](#recommended-practice-sds--sdd-separation) in MetaSpec Commands section for how speckits separate protocol specs from implementation.**
+**See [Recommended Practice: SDS + SDD Separation](#recommended-practice-sds--sdd-separation) in MetaSpec Commands section for how speckits separate domain specifications from toolkit implementation.**
 
 ---
 
@@ -113,29 +113,29 @@ When you generate a speckit, it includes MetaSpec (Spec-Driven X) commands in th
 MetaSpec uses a three-layer architecture to separate concerns:
 
 #### SDS (Spec-Driven Specification) - 8 Commands
-For defining domain protocol specifications:
+For defining domain specifications:
 
-- `/metaspec.sds.constitution` - Define protocol design principles
-- `/metaspec.sds.specify` - Define protocol entities, operations, validation rules
-- `/metaspec.sds.clarify` - Resolve ambiguities in protocol specification
-- `/metaspec.sds.plan` - Plan protocol architecture and sub-specifications
-- `/metaspec.sds.tasks` - Break down protocol specification work
-- `/metaspec.sds.implement` - Write protocol specification documents
-- `/metaspec.sds.checklist` - Generate quality checklist for protocol specification
-- `/metaspec.sds.analyze` - Check protocol consistency
+- `/metaspec.sds.constitution` - Define specification design principles
+- `/metaspec.sds.specify` - Define specification entities, operations, validation rules
+- `/metaspec.sds.clarify` - Resolve ambiguities in specification
+- `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
+- `/metaspec.sds.tasks` - Break down specification work
+- `/metaspec.sds.implement` - Write specification documents
+- `/metaspec.sds.checklist` - Generate quality checklist for specification
+- `/metaspec.sds.analyze` - Check specification consistency
 
-**Location**: Works with `specs/protocol/` directory
+**Location**: Works with `specs/protocol/` directory (stores domain specifications)
 
 #### 🌳 Recursive Tree Structure (NEW)
 
-**SDS supports recursive protocol hierarchy**:
+**SDS supports recursive specification hierarchy**:
 
 **IMPORTANT**: Physical structure is **FLAT**, logical structure is **TREE**.
 
 **Physical Structure** (flat directory layout):
 ```bash
 specs/protocol/
-├── 001-order-protocol/          # All at same level
+├── 001-order-specification/     # All at same level
 ├── 002-order-creation/
 ├── 003-payment-processing/
 ├── 013-credit-card-payment/     # Same level, not nested
@@ -145,7 +145,7 @@ specs/protocol/
 
 **Logical Structure** (tree via frontmatter):
 ```
-001-order-protocol (root)
+001-order-specification (root)
   ├── 002-order-creation (leaf)
   ├── 003-payment-processing (parent)
   │   ├── 013-credit-card-payment (leaf)
@@ -156,36 +156,36 @@ specs/protocol/
 
 **Why flat physical structure?**
 - ✅ Simple paths: `specs/protocol/013-credit-card-payment/`
-- ✅ FEATURE independence: Each protocol is a standalone FEATURE
+- ✅ FEATURE independence: Each specification is a standalone FEATURE
 - ✅ Flexible numbering: 003's children can be 013-015 (skip 004-012)
 - ✅ Git branch friendly: Branch name = directory name
 - ✅ Easy reorganization: Change parent in frontmatter, no file moves
 
 **Key features**:
-- **Any protocol can be a parent**: If complex, run plan → tasks → implement to create sub-protocols
-- **Unlimited depth**: Sub-protocols can have their own sub-protocols
-- **Context tracking**: Via YAML frontmatter (protocol_id, parent, root, type)
+- **Any specification can be a parent**: If complex, run plan → tasks → implement to create sub-specifications
+- **Unlimited depth**: Sub-specifications can have their own sub-specifications
+- **Context tracking**: Via YAML frontmatter (spec_id, parent, root, type)
 - **Unified commands**: Same commands work at all levels
 
 **How relationships are maintained**:
-- **Physical**: All protocols are sibling directories under `specs/protocol/`
+- **Physical**: All specifications are sibling directories under `specs/protocol/`
 - **Logical**: Parent-child relationships declared in YAML frontmatter
   ```yaml
   ---
-  protocol_id: 013-credit-card-payment
+  spec_id: 013-credit-card-payment
   parent: 003-payment-processing    # ← Declares logical parent
-  root: 001-order-protocol
+  root: 001-order-specification
   type: leaf
   ---
   ```
-- **Parent → Child**: Parent's `spec.md` lists sub-protocols in "Sub-Specifications" table
+- **Parent → Child**: Parent's `spec.md` lists sub-specifications in "Sub-Specifications" table
 - **Child → Parent**: Child's `spec.md` shows "Parent chain" breadcrumb navigation
 - **Benefit**: Change relationships by editing frontmatter, no directory restructuring needed
 
 **Example workflow** (Level 2 splitting):
 ```bash
 # At root (001)
-/metaspec.sds.specify → 001-order-protocol/spec.md
+/metaspec.sds.specify → 001-order-specification/spec.md
 /metaspec.sds.plan → Decides to split
 /metaspec.sds.implement → Creates 002-008
 
@@ -196,35 +196,35 @@ cd specs/protocol/003-payment-processing/
 ```
 
 **Numbering strategy**:
-- Root protocol starts at 001
+- Root specification starts at 001
 - First-level children: 002-009 (reserve 001 for root)
 - Second-level children: 010-099 (e.g., 003's children are 013-015)
 - Third-level children: 100-999
 - Benefits: Clear hierarchy, flexible expansion, easy identification
 
-**See [Recommended Practice: SDS + SDD Separation](#recommended-practice-sds--sdd-separation) for protocol + toolkit separation.**
+**See [Recommended Practice: SDS + SDD Separation](#recommended-practice-sds--sdd-separation) for specification + toolkit separation.**
 
 ---
 
-#### ⚠️ CRITICAL PRINCIPLE: Protocol First, Toolkit Second
+#### ⚠️ CRITICAL PRINCIPLE: Specification First, Toolkit Second
 
-**Every speckit MUST have a protocol specification before toolkit development.**
+**Every speckit MUST have a domain specification before toolkit development.**
 
 Why this matters:
-- **Protocol** = WHAT (domain specification, core asset)
+- **Specification** = WHAT (domain specification, core asset)
 - **Toolkit** = HOW (implementation, supporting tool)
-- Without protocol, MetaSpec becomes a generic code generator
+- Without specification, MetaSpec becomes a generic code generator
 - **Spec-Driven** means specifications drive development
 
 **Workflow**:
-1. ✅ First: Define protocol with `/metaspec.sds.specify`
+1. ✅ First: Define specification with `/metaspec.sds.specify`
 2. ✅ Then: Develop toolkit with `/metaspec.sdd.specify`
-3. ❌ Never: Skip protocol and go straight to toolkit
+3. ❌ Never: Skip specification and go straight to toolkit
 
 **Enforcement**:
-- `/metaspec.sdd.specify` will ERROR if no protocol exists
-- `/metaspec.sdd.analyze` marks missing protocol as CRITICAL
-- Toolkit specs MUST have Dependencies section referencing protocol
+- `/metaspec.sdd.specify` will ERROR if no specification exists
+- `/metaspec.sdd.analyze` marks missing specification as CRITICAL
+- Toolkit specs MUST have Dependencies section referencing specification
 
 ---
 
@@ -235,11 +235,11 @@ Why this matters:
 
 MetaSpec generates **working toolkits** through a three-stage process:
 
-#### Stage 1: Define Protocol (SDS)
+#### Stage 1: Define Specification (SDS)
 ```
 /metaspec.sds.specify
   ↓
-specs/protocol/001-{domain}-protocol/spec.md
+specs/protocol/001-{domain}-specification/spec.md
   - Entity definitions
   - Validation rules
   - Operations
@@ -259,7 +259,7 @@ specs/toolkit/001-{name}/spec.md
   - Language choice + rationale
   - Component selection
   - Architecture direction
-  - Dependencies on protocol
+  - Dependencies on specification
 ```
 
 #### Stage 3: Generate Code (SDD)
@@ -269,7 +269,7 @@ specs/toolkit/001-{name}/spec.md
 AI designs architecture based on:
   - Chosen language (Python/TS/Go/Rust)
   - Required components
-  - Protocol entities
+  - Specification entities
   ↓
 specs/toolkit/001-{name}/plan.md
   - Tech stack for chosen language
@@ -279,14 +279,14 @@ specs/toolkit/001-{name}/plan.md
 /metaspec.sdd.implement
   ↓
 AI generates code based on:
-  - Protocol spec (entity definitions)
+  - Specification (entity definitions)
   - Toolkit spec (language, components)
   - Plan (architecture, structure)
   ↓
 src/{package_name}/
-  - models.py/ts/go (from protocol entities)
+  - models.py/ts/go (from specification entities)
   - parser.py/ts/go (from toolkit spec)
-  - validator.py/ts/go (enforces protocol rules)
+  - validator.py/ts/go (enforces specification rules)
   - cli.py/ts/go (toolkit commands)
 ```
 
@@ -295,18 +295,18 @@ src/{package_name}/
 - ✅ **Component-flexible**: Generate only what's needed
 - ✅ **Architecture-adaptive**: Monolithic, modular, or plugin-based
 - ✅ **Spec-driven**: Code generated from specifications, not templates
-- ✅ **Protocol-compliant**: Generated code enforces protocol rules
+- ✅ **Specification-compliant**: Generated code enforces specification rules
 
 **Example outcome**:
 ```bash
 $ cd my-speckit
-$ /metaspec.sds.specify  # Define MCP protocol
+$ /metaspec.sds.specify  # Define MCP specification
 $ /metaspec.sdd.specify  # Choose Python, Parser+Validator+CLI
 $ /metaspec.sdd.plan     # Design Python architecture
 $ /metaspec.sdd.implement # Generate code
 $ pip install -e .
 $ my-speckit --help      # ✅ Working CLI!
-$ my-speckit validate spec.yaml  # ✅ Validates against protocol!
+$ my-speckit validate spec.yaml  # ✅ Validates against specification!
 ```
 
 This is how MetaSpec realizes Toolkit value: **not by providing fixed templates, but by generating spec-driven, language-appropriate, working code**.
@@ -338,67 +338,67 @@ For controlled specification evolution (both SDS and SDD):
 
 ```
 MetaSpec commands (19 total):
-  - SDS (8 commands)     → Define protocol specifications (specs/protocol/)
+  - SDS (8 commands)     → Define domain specifications (specs/protocol/)
   - SDD (8 commands)     → Develop toolkits (specs/toolkit/)
   - Evolution (3 shared) → Manage changes (changes/)
                               ↓
                     Project structure:
                     ├── specs/
-                    │   ├── protocol/   ← SDS manages
-                    │   └── toolkit/    ← SDD manages
+                    │   ├── protocol/   ← SDS manages (domain specifications)
+                    │   └── toolkit/    ← SDD manages (toolkit implementation)
                     └── changes/        ← Evolution manages (independent)
 ```
 
-**Key principle**: Clear separation between protocol specification (SDS) and toolkit development (SDD), with shared evolution commands.
+**Key principle**: Clear separation between domain specification (SDS) and toolkit development (SDD), with shared evolution commands.
 
 ### When to Use Which
 
 **Use SDS commands** (`/metaspec.sds.*`):
-- Defining domain protocols from scratch
-- Specifying protocol entities, operations, validation rules
-- Creating protocol specifications independent of implementation
-- Focus on WHAT the protocol is
+- Defining domain specifications from scratch
+- Specifying specification entities, operations, validation rules
+- Creating domain specifications independent of implementation
+- Focus on WHAT the domain specification is
 
 **Use SDD commands** (`/metaspec.sdd.*`):
 - Developing spec-driven toolkits
 - Planning and implementing parsers, validators, CLI
-- Building tools to support a protocol
+- Building tools to support a specification
 - Focus on HOW to implement the toolkit
 
 **Use Evolution commands** (`/metaspec.*`):
-- Specification is stable and in use (protocol or toolkit)
+- Specification is stable and in use (domain specification or toolkit)
 - Changes need review or approval
 - Want to track change history
 - Controlled evolution for both SDS and SDD specs
-- Use `--type sds` for protocol changes, `--type sdd` for toolkit changes
+- Use `--type sds` for specification changes, `--type sdd` for toolkit changes
 
 **Typical workflow**:
-1. SDS: Define protocol specification (`/metaspec.sds.specify`)
+1. SDS: Define domain specification (`/metaspec.sds.specify`)
 2. SDD: Design toolkit to support it (`/metaspec.sdd.specify`, `/metaspec.sdd.plan`)
 3. SDD: Implement toolkit (`/metaspec.sdd.tasks`, `/metaspec.sdd.implement`)
-4. Evolution: Manage changes to either protocol or toolkit (`/metaspec.proposal --type sds|sdd`)
+4. Evolution: Manage changes to either specification or toolkit (`/metaspec.proposal --type sds|sdd`)
 
 ### Recommended Practice: SDS + SDD Separation
 
 When using MetaSpec to develop a speckit, follow this two-phase approach:
 
-#### Phase 1: Protocol Specification (SDS)
+#### Phase 1: Domain Specification (SDS)
 
-**Purpose**: Define the domain protocol, rules, and standards
+**Purpose**: Define the domain specification, rules, and standards
 
-**Location**: `specs/protocol/001-{domain}-protocol/`
+**Location**: `specs/protocol/001-{domain}-specification/`
 
 **What to include**:
-- Protocol entities and schemas
+- Domain entities and schemas
 - Validation rules and constraints
 - Operations and interfaces
 - Error handling specifications
 
 **Example**:
 ```markdown
-# specs/protocol/001-mcp-core-protocol/spec.md
+# specs/protocol/001-mcp-core-specification/spec.md
 
-## MCP Protocol Specification
+## MCP Specification
 
 ### Server Interface
 - initialize: Server startup handshake
@@ -414,12 +414,12 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 
 #### Phase 2: Toolkit Specification (SDD)
 
-**Purpose**: Define how to build tools to parse, validate, and enforce the protocol
+**Purpose**: Define how to build tools to parse, validate, and enforce the specification
 
 **Location**: `specs/toolkit/001-{name}/`
 
 **What to include**:
-- Explicit dependency on protocol specs
+- Explicit dependency on domain specifications
 - **User Journey Analysis** (🆕 From Step 2.5)
   - Primary users (AI Agents vs Human Developers distribution)
   - Key usage scenarios (3-5 scenarios with User/Context/Goal/Pain Point)
@@ -427,13 +427,13 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
   - Command design rationale (why each command exists)
   - Scenario coverage matrix
 - Parser design (input formats)
-- Validator logic (references protocol rules)
+- Validator logic (references specification rules)
 - CLI commands (init, validate, generate)
 - **Slash Commands** (for AI agents)
 - **Templates & Examples** (🆕 From Component 6)
   - Templates directory structure (organized by specification system source)
   - Template mapping (library specs → directories)
-  - Entity templates (protocol entities → template files)
+  - Entity templates (specification entities → template files)
   - Examples directory (basic/advanced/use-cases)
   - Implementation checklist
 - Success criteria
@@ -443,7 +443,7 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 # specs/toolkit/001-mcp-parser/spec.md
 
 ## Dependencies
-- Depends on: protocol/001-mcp-core-protocol
+- Depends on: protocol/001-mcp-core-specification
 
 ## User Journey Analysis
 ### Primary Users
@@ -504,33 +504,33 @@ examples/
     └── README.md
 ```
 
-**Key principle**: Toolkit specs explicitly depend on protocol specs, derive features from user scenarios, and define HOW to implement the toolkit.
+**Key principle**: Toolkit specs explicitly depend on domain specifications, derive features from user scenarios, and define HOW to implement the toolkit.
 
 #### MetaSpec Workflow for SDS + SDD
 
 ```bash
-# Phase 1: Protocol Specification (SDS)
-/metaspec.sds.constitution  # Define protocol principles
-/metaspec.sds.specify       # Create specs/protocol/001-{domain}-protocol/spec.md
-/metaspec.sds.clarify       # Resolve protocol ambiguities
-/metaspec.sds.plan          # Plan protocol architecture (if complex)
+# Phase 1: Domain Specification (SDS)
+/metaspec.sds.constitution  # Define specification design principles
+/metaspec.sds.specify       # Create specs/protocol/001-{domain}-specification/spec.md
+/metaspec.sds.clarify       # Resolve specification ambiguities
+/metaspec.sds.plan          # Plan specification architecture (if complex)
 /metaspec.sds.tasks         # Break down specification work
-/metaspec.sds.implement     # Write protocol specification documents
-/metaspec.sds.checklist     # Generate quality checklist for protocol
-/metaspec.sds.analyze       # Check protocol consistency
+/metaspec.sds.implement     # Write specification documents
+/metaspec.sds.checklist     # Generate quality checklist for specification
+/metaspec.sds.analyze       # Check specification consistency
 
 # Phase 2: Toolkit Specification (SDD)
 /metaspec.sdd.constitution  # Define toolkit principles
 /metaspec.sdd.specify       # Create specs/toolkit/001-parser/spec.md
-                           # Must reference: protocol/001-{domain}-protocol
+                           # Must reference: protocol/001-{domain}-specification
 /metaspec.sdd.plan          # Plan toolkit architecture
 /metaspec.sdd.tasks         # Break down implementation
 /metaspec.sdd.implement     # Build src/ code based on toolkit spec
 /metaspec.sdd.checklist     # Validate quality
-/metaspec.sdd.analyze       # Verify toolkit references protocol correctly
+/metaspec.sdd.analyze       # Verify toolkit references specification correctly
 
 # Evolution: Manage Changes
-/metaspec.proposal "Add GraphQL" --type sds    # Propose protocol change
+/metaspec.proposal "Add GraphQL" --type sds    # Propose specification change
 /metaspec.apply add-graphql                     # Apply approved change
 /metaspec.archive add-graphql                   # Archive completed change
 ```
@@ -538,43 +538,43 @@ examples/
 #### Why Separate?
 
 1. **Clear separation of concerns**
-   - Protocol experts define WHAT (SDS)
+   - Specification experts define WHAT (SDS)
    - Toolkit experts define HOW (SDD)
 
 2. **Reusable specifications**
-   - Protocol specs can be published independently
-   - Other tools can reference the same protocol spec
+   - Domain specifications can be published independently
+   - Other tools can reference the same specification
 
 3. **Clean dependencies**
-   - Toolkit explicitly depends on protocol
+   - Toolkit explicitly depends on specification
    - `/metaspec.sdd.analyze` can verify consistency
 
 4. **Embodies MetaSpec philosophy**
-   - Protocol spec is the source of truth
+   - Domain specification is the source of truth
    - Toolkit is the carrier
 
 #### When to Use
 
 **Use SDS + SDD Separation** (Recommended):
-- Domain has well-defined protocols (MCP, OpenAPI, GraphQL)
-- Protocol specification can be useful independently
+- Domain has well-defined specifications (MCP, OpenAPI, GraphQL)
+- Domain specification can be useful independently
 - Multiple toolkit implementations might exist
 
 **Merge SDS and SDD** (Acceptable for simple cases):
-- Very simple domain without formal protocols
+- Very simple domain without formal specifications
 - Toolkit is the only implementation
-- No need for standalone protocol specification
+- No need for standalone domain specification
 
 ### Practical Examples
 
 **Example 1: Starting a new speckit**
 ```bash
 cd my-speckit
-# Phase 1: Define protocol
-/metaspec.sds.constitution  # Define protocol principles
-/metaspec.sds.specify "Define MCP protocol"  # Protocol entities
+# Phase 1: Define specification
+/metaspec.sds.constitution  # Define specification design principles
+/metaspec.sds.specify "Define MCP specification"  # Specification entities
 /metaspec.sds.checklist  # Generate quality checklist
-/metaspec.sds.analyze  # Check protocol consistency
+/metaspec.sds.analyze  # Check specification consistency
 
 # Phase 2: Design toolkit
 /metaspec.sdd.constitution  # Define toolkit principles
@@ -582,11 +582,11 @@ cd my-speckit
 /metaspec.sdd.plan  # Architecture design
 ```
 
-**Example 2: Iterating on protocol**
+**Example 2: Iterating on specification**
 ```bash
 # Make changes to specs/protocol/001-*/spec.md
 /metaspec.sds.clarify  # Resolve ambiguities
-/metaspec.sds.checklist  # Validate protocol quality
+/metaspec.sds.checklist  # Validate specification quality
 /metaspec.sds.analyze  # Check consistency
 ```
 
@@ -599,8 +599,8 @@ cd my-speckit
 
 **Example 4: Controlled evolution**
 ```bash
-# For stable protocol or toolkit
-/metaspec.proposal "Add GraphQL support" --type sds  # Protocol change
+# For stable specification or toolkit
+/metaspec.proposal "Add GraphQL support" --type sds  # Specification change
 # Review and approve
 /metaspec.apply <proposal-id>
 /metaspec.archive <proposal-id>

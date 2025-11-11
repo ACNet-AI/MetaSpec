@@ -1,5 +1,5 @@
 ---
-description: Generate actionable task breakdown for protocol specification work based on architecture plan
+description: Generate actionable task breakdown for specification work based on architecture plan
 ---
 
 ## User Input
@@ -25,9 +25,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 Get current protocol from Git branch or SPECIFY_FEATURE:
 ```bash
 # From Git branch
-current_protocol=$(git branch --show-current)
+current_spec=$(git branch --show-current)
 # Or from environment variable
-current_protocol=$SPECIFY_FEATURE
+current_spec=$SPECIFY_FEATURE
 
 # Example: "003-payment-processing"
 ```
@@ -50,7 +50,7 @@ type: parent
 - `root_id`: "001-order-protocol"
 
 **This is important for**:
-- Determining numbering for sub-protocols
+- Determining numbering for sub-specifications
 - Constructing parent chains
 - Understanding hierarchy depth
 
@@ -66,7 +66,7 @@ type: parent
 - Dependencies between sub-specifications
 - Implementation order (Phase 1, 2, 3...)
 - Priority levels (P0, P1, P2)
-- Recommended numbering for sub-protocols
+- Recommended numbering for sub-specifications
 
 #### 2. Determine Task Strategy
 
@@ -113,7 +113,7 @@ Every task MUST follow:
 3. **[P] marker**: ONLY if parallelizable (independent sub-specs)
 4. **[SPEC] label**: [CORE], [PHASE], [COMPONENT], [SUPPORT], [REFINE]
 5. **Description**: Clear action with spec file path
-6. **Context** (NEW for sub-protocols): parent and root IDs
+6. **Context** (NEW for sub-specifications): parent and root IDs
 7. **Details**: Scope, entities, operations
 
 **Examples for Creating Sub-Protocols** (NEW):
@@ -132,7 +132,7 @@ Every task MUST follow:
 **Examples for Refining Current Protocol**:
 - ✅ `- [ ] SDS-T001 [CORE] Refactor current protocol to overview`
   - Keep: Overview, common concepts
-  - Remove: Detailed implementations (move to sub-protocols)
+  - Remove: Detailed implementations (move to sub-specifications)
   - Add: Sub-protocol index
 
 **Legacy format** (still valid for non-splitting scenarios):
@@ -295,7 +295,7 @@ Every task MUST follow:
 
 ## Protocol Overview
 
-**Purpose**: [Specific concern this sub-protocol addresses]
+**Purpose**: [Specific concern this sub-specification addresses]
 
 **Scope**: [What's included and excluded]
 
@@ -308,31 +308,31 @@ Every task MUST follow:
 
 ## Entities
 
-[Define entities specific to this sub-protocol]
+[Define entities specific to this sub-specification]
 
 ---
 
 ## Operations
 
-[Define operations specific to this sub-protocol]
+[Define operations specific to this sub-specification]
 
 ---
 
 ## Validation Rules
 
-[Define validation rules specific to this sub-protocol]
+[Define validation rules specific to this sub-specification]
 
 ---
 
 ## Examples
 
-[Provide examples demonstrating this sub-protocol]
+[Provide examples demonstrating this sub-specification]
 
 ---
 
 ## Integration with Core Protocol
 
-[Explain how this sub-protocol integrates with core protocol]
+[Explain how this sub-specification integrates with core protocol]
 ```
 
 **Estimated size**: 500-1500 lines

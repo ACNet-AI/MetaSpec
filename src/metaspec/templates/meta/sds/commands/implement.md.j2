@@ -1,5 +1,5 @@
 ---
-description: Execute protocol specification writing by processing and completing all tasks from tasks.md
+description: Execute specification writing by processing and completing all tasks from tasks.md
 ---
 
 ## User Input
@@ -35,9 +35,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 Get current protocol from Git branch or SPECIFY_FEATURE:
 ```bash
 # From Git branch
-current_protocol=$(git branch --show-current)
+current_spec=$(git branch --show-current)
 # Or from environment variable
-current_protocol=$SPECIFY_FEATURE
+current_spec=$SPECIFY_FEATURE
 
 # Example: "003-payment-processing"
 ```
@@ -54,14 +54,14 @@ type: parent
 ---
 ```
 
-**Store context for sub-protocol creation**:
+**Store context for sub-specification creation**:
 - `current_id`: "003-payment-processing"
 - `parent_id`: "001-order-protocol" or null
 - `root_id`: "001-order-protocol"
 
-**This context will be passed to specify** when creating sub-protocols:
+**This context will be passed to specify** when creating sub-specifications:
 - Sub-protocols will have: parent={current_id}, root={root_id}
-- Example: If current=003, sub-protocol 013 will have parent=003, root=001
+- Example: If current=003, sub-specification 013 will have parent=003, root=001
 
 **Step 2c: Read Planning Documents**
 
@@ -230,7 +230,7 @@ Phase 4: Cross-Reference Validation
       - specify will create 013-credit-card-payment/ with correct frontmatter
       - specify generates spec.md with parent chain
    
-   d. **Verify sub-protocol created**:
+   d. **Verify sub-specification created**:
       ```yaml
       # Generated in specs/protocol/013-credit-card-payment/spec.md
       ---
@@ -295,7 +295,7 @@ Phase 4: Cross-Reference Validation
 
 ### Dependency Rationale
 
-{Explain what this sub-protocol depends on from core protocol:}
+{Explain what this sub-specification depends on from core protocol:}
 - Entities used: [List core entities referenced]
 - Operations extended: [List operations]
 - Validation rules inherited: [List rules]
@@ -306,11 +306,11 @@ Phase 4: Cross-Reference Validation
 
 **Name**: {Sub-Protocol Name}  
 **Domain**: {Specific concern within main protocol}  
-**Purpose**: {What problem this sub-protocol solves}
+**Purpose**: {What problem this sub-specification solves}
 
 **Problem Statement**: {Detailed problem description}
 
-**Solution**: {How this sub-protocol addresses the problem}
+**Solution**: {How this sub-specification addresses the problem}
 
 **Scope**:
 - ✅ Included: {What's in scope}
@@ -320,7 +320,7 @@ Phase 4: Cross-Reference Validation
 
 ## Glossary
 
-{Terms specific to this sub-protocol}
+{Terms specific to this sub-specification}
 
 - **{Term 1}**: {Definition}
   - Example: {Example usage}
@@ -354,7 +354,7 @@ Phase 4: Cross-Reference Validation
 
 ## Core Entities
 
-{Entities specific to this sub-protocol}
+{Entities specific to this sub-specification}
 
 ### Entity: {EntityName}
 
@@ -392,7 +392,7 @@ entity_name:
 
 ## Workflow
 
-{If this sub-protocol involves state transitions or lifecycle}
+{If this sub-specification involves state transitions or lifecycle}
 
 ### State Machine: {Entity Name}
 
@@ -417,7 +417,7 @@ entity_name:
 
 ## Protocol Operations
 
-{Operations specific to this sub-protocol}
+{Operations specific to this sub-specification}
 
 ### Operation: {operation_name}
 
@@ -536,8 +536,8 @@ error_response:
 ### Entity References
 
 **From Core Protocol**:
-- {Core Entity 1}: {How used in this sub-protocol}
-- {Core Entity 2}: {How used in this sub-protocol}
+- {Core Entity 1}: {How used in this sub-specification}
+- {Core Entity 2}: {How used in this sub-specification}
 
 ### Operation Extensions
 
@@ -569,7 +569,7 @@ error_response:
 
 ## Version History
 
-- **v1.0.0** ({date}): Initial sub-protocol specification
+- **v1.0.0** ({date}): Initial sub-specification specification
   - Defined {N} entities
   - Specified {N} operations
   - Established {N} validation rules

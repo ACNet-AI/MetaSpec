@@ -1,5 +1,5 @@
 ---
-description: Define domain protocol specification (SDS - Spec-Driven Specification)
+description: Define domain specification (SDS - Spec-Driven Specification)
 ---
 
 ## User Input
@@ -12,15 +12,15 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/metaspec.sds.specify` is the **protocol specification description**. 
+The text the user typed after `/metaspec.sds.specify` is the **domain specification description**. 
 
-**PURPOSE: Protocol Specification (SDS)** 🎯
+**PURPOSE: Domain Specification (SDS)** 🎯
 
-This command is for defining **domain protocols, rules, and standards**:
-- Focus: WHAT the protocol is
+This command is for defining **domain specifications, rules, and standards**:
+- Focus: WHAT the domain specification is
 - Output: `specs/protocol/001-{name}/spec.md`
 - Independent of any implementation
-- Pure protocol definition
+- Pure domain specification
 
 **NOT for toolkit implementation** - Use `/metaspec.sdd.specify` for that.
 
@@ -220,7 +220,7 @@ Describe real-world scenarios where this protocol applies:
 
 #### **Core Entities**
 
-Define protocol entities (NOT toolkit entities):
+Define specification entities (NOT toolkit entities):
 
 **Template**:
 ```markdown
@@ -390,7 +390,7 @@ Comprehensive list of all protocol constraints:
 
 #### **Error Handling**
 
-Define protocol-level error handling:
+Define specification-level error handling:
 
 ```markdown
 ## Error Handling

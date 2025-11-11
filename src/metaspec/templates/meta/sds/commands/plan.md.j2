@@ -1,5 +1,5 @@
 ---
-description: Plan protocol specification structure by analyzing complexity and organizing sub-specifications
+description: Plan specification structure by analyzing complexity and organizing sub-specifications
 ---
 
 ## User Input
@@ -12,32 +12,32 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-**Goal**: Analyze protocol complexity and plan the specification structure, including identifying necessary sub-specifications and their dependencies.
+**Goal**: Analyze specification complexity and plan the specification structure, including identifying necessary sub-specifications and their dependencies.
 
-**Important**: This command runs AFTER `/metaspec.sds.specify` when initial protocol concept is defined. It determines whether the protocol needs to be split into multiple sub-specifications.
+**Important**: This command runs AFTER `/metaspec.sds.specify` when initial specification concept is defined. It determines whether the specification needs to be split into multiple sub-specifications.
 
 ### Execution Flow
 
-#### 1. Load Protocol Context
+#### 1. Load Specification Context
 
-**Step 1a: Determine Current Protocol**
+**Step 1a: Determine Current Specification**
 
-Get current protocol from Git branch or SPECIFY_FEATURE:
+Get current specification from Git branch or SPECIFY_FEATURE:
 ```bash
 # From Git branch
-current_protocol=$(git branch --show-current)
+current_spec=$(git branch --show-current)
 # Or from environment variable
-current_protocol=$SPECIFY_FEATURE
+current_spec=$SPECIFY_FEATURE
 
 # Example: "003-payment-processing"
 ```
 
 **Step 1b: Read Protocol Specification**
 
-Read the spec.md for current protocol:
+Read the spec.md for current specification:
 ```bash
 # Read the spec.md
-cat specs/protocol/${current_protocol}/spec.md
+cat specs/protocol/${current_spec}/spec.md
 ```
 
 **Step 1c: Extract Metadata** (from YAML frontmatter)
@@ -45,7 +45,7 @@ cat specs/protocol/${current_protocol}/spec.md
 Parse frontmatter to understand context:
 ```yaml
 ---
-protocol_id: 003-payment-processing
+spec_id: 003-payment-processing
 parent: 001-order-protocol
 root: 001-order-protocol
 type: parent  # or leaf or root
@@ -53,15 +53,15 @@ type: parent  # or leaf or root
 ```
 
 **Store context**:
-- `current_id`: protocol_id (e.g., "003-payment-processing")
+- `current_id`: spec_id (e.g., "003-payment-processing")
 - `parent_id`: parent (e.g., "001-order-protocol" or null)
 - `root_id`: root (e.g., "001-order-protocol")
 - `current_type`: type (e.g., "parent", "leaf", "root")
 
 **This tells us**:
-- Where this protocol is in the hierarchy
-- Can inform numbering for sub-protocols
-- Understand if this is already a sub-protocol (can have sub-sub-protocols)
+- Where this specification is in the hierarchy
+- Can inform numbering for sub-specifications
+- Understand if this is already a sub-specification (can have sub-sub-specifications)
 
 **Step 1d: Extract Specification Content**
 
@@ -128,7 +128,7 @@ Note: Adjusted to align with 1500-line threshold mentioned in Decision Matrix
 
 **Output format (both cases)**:
 ```
-Protocol Analysis: {protocol_id}
+Protocol Analysis: {spec_id}
 
 📊 Complexity Assessment:
    - Lines: {line_count}
@@ -149,7 +149,7 @@ Protocol Analysis: {protocol_id}
 Reason: Specification is manageable (complexity: {score:.2f})
 
 This protocol does not need to be split into sub-specifications.
-It is a **leaf protocol** - a complete, self-contained specification.
+It is a **leaf specification** - a complete, self-contained specification.
 
 Next Steps:
 ✅ Specification is ready
@@ -610,7 +610,7 @@ graph TD
    - Is modular documentation valuable?
 
 4. **Consider evolution**
-   - Will parts of the protocol evolve at different rates?
+   - Will parts of the specification evolve at different rates?
    - Do some sections need stricter stability guarantees?
    - Is independent versioning valuable?
 

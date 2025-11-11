@@ -40,15 +40,15 @@ ls specs/protocol/ | grep -E '^[0-9]{3}-'
 If no protocol specs exist, **STOP** and show this error:
 
 ```
-❌ ERROR: Cannot create toolkit without protocol specification
+❌ ERROR: Cannot create toolkit without domain specification
 
-MetaSpec is a Spec-Driven framework. Every toolkit MUST depend on a protocol.
+MetaSpec is a Spec-Driven framework. Every toolkit MUST depend on a specification.
 
-The protocol defines WHAT (domain specification).
+The specification defines WHAT (domain specification).
 The toolkit defines HOW (implementation).
 
 Please run this command first:
-  /metaspec.sds.specify "Define {domain} protocol"
+  /metaspec.sds.specify "Define {domain} specification"
 
 Then return to create toolkit with:
   /metaspec.sdd.specify "Create {toolkit} for {domain}"
@@ -169,28 +169,28 @@ Generate **Toolkit Implementation Specification** with these sections:
 
 #### **Dependencies Section** (REQUIRED - CRITICAL)
 
-**First and foremost**, declare dependencies on protocol specifications:
+**First and foremost**, declare dependencies on domain specifications:
 
 ```markdown
 ## Dependencies
 
-**Protocol Specifications**:
-- **protocol/001-{domain}-protocol** - {Brief description of what protocol defines}
+**Domain Specifications**:
+- **protocol/001-{domain}-specification** - {Brief description of what specification defines}
 
 ### Dependency Rationale
 
-{Explain how this toolkit depends on the protocol:}
-- Which protocol entities are parsed/validated?
-- Which protocol rules are enforced?
-- How does the toolkit implement protocol operations?
+{Explain how this toolkit depends on the specification:}
+- Which specification entities are parsed/validated?
+- Which specification rules are enforced?
+- How does the toolkit implement specification operations?
 
 **Important**: 
-- This toolkit MUST reference at least one protocol specification
-- Changes to protocol specs may require updates to this toolkit
-- Without protocol dependency, this violates the Spec-Driven principle
+- This toolkit MUST reference at least one domain specification
+- Changes to specification may require updates to this toolkit
+- Without specification dependency, this violates the Spec-Driven principle
 ```
 
-**CRITICAL**: This Dependencies section is mandatory. Toolkit without protocol is not a valid speckit.
+**CRITICAL**: This Dependencies section is mandatory. Toolkit without specification is not a valid speckit.
 
 #### **Toolkit Overview**
 ```markdown
