@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 SDS now supports hierarchical domain specifications with unlimited depth:
 
-- **Physical Structure**: Flat directory layout under `specs/protocol/`
+- **Physical Structure**: Flat directory layout under `specs/domain/`
   - All specifications are sibling directories (e.g., `001-root/`, `002-child/`, `013-grandchild/`)
   - Simple paths, FEATURE independence, Git branch friendly
   
@@ -79,7 +79,7 @@ Added 3 new commands for complex specification definition:
 
 **Why Flat Physical + Tree Logical?**
 
-1. **Simple paths**: `specs/protocol/013-credit-card-payment/` (not deeply nested)
+1. **Simple paths**: `specs/domain/013-credit-card-payment/` (not deeply nested)
 2. **FEATURE independence**: Each protocol is a standalone FEATURE with its own lifecycle
 3. **Flexible numbering**: Sub-protocols can use any available numbers (skip ranges)
 4. **Git branch friendly**: Branch name = directory name = protocol_id

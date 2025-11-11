@@ -37,7 +37,7 @@ current_spec=$SPECIFY_FEATURE
 Read the spec.md for current specification:
 ```bash
 # Read the spec.md
-cat specs/protocol/${current_spec}/spec.md
+cat specs/domain/${current_spec}/spec.md
 ```
 
 **Step 1c: Extract Metadata** (from YAML frontmatter)
@@ -397,7 +397,7 @@ graph TD
 
 #### 6. Generate plan.md
 
-**Output location**: `specs/protocol/001-{name}-protocol/plan.md`
+**Output location**: `specs/domain/001-{name}-protocol/plan.md`
 
 **Structure**:
 ```markdown
@@ -492,7 +492,7 @@ graph TD
 - [ ] Each sub-specification has defined scope and estimated size
 
 **If plan looks good**:
-- Save to `specs/protocol/001-{name}-protocol/plan.md`
+- Save to `specs/domain/001-{name}-protocol/plan.md`
 - Proceed to `/metaspec.sds.tasks`
 
 **If plan needs refinement**:
@@ -512,7 +512,7 @@ graph TD
 - Recommendation: [Keep single spec / Split into N sub-specifications]
 
 📁 Generated:
-- specs/protocol/001-{name}-protocol/plan.md
+- specs/domain/001-{name}-protocol/plan.md
 
 📊 Architecture Summary:
 [IF KEEPING SINGLE SPEC]:

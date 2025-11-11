@@ -24,7 +24,7 @@ description: Generate quality checklist for specification - validates protocol q
 **Checklist is a VALIDATION tool, NOT a modification tool.**
 
 **What this command does**:
-- ✅ Read `specs/protocol/XXX-name/spec.md`
+- ✅ Read `specs/domain/XXX-name/spec.md`
 - ✅ Generate/update `checklists/comprehensive-quality.md`
 - ✅ Identify issues (✅ Pass / ⚠️ Partial / ❌ Missing)
 - ✅ Track improvement across iterations
@@ -55,7 +55,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 **CRITICAL**: Before generating, check if checklist already exists:
 
 ```bash
-ls specs/protocol/XXX-name/checklists/
+ls specs/domain/XXX-name/checklists/
 ```
 
 **If checklist exists**, ask user:
@@ -97,11 +97,11 @@ Generate up to 3 contextual clarifying questions based on user input:
 ### 3. Load protocol context
 
 **Read from**:
-- `specs/protocol/XXX-name/spec.md` (REQUIRED)
+- `specs/domain/XXX-name/spec.md` (REQUIRED)
 - `/memory/constitution.md` (REQUIRED)
-- `specs/protocol/XXX-name/checklists/` (REQUIRED - check existing checklists)
-- `specs/protocol/XXX-name/examples/` (if exists)
-- `specs/protocol/XXX-name/README.md` (if exists)
+- `specs/domain/XXX-name/checklists/` (REQUIRED - check existing checklists)
+- `specs/domain/XXX-name/examples/` (if exists)
+- `specs/domain/XXX-name/README.md` (if exists)
 
 **DO NOT load** (these are toolkit-specific):
 - ❌ plan.md (toolkit architecture)
@@ -113,7 +113,7 @@ Generate up to 3 contextual clarifying questions based on user input:
 #### Mode A: **new** mode (default if no existing checklist)
 
 **Create**:
-- Directory: `specs/protocol/XXX-name/checklists/` (if not exists)
+- Directory: `specs/domain/XXX-name/checklists/` (if not exists)
 - Filename: `[domain].md` (e.g., `entity-design.md`, `operations.md`, `validation-rules.md`)
 - Format: Sequential IDs starting from CHK001
 
@@ -353,7 +353,7 @@ Test for specification issues:
 
 ### 8. Write checklist file
 
-- Write to `specs/protocol/XXX-name/checklists/[domain].md`
+- Write to `specs/domain/XXX-name/checklists/[domain].md`
 - Use checklist-template structure
 - Include metadata (purpose, created date, spec reference)
 - Group items by category
@@ -372,7 +372,7 @@ Test for specification issues:
 - Categories: 3
 - Traceability: 100% (all items reference spec/constitution)
 
-📁 Location: specs/protocol/XXX-name/checklists/entity-design.md
+📁 Location: specs/domain/XXX-name/checklists/entity-design.md
 
 🎯 Purpose:
 This checklist validates the quality of protocol entity definitions in spec.md.
@@ -409,7 +409,7 @@ It does NOT test if toolkit implements protocol, but whether the specification i
 - Current score: 80% (8/10 passing)
 - Improvement: +20%
 
-📁 Location: specs/protocol/XXX-name/checklists/entity-design.md
+📁 Location: specs/domain/XXX-name/checklists/entity-design.md
 
 🎯 Key improvements detected:
 - CHK001: ❌ → ✅ (entities now have purpose statements)

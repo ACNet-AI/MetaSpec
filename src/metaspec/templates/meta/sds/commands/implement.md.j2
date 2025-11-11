@@ -21,9 +21,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 #### 1. Check Prerequisites
 
 **Required files**:
-- `specs/protocol/001-{name}-protocol/tasks.md` - Task breakdown
-- `specs/protocol/001-{name}-protocol/plan.md` - Architecture plan
-- `specs/protocol/001-{name}-protocol/spec.md` - Initial protocol concept
+- `specs/domain/001-{name}-protocol/tasks.md` - Task breakdown
+- `specs/domain/001-{name}-protocol/plan.md` - Architecture plan
+- `specs/domain/001-{name}-protocol/spec.md` - Initial protocol concept
 
 **If missing**:
 - Stop and instruct user to run `/metaspec.sds.tasks` first
@@ -66,9 +66,9 @@ type: parent
 **Step 2c: Read Planning Documents**
 
 **Read all planning documents**:
-- `specs/protocol/{current_id}/tasks.md` - Task list (REQUIRED)
-- `specs/protocol/{current_id}/plan.md` - Architecture (REQUIRED)
-- `specs/protocol/{current_id}/spec.md` - Initial concept (REQUIRED)
+- `specs/domain/{current_id}/tasks.md` - Task list (REQUIRED)
+- `specs/domain/{current_id}/plan.md` - Architecture (REQUIRED)
+- `specs/domain/{current_id}/spec.md` - Initial concept (REQUIRED)
 - `/memory/constitution.md` - Design principles
 
 **Extract key information**:
@@ -161,7 +161,7 @@ Phase 4: Cross-Reference Validation
 2. **Execute task BASED ON LABEL**:
    
    **[CORE] - Core Protocol Refactoring**:
-   - Read existing `specs/protocol/001-{name}-protocol/spec.md`
+   - Read existing `specs/domain/001-{name}-protocol/spec.md`
    - Extract sections to keep (Overview, Glossary, Use Cases - high-level)
    - Identify sections to move to sub-specifications (detailed entities, operations)
    - Add integration points section referencing sub-specifications
@@ -232,7 +232,7 @@ Phase 4: Cross-Reference Validation
    
    d. **Verify sub-specification created**:
       ```yaml
-      # Generated in specs/protocol/013-credit-card-payment/spec.md
+      # Generated in specs/domain/013-credit-card-payment/spec.md
       ---
       protocol_id: 013-credit-card-payment
       parent: 003-payment-processing
@@ -645,7 +645,7 @@ error_response:
 ✅ SDS-T002 complete: Created order-creation protocol
 
 📄 File created:
-   specs/protocol/002-order-creation-protocol/spec.md
+   specs/domain/002-order-creation-protocol/spec.md
    
 📊 Specification:
    - Entities: 4 (Order, CartItem, Customer, ValidationRule)
@@ -871,7 +871,7 @@ git commit -m "docs: validate cross-references (Phase 4)"
 Starting Phase 2: Phase Protocols (7 tasks, can be parallel)
 
 ✅ SDS-T002: Create order-creation protocol
-   File: specs/protocol/002-order-creation-protocol/spec.md
+   File: specs/domain/002-order-creation-protocol/spec.md
    Entities: 4 (Order, CartItem, Customer, ValidationRule)
    Operations: 3 (initialize_order, validate_cart, create_order)
    Validation rules: 15
@@ -879,7 +879,7 @@ Starting Phase 2: Phase Protocols (7 tasks, can be parallel)
    Size: 800 lines ✅
 
 ✅ SDS-T003: Create payment-processing protocol
-   File: specs/protocol/003-payment-processing-protocol/spec.md
+   File: specs/domain/003-payment-processing-protocol/spec.md
    Entities: 5 (Payment, Transaction, PaymentMethod, Gateway, Receipt)
    Operations: 4 (authorize, capture, refund, verify)
    Validation rules: 18
@@ -887,7 +887,7 @@ Starting Phase 2: Phase Protocols (7 tasks, can be parallel)
    Size: 950 lines ✅
 
 ✅ SDS-T004: Create fulfillment protocol
-   File: specs/protocol/004-fulfillment-protocol/spec.md
+   File: specs/domain/004-fulfillment-protocol/spec.md
    Entities: 5 (FulfillmentOrder, InventoryItem, PickList, PackingSlip, Warehouse)
    Operations: 4 (allocate_inventory, create_picklist, pack_items, mark_shipped)
    Validation rules: 16

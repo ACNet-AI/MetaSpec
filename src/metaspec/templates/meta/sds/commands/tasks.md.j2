@@ -57,8 +57,8 @@ type: parent
 **Step 1c: Load Planning Documents**
 
 **Required**:
-- `specs/protocol/{current_id}/plan.md` - Architecture plan
-- `specs/protocol/{current_id}/spec.md` - Protocol specification
+- `specs/domain/{current_id}/plan.md` - Architecture plan
+- `specs/domain/{current_id}/spec.md` - Protocol specification
 
 **Extract from plan.md**:
 - Split decision (single spec vs. sub-specifications)
@@ -205,7 +205,7 @@ Every task MUST follow:
 
 **Goal**: Create detailed specifications for each lifecycle phase
 
-- [ ] SDS-T002 [P] [PHASE] Create specs/protocol/002-{phase1}-protocol/spec.md
+- [ ] SDS-T002 [P] [PHASE] Create specs/domain/002-{phase1}-protocol/spec.md
   - Define phase purpose and objectives
   - Detail phase entry/exit criteria
   - Specify phase-specific entities
@@ -214,10 +214,10 @@ Every task MUST follow:
   - Provide phase examples
   - Reference: Core protocol for integration
 
-- [ ] SDS-T003 [P] [PHASE] Create specs/protocol/003-{phase2}-protocol/spec.md
+- [ ] SDS-T003 [P] [PHASE] Create specs/domain/003-{phase2}-protocol/spec.md
   [Same structure as SDS-T002]
 
-- [ ] SDS-T004 [P] [PHASE] Create specs/protocol/004-{phase3}-protocol/spec.md
+- [ ] SDS-T004 [P] [PHASE] Create specs/domain/004-{phase3}-protocol/spec.md
   [Same structure as SDS-T002]
 
 [... Continue for all phases ...]
@@ -228,14 +228,14 @@ Every task MUST follow:
 
 **Goal**: Create detailed specifications for each component type
 
-- [ ] SDS-T008 [P] [COMPONENT] Create specs/protocol/00X-{component1}-protocol/spec.md
+- [ ] SDS-T008 [P] [COMPONENT] Create specs/domain/00X-{component1}-protocol/spec.md
   - Define component purpose
   - Specify component interface
   - Detail component registration pattern
   - Define component validation rules
   - Provide component examples
 
-- [ ] SDS-T009 [P] [COMPONENT] Create specs/protocol/00X-{component2}-protocol/spec.md
+- [ ] SDS-T009 [P] [COMPONENT] Create specs/domain/00X-{component2}-protocol/spec.md
   [Same structure]
 
 **Checkpoint**: All component protocols complete
@@ -244,13 +244,13 @@ Every task MUST follow:
 
 **Goal**: Create cross-cutting concern specifications
 
-- [ ] SDS-T012 [SUPPORT] Create specs/protocol/00X-{support1}-protocol/spec.md
+- [ ] SDS-T012 [SUPPORT] Create specs/domain/00X-{support1}-protocol/spec.md
   - Define supporting system purpose
   - Specify interfaces and patterns
   - Detail integration with core entities
   - Provide usage examples
 
-- [ ] SDS-T013 [SUPPORT] Create specs/protocol/00X-{support2}-protocol/spec.md
+- [ ] SDS-T013 [SUPPORT] Create specs/domain/00X-{support2}-protocol/spec.md
   [Same structure]
 
 **Checkpoint**: All supporting protocols complete
@@ -281,7 +281,7 @@ Every task MUST follow:
 **For each sub-specification task, use this template**:
 
 ```markdown
-**Task**: Create specs/protocol/00X-{name}-protocol/spec.md
+**Task**: Create specs/domain/00X-{name}-protocol/spec.md
 
 **Structure**:
 ```markdown
@@ -442,7 +442,7 @@ All COMPONENT tasks can be parallel
 
 #### 9. Generate tasks.md File
 
-- Write to `specs/protocol/001-{name}-protocol/tasks.md`
+- Write to `specs/domain/001-{name}-protocol/tasks.md`
 - Use task template structure
 - Include all phases
 - Add checkpoint criteria
@@ -458,7 +458,7 @@ All COMPONENT tasks can be parallel
 - [ ] Each phase has checkpoint
 - [ ] MVP scope is defined
 - [ ] Parallel opportunities identified
-- [ ] File paths are correct (specs/protocol/00X-{name}/spec.md)
+- [ ] File paths are correct (specs/domain/00X-{name}/spec.md)
 
 #### 11. Report Completion
 
@@ -488,7 +488,7 @@ All COMPONENT tasks can be parallel
 - Priority P1 sub-specifications
 - Estimated: [X] days
 
-📁 Generated: specs/protocol/001-{name}-protocol/tasks.md
+📁 Generated: specs/domain/001-{name}-protocol/tasks.md
 
 🔄 Next step: /metaspec.sds.implement (write specifications)
 
@@ -520,7 +520,7 @@ All COMPONENT tasks can be parallel
 ### Phase Protocol Task Template
 ```
 - [ ] SDS-T00X [P] [PHASE] Create [Phase Name] protocol:
-  - File: specs/protocol/00X-{phase}-protocol/spec.md
+  - File: specs/domain/00X-{phase}-protocol/spec.md
   - Dependencies: protocol/001-core-protocol
   - Entities: [List phase-specific entities]
   - Operations: [List phase operations]
@@ -532,7 +532,7 @@ All COMPONENT tasks can be parallel
 ### Component Protocol Task Template
 ```
 - [ ] SDS-T00X [P] [COMPONENT] Create [Component Type] protocol:
-  - File: specs/protocol/00X-{component}-protocol/spec.md
+  - File: specs/domain/00X-{component}-protocol/spec.md
   - Dependencies: protocol/001-core-protocol
   - Purpose: [Component purpose]
   - Interface: [Component interface definition]
@@ -545,7 +545,7 @@ All COMPONENT tasks can be parallel
 ### Supporting Protocol Task Template
 ```
 - [ ] SDS-T00X [SUPPORT] Create [Support System] protocol:
-  - File: specs/protocol/00X-{support}-protocol/spec.md
+  - File: specs/domain/00X-{support}-protocol/spec.md
   - Dependencies: protocol/001-core-protocol, [others]
   - Purpose: [Cross-cutting concern addressed]
   - Interfaces: [System interfaces]
@@ -595,21 +595,21 @@ All COMPONENT tasks can be parallel
 ### Phase 2: Lifecycle Phase Protocols (P0)
 ```
 - [ ] SDS-T002 [P] [PHASE] Create order-creation protocol
-  - File: specs/protocol/002-order-creation-protocol/spec.md
+  - File: specs/domain/002-order-creation-protocol/spec.md
   - Order initialization rules
   - Cart to order transformation
   - Customer validation
   - Target: 800 lines
 
 - [ ] SDS-T003 [P] [PHASE] Create payment-processing protocol
-  - File: specs/protocol/003-payment-processing-protocol/spec.md
+  - File: specs/domain/003-payment-processing-protocol/spec.md
   - Payment method specifications
   - Transaction flow
   - Security requirements
   - Target: 950 lines
 
 - [ ] SDS-T004 [P] [PHASE] Create fulfillment protocol
-  - File: specs/protocol/004-fulfillment-protocol/spec.md
+  - File: specs/domain/004-fulfillment-protocol/spec.md
   - Inventory allocation
   - Pick-pack-ship workflow
   - Quality checks
@@ -623,21 +623,21 @@ All COMPONENT tasks can be parallel
 ### Phase 3: Supporting Protocols (P1)
 ```
 - [ ] SDS-T009 [SUPPORT] Create payment-gateway protocol
-  - File: specs/protocol/009-payment-gateway-protocol/spec.md
+  - File: specs/domain/009-payment-gateway-protocol/spec.md
   - Gateway integration patterns
   - Webhook specifications
   - Retry mechanisms
   - Target: 700 lines
 
 - [ ] SDS-T010 [SUPPORT] Create inventory-sync protocol
-  - File: specs/protocol/010-inventory-sync-protocol/spec.md
+  - File: specs/domain/010-inventory-sync-protocol/spec.md
   - Real-time sync mechanisms
   - Conflict resolution
   - Cache strategies
   - Target: 650 lines
 
 - [ ] SDS-T011 [SUPPORT] Create notification protocol
-  - File: specs/protocol/011-notification-protocol/spec.md
+  - File: specs/domain/011-notification-protocol/spec.md
   - Email/SMS templates
   - Trigger conditions
   - Delivery guarantees

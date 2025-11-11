@@ -23,7 +23,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 **CRITICAL**: Before generating, check if clarification report already exists:
 
 ```bash
-ls specs/protocol/XXX-name/clarifications/
+ls specs/domain/XXX-name/clarifications/
 ```
 
 **If clarification exists**, ask user:
@@ -42,7 +42,7 @@ ls specs/protocol/XXX-name/clarifications/
 
 #### 2. Load toolkit specification
 
-- Read `specs/protocol/XXX-name/spec.md`
+- Read `specs/domain/XXX-name/spec.md`
 - If missing, instruct user to run `/metaspec:specify` first
 - Parse current entity definitions, workflows, validation rules
 
@@ -225,7 +225,7 @@ For each category with **Partial** or **Missing** status, add to clarification q
    - Keep only one source of truth
 
 4. **Save immediately**:
-   - Write updated spec to `specs/protocol/XXX-name/spec.md`
+   - Write updated spec to `specs/domain/XXX-name/spec.md`
    - Atomic overwrite
    - Preserve formatting
 
@@ -271,7 +271,7 @@ Status legend:
 🔄 Recommendation:
 [Proceed to /metaspec:plan | Run /metaspec:clarify again | Address outstanding items]
 
-📁 Updated: specs/protocol/XXX-name/spec.md
+📁 Updated: specs/domain/XXX-name/spec.md
 
 💡 Next step: /metaspec:plan
 ```

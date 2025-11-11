@@ -129,7 +129,7 @@ A command does NOT need iteration if:
 **Workflow**:
 ```bash
 $ /metaspec.sds.specify "Define MCP protocol"
-  → Creates specs/protocol/001-mcp-protocol/spec.md
+  → Creates specs/domain/001-mcp-protocol/spec.md
 $ vim spec.md  # User edits directly
 $ /metaspec.sds.checklist  # Validate (with iteration)
 ```
@@ -334,7 +334,7 @@ For each command needing iteration support, follow this pattern:
 **CRITICAL**: Before generating, check if output already exists:
 
 ```bash
-ls specs/protocol/XXX-name/[output-directory]/
+ls specs/domain/XXX-name/[output-directory]/
 ```
 
 **If exists**, ask user:

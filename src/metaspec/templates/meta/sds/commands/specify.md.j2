@@ -18,7 +18,7 @@ The text the user typed after `/metaspec.sds.specify` is the **domain specificat
 
 This command is for defining **domain specifications, rules, and standards**:
 - Focus: WHAT the domain specification is
-- Output: `specs/protocol/001-{name}/spec.md`
+- Output: `specs/domain/001-{name}/spec.md`
 - Independent of any implementation
 - Pure domain specification
 
@@ -84,7 +84,7 @@ PROTOCOL_NUMBER="013"
 Based on user input, generate:
 - Short name: `{domain}-{component}-protocol`
 - Example: "mcp-core-protocol", "graphql-schema", "oauth2-flow"
-- Check existing `specs/protocol/` directory structure
+- Check existing `specs/domain/` directory structure
 
 **Step 1b: Determine Protocol Number**
 
@@ -97,13 +97,13 @@ protocol_number=$PROTOCOL_NUMBER  # e.g., "013"
 **If `assigned_number` is NOT set** (direct invocation):
 ```bash
 # Find next available number
-ls specs/protocol/ | grep -E '^[0-9]{3}-' | sort -n
+ls specs/domain/ | grep -E '^[0-9]{3}-' | sort -n
 # Find next number (e.g., if 001, 002 exist, use 003)
 ```
 
 **Step 1c: Load Existing or Create New**
 
-- Check for `specs/protocol/{number}-{name}/spec.md`
+- Check for `specs/domain/{number}-{name}/spec.md`
 - If exists, load for updating
 - If new, create new directory structure
 
@@ -432,7 +432,7 @@ Provide complete protocol examples:
 
 ### 4. Write Specification File
 
-**Location**: `specs/protocol/{number}-{name}/spec.md`
+**Location**: `specs/domain/{number}-{name}/spec.md`
 
 **IMPORTANT**: Add YAML frontmatter for recursive structure tracking
 
@@ -517,7 +517,7 @@ The template automatically renders:
 
 ### 5. Create README.md (Optional)
 
-If this is a new protocol spec, create `specs/protocol/{number}-{name}/README.md`:
+If this is a new protocol spec, create `specs/domain/{number}-{name}/README.md`:
 
 ```markdown
 # {Protocol Name}
@@ -555,7 +555,7 @@ If this protocol depends on other protocols, document in spec.md:
 ✅ Protocol specification created/updated:
 
 📁 Location:
-   specs/protocol/{number}-{name}/spec.md
+   specs/domain/{number}-{name}/spec.md
 
 📋 Protocol: {Protocol Name} v{version}
 

@@ -56,10 +56,10 @@ ls specs/toolkit/XXX-name/analysis/
 
 **For Feature 1 (Protocol Spec)**:
 - **Required**:
-  - `specs/protocol/001-{domain}-protocol/spec.md` (protocol definition)
+  - `specs/domain/001-{domain}-protocol/spec.md` (protocol definition)
   - `/memory/constitution.md` (domain principles)
 - **Optional**:
-  - `specs/protocol/001-{domain}-protocol/checklists/`
+  - `specs/domain/001-{domain}-protocol/checklists/`
 - **Skip**: plan.md, tasks.md (not needed for protocol specs)
 
 **For Feature 2 (Toolkit Spec)**:
@@ -67,14 +67,14 @@ ls specs/toolkit/XXX-name/analysis/
   - `specs/toolkit/001-toolkit/spec.md` (toolkit definition)
   - `specs/toolkit/001-toolkit/plan.md` (architecture)
   - `specs/toolkit/001-toolkit/tasks.md` (task breakdown)
-  - `specs/protocol/001-{domain}-protocol/spec.md` (dependency!)
+  - `specs/domain/001-{domain}-protocol/spec.md` (dependency!)
   - `/memory/constitution.md` (design principles)
 - **Optional**:
   - `specs/toolkit/001-toolkit/architecture.md`
   - `specs/toolkit/001-toolkit/research.md`
 
 **If Feature 1 missing for Feature 2**: 
-⚠️ **CRITICAL**: "Feature 2 depends on Feature 1 but `specs/protocol/001-*` not found!"
+⚠️ **CRITICAL**: "Feature 2 depends on Feature 1 but `specs/domain/001-*` not found!"
 
 ### 3. Build semantic models
 
@@ -108,7 +108,7 @@ ls specs/toolkit/XXX-name/analysis/
 **For Feature 2 (Toolkit Spec)** - Check dependency on Feature 1:
 
 **Check**:
-1. ✅ Feature 1 exists: `specs/protocol/001-{domain}-protocol/spec.md`
+1. ✅ Feature 1 exists: `specs/domain/001-{domain}-protocol/spec.md`
 2. ✅ Feature 2 declares dependency:
    - Has a "Dependencies" section
    - References "001-{domain}-protocol-spec"
@@ -133,7 +133,7 @@ ls specs/toolkit/XXX-name/analysis/
 ❌ HIGH: Feature 2 Validator doesn't reference Feature 1 validation rules
    → ACTION RECOMMENDED: Update Validator section to reference protocol rules
 
-✅ Feature 1 exists: specs/protocol/001-mcp-protocol-spec/spec.md
+✅ Feature 1 exists: specs/domain/001-mcp-protocol-spec/spec.md
 ✅ Feature 2 declares dependency: "Depends on: 001-mcp-protocol-spec"
 ✅ Validator references Feature 1: "Validates against MCP protocol rules"
 ```

@@ -32,7 +32,7 @@ Follow this execution flow:
 
 ```bash
 # Check if protocol specs exist
-ls specs/protocol/ | grep -E '^[0-9]{3}-'
+ls specs/domain/ | grep -E '^[0-9]{3}-'
 ```
 
 **CRITICAL REQUIREMENT**: Toolkit specs MUST depend on at least one protocol spec.
@@ -698,7 +698,7 @@ model: claude-3-5-sonnet-20241022
 **IMPORTANT**: Slash Commands come from **TWO sources** and can be **composed**:
 
 #### Source 1: Protocol-Derived (Custom)
-- **From**: SDS protocol specification (`specs/protocol/`)
+- **From**: SDS protocol specification (`specs/domain/`)
 - **Nature**: Dynamic, protocol-specific, tailored
 - **Process**: Analyze protocol → Derive commands
 - **Examples**: `get-template`, `validate`, workflow actions
@@ -744,7 +744,7 @@ Option C: Composed (Recommended)
 
 **STEP 1: Analyze Protocol Specification**
 
-**Before defining Slash Commands**, analyze the SDS protocol specification in `specs/protocol/`.
+**Before defining Slash Commands**, analyze the SDS protocol specification in `specs/domain/`.
 
 **Questions to Ask**:
 
@@ -1080,7 +1080,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 [What protocol-compliant output to produce]
 
 ## Protocol Specification (EMBEDDED)
-**From**: specs/protocol/{XXX}/spec.md
+**From**: specs/domain/{XXX}/spec.md
 
 ### Entity Structure
 [Copy entity definition from protocol]
@@ -1176,7 +1176,7 @@ scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 **Script Purpose**: Set up file structure, create skeleton
 
 ## Protocol Specification (EMBEDDED)
-**From**: specs/protocol/{XXX}/spec.md
+**From**: specs/domain/{XXX}/spec.md
 
 [Copy relevant protocol sections like Pure-Execution template]
 
@@ -1541,7 +1541,7 @@ Result: Proven workflow pattern
 - Rationale: {Why this library}
 
 **If Protocol-Derived**:
-- Based on: specs/protocol/{number}-{name}
+- Based on: specs/domain/{number}-{name}
 - Commands needed: {List and rationale}
 
 **If Composed**:

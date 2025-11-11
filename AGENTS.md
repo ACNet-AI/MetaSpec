@@ -124,7 +124,7 @@ For defining domain specifications:
 - `/metaspec.sds.checklist` - Generate quality checklist for specification
 - `/metaspec.sds.analyze` - Check specification consistency
 
-**Location**: Works with `specs/protocol/` directory (stores domain specifications)
+**Location**: Works with `specs/domain/` directory (stores domain specifications)
 
 #### 🌳 Recursive Tree Structure (NEW)
 
@@ -134,7 +134,7 @@ For defining domain specifications:
 
 **Physical Structure** (flat directory layout):
 ```bash
-specs/protocol/
+specs/domain/
 ├── 001-order-specification/     # All at same level
 ├── 002-order-creation/
 ├── 003-payment-processing/
@@ -155,7 +155,7 @@ specs/protocol/
 ```
 
 **Why flat physical structure?**
-- ✅ Simple paths: `specs/protocol/013-credit-card-payment/`
+- ✅ Simple paths: `specs/domain/013-credit-card-payment/`
 - ✅ FEATURE independence: Each specification is a standalone FEATURE
 - ✅ Flexible numbering: 003's children can be 013-015 (skip 004-012)
 - ✅ Git branch friendly: Branch name = directory name
@@ -168,7 +168,7 @@ specs/protocol/
 - **Unified commands**: Same commands work at all levels
 
 **How relationships are maintained**:
-- **Physical**: All specifications are sibling directories under `specs/protocol/`
+- **Physical**: All specifications are sibling directories under `specs/domain/`
 - **Logical**: Parent-child relationships declared in YAML frontmatter
   ```yaml
   ---
@@ -190,7 +190,7 @@ specs/protocol/
 /metaspec.sds.implement → Creates 002-008
 
 # At level 2 (003 is also complex)
-cd specs/protocol/003-payment-processing/
+cd specs/domain/003-payment-processing/
 /metaspec.sds.plan → Decides to split again
 /metaspec.sds.implement → Creates 013-015
 ```
@@ -239,7 +239,7 @@ MetaSpec generates **working toolkits** through a three-stage process:
 ```
 /metaspec.sds.specify
   ↓
-specs/protocol/001-{domain}-specification/spec.md
+specs/domain/001-{domain}-specification/spec.md
   - Entity definitions
   - Validation rules
   - Operations
@@ -338,7 +338,7 @@ For controlled specification evolution (both SDS and SDD):
 
 ```
 MetaSpec commands (19 total):
-  - SDS (8 commands)     → Define domain specifications (specs/protocol/)
+  - SDS (8 commands)     → Define domain specifications (specs/domain/)
   - SDD (8 commands)     → Develop toolkits (specs/toolkit/)
   - Evolution (3 shared) → Manage changes (changes/)
                               ↓
@@ -386,7 +386,7 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 
 **Purpose**: Define the domain specification, rules, and standards
 
-**Location**: `specs/protocol/001-{domain}-specification/`
+**Location**: `specs/domain/001-{domain}-specification/`
 
 **What to include**:
 - Domain entities and schemas
@@ -396,7 +396,7 @@ When using MetaSpec to develop a speckit, follow this two-phase approach:
 
 **Example**:
 ```markdown
-# specs/protocol/001-mcp-core-specification/spec.md
+# specs/domain/001-mcp-core-specification/spec.md
 
 ## MCP Specification
 
@@ -511,7 +511,7 @@ examples/
 ```bash
 # Phase 1: Domain Specification (SDS)
 /metaspec.sds.constitution  # Define specification design principles
-/metaspec.sds.specify       # Create specs/protocol/001-{domain}-specification/spec.md
+/metaspec.sds.specify       # Create specs/domain/001-{domain}-specification/spec.md
 /metaspec.sds.clarify       # Resolve specification ambiguities
 /metaspec.sds.plan          # Plan specification architecture (if complex)
 /metaspec.sds.tasks         # Break down specification work
@@ -584,7 +584,7 @@ cd my-speckit
 
 **Example 2: Iterating on specification**
 ```bash
-# Make changes to specs/protocol/001-*/spec.md
+# Make changes to specs/domain/001-*/spec.md
 /metaspec.sds.clarify  # Resolve ambiguities
 /metaspec.sds.checklist  # Validate specification quality
 /metaspec.sds.analyze  # Check consistency
@@ -654,7 +654,7 @@ Output:
 Score: 33% (1/3 passing)
 
 # Step 2: User fixes issues
-User edits specs/protocol/001-mcp/spec.md
+User edits specs/domain/001-mcp/spec.md
 - Adds field types
 - Adds validation rules
 

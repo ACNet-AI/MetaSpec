@@ -123,7 +123,7 @@
 # Toolkit: v0.2.0 (draft)
 # Change: Add usage example
 
-1. vim specs/protocol/001-mcp/spec.md
+1. vim specs/domain/001-mcp/spec.md
    # Add example section
 
 2. /metaspec.sds.checklist
@@ -236,7 +236,7 @@ Done! ✅
 
 ```yaml
 ✅ Checklist reads:
-  - specs/protocol/XXX/spec.md
+  - specs/domain/XXX/spec.md
   
 ✅ Checklist writes:
   - checklists/comprehensive-quality.md

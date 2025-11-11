@@ -29,7 +29,7 @@ Identify inconsistencies, ambiguities, and gaps in domain specifications. **READ
 **CRITICAL**: Before generating, check if analysis already exists:
 
 ```bash
-ls specs/protocol/XXX-name/analysis/
+ls specs/domain/XXX-name/analysis/
 ```
 
 **If analysis exists**, ask user:
@@ -49,13 +49,13 @@ ls specs/protocol/XXX-name/analysis/
 ### 2. Load Protocol Artifacts
 
 **Required Files**:
-- `specs/protocol/XXX-{name}/spec.md` - Protocol specification
+- `specs/domain/XXX-{name}/spec.md` - Protocol specification
 - `/memory/constitution.md` - Protocol design principles
 
 **Optional Files**:
-- `specs/protocol/XXX-{name}/README.md` - Protocol overview
-- `specs/protocol/XXX-{name}/examples/` - Protocol examples
-- `specs/protocol/XXX-{name}/checklists/` - Protocol quality checklists
+- `specs/domain/XXX-{name}/README.md` - Protocol overview
+- `specs/domain/XXX-{name}/examples/` - Protocol examples
+- `specs/domain/XXX-{name}/checklists/` - Protocol quality checklists
 
 **DO NOT load** (these are toolkit-specific):
 - ❌ plan.md (toolkit architecture)
@@ -257,7 +257,7 @@ ls specs/protocol/XXX-name/analysis/
 **Protocol**: [NAME]
 **Version**: [VERSION]
 **Analyzed Files**:
-- specs/protocol/XXX-{name}/spec.md
+- specs/domain/XXX-{name}/spec.md
 - memory/constitution.md
 
 ---
@@ -489,7 +489,7 @@ Would you like me to suggest concrete fixes for the top 5 issues?
 
 ❌ Constitution Compliance: FAIL (1 violation)
 
-📁 Report: /specs/protocol/analysis-report.md
+📁 Report: /specs/domain/analysis-report.md
 
 ⚠️ Recommendation:
 Fix CRITICAL issues before toolkit development.

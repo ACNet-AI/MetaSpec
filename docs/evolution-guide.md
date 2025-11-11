@@ -46,7 +46,7 @@ Need to change specification?
 # Toolkit is v1.0.0 and published to community
 # User wants to add a new field
 
-❌ WRONG: Direct edit specs/protocol/XXX/spec.md
+❌ WRONG: Direct edit specs/domain/XXX/spec.md
 ✅ RIGHT: /metaspec.proposal "Add new field"
 ```
 
@@ -99,7 +99,7 @@ Need to change specification?
 # Toolkit is in draft (v0.1.0)
 # User wants to fix typos, add examples, improve descriptions
 
-✅ RIGHT: Direct edit specs/protocol/XXX/spec.md
+✅ RIGHT: Direct edit specs/domain/XXX/spec.md
 ✅ THEN: /metaspec.sds.checklist (update mode) to verify
 ```
 
@@ -125,14 +125,14 @@ Need to change specification?
 
 ```bash
 1. User writes initial protocol spec
-   $ vim specs/protocol/001-mcp-protocol/spec.md
+   $ vim specs/domain/001-mcp-protocol/spec.md
 
 2. User validates quality
    $ /metaspec.sds.checklist
    → Result: ❌ CHK003 - Missing field types
 
 3. User fixes directly (minor improvement)
-   $ vim specs/protocol/001-mcp-protocol/spec.md
+   $ vim specs/domain/001-mcp-protocol/spec.md
    # Add missing type definitions
 
 4. User re-validates
@@ -259,7 +259,7 @@ $ /metaspec.proposal "Fix typo in description" --type sds
 # Overhead: proposal.md, tasks.md, impact.md, approval process
 
 ✅ RIGHT:
-$ vim specs/protocol/001-xxx/spec.md  # Fix typo
+$ vim specs/domain/001-xxx/spec.md  # Fix typo
 $ /metaspec.sds.checklist  # Validate
 ```
 
@@ -273,7 +273,7 @@ $ /metaspec.sds.checklist  # Validate
 # Toolkit is v1.0.0 and published
 
 ❌ WRONG:
-$ vim specs/protocol/001-xxx/spec.md  # Add new field
+$ vim specs/domain/001-xxx/spec.md  # Add new field
 $ git commit -m "Add new field"
 
 ✅ RIGHT:
@@ -369,7 +369,7 @@ $ /metaspec.recommend-workflow "I want to add a new field"
 ✅ Alternative: Evolution (if complex or near release)
 
 🔄 Suggested workflow:
-1. Edit specs/protocol/001-xxx/spec.md
+1. Edit specs/domain/001-xxx/spec.md
 2. Run /metaspec.sds.checklist (update mode)
 3. Verify: CHK###: ❌ → ✅
 ```

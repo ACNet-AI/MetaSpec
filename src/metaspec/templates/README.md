@@ -139,7 +139,7 @@ Development methodologies organized by lifecycle:
 - `analyze.md.j2` - Check specification consistency
 
 **Generated to**: `.metaspec/commands/metaspec.sds.*`
-**Works with**: `specs/protocol/` directory
+**Works with**: `specs/domain/` directory
 
 ##### `meta/sdd/commands/` - Spec-Driven Development (8 commands)
 
