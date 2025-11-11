@@ -203,7 +203,7 @@ generated-speckit/
 │       └── metaspec.archive.md
 │
 ├── specs/
-│   ├── protocol/    ← SDS output (protocol specifications)
+│   ├── domain/    ← SDS output (domain specifications)
 │   └── toolkit/     ← SDD output (toolkit specifications)
 │
 └── changes/         ← Evolution output (change management, at same level as specs/)
@@ -353,7 +353,7 @@ Project root
 ```
 
 **Key Principles**:
-1. **specs/domain/** - Independent protocol specifications, can be published and referenced separately
+1. **specs/domain/** - Independent domain specifications, can be published and referenced separately
 2. **specs/toolkit/** - Explicitly depends on protocol/, implements specific tools
 3. **changes/** - Manages evolution of both, maintains change history (at project root)
 

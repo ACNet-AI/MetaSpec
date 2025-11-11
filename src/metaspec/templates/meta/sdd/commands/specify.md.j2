@@ -650,7 +650,7 @@ check-transition
 **What they are**: Spec-driven execution guides with embedded protocol knowledge
 **Where they go**: `templates/{source}/commands/` directory (organized by specification system source)  
 **How AI uses them**: Via `/` prefix in AI chat (Cursor, Windsurf, etc.)
-**Core purpose**: Guide AI to **produce outputs that comply with protocol specifications**
+**Core purpose**: Guide AI to **produce outputs that comply with domain specifications**
 
 **Key Distinction**:
 - ❌ **NOT**: "How to call CLI commands" (wrapper documentation)
@@ -698,7 +698,7 @@ model: claude-3-5-sonnet-20241022
 **IMPORTANT**: Slash Commands come from **TWO sources** and can be **composed**:
 
 #### Source 1: Protocol-Derived (Custom)
-- **From**: SDS protocol specification (`specs/domain/`)
+- **From**: SDS domain specification (`specs/domain/`)
 - **Nature**: Dynamic, protocol-specific, tailored
 - **Process**: Analyze protocol → Derive commands
 - **Examples**: `get-template`, `validate`, workflow actions
@@ -740,11 +740,11 @@ Option C: Composed (Recommended)
 
 #### Source 1: Protocol-Derived Commands (Custom)
 
-**Overview**: Derive commands by analyzing your protocol specification and extracting domain-specific terminology.
+**Overview**: Derive commands by analyzing your domain specification and extracting domain-specific terminology.
 
 **STEP 1: Analyze Protocol Specification**
 
-**Before defining Slash Commands**, analyze the SDS protocol specification in `specs/domain/`.
+**Before defining Slash Commands**, analyze the SDS domain specification in `specs/domain/`.
 
 **Questions to Ask**:
 
@@ -1190,7 +1190,7 @@ scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 
 2. **AI Produces Content**
    - Read script output (file paths)
-   - Load protocol specification
+   - Load domain specification
    - Fill skeleton with protocol-compliant content
 
 3. **Verify Structure**
@@ -1215,7 +1215,7 @@ scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 
 ```markdown
 ---
-description: Validate output against protocol specifications
+description: Validate output against domain specifications
 argument-hint: [file-to-validate]  # Optional: show expected arguments
 allowed-tools: Bash({toolkit-name}:validate:*)  # Only allow validation tools
 model: claude-3-5-haiku-20241022  # Can use lighter model for simple reminders
@@ -1380,7 +1380,7 @@ Each Slash Command contains:
 - [ ] Provides protocol-based templates
 - [ ] AI can produce compliant output without external reference
 
-**Summary**: Source 1 provides a 7-STEP process to derive custom Slash Commands from your protocol specification, ensuring domain-specific terminology and spec-driven execution.
+**Summary**: Source 1 provides a 7-STEP process to derive custom Slash Commands from your domain specification, ensuring domain-specific terminology and spec-driven execution.
 
 ---
 
