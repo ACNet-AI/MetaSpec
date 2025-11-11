@@ -121,22 +121,22 @@ Development methodologies organized by lifecycle:
 
 ### `meta/` - MetaSpec Three-Layer Architecture
 
-**Purpose**: AI-assisted workflow for developing the speckit itself using a three-layer command architecture that separates protocol specification from toolkit development.
+**Purpose**: AI-assisted workflow for developing the speckit itself using a three-layer command architecture that separates domain specification from toolkit development.
 
 #### Three Layers
 
 ##### `meta/sds/commands/` - Spec-Driven Specification (8 commands)
 
-**Purpose**: Define domain protocol specifications
+**Purpose**: Define domain specifications
 
-- `constitution.md.j2` - Define protocol design principles
-- `specify.md.j2` - Define protocol entities, operations, validation rules
-- `clarify.md.j2` - Resolve protocol ambiguities
-- `plan.md.j2` - Plan protocol architecture and sub-specifications
-- `tasks.md.j2` - Break down protocol specification work
-- `implement.md.j2` - Write protocol specification documents
-- `checklist.md.j2` - Generate quality checklist for protocol specification
-- `analyze.md.j2` - Check protocol consistency
+- `constitution.md.j2` - Define specification design principles
+- `specify.md.j2` - Define specification entities, operations, validation rules
+- `clarify.md.j2` - Resolve specification ambiguities
+- `plan.md.j2` - Plan specification architecture and sub-specifications
+- `tasks.md.j2` - Break down specification work
+- `implement.md.j2` - Write specification documents
+- `checklist.md.j2` - Generate quality checklist for specification
+- `analyze.md.j2` - Check specification consistency
 
 **Generated to**: `.metaspec/commands/metaspec.sds.*`
 **Works with**: `specs/protocol/` directory
@@ -219,10 +219,10 @@ my-speckit/
 ```bash
 cd my-speckit
 
-# Phase 1: Define protocol (SDS)
-/metaspec.sds.constitution  # Define protocol principles
-/metaspec.sds.specify       # Create protocol specifications
-/metaspec.sds.analyze       # Check protocol consistency
+# Phase 1: Define specification (SDS)
+/metaspec.sds.constitution  # Define specification design principles
+/metaspec.sds.specify       # Create domain specifications
+/metaspec.sds.analyze       # Check specification consistency
 
 # Phase 2: Develop toolkit (SDD)
 /metaspec.sdd.constitution  # Define toolkit principles

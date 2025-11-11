@@ -1,17 +1,17 @@
 ---
-description: Generate quality checklist for protocol specification - validates protocol quality, NOT implementation correctness
+description: Generate quality checklist for specification - validates protocol quality, NOT implementation correctness
 ---
 
 ## Checklist Purpose: "Unit Tests for Protocol Specifications"
 
-**CRITICAL CONCEPT**: Checklists are **UNIT TESTS FOR SPECIFICATION WRITING** - they validate the quality, clarity, and completeness of protocol specifications.
+**CRITICAL CONCEPT**: Checklists are **UNIT TESTS FOR SPECIFICATION WRITING** - they validate the quality, clarity, and completeness of specifications.
 
 **NOT for implementation verification**:
 - ❌ "Verify parser handles protocol correctly"
 - ❌ "Test validator catches protocol violations"
 - ❌ "Confirm toolkit implements protocol"
 
-**FOR protocol specification quality validation**:
+**FOR specification quality validation**:
 - ✅ "Are all protocol entities clearly defined? [Completeness]"
 - ✅ "Are operation schemas consistently specified? [Consistency]"
 - ✅ "Are error codes documented with examples? [Completeness]"
@@ -213,7 +213,7 @@ Test if protocol follows constitution principles:
 - Are domain standards followed? [Consistency, Constitution]
 
 #### **Ambiguities & Gaps**
-Test for protocol specification issues:
+Test for specification issues:
 - Are vague terms quantified ("valid", "appropriate")? [Ambiguity]
 - Are conflicting requirements identified? [Conflict]
 - Are missing definitions noted? [Gap]
@@ -344,7 +344,7 @@ Test for protocol specification issues:
 - [ ] CHK003 - Confirm toolkit CLI works with protocol
 ```
 
-**✅ CORRECT - Testing protocol specification quality**:
+**✅ CORRECT - Testing specification quality**:
 ```markdown
 - [ ] CHK001 - Are protocol parsing requirements specified? [Completeness, Spec §Parser Requirements]
 - [ ] CHK002 - Are protocol validation rules documented? [Completeness, Spec §Validation Rules]
@@ -376,7 +376,7 @@ Test for protocol specification issues:
 
 🎯 Purpose:
 This checklist validates the quality of protocol entity definitions in spec.md.
-It does NOT test if toolkit implements protocol, but whether the protocol specification is:
+It does NOT test if toolkit implements protocol, but whether the specification is:
 - Complete (all entities defined)
 - Clear (types, constraints explicit)
 - Consistent (follows constitution)

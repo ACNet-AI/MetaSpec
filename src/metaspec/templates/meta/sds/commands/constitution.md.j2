@@ -39,7 +39,7 @@ Follow this execution flow:
 
 ### 3. Derive protocol-specific principles
 
-Based on the user input and protocol domain, populate these **standard protocol principles**:
+Based on the user input and specification domain, populate these **standard specification design principles**:
 
 #### **I. Entity Clarity**
 - Entity definitions are complete and unambiguous
@@ -94,8 +94,8 @@ Based on the user input and protocol domain, populate these **standard protocol 
 - `[PROTOCOL_NAME]` - e.g., "MCP", "OpenAPI", "GraphQL"
 - `[PROTOCOL_DOMAIN]` - e.g., "AI Model Communication", "API Specification", "Data Query"
 - `[PRIMARY_ENTITIES]` - e.g., "Server, Tool, Resource", "Path, Operation, Schema"
-- `[PRINCIPLE_N_NAME]` - Use standard protocol principles above
-- `[PRINCIPLE_N_DESCRIPTION]` - Detailed description with protocol-specific examples
+- `[PRINCIPLE_N_NAME]` - Use standard specification design principles above
+- `[PRINCIPLE_N_DESCRIPTION]` - Detailed description with specification-specific examples
 - `[GOVERNANCE_RULES]` - How to amend constitution, specification review process
 - `[CONSTITUTION_VERSION]` - Semantic versioning (start at 1.0.0)
 - `[RATIFICATION_DATE]` - Today's date (ISO 8601: YYYY-MM-DD)
@@ -203,7 +203,7 @@ Before finalizing:
 - [ ] No remaining `[PLACEHOLDER]` tokens
 - [ ] Version follows semantic versioning
 - [ ] Dates in ISO 8601 format (YYYY-MM-DD)
-- [ ] All 6 standard protocol principles present
+- [ ] All 6 standard specification design principles present
 - [ ] Each principle has clear description and rationale
 - [ ] Principles are verifiable (can check spec compliance)
 - [ ] Governance section includes amendment process
@@ -240,7 +240,7 @@ Provide:
 🔄 Next steps:
 1. Review the constitution in /memory/protocol-constitution.md
 2. Use /metaspec.sds.specify to define protocol entities aligned with these principles
-3. Reference these principles during protocol design
+3. Reference these principles during specification design
 
 💡 Suggested commit message:
    docs: adopt protocol constitution v[VERSION] ([principle summary])
@@ -254,7 +254,7 @@ Provide:
    - Focus on entity definitions, validation rules, operation interfaces
 
 2. **Standard vs Domain-Specific Principles**
-   - Always include the 6 standard protocol principles
+   - Always include the 6 standard specification design principles
    - Add domain-specific principles as needed (e.g., "RESTful Conventions" for APIs)
    - Don't remove standard principles without strong justification
 
@@ -265,7 +265,7 @@ Provide:
    - Good: "Entity `Tool` must specify `name` (string, required), `description` (string, required), `inputSchema` (JSON Schema, required)"
 
 4. **Specification-First Language**
-   - Write for protocol designers reading this document
+   - Write for specification designers reading this document
    - Use imperative language (MUST, SHOULD, MAY)
    - Avoid ambiguity ("usually", "typically" → specify exact rules)
    - Include anti-patterns (what NOT to specify)
