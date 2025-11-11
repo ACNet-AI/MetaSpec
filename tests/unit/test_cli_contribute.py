@@ -2,8 +2,6 @@
 Unit tests for metaspec.cli.contribute module.
 """
 
-import json
-from pathlib import Path
 from unittest.mock import MagicMock, mock_open, patch
 
 from typer.testing import CliRunner
@@ -72,7 +70,7 @@ class TestContributeCommand:
         """Test complete interactive contribution flow."""
         # Mock command exists
         mock_which.return_value = "/usr/local/bin/my-spec-kit"
-        
+
         # Mock registry detection
         mock_registry = MagicMock()
         mock_registry.detect_speckit_info.return_value = {
@@ -120,7 +118,7 @@ class TestContributeCommand:
         """Test contribution uses detected commands."""
         # Mock command exists
         mock_which.return_value = "/usr/local/bin/test-kit"
-        
+
         # Mock registry with detected commands
         mock_registry = MagicMock()
         mock_registry.detect_speckit_info.return_value = {
@@ -162,7 +160,7 @@ class TestContributeCommand:
         """Test contribution continues when command not in PATH but user confirms."""
         # Mock command not found
         mock_which.return_value = None
-        
+
         # User chooses not to continue
         mock_confirm.return_value = False
 
@@ -190,7 +188,7 @@ class TestContributeCommand:
         """Test contribution with custom commands instead of detected ones."""
         # Mock command exists
         mock_which.return_value = "/usr/bin/custom-kit"
-        
+
         # Mock registry
         mock_registry = MagicMock()
         mock_registry.detect_speckit_info.return_value = {
@@ -244,7 +242,7 @@ class TestContributeCommand:
             Exception("Stop here for test"),  # Stop execution
         ]
 
-        result = runner.invoke(app, ["contribute"])
+        runner.invoke(app, ["contribute"])
 
         # Should attempt to prompt for command
         assert mock_prompt.called

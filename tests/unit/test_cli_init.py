@@ -251,8 +251,8 @@ class TestInitCommand:
         tmp_path: Path,
     ) -> None:
         """Test interactive mode with minimal user inputs."""
-        output_dir = tmp_path / "test-kit"
-        
+        tmp_path / "test-kit"
+
         # Mock generator
         mock_generator = MagicMock()
         mock_project = MagicMock()
@@ -275,7 +275,7 @@ class TestInitCommand:
         ]
 
         result = runner.invoke(app, ["init"])
-        
+
         # Should complete successfully
         assert result.exit_code == 0
         assert mock_generator.generate.called
@@ -291,8 +291,8 @@ class TestInitCommand:
         tmp_path: Path,
     ) -> None:
         """Test interactive mode with full user customization."""
-        output_dir = tmp_path / "custom-kit"
-        
+        tmp_path / "custom-kit"
+
         # Mock generator
         mock_generator = MagicMock()
         mock_project = MagicMock()
@@ -329,7 +329,7 @@ class TestInitCommand:
         ]
 
         result = runner.invoke(app, ["init"])
-        
+
         # Should complete successfully
         assert result.exit_code == 0
         assert mock_generator.generate.called
@@ -340,7 +340,7 @@ class TestInitCommand:
     ) -> None:
         """Test complete generation flow without dry-run."""
         output_dir = tmp_path / "generated-kit"
-        
+
         # Mock generator
         mock_generator = MagicMock()
         mock_project = MagicMock()
@@ -366,7 +366,7 @@ class TestInitCommand:
         # Should complete successfully
         assert result.exit_code == 0
         assert mock_generator.generate.called
-        
+
         # Verify generator was called with correct parameters
         call_args = mock_generator.generate.call_args
         assert call_args is not None
@@ -381,7 +381,7 @@ class TestInitCommand:
         output_dir = tmp_path / "existing-kit"
         output_dir.mkdir()
         (output_dir / "existing.txt").write_text("old content")
-        
+
         # Mock generator
         mock_generator = MagicMock()
         mock_project = MagicMock()
@@ -404,7 +404,7 @@ class TestInitCommand:
         # Should complete successfully with force flag
         assert result.exit_code == 0
         assert mock_generator.generate.called
-        
+
         # Verify force parameter was passed
         call_args = mock_generator.generate.call_args
         assert call_args[1]["force"] is True
@@ -450,7 +450,7 @@ class TestInitCommand:
         ]
 
         result = runner.invoke(app, ["init"])
-        
+
         # Should exit gracefully (typer.Exit(0) returns code 0 as expected)
         # But the actual implementation might use a different exit path
         assert result.exit_code in [0, 1]  # Accept both
@@ -466,7 +466,7 @@ class TestInitCommand:
         mock_prompt.side_effect = KeyboardInterrupt()
 
         result = runner.invoke(app, ["init"])
-        
+
         # Should handle interrupt gracefully
         assert result.exit_code == 130
         assert "Cancelled" in result.stdout
