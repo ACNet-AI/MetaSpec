@@ -90,7 +90,7 @@ packages = ["metaspec", "metaspec.cli"]
 
 [tool.setuptools.package-data]
 metaspec = [
-    "templates/**/*.j2",
+    "templates/**/*",
 ]
 
 # Black configuration
