@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Status: Alpha](https://img.shields.io/badge/status-alpha-green.svg)]()
+[![Tests: 151 Passing](https://img.shields.io/badge/tests-151%20passing-brightgreen.svg)]()
+[![Coverage: 90.99%](https://img.shields.io/badge/coverage-90.99%25-brightgreen.svg)]()
 
 ---
 
@@ -320,55 +322,54 @@ api-speckit validate my-api.json
 
 ## 📖 Example
 
-### Quick Example: Create an API Speckit
+### Create Your First Speckit
 
 ```bash
-# Step 1: Create speckit (interactive mode)
+# Step 1: Interactive creation (recommended)
 metaspec init
-# Or use template mode for quick start
-metaspec init api-spec-kit
+
+# Or quick start with defaults
+metaspec init my-spec-kit
 
 # Step 2: What you get
-# api-spec-kit/
-#   ├── src/api_spec_kit/          # Python package
+# my-spec-kit/
+#   ├── src/my_spec_kit/           # Python package
 #   │   ├── cli/                    # CLI commands
 #   │   ├── parser.py               # Parser
 #   │   └── validator.py            # Validator
 #   ├── .metaspec/
-#   │   ├── commands/               # MetaSpec commands (11 total)
+#   │   ├── commands/               # MetaSpec commands (19 total)
 #   │   └── templates/              # MetaSpec templates
 #   ├── specs/                      # Feature specifications
 #   ├── templates/                  # User project templates
 #   ├── AGENTS.md                   # AI workflow guide
 #   ├── README.md                   # User documentation
 #   └── pyproject.toml              # Package config
-```
 
-### Develop the Generated Speckit
-
-```bash
-# Step 3: Install
-cd api-spec-kit
+# Step 3: Install and develop
+cd my-spec-kit
 pip install -e .
 
-# Step 4: Define and implement using MetaSpec commands (in Cursor/AI editor)
-# Phase 1: Define specification (SDS)
+# Step 4: Use built-in MetaSpec commands for AI-assisted development
+# Phase 1: Define domain specification (SDS)
 # /metaspec.sds.constitution  - Define specification design principles
-# /metaspec.sds.specify       - Define specification entities and operations
-# /metaspec.sds.plan          - Plan specification architecture (if complex)
-# /metaspec.sds.tasks         - Break down specification work
+# /metaspec.sds.specify       - Define specification entities
+# /metaspec.sds.plan          - Plan specification architecture
 # /metaspec.sds.implement     - Write specification documents
-# /metaspec.sds.analyze       - Check specification consistency
 
 # Phase 2: Develop toolkit (SDD)
 # /metaspec.sdd.constitution  - Define toolkit principles
 # /metaspec.sdd.specify       - Define toolkit specifications
 # /metaspec.sdd.plan          - Plan implementation architecture
-# /metaspec.sdd.tasks         - Break down implementation tasks
-# /metaspec.sdd.implement     - Implement your speckit
+# /metaspec.sdd.implement     - Build your speckit
+
+# Step 5: Share with community
+metaspec contribute my-spec-kit
 ```
 
-📂 **More examples**: See [examples/](./examples/) (MCP, API testing, design systems)
+📂 **More examples**: See [examples/](./examples/) directory
+
+👉 **Community speckits**: Check out [Awesome Spec Kits](https://github.com/ACNet-AI/awesome-spec-kits) for community-contributed toolkits
 
 ---
 
@@ -409,7 +410,7 @@ git clone https://github.com/ACNet-AI/MetaSpec.git && cd MetaSpec
 uv pip install -e ".[dev]"
 
 # Run tests
-uv run pytest                  # 138 tests, 69% coverage
+uv run pytest                  # 151 tests, 90.99% coverage
 
 # Code quality checks
 uv run ruff check .            # Lint
@@ -436,9 +437,14 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**v0.5.0** - Alpha Release 🎉
+**v0.5.3** - Alpha Release 🎉
 
 Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (19 commands: 8 SDS + 8 SDD + 3 Evolution), recursive tree structure for specifications, unified spec interface.
+
+**Quality Metrics**:
+- ✅ 90.99% test coverage (151/151 tests passing)
+- ✅ Full CLI functionality tested
+- ✅ Production-ready code quality
 
 ---
 
