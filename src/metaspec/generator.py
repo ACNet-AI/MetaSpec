@@ -563,7 +563,6 @@ class Generator:
 CLI for {package_name}.
 """
 
-import sys
 import typer
 from rich.console import Console
 
