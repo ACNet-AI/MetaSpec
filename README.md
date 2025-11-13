@@ -458,6 +458,9 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
+**v0.5.5** - Version Sync Fix 🔧  
+- Fixed version number inconsistency in `__init__.py` (ensures all version indicators are synchronized)
+
 **v0.5.4** - Precision-Guided Navigation 🚀  
 - Added line-number navigation to `specify`, `implement`, `tasks`, `plan` (SDS/SDD) for 84-98% token savings  
 - Enhanced `/metaspec.*.analyze` with Quick / Focused / Full modes  
