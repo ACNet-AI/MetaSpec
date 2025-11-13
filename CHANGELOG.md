@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.5] - 2025-11-13
+
+### 🐛 Bug Fixes
+
+**Version Sync**
+- Fixed version number inconsistency in `src/metaspec/__init__.py` (was 0.5.0, now 0.5.5)
+- Ensures all version indicators are synchronized across the codebase
+
+---
+
 ## [0.5.4] - 2025-11-13
 
 ### 🚀 Features
