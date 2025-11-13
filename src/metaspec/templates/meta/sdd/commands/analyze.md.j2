@@ -270,6 +270,56 @@ ls specs/toolkit/XXX-name/analysis/
 ✅ All field names consistent across spec and plan
 ```
 
+#### K. Cross-Artifact Consistency (⭐ NEW - MetaSpec specific)
+
+**SDD Layer Cross-Document Analysis** (spec-kit inspired, MetaSpec adapted):
+
+**Check toolkit/spec.md ↔ domain/spec.md** (⭐ Critical for MetaSpec):
+- ✅ All domain entities referenced in toolkit spec "Dependencies" section
+- ✅ Toolkit spec correctly describes domain entities it will parse/validate
+- ✅ Validation rules in toolkit spec align with domain spec validation rules
+- ✅ Operations in toolkit spec cover all domain spec operations
+- ✅ Error codes in toolkit spec align with domain spec error codes
+
+**Check toolkit/spec.md ↔ toolkit/plan.md**:
+- ✅ All entities in spec have corresponding components in plan
+- ✅ Parser component in plan covers all spec operations
+- ✅ Validator component in plan covers all spec validation rules
+- ✅ CLI commands in spec match CLI design in plan
+- ✅ Tech stack in plan supports spec requirements
+
+**Check toolkit/spec.md ↔ toolkit/tasks.md** (Coverage Analysis):
+- ✅ Each spec entity has >=1 implementation task
+- ✅ Each spec operation has >=1 parser task
+- ✅ Each spec validation rule has >=1 validator task
+- ✅ Each CLI command has >=1 CLI task
+- ✅ No orphaned tasks (tasks with no spec reference)
+
+**Coverage Summary Table**:
+```
+| Domain Spec Section | Toolkit Spec Reference | Plan Component | Task Coverage | Status |
+|-------------------|----------------------|---------------|--------------|--------|
+| Entity 'Tool' | ✅ §Dependencies | ✅ Parser.Tool | ✅ T001-T003 | ✅ PASS |
+| Operation 'list' | ✅ §Parser Requirements | ✅ Parser.list() | ✅ T010 | ✅ PASS |
+| Validation 'required' | ❌ Not mentioned | ⚠️ Validator (generic) | ❌ No task | ❌ CRITICAL |
+```
+
+**Metrics**:
+- Domain Spec Coverage: 8/10 entities (80%)
+- Spec → Plan Alignment: 12/15 components (80%)
+- Spec → Tasks Coverage: 25/30 requirements (83%)
+
+**Report**:
+```
+❌ CRITICAL: Domain spec 'Resource' entity not referenced in toolkit spec §Dependencies [Cross-Layer Gap]
+  Recommendation: Add Resource parsing requirements to toolkit spec
+❌ HIGH: Spec requires 'uniqueness' validation but no validator task in tasks.md [Coverage Gap]
+  Recommendation: Add task "Implement uniqueness validator" 
+❌ MEDIUM: Plan.md defines 'SchemaValidator' but spec.md doesn't mention schema validation [Plan Drift]
+  Recommendation: Update spec to include schema validation requirements
+✅ All CLI commands in spec have corresponding plan components and tasks
+```
+
 ### 5. Severity assignment
 
 **CRITICAL**: Constitution violation, missing core artifact, blocking gap
@@ -405,6 +455,44 @@ ls specs/toolkit/XXX-name/analysis/
 - Validation Coverage: 87% (7/8 rules)
 - CLI Coverage: 100%
 - Constitution Compliance: 67% (4/6 principles)
+
+---
+
+## Cross-Artifact Analysis (⭐ NEW - MetaSpec specific)
+
+**Cross-Layer Analysis** (toolkit ↔ domain):
+
+**Domain Spec → Toolkit Spec Coverage**:
+| Domain Entity | Toolkit Spec Reference | Status |
+|--------------|----------------------|--------|
+| Tool | ✅ §Dependencies | ✅ PASS |
+| Resource | ❌ Not mentioned | ❌ FAIL |
+| Server | ✅ §Parser Requirements | ✅ PASS |
+
+**Toolkit Spec → Plan Alignment**:
+| Spec Requirement | Plan Component | Status |
+|-----------------|---------------|--------|
+| Parse Tool entity | ✅ Parser.Tool | ✅ PASS |
+| Validate required fields | ✅ Validator.structural | ✅ PASS |
+| Custom validators | ❌ No plugin system | ❌ FAIL |
+| CLI init command | ✅ CLI.init() | ✅ PASS |
+
+**Spec → Tasks Coverage**:
+| Spec Section | Task Coverage | Gap |
+|--------------|--------------|-----|
+| Entity parsing | ✅ T001-T003 | - |
+| Validation rules | ⚠️ T026-T028 | Missing: uniqueness validation |
+| CLI commands | ✅ T040-T041 | - |
+
+**Metrics**:
+- Domain Spec Coverage: 2/3 entities (67%) ⚠️
+- Spec → Plan Alignment: 3/4 requirements (75%) ⚠️
+- Spec → Tasks Coverage: 29/30 requirements (97%) ✅
+
+**Critical Gaps**:
+1. Domain 'Resource' entity not addressed in toolkit
+2. Custom validator mechanism specified but not designed
+3. Uniqueness validation rule missing implementation
 
 ---
 

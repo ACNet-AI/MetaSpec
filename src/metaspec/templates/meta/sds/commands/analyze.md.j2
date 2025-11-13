@@ -248,6 +248,37 @@ ls specs/domain/XXX-name/analysis/
 ✅ All operation names use verb-noun pattern
 ```
 
+#### K. Cross-Artifact Consistency (⭐ NEW - MetaSpec specific)
+
+**SDS Layer Internal Consistency**:
+
+**Check spec.md ↔ examples/**:
+- ✅ Each entity has example file in examples/
+- ✅ Example entities match spec.md schema
+- ✅ Example field values conform to spec constraints
+- ✅ Examples demonstrate all operations
+
+**Check spec.md ↔ checklists/**:
+- ✅ Checklist items reference existing spec sections
+- ✅ Checklist covers all entities defined in spec
+- ✅ Checklist covers all operations defined in spec
+- ✅ No checklist items for non-existent spec elements
+
+**Check spec.md ↔ constitution.md**:
+- ✅ All constitution principles addressed in spec
+- ✅ Spec design follows constitution requirements
+- ✅ Constitution violations explicitly justified
+
+**Report**:
+```
+❌ HIGH: Entity 'Resource' defined in spec.md but no example in examples/ [Cross-Artifact Gap]
+  Recommendation: Add examples/resource-example.yaml
+❌ MEDIUM: Checklist item CHK015 references spec.md §Authentication but section doesn't exist [Broken Reference]
+  Recommendation: Update checklist or add Authentication section
+✅ All entities have examples
+✅ All checklist items have valid spec references
+```
+
 ### 5. Severity Assignment
 
 **CRITICAL**: Constitution violation, missing operation schema, undefined entities
@@ -384,6 +415,34 @@ ls specs/domain/XXX-name/analysis/
 | Domain Standards | ✅ PASS | Follows JSON-RPC patterns |
 
 **Overall**: ❌ FAIL (1 critical violation)
+
+---
+
+## Cross-Artifact Analysis (⭐ NEW)
+
+**Specification Internal Consistency**:
+
+**spec.md ↔ examples/ Coverage**:
+| Entity | Has Example | Example Valid | Status |
+|--------|-------------|---------------|--------|
+| Server | ✅ | ✅ | ✅ PASS |
+| Tool | ✅ | ✅ | ✅ PASS |
+| Resource | ❌ | - | ❌ FAIL |
+
+**spec.md ↔ checklists/ Coverage**:
+| Checklist Item | Spec Reference | Reference Valid | Status |
+|---------------|----------------|-----------------|--------|
+| CHK001 | spec.md §Entities | ✅ | ✅ PASS |
+| CHK015 | spec.md §Authentication | ❌ Section missing | ❌ FAIL |
+
+**spec.md ↔ constitution.md Alignment**:
+- Principles Addressed: 5/6 (83%)
+- Constitution Violations: 1 (Entity-First)
+
+**Summary**:
+- Examples Coverage: 2/3 entities (67%) ⚠️
+- Checklist Validity: 95% references valid ✅
+- Constitution Compliance: ❌ FAIL (1 violation)
 
 ---
 
