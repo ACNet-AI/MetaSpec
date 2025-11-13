@@ -16,6 +16,66 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 **Important**: This command runs AFTER `/metaspec.sds.plan`. It transforms architecture plan into actionable specification tasks.
 
+---
+
+### 📖 Navigation Guide (Quick Reference with Line Numbers)
+
+**🎯 AI Token Optimization**: Use `read_file` with `offset` and `limit` to read only needed sections.
+
+**Core Flow** (Read sequentially):
+
+| Step | Lines | Size | Priority | read_file Usage |
+|------|-------|------|----------|-----------------|
+| 1-3. Load & Rules | 21-141 | 120 lines | 🔴 MUST READ | `read_file(target_file, offset=21, limit=120)` |
+| 4. Single Spec Strategy | 142-189 | 47 lines | 🟡 Important | `read_file(target_file, offset=142, limit=47)` |
+| **5. Multi-Spec Strategy** ⭐ | 190-278 | 88 lines | 🔴 **KEY** | `read_file(target_file, offset=190, limit=88)` |
+| 6. Sub-Spec Template | 279-346 | 67 lines | 🔴 **KEY** | `read_file(target_file, offset=279, limit=67)` |
+| 7-9. Generate & Validate | 347-490 | 143 lines | 🟡 Important | `read_file(target_file, offset=347, limit=143)` |
+| 10-11. Propagation & Report | 491-645 | 154 lines | 🟡 Important | `read_file(target_file, offset=491, limit=154)` |
+| 12. Final Report | 646-824 | 178 lines | 🟢 Reference | `read_file(target_file, offset=646, limit=178)` |
+
+**📋 Task Templates** (Jump to specific template):
+
+| Template Type | Lines | Size | Usage |
+|---------------|-------|------|-------|
+| **Single Spec Refinement** | 825-833 | 8 lines | `read_file(target_file, offset=825, limit=8)` |
+| **Core Specification** | 834-843 | 9 lines | `read_file(target_file, offset=834, limit=9)` |
+| **Phase Specification** ⭐ | 844-855 | 11 lines | `read_file(target_file, offset=844, limit=11)` |
+| **Component Specification** | 856-868 | 12 lines | `read_file(target_file, offset=856, limit=12)` |
+| **Supporting Specification** | 869-909 | 40 lines | `read_file(target_file, offset=869, limit=40)` |
+
+**🎯 Phase Workflows** (Multi-spec patterns):
+
+| Phase | Lines | Size | Usage |
+|-------|-------|------|-------|
+| Phase 1: Core Spec | 910-918 | 8 lines | `read_file(target_file, offset=910, limit=8)` |
+| Phase 2: Lifecycle Phases | 919-946 | 27 lines | `read_file(target_file, offset=919, limit=27)` |
+| Phase 3: Supporting Specs | 947-972 | 25 lines | `read_file(target_file, offset=947, limit=25)` |
+| Phase 4: Cross-Reference | 973-993 | 20 lines | `read_file(target_file, offset=973, limit=20)` |
+
+**💡 Typical Usage Patterns**:
+```python
+# Quick start: Read core flow (120 lines)
+read_file(target_file, offset=21, limit=120)
+
+# Multi-spec strategy: Read Step 5 + 6 (155 lines)
+read_file(target_file, offset=190, limit=155)
+
+# Specific template: Read template only (8-40 lines)
+read_file(target_file, offset=844, limit=11)  # Phase template
+
+# Phase pattern: Read specific phase (8-27 lines)
+read_file(target_file, offset=919, limit=27)  # Phase 2
+```
+
+**Token Savings**: 
+- Full file: 993 lines (~3400 tokens)
+- Core flow: 120 lines (~410 tokens) → **88% savings**
+- Multi-spec strategy: 155 lines (~530 tokens) → **84% savings**
+- Template only: 8-40 lines (~30-140 tokens) → **96-99% savings**
+
+---
+
 ### Execution Flow
 
 #### 1. Load Planning Context
