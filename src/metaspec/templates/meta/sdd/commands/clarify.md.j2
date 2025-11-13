@@ -1,5 +1,5 @@
 ---
-description: Interactive clarification workflow for toolkit specifications - ask up to 5 targeted questions to resolve ambiguities (inspired by spec-kit)
+description: Identify underspecified areas in the toolkit specification by asking targeted clarification questions about entity design, validation rules, and workflows
 ---
 
 ## User Input
@@ -10,455 +10,452 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
-## Goal
+## Outline
 
-Detect and reduce ambiguity or missing decisions in the toolkit specification through **interactive questioning**. This command runs BEFORE `/metaspec.sdd.plan`.
+**Goal**: Detect and reduce ambiguity or missing decisions in the toolkit specification, focusing on entity design, validation rules, workflows, and CLI interface.
 
-**Key Philosophy** (inspired by spec-kit):
-- Ask ONE question at a time (not a batch report)
-- AI recommends the best option for each question
-- Maximum 5 questions to avoid user fatigue
-- Integrate answers incrementally into spec.md
+**Important**: This command runs BEFORE `/metaspec:plan`. Clear specifications lead to better implementation architecture.
+
+### Execution Flow
+
+#### 1. Check for existing clarification
+
+**CRITICAL**: Before generating, check if clarification report already exists:
+
+```bash
+ls specs/toolkit/XXX-name/clarifications/
+```
+
+**If clarification exists**, ask user:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update status, mark resolved ambiguities | Toolkit clarified, want to track progress |
+| **new** | Create new clarification (backup existing) | Complete restart, different focus |
+| **append** | Add supplementary clarification | Existing report still valid, new aspect |
+
+**Default**: If user says "re-run", "check again" → choose **update** mode
+
+**If NO clarification exists** → proceed to step 2
 
 ---
 
-## Execution Flow
+#### 2. Load toolkit specification
 
-### 1. Load toolkit specification
+- Read `specs/toolkit/XXX-name/spec.md`
+- If missing, instruct user to run `/metaspec:specify` first
+- Parse current entity definitions, workflows, validation rules
 
-**Read specification**:
-```bash
-specs/toolkit/{spec_id}-{name}/spec.md
-```
+#### 3. Perform ambiguity scan
 
-**Also load domain dependency**:
-```bash
-specs/domain/{domain_spec_id}-{domain_name}/spec.md
-```
+Scan the specification using this **speckit-specific taxonomy**. Mark each category: **Clear** / **Partial** / **Missing**.
 
-**If missing**: Instruct user to run `/metaspec.sdd.specify` first.
-
----
-
-### 2. Perform ambiguity scan
-
-**Scan toolkit specification using taxonomy**. Mark each category: **Clear** / **Partial** / **Missing**.
-
-**Taxonomy Categories** (toolkit-specific):
-
-#### **Entity Design Clarity**
-- Are all toolkit entity fields defined with types?
+##### **Entity Design Clarity**
+- Are all entity fields clearly defined with types?
 - Are required vs optional fields clear?
-- Are field descriptions specific enough for implementation?
-- Are field validation rules documented?
+- Are field descriptions specific enough?
 - Are example values provided?
-- Does entity design follow Entity-First principle (3-5 core fields)?
+- Are field constraints documented (e.g., regex patterns, enum values)?
+- Is the rationale for each field explained?
 
-#### **Validation Rules Completeness**
-- Are structural validation rules (type, required) defined?
-- Are semantic validation rules (cross-field, business logic) specified?
-- Are domain-specific validation rules documented with rationale?
-- Is error message format specified with examples?
-- Are error messages AI-friendly (actionable, with fix suggestions)?
-- Is validation performance target specified (e.g., <100ms)?
-- Is custom validator registration mechanism defined?
+##### **Validation Rules Completeness**
+- Are structural validation rules defined?
+- Are semantic validation rules specified?
+- Are domain-specific validation rules documented?
+- Are error messages formats specified?
+- Are validation error fix suggestions included?
+- Is validation performance target specified?
 
-#### **Workflow Definitions**
-- Are workflow steps clearly ordered and numbered?
-- Are inputs and outputs specified for each step?
+##### **Workflow Definitions**
+- Are workflow steps clearly ordered?
+- Are inputs/outputs specified for each step?
 - Are CLI commands mapped to workflow steps?
-- Are success indicators measurable?
-- Are error scenarios documented for each step?
-- Are workflow examples provided?
-- Is the init → validate → execute flow clearly defined?
+- Are success indicators defined?
+- Are error scenarios documented?
+- Are example usages complete?
 
-#### **CLI Interface Design**
-- Are all CLI commands listed with clear purposes?
-- Are command arguments and options documented?
-- Are command examples provided?
-- Are exit codes specified (0=success, 1=failure)?
-- Is output format defined (text and JSON)?
-- Are error messages for CLI errors specified?
-- Is help text format defined?
-- Is command naming consistent (init, validate, run)?
+##### **CLI Interface Design**
+- Are all commands listed with purposes?
+- Are command options documented?
+- Are examples provided for each command?
+- Are exit codes specified?
+- Is output format defined?
+- Are interactive vs non-interactive modes clear?
 
-#### **Domain Dependency Alignment**
-- Are all domain entities referenced in "Dependencies" section?
-- Does toolkit spec correctly describe domain entities it will parse/validate?
-- Do toolkit validation rules align with domain validation rules?
-- Do toolkit operations cover all domain operations?
-- Do toolkit error codes align with domain error codes?
+##### **Domain Constraints**
+- Are domain-specific rules documented?
+- Are industry standards referenced (e.g., RFC numbers)?
+- Are domain conventions explained?
+- Are domain terminology definitions provided?
+- Are domain-specific validation rules justified?
 
-#### **Acceptance Criteria Quality**
-- Are acceptance criteria measurable and testable?
-- Do acceptance criteria cover all user scenarios?
-- Are success and failure cases clearly distinguished?
-- Are edge cases addressed in acceptance criteria?
+##### **Extensibility Points**
+- Are custom validator hooks specified?
+- Are plugin interfaces defined?
+- Are extension points documented?
+- Are extensibility examples provided?
 
-#### **Constitution Alignment**
-- Does entity design follow Entity-First principle (3-5 fields)?
-- Does validator design support extensibility (custom validators)?
-- Does spec-first workflow enable users to write specs first?
-- Are error messages AI-friendly (clear, actionable)?
-- Is progressive enhancement path clear (MVP vs future features)?
-- Are domain-specific constraints documented and justified?
+##### **Error Handling**
+- Are error message formats specified?
+- Are error recovery suggestions included?
+- Are edge cases documented?
+- Are validation failure scenarios covered?
 
-#### **Quality Attributes**
-- Are performance targets specified (validation <100ms)?
-- Are scalability considerations documented (max spec size)?
-- Are observability requirements defined (error logging)?
-- Are security considerations addressed?
+##### **Performance Requirements**
+- Are validation performance targets specified?
+- Are memory usage limits defined?
+- Are scalability targets documented?
 
-#### **Terminology Consistency**
-- Are canonical terms defined and used consistently?
-- Is terminology aligned with domain specification?
-- Are ambiguous adjectives ("fast", "robust") quantified?
+##### **AI-Agent Friendliness**
+- Are examples provided for every concept?
+- Are error messages actionable?
+- Are naming conventions consistent?
+- Is implicit behavior avoided?
 
-**Build internal coverage map** (do not output unless no questions).
+##### **Constitution Alignment**
+- Does entity design follow Entity-First principle?
+- Does validation support extensibility?
+- Is spec-first workflow clear?
+- Are quality criteria measurable?
 
----
+For each category with **Partial** or **Missing** status, add to clarification queue (unless low-impact).
 
-### 3. Generate prioritized question queue
+#### 4. Generate prioritized clarification queue
 
-**Prioritization algorithm** (spec-kit inspired):
-```
-Priority = Impact × Uncertainty
+**Constraints**:
+- Maximum 5 questions total
+- Each question must be answerable with:
+  - Multiple choice (2-5 options), OR
+  - Short answer (<=5 words)
+- Only include high-impact questions that affect:
+  - Entity structure
+  - Validation logic
+  - Workflow design
+  - CLI interface
+  - Constitution alignment
 
-Impact scores:
-- CRITICAL (4): Blocks toolkit implementation, affects architecture
-- HIGH (3): Affects multiple toolkit components, testability
-- MEDIUM (2): Affects single toolkit component, clarity
-- LOW (1): Style, minor improvement
+**Prioritization** (Impact × Uncertainty):
+1. **Critical**: Entity field types, required fields, validation rules
+2. **High**: Workflow steps, CLI commands, error messages
+3. **Medium**: Performance targets, extensibility design
+4. **Low**: Naming preferences, example choices
 
-Uncertainty scores:
-- Missing (3): No information
-- Partial (2): Incomplete information
-- Vague (2): Ambiguous information
-- Clear (0): Sufficient information
-```
+**Exclude**:
+- Already-answered questions
+- Implementation details (e.g., which Python library to use)
+- Questions better suited for `/metaspec:plan`
 
-**Question generation rules**:
-1. Select top 5 questions by Priority score
-2. Ensure category diversity (avoid 3+ questions from same category)
-3. **Prioritize domain alignment questions** (toolkit must correctly implement domain spec)
-4. Format as multiple-choice (2-5 options) OR short-answer (≤5 words)
-5. For each question, AI must analyze and recommend best option
+#### 5. Interactive questioning loop
 
-**If no high-priority questions exist**: Report "No critical ambiguities detected" and skip to step 7.
+**Present ONE question at a time**:
 
----
+**For multiple-choice questions**:
 
-### 4. Interactive questioning loop
+1. **Analyze all options** and determine the **most suitable** based on:
+   - Entity-First principle (simple over complex)
+   - Validator Extensibility (flexible over rigid)
+   - AI-Agent Friendly (clear over clever)
+   - Domain standards (conventional over novel)
 
-**Present EXACTLY ONE question at a time.**
-
-#### **For multiple-choice questions**:
-
-**Step 1: Analyze options**
-- Evaluate each option against toolkit best practices
-- Consider implementation language, architecture patterns, domain alignment
-- Determine the most suitable option
-
-**Step 2: Present question with recommendation**
-
-```markdown
-**Question {n}/5: {question}**
-
-**Recommended:** Option {X} - {option_text}
-
-**Reasoning:** {1-2 sentences explaining why this is best for toolkit implementation}
-- {reason 1}
-- {reason 2}
-
-| Option | Description |
-|--------|-------------|
-| A | {option_a_description} |
-| B | {option_b_description} ← Recommended |
-| C | {option_c_description} |
-| Short | Provide your own answer (≤5 words) |
-
-**Reply**: Option letter (e.g., "B"), "yes"/"recommended" to accept, or custom answer.
-```
-
-#### **For short-answer questions**:
-
-```markdown
-**Question {n}/5: {question}**
-
-**Suggested:** {suggested_answer}
-
-**Reasoning:** {1-2 sentences explaining suggestion}
-
-**Format**: Short answer (≤5 words)
-
-**Reply**: "yes"/"suggested" to accept, or provide your own answer.
-```
-
-#### **Process user answer**:
-
-1. **If user says** "yes", "recommended", "suggested":
-   - Use your stated recommendation/suggestion
-
-2. **If user provides option letter** (A/B/C):
-   - Validate it matches available options
-   - If invalid, ask for clarification (doesn't count as new question)
-
-3. **If user provides custom answer**:
-   - Validate length (≤5 words for short-answer)
-   - If too long, ask for concise version (doesn't count as new question)
-
-4. **Once answer accepted**:
-   - Record in working memory
-   - Immediately integrate into spec.md (see step 5)
-   - Move to next question
-
-#### **Stop conditions**:
-
-- All 5 questions answered
-- User says "done", "stop", "skip" (accept partial completion)
-- All critical ambiguities resolved (remaining questions become unnecessary)
-
-**Never reveal future queued questions in advance.**
-
----
-
-### 5. Integration after EACH accepted answer
-
-**Incremental update approach** (spec-kit inspired):
-
-#### **First answer in session**:
-
-1. **Ensure `## Clarifications` section exists**:
-   - If missing, create after `## Overview` or `## Context` section
-   
-2. **Create today's session subsection**:
-   ```markdown
-   ### Session {YYYY-MM-DD}
+2. **Present recommendation**:
+   ```
+   **Recommended:** Option [X] - [1-2 sentence reasoning]
    ```
 
-#### **For every answer**:
+3. **Show all options** as table:
+   | Option | Description |
+   |--------|-------------|
+   | A | [Description] |
+   | B | [Description] |
+   | C | [Description] |
 
-1. **Append to Clarifications**:
-   ```markdown
-   - Q: {question} → A: {answer}
+4. **Prompt user**:
+   ```
+   Reply with option letter (e.g., "A"), accept recommendation ("yes"/"recommended"), or provide short answer.
    ```
 
-2. **Apply to appropriate section** (based on question category):
+**For short-answer questions**:
 
-   **Entity Design** → Update `## Entity Definitions` section:
-   - Add/modify entity fields with types
-   - Add field constraints and validation rules
-   - Add examples and rationale
-   
-   **Validation Rules** → Update `## Validation Requirements` section:
-   - Add specific validation rules
-   - Define error message format
-   - Specify custom validator mechanism
-   - Add performance targets
-   
-   **Workflow** → Update `## Workflow Definitions` section:
-   - Add/clarify workflow steps
-   - Define inputs/outputs
-   - Map CLI commands to steps
-   - Add success indicators
-   
-   **CLI Interface** → Update `## CLI Commands` section:
-   - Add command details
-   - Define arguments and options
-   - Specify exit codes
-   - Add command examples
-   
-   **Domain Dependency** → Update `## Dependencies` section:
-   - Reference domain entities
-   - Clarify how toolkit implements domain spec
-   - Ensure alignment with domain validation rules
-   
-   **Acceptance Criteria** → Update `## Acceptance Criteria` section:
-   - Add measurable criteria
-   - Define success/failure cases
-   - Add edge case coverage
-   
-   **Constitution** → Update relevant sections:
-   - Adjust entity design to follow principles
-   - Add custom validator mechanism
-   - Clarify progressive enhancement path
-   - Add principle justifications
-   
-   **Quality Attributes** → Update `## Quality Criteria` section:
-   - Add performance targets
-   - Add scalability limits
-   - Add observability requirements
-   
-   **Terminology** → Normalize across all sections:
-   - Replace old term with canonical term
-   - Ensure alignment with domain specification
-   - Add glossary entry if needed
+1. **Provide suggestion**:
+   ```
+   **Suggested:** [your answer] - [brief reasoning]
+   ```
 
-3. **Remove contradictions**:
-   - If answer invalidates earlier statement, replace (don't duplicate)
-   - Remove vague placeholders now clarified
+2. **Format constraint**:
+   ```
+   Format: Short answer (<=5 words). Accept suggestion ("yes"/"suggested") or provide your own.
+   ```
 
-4. **Save spec.md immediately** (atomic write after each integration)
+**After user answers**:
+- If "yes"/"recommended"/"suggested" → use your recommendation
+- Validate answer (matches option or <=5 words)
+- If ambiguous, ask for clarification (doesn't count as new question)
+- Record answer in memory
+- Move to next question
 
-5. **Preserve formatting**:
-   - Maintain heading hierarchy
-   - Don't reorder unrelated sections
-   - Keep consistent markdown style
+**Stop when**:
+- All critical ambiguities resolved, OR
+- User signals done ("done", "good", "no more"), OR
+- 5 questions asked
 
----
+#### 6. Integrate answers incrementally
 
-### 6. Validation (after EACH write)
+**After EACH accepted answer**:
 
-**Check**:
-- ✅ Clarifications section has one bullet per answer
-- ✅ Updated section contains no lingering vague terms
-- ✅ No contradictory statements remain
-- ✅ Markdown structure valid
-- ✅ Terminology consistent across sections
-- ✅ Domain alignment maintained (toolkit spec references domain spec correctly)
+1. **Update Clarifications section**:
+   - Create `## Clarifications` if missing
+   - Add `### Session YYYY-MM-DD` for today
+   - Append: `- Q: [question] → A: [answer]`
 
-**If validation fails**: Fix immediately before next question.
+2. **Update relevant sections**:
 
----
+   | Answer Type | Update Location |
+   |-------------|-----------------|
+   | Entity field clarification | Update **Entity Definitions** table |
+   | Validation rule | Update **Validation Requirements** |
+   | Workflow step | Update **Workflow Definitions** |
+   | CLI command detail | Update **CLI Commands** |
+   | Domain constraint | Update **Domain-Specific Validation** |
+   | Error message format | Update **Validation Requirements** |
+   | Performance target | Update **Quality Criteria** |
 
-### 7. Report completion
+3. **Replace ambiguous text**:
+   - If answer invalidates earlier vague statement, replace it
+   - Remove contradictory text
+   - Keep only one source of truth
 
-**After questioning loop ends**:
+4. **Save immediately**:
+   - Write updated spec to `specs/toolkit/XXX-name/spec.md`
+   - Atomic overwrite
+   - Preserve formatting
 
-```markdown
-## ✅ Clarification Session Complete
+#### 7. Validation (after each update)
 
-**Summary**:
-- Questions asked & answered: {n}/5
-- Toolkit specification updated: specs/toolkit/{spec_id}-{name}/spec.md
-- Sections touched: {list_of_sections}
+- [ ] Clarifications section has one bullet per answer
+- [ ] Total questions ≤ 5
+- [ ] No lingering vague placeholders
+- [ ] No contradictory statements
+- [ ] Valid Markdown structure
+- [ ] Consistent terminology
 
-**Coverage Status**:
+#### 8. Report completion
 
-| Category | Before | After | Status |
-|----------|--------|-------|--------|
-| Entity Design | Partial | Clear | ✅ Resolved |
-| Validation Rules | Missing | Clear | ✅ Resolved |
-| Workflow | Clear | Clear | ✅ Already sufficient |
-| CLI Interface | Partial | Clear | ✅ Resolved |
-| Domain Dependency | Missing | Clear | ✅ Resolved |
-| Acceptance Criteria | Partial | Partial | ⚠️ Deferred (low impact) |
-| Constitution | Clear | Clear | ✅ Already sufficient |
-| Quality Attributes | Partial | Clear | ✅ Resolved |
-| Terminology | Clear | Clear | ✅ Already sufficient |
-
-**Impact**:
-- Resolved: {n} categories (was Partial/Missing, now Clear)
-- Deferred: {n} categories (low impact, better for planning phase)
-- Outstanding: {n} categories (still Partial/Missing but within question limit)
-
-**Domain Alignment Check**:
-{if domain_dependency_resolved}
-  ✅ Toolkit spec correctly references domain specification
-  ✅ Validation rules aligned with domain requirements
-  ✅ All domain entities addressed
-{else}
-  ⚠️ Domain alignment still needs attention:
-  - {alignment_issue_1}
-  - {alignment_issue_2}
-{endif}
-
-**Recommendation**:
-{if no_outstanding_critical}
-  ✅ Ready to proceed to `/metaspec.sdd.plan`
-{else}
-  ⚠️ Consider running `/metaspec.sdd.clarify` again to address:
-  - {outstanding_category_1}
-  - {outstanding_category_2}
-  
-  OR proceed to `/metaspec.sdd.plan` (accept minor ambiguities)
-{endif}
-
-**Next Command**: `/metaspec.sdd.plan`
+**For new clarification**:
 ```
+✅ Clarification complete
 
----
+📊 Questions asked: [N] / 5
 
-## Special Cases
+📝 Sections updated:
+- Entity Definitions
+- Validation Requirements
+- [Other sections]
 
-### **No ambiguities found**:
-
-```markdown
-## ✅ No Critical Ambiguities Detected
-
-**Coverage Summary**:
-All categories marked **Clear** - toolkit specification is well-defined.
+📋 Coverage Summary:
 
 | Category | Status |
 |----------|--------|
-| Entity Design | ✅ Clear |
-| Validation Rules | ✅ Clear |
-| Workflow | ✅ Clear |
+| Entity Design | ✅ Resolved |
+| Validation Rules | ✅ Resolved |
+| Workflow Definitions | ⏭️ Deferred |
 | CLI Interface | ✅ Clear |
-| Domain Dependency | ✅ Clear |
-| Acceptance Criteria | ✅ Clear |
-| Constitution | ✅ Clear |
-| Quality Attributes | ✅ Clear |
-| Terminology | ✅ Clear |
+| Domain Constraints | ⚠️ Outstanding |
+| ... | ... |
 
-**Domain Alignment**: ✅ Toolkit spec correctly implements domain specification
+Status legend:
+- ✅ Resolved: Was partial/missing, now addressed
+- ⏭️ Deferred: Exceeds quota or better for /metaspec:plan
+- ✅ Clear: Already sufficient
+- ⚠️ Outstanding: Still partial/missing but low impact
 
-**Recommendation**: Proceed to `/metaspec.sdd.plan`
+🔄 Recommendation:
+[Proceed to /metaspec:plan | Run /metaspec:clarify again | Address outstanding items]
+
+📁 Updated: specs/toolkit/XXX-name/spec.md
+
+💡 Next step: /metaspec:plan
 ```
 
-### **User skips clarification**:
+**For update mode**:
+```
+✅ Clarification updated: ambiguity-report.md
 
-Accept early termination:
-```markdown
-⚠️ Clarification skipped by user after {n} questions.
+📊 Iteration 2 Summary:
+- Ambiguities checked: 8
+- Resolved: 2 (AMB-001, AMB-002)
+- Still outstanding: 2 (AMB-003, AMB-004)
+- New ambiguities: 1 (AMB-005)
 
-**Warning**: Proceeding with unresolved ambiguities increases downstream rework risk during toolkit implementation.
+📈 Progress:
+- Previous: 4 outstanding ambiguities
+- Current: 3 outstanding ambiguities
+- Improvement: -25% ambiguities
 
-**Deferred categories**:
-- {category_1}: {brief_issue}
-- {category_2}: {brief_issue}
+🎯 Key improvements:
+- ✅ AMB-001: Field types now explicitly specified
+- ✅ AMB-002: Validation format clarified (JSON Schema)
 
-You can:
-1. Run `/metaspec.sdd.clarify` again later
-2. Proceed to `/metaspec.sdd.plan` and address during planning
+⚠️ Still needs clarification:
+- ❌ AMB-003: Error message format unspecified
+- ❌ AMB-004: CLI command workflow unclear
+- ❌ AMB-005: NEW - Extension mechanism undefined
 
-**Next Command**: `/metaspec.sdd.plan` (proceed with caution)
+🔄 Next steps:
+1. Clarify remaining ambiguities (3)
+2. Run /metaspec.sdd.analyze to verify consistency
+3. Consider /metaspec:plan once ambiguities < 2
 ```
 
----
+### Special Cases
 
-## Operating Principles
+#### No ambiguities found
 
-### **Token Efficiency** (spec-kit inspired):
+```
+✅ No critical ambiguities detected
 
-- **Progressive disclosure**: Load specs once, build internal model
-- **Minimal output**: Only show current question, not full queue
-- **Structured answers**: Multiple-choice or short-answer only
-- **Incremental writes**: Update spec after each answer (avoid large final merge)
+All specification categories are clear:
+- ✅ Entity Design: Complete
+- ✅ Validation Rules: Complete
+- ✅ Workflows: Complete
+- ✅ CLI Interface: Complete
+- ✅ Domain Constraints: Complete
 
-### **User Experience**:
+🔄 Recommendation: Proceed to /metaspec:plan
+```
 
-- **One question at a time**: Reduce cognitive load
-- **AI recommendations**: Lower decision cost
-- **Immediate feedback**: See spec update after each answer
-- **Flexible termination**: Accept partial completion
+#### User stops early
 
-### **Quality Assurance**:
+If user says "stop"/"done"/"proceed" before 5 questions:
+- Save current progress
+- Report questions answered so far
+- Show coverage summary
+- Recommend next action
 
-- **Prioritization**: Focus on high-impact ambiguities first
-- **Category diversity**: Avoid question clustering
-- **Domain alignment**: Prioritize questions that ensure toolkit implements domain spec correctly
-- **Validation**: Check consistency after each integration
-- **Deterministic**: Same spec state → same priority order
+#### High-impact items deferred
 
-### **Toolkit-Specific Considerations**:
+If quota reached with critical items unresolved:
+```
+⚠️ Warning: Critical items remain unresolved
 
-- **Domain dependency is critical**: Always check domain spec alignment
-- **Implementation focus**: Questions should help implementation, not just documentation
-- **Constitution enforcement**: Toolkit must follow toolkit-specific principles (Entity-First, Validator Extensibility, etc.)
+Deferred items (exceeded 5-question limit):
+1. [Item 1]: [Why critical]
+2. [Item 2]: [Why critical]
 
----
+Options:
+A. Continue to /metaspec:plan (accept higher implementation risk)
+B. Run /metaspec:clarify again to address deferred items
+C. Update spec.md manually then continue
 
-## Context
+**Recommended:** Option B - addressing these before planning will reduce rework
+```
 
-{ARGS}
+## Example Questions for Speckits
+
+### Entity Design
+
+**Q**: Should the [PRIMARY_ENTITY] entity support nested objects?
+
+**Recommended**: Option B - Keep flat for MVP, add nesting in v0.2
+
+| Option | Description |
+|--------|-------------|
+| A | Yes, support nested objects from start |
+| B | No, keep flat structure for MVP |
+| C | Support one level of nesting only |
+
+**Q**: What field types are needed?
+
+**Suggested**: string, number, boolean, array - <covers 90% of use cases, extensible later>
+
+Format: Short answer (<=5 words)
+
+### Validation Rules
+
+**Q**: Should validation be strict or permissive by default?
+
+**Recommended**: Option A - Strict by default (fail fast, clear errors)
+
+| Option | Description |
+|--------|-------------|
+| A | Strict - fail on any unknown field |
+| B | Permissive - warn on unknown fields |
+| C | Configurable via --strict flag |
+
+**Q**: What's the validation performance target?
+
+**Suggested**: <100ms per spec - <industry standard for CLI tools>
+
+Format: Short answer (<=5 words)
+
+### Workflow Design
+
+**Q**: Should `init` command create interactive wizard or static template?
+
+**Recommended**: Option B - Static template (simpler, AI-friendly)
+
+| Option | Description |
+|--------|-------------|
+| A | Interactive wizard with prompts |
+| B | Static template user fills in |
+| C | Both modes (--interactive flag) |
+
+### CLI Interface
+
+**Q**: What should `validate` command output on success?
+
+**Recommended**: Option A - Concise success (good UX, clear feedback)
+
+| Option | Description |
+|--------|-------------|
+| A | "✅ Validation passed: spec.yaml" |
+| B | Detailed report with all checks |
+| C | Silent (exit code 0 only) |
+
+### Domain Constraints
+
+**Q**: For API Test Kit - should we support GraphQL or REST only?
+
+**Recommended**: Option B - REST only for MVP (focus, simpler)
+
+| Option | Description |
+|--------|-------------|
+| A | REST and GraphQL from start |
+| B | REST only, GraphQL in v0.3 |
+| C | GraphQL only (modern focus) |
+
+## Important Notes
+
+1. **Focus on toolkit design, not implementation**
+   - Ask about entity structure, not Python classes
+   - Ask about validation rules, not Pydantic validators
+   - Ask about workflows, not code architecture
+
+2. **Respect constitution principles**
+   - Entity-First: Prefer simpler entity designs
+   - Validator Extensibility: Prefer flexible validation
+   - AI-Agent Friendly: Prefer clear error messages
+   - Progressive Enhancement: Prefer MVP-first approaches
+
+3. **One question at a time**
+   - Never show all questions at once
+   - Never reveal future questions
+   - Wait for user answer before proceeding
+
+4. **Incremental updates**
+   - Save spec after EACH answer
+   - Don't batch updates
+   - Minimize context loss risk
+
+5. **Actionable questions only**
+   - Every question must affect design decisions
+   - Avoid trivial preferences
+   - Avoid implementation details
+
+## Context Priority
+
+If user provides context in `$ARGUMENTS`, prioritize clarifications for:
+- Mentioned entities
+- Mentioned workflows
+- Mentioned concerns (e.g., "worried about performance")
+- Explicit unknowns (e.g., "not sure about validation")
+
