@@ -128,7 +128,7 @@ Update only the `## Part II: Specification Design Principles` section with domai
 
 ### 4. Implementation Neutrality
 
-[How to keep specs technology-neutral]
+{How to keep specs technology-neutral}
 
 ### 5. Extensibility Design
 
@@ -158,7 +158,7 @@ Check and update dependent files to align with updated principles:
 - **Read** `/.metaspec/commands/sds.specify.md` (if exists)
 - **Check** if principles are referenced in guidance
 - **Update** if principle names or descriptions changed
-- **Mark** with `<!-- Updated per constitution v[VERSION] -->`
+- **Mark** with `<!-- Updated per constitution v{VERSION} -->`
 
 #### C. Specification Templates
 - **Read** `/src/metaspec/templates/meta/templates/domain-spec-template.md.j2` (if exists)
@@ -192,19 +192,19 @@ Prepend this as an HTML comment at the top of `/memory/constitution.md`:
 <!--
 Constitution Part II Update Report
 ===================================
-Version Change: [OLD_VERSION] → [NEW_VERSION]
-Updated: [ISO_DATE]
+Version Change: {OLD_VERSION} → {NEW_VERSION}
+Updated: {ISO_DATE}
 Rationale: [MAJOR|MINOR|PATCH bump reason]
 
 Changes in Part II (Specification Design Principles):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Modified Principles:
-- [PRINCIPLE_NAME]: [description of what changed]
+- {PRINCIPLE_NAME}: {description of what changed}
   Example: "Entity Clarity: Added field type requirement examples"
 
 Added Principles:
-- [NEW_PRINCIPLE_NAME]: [brief description]
+- {NEW_PRINCIPLE_NAME}: {brief description}
   Example: "Schema Versioning: Specifications must include version strategy"
 
 Removed Principles:
@@ -219,10 +219,10 @@ Impact Analysis:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ✅ Updated Files:
-- /specs/domain/001-[name]/spec.md
+- /specs/domain/001-{name}/spec.md
   → Entity definitions updated to match Entity Clarity examples
 - /.metaspec/commands/sds.specify.md
-  → Added reference to new [PRINCIPLE_NAME] principle
+  → Added reference to new {PRINCIPLE_NAME} principle
 - /AGENTS.md
   → Updated Part II principle list
 
@@ -230,13 +230,13 @@ Impact Analysis:
 - /README.md
   → Specification Design section may need updates
 - /examples/basic-spec.md
-  → Example may not follow new [PRINCIPLE_NAME] principle
+  → Example may not follow new {PRINCIPLE_NAME} principle
 - /src/metaspec/templates/meta/templates/domain-spec-template.md.j2
   → Template structure may need new sections
 
 📋 Follow-up TODOs:
 - [ ] Review existing domain specifications against updated principles
-- [ ] Add examples demonstrating new [PRINCIPLE_NAME] principle
+- [ ] Add examples demonstrating new {PRINCIPLE_NAME} principle
 - [ ] Update specification validation checklist
 - [ ] Consider toolkit changes if principles affect parsing/validation
 
@@ -256,7 +256,7 @@ Agent: [AI_AGENT_NAME]
 Update the version line at the top of `/memory/constitution.md`:
 
 ```markdown
-> Version [NEW_VERSION] | Ratified: [ORIGINAL_DATE] | Last Updated: [TODAY]
+> Version {NEW_VERSION} | Ratified: {ORIGINAL_DATE} | Last Updated: {TODAY}
 ```
 
 **Version bump rules** (CRITICAL):
@@ -290,7 +290,7 @@ Update the version line at the top of `/memory/constitution.md`:
 **Add update marker in Part II**:
 ```markdown
 <!-- Managed by /metaspec.sds.constitution -->
-<!-- Last updated: [TODAY] v[VERSION] - [Brief description of changes] -->
+<!-- Last updated: {TODAY} v{VERSION} - {Brief description of changes} -->
 ```
 
 ### 9. Validation checklist
@@ -352,26 +352,26 @@ Before writing file:
 Provide a comprehensive summary:
 
 ```
-✅ Constitution Part II (Specification Design) updated to v[NEW_VERSION]
+✅ Constitution Part II (Specification Design) updated to v{NEW_VERSION}
 
-📊 Version Change: v[OLD_VERSION] → v[NEW_VERSION]
-Bump Type: [MAJOR|MINOR|PATCH]
-Rationale: [Brief reason for version bump]
+📊 Version Change: v{OLD_VERSION} → v{NEW_VERSION}
+Bump Type: {MAJOR|MINOR|PATCH}
+Rationale: {Brief reason for version bump}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 Changes in Part II:
 Modified Principles:
-- [PRINCIPLE_NAME]: [What changed]
+- {PRINCIPLE_NAME}: {What changed}
 
 Added Principles:
-- [NEW_PRINCIPLE_NAME]: [Brief description]
+- {NEW_PRINCIPLE_NAME}: {Brief description}
 
 Removed Principles:
 - [OLD_PRINCIPLE_NAME]: [Reason for removal]
 
 Domain-Specific Updates:
-- [DOMAIN]: [What was added/changed]
+- [DOMAIN]: {What was added/changed}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -406,12 +406,12 @@ Domain-Specific Updates:
 5. Use /metaspec.sds.checklist to validate existing specifications
 
 💡 Suggested Commit Message:
-   docs(constitution): update Part II to v[NEW_VERSION] ([brief description])
+   docs(constitution): update Part II to v{NEW_VERSION} ({brief description})
    
-   - [Change 1]
-   - [Change 2]
+   - {Change 1}
+   - {Change 2}
    
-   Affects: [list key files]
+   Affects: {list key files}
 ```
 
 ## Important Notes

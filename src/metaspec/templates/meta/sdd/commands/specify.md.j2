@@ -18,7 +18,7 @@ The text the user typed after `/metaspec.sdd.specify` is the **toolkit specifica
 
 This command is for defining **toolkit implementation specifications**:
 - Focus: HOW to implement the toolkit
-- Output: `specs/toolkit/001-[name]/spec.md`
+- Output: `specs/toolkit/001-{name}/spec.md`
 - Must depend on specification specs
 - Implementation-focused
 
@@ -48,10 +48,10 @@ The specification defines WHAT (domain specification).
 The toolkit defines HOW (implementation).
 
 Please run this command first:
-  /metaspec.sds.specify "Define [domain] specification"
+  /metaspec.sds.specify "Define {domain} specification"
 
 Then return to create toolkit with:
-  /metaspec.sdd.specify "Create {toolkit} for [domain]"
+  /metaspec.sdd.specify "Create {toolkit} for {domain}"
 
 Why this matters:
 - Specification is the specification (core asset)
@@ -65,7 +65,7 @@ Why this matters:
 **Step 1b: Generate Toolkit Name**
 
 Based on user input, generate:
-- Short name: `[domain]-{component}`
+- Short name: `{domain}-{component}`
 - Example: "api-validator", "graphql-parser", "spec-analyzer"
 - Check existing `specs/toolkit/` directory structure
 
@@ -79,7 +79,7 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
 
 **Step 1d: Load Existing or Create New**
 
-- Check for `specs/toolkit/{number}-[name]/spec.md`
+- Check for `specs/toolkit/{number}-{name}/spec.md`
 - If exists, load for updating
 - If new, create new directory structure
 
@@ -175,7 +175,7 @@ Generate **Toolkit Implementation Specification** with these sections:
 ## Dependencies
 
 **Domain Specifications**:
-- **domain/001-[domain]-specification** - {Brief description of what specification defines}
+- **domain/001-{domain}-specification** - {Brief description of what specification defines}
 
 ### Dependency Rationale
 
@@ -197,13 +197,13 @@ Generate **Toolkit Implementation Specification** with these sections:
 ## Overview
 
 **Name**: {Toolkit Name}
-**Version**: [version]
+**Version**: {version}
 **Status**: Draft | In Development | Stable
-**Created**: [date]
+**Created**: {date}
 
-**Purpose**: [What this toolkit does]
+**Purpose**: {What this toolkit does}
 
-**Target Specification**: Implements support for domain/001-[domain]-spec
+**Target Specification**: Implements support for domain/001-{domain}-spec
 
 **Primary Use Cases**:
 1. {Use case 1}
@@ -228,7 +228,7 @@ Generate **Toolkit Implementation Specification** with these sections:
 **Primary Language**: {Python / TypeScript / Go / Rust / Other}
 
 **Rationale**: 
-[Why this language was chosen:]
+{Why this language was chosen:}
 - Target user community: {who will use this}
 - Ecosystem fit: {existing tools and libraries}
 - Performance considerations: {if relevant}
@@ -251,7 +251,7 @@ Generate **Toolkit Implementation Specification** with these sections:
 - [ ] SDK - {Brief description if included}
 
 **Extensibility**:
-[How will users extend this toolkit:]
+{How will users extend this toolkit:}
 - Plugin system / Custom validators / Hooks / etc.
 
 **File Structure** (Preliminary):
@@ -593,7 +593,7 @@ check-transition
 ```markdown
 ### Command: {command-name}
 
-**Purpose**: [What this command does]
+**Purpose**: {What this command does}
 
 **Usage**:
 \```bash
@@ -1002,7 +1002,7 @@ Based on your toolkit functions (from **Component 3, STEP 1: Define Toolkit Type
   - Display specification documentation
   - Provide reference information
 
-- [ ] **Query**: list [type], info
+- [ ] **Query**: list {type}, info
   - List available entities/examples
   - Show specification information
 
@@ -1077,7 +1077,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 **Argument Access**: `$ARGUMENTS`, `$1`, `$2`, `$3` (see [Frontmatter Fields](#frontmatter-fields-yaml-metadata) above)
 
 ## Purpose
-[What specification-compliant output to produce]
+{What specification-compliant output to produce}
 
 ## Domain Specification (EMBEDDED)
 **From**: specs/domain/{XXX}/spec.md
@@ -1160,7 +1160,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 **Argument Access**: `$ARGUMENTS`, `$1`, `$2`, `$3`, `{ARGS}` (see [Frontmatter Fields](#frontmatter-fields-yaml-metadata) above)
 
 ## Purpose
-[What to produce, with script handling setup]
+{What to produce, with script handling setup}
 
 ## Helper Script
 
@@ -1183,7 +1183,7 @@ scripts/powershell/{script-name}.ps1 -Json "$ARGUMENTS"
 ## Execution Flow
 1. **Call Helper Script**
    \```bash
-   scripts/setup-[entity].sh --name {entity-name}
+   scripts/setup-{entity}.sh --name {entity-name}
    \```
    - Script creates: Directory structure, skeleton files
    - Script outputs: Paths to files AI should fill
@@ -1538,16 +1538,16 @@ Result: Proven workflow pattern
 **If Library**: 
 - Selected: {library-name} (from MetaSpec library)
 - Reference: https://github.com/ACNet-AI/MetaSpec/tree/main/src/metaspec/templates/library/{library-name}
-- Rationale: [Why this library]
+- Rationale: {Why this library}
 
 **If Specification-Derived**:
-- Based on: specs/domain/{number}-[name]
+- Based on: specs/domain/{number}-{name}
 - Commands needed: {List and rationale}
 
 **If Composed**:
 - Base: {library-name} (from MetaSpec)
 - Extensions: {Specification-derived commands}
-- Composition rationale: [Why compose]
+- Composition rationale: {Why compose}
 ```
 
 **Generator expectations**:
@@ -1746,15 +1746,15 @@ Generator ───→ Output Artifacts
 
 ### 4. Write Specification File
 
-**Location**: `specs/toolkit/{number}-[name]/spec.md`
+**Location**: `specs/toolkit/{number}-{name}/spec.md`
 
 **Structure**:
 ```markdown
 # {Toolkit Name}
 
-**Version**: [version]
+**Version**: {version}
 **Status**: Draft | In Development | Stable
-**Created**: [date]
+**Created**: {date}
 
 ## Dependencies
 
@@ -1803,9 +1803,9 @@ Collect information for the report:
 
 ```markdown
 Report Data:
-- Toolkit ID: [spec_id]
-- Version: [version] (1.0.0 for new, increment for updates)
-- Date: [today]
+- Toolkit ID: {spec_id}
+- Version: {version} (1.0.0 for new, increment for updates)
+- Date: {today}
 - Type: New | Update
 - Language: {Primary language}
 - Components: {List of components}
@@ -1820,10 +1820,10 @@ Create detailed report and **prepend** to spec.md:
 <!--
 Toolkit Specification Report
 ============================
-Toolkit ID: [spec_id]
-Version: [version]
-Created/Updated: [date]
-Type: [New | Update]
+Toolkit ID: {spec_id}
+Version: {version}
+Created/Updated: {date}
+Type: {New | Update}
 
 Toolkit Summary:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1833,41 +1833,41 @@ Status: {Draft | In Development | Stable}
 
 Implementation:
 - Primary Language: {Python | TypeScript | Go | Rust | Other}
-- Rationale: [Why this language]
-- Structure: [Monolithic | Modular | Plugin-based]
+- Rationale: {Why this language}
+- Structure: {Monolithic | Modular | Plugin-based}
 
-Core Components ([count]):
-- {Component 1}: [brief description]
-- {Component 2}: [brief description]
+Core Components ({count}):
+- {Component 1}: {brief description}
+- {Component 2}: {brief description}
 ...
 
 Dependencies:
-- Domain Specifications: [count]
+- Domain Specifications: {count}
   * {domain/001-xxx}: {what it provides}
   * ...
-- Key Libraries: [count]
+- Key Libraries: {count}
   * {library 1}: {purpose}
   * ...
 
 Impact Analysis:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ Files Created/Updated:
-- specs/toolkit/[spec_id]/spec.md
+- specs/toolkit/{spec_id}/spec.md
 
 ⚠️  Files Requiring Manual Review:
 - README.md (add toolkit to documentation)
 - AGENTS.md (document toolkit purpose and commands)
-[IF depends on domain specs]:
-- Domain specifications: [list of specs this depends on]
+{IF depends on domain specs}:
+- Domain specifications: {list of specs this depends on}
 
 📋 Follow-up TODOs:
 - [ ] Review toolkit specification completeness
 - [ ] Run /metaspec.sdd.plan to create architecture plan
 - [ ] Run /metaspec.sdd.tasks to break down implementation
 - [ ] Verify domain specification dependencies exist
-[IF slash commands planned]:
+{IF slash commands planned}:
 - [ ] Generate slash commands based on specification
-[IF CLI planned]:
+{IF CLI planned}:
 - [ ] Design CLI command structure
 
 Constitution Compliance Check:
@@ -1900,7 +1900,7 @@ After writing spec.md, systematically check related files:
 
 ```bash
 # Extract dependencies from spec.md
-grep -A 10 "^## Dependencies" specs/toolkit/[spec_id]/spec.md
+grep -A 10 "^## Dependencies" specs/toolkit/{spec_id}/spec.md
 
 # For each domain spec dependency:
 # 1. Verify it exists
@@ -2112,7 +2112,7 @@ Check toolkit specification file structure:
   - Success Criteria
 
 - [ ] **File Organization**: Correct
-  - File at correct path: specs/toolkit/{id}/[name]/spec.md
+  - File at correct path: specs/toolkit/{id}/{name}/spec.md
   - Directory structure follows convention
 
 #### Content Validation
@@ -2179,7 +2179,7 @@ Verify adherence to constitution principles:
   - Error messages are actionable
   - Clear output formats
   - Examples provided
-  - [IF slash commands]: Slash commands planned
+  - {IF slash commands}: Slash commands planned
 
 - [ ] **Progressive Enhancement** (Part III: Principle 5)
   - MVP components identified
@@ -2255,12 +2255,12 @@ Implementation Validation: ✅ PASSED (5/5 checks)
 
 Overall Score: 24/24 (100%) ✅
 
-[IF any warnings]:
+{IF any warnings}:
 ⚠️  Warnings:
 - {Warning 1}
 - {Warning 2}
 
-[IF any suggestions]:
+{IF any suggestions}:
 💡 Suggestions:
 - {Suggestion 1}: {Rationale}
 - {Suggestion 2}: {Rationale}
@@ -2274,21 +2274,21 @@ Overall Score: 24/24 (100%) ✅
 ✅ Toolkit specification created/updated successfully
 
 📁 Location:
-   specs/toolkit/{number}-[name]/spec.md
+   specs/toolkit/{number}-{name}/spec.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 Toolkit Summary:
    Name: {Toolkit Name}
-   Version: [version]
+   Version: {version}
    Status: {Draft | In Development | Stable}
-   Primary Language: [Python | TypeScript | Go | Rust]
-   Architecture: [Monolithic | Modular | Plugin-based]
+   Primary Language: {Python | TypeScript | Go | Rust}
+   Architecture: {Monolithic | Modular | Plugin-based}
 
 📦 Dependencies:
    Domain Specifications:
-   - domain/{dependency-1}: [What it provides]
-   - domain/{dependency-2}: [What it provides]
+   - domain/{dependency-1}: {What it provides}
+   - domain/{dependency-2}: {What it provides}
    ...
 
    Key Libraries:
@@ -2296,14 +2296,14 @@ Overall Score: 24/24 (100%) ✅
    - {library-2}: {Purpose}
    ...
 
-🔧 Components ([count]):
-   - {Component 1}: [brief description]
-   - {Component 2}: [brief description]
+🔧 Components ({count}):
+   - {Component 1}: {brief description}
+   - {Component 2}: {brief description}
    ...
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ Validation Results: PASSED ([score]/24 checks)
+✅ Validation Results: PASSED ({score}/24 checks)
 
    Structure: ✅ {3/3 checks passed}
    Content: ✅ {6/6 checks passed}
@@ -2311,12 +2311,12 @@ Overall Score: 24/24 (100%) ✅
    Dependencies: ✅ {4/4 checks passed}
    Implementation: ✅ {5/5 checks passed}
 
-[IF any warnings]:
+{IF any warnings}:
    ⚠️  Warnings:
    - {Warning 1}
    - {Warning 2}
 
-[IF any suggestions]:
+{IF any suggestions}:
    💡 Suggestions:
    - {Suggestion 1}
    - {Suggestion 2}
@@ -2326,24 +2326,24 @@ Overall Score: 24/24 (100%) ✅
 📋 Impact Analysis:
 
    ✅ Files Created/Updated:
-   - specs/toolkit/[spec_id]/spec.md
+   - specs/toolkit/{spec_id}/spec.md
 
    ⚠️  Files Requiring Manual Review:
    - README.md (add toolkit to list)
    - AGENTS.md (document toolkit commands)
-   [IF domain specs dependencies]:
-   - Domain specs verified: [list of checked specs]
-   [IF source code exists]:
-   - Source files needing review: [count] files
-   [IF tests exist]:
-   - Test files needing update: [count] files
+   {IF domain specs dependencies}:
+   - Domain specs verified: {list of checked specs}
+   {IF source code exists}:
+   - Source files needing review: {count} files
+   {IF tests exist}:
+   - Test files needing update: {count} files
 
    📊 Consistency Check:
-   - Domain specifications verified: [count]
-   - Toolkit specifications reviewed: [count]
-   - Source files analyzed: [count]
-   - Test files checked: [count]
-   - Documentation needing updates: [count] files
+   - Domain specifications verified: {count}
+   - Toolkit specifications reviewed: {count}
+   - Source files analyzed: {count}
+   - Test files checked: {count}
+   - Documentation needing updates: {count} files
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -2354,32 +2354,32 @@ Overall Score: 24/24 (100%) ✅
    2. Verify domain specification dependencies
    3. Update README.md with toolkit information
    4. Update AGENTS.md with commands documentation
-   [IF conflicts]:
+   {IF conflicts}:
    5. ⚠️  Resolve component overlaps with other toolkits
-   [IF source impact]:
-   6. ⚠️  Review and update [count] source files
+   {IF source impact}:
+   6. ⚠️  Review and update {count} source files
 
    Recommended:
    - Run /metaspec.sdd.plan to create architecture plan
    - Run /metaspec.sdd.tasks to break down implementation
    - Run /metaspec.sdd.implement to start building
-   [IF slash commands needed]:
+   {IF slash commands needed}:
    - Generate slash commands during implementation
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 Suggested commit message:
-   [IF new]:
-   feat(toolkit): add [spec_id] toolkit specification
+   {IF new}:
+   feat(toolkit): add {spec_id} toolkit specification
    
-   - Primary language: [language]
-   - Components: [count] ({component list})
+   - Primary language: {language}
+   - Components: {count} ({component list})
    - Depends on: {domain spec list}
-   [IF slash commands]:
-   - Slash commands: [count] planned
+   {IF slash commands}:
+   - Slash commands: {count} planned
    
-   [IF update]:
-   feat(toolkit): update [spec_id] toolkit specification
+   {IF update}:
+   feat(toolkit): update {spec_id} toolkit specification
    
    - {summary of changes}
 ```

@@ -40,7 +40,7 @@ This command must handle two types of specifications:
 
 **Step 1b: For Feature 2 (Toolkit Spec)**:
 - ✅ Read `specs/toolkit/001-toolkit/spec.md` (the WHAT)
-- ✅ **Verify Feature 1 exists**: Check `specs/domain/001-[domain]-spec/spec.md`
+- ✅ **Verify Feature 1 exists**: Check `specs/domain/001-{domain}-spec/spec.md`
 - ✅ Read `/memory/constitution.md` (the principles)
 - ✅ Create `specs/toolkit/001-toolkit/plan.md` (the HOW)
 
@@ -54,11 +54,11 @@ This command must handle two types of specifications:
 **For Feature 2 (Toolkit Spec)**:
 
 **Critical Validation**:
-1. ✅ Feature 1 spec exists at `specs/domain/001-[domain]-spec/spec.md`
+1. ✅ Feature 1 spec exists at `specs/domain/001-{domain}-spec/spec.md`
 2. ✅ Feature 2 spec declares dependency in a **Dependencies** section:
    ```markdown
    ## Dependencies
-   - **Depends on**: 001-[domain]-spec
+   - **Depends on**: 001-{domain}-spec
    ```
 3. ✅ Components reference Feature 1 validation rules
 
@@ -225,22 +225,22 @@ Extensibility: Custom validator plugins via entry points
 **Research Tasks**:
 
 1. **Domain Standards**:
-   - Task: "Research [domain] industry standards and specifications"
+   - Task: "Research {domain} industry standards and specifications"
    - Example: For API Testing → REST/GraphQL standards, HTTP RFCs
    - Example: For Design Systems → W3C design tokens, CSS specs
 
 2. **Reference Implementations**:
-   - Task: "Find existing [domain] tools and analyze their approaches"
+   - Task: "Find existing {domain} tools and analyze their approaches"
    - Example: For API Testing → analyze Postman, REST Client, etc.
    - Example: For Design Systems → analyze Figma Tokens, Style Dictionary
 
 3. **Validation Patterns**:
-   - Task: "Research common validation patterns for [domain]"
+   - Task: "Research common validation patterns for {domain}"
    - Example: For API Testing → assertion types, matcher patterns
    - Example: For Design Systems → token naming conventions
 
 4. **Error Message Best Practices**:
-   - Task: "Research effective error messages for [domain] tooling"
+   - Task: "Research effective error messages for {domain} tooling"
    - Focus on AI-friendliness and actionable feedback
 
 **Research agents** (run parallel web searches):
@@ -258,11 +258,11 @@ For each research task:
 # Domain Research: [Toolkit Name]
 
 ## Domain Standards
-- Standard 1: [name] - [URL] - [relevance]
+- Standard 1: {name} - [URL] - [relevance]
 - Standard 2: ...
 
 ## Reference Implementations
-- Tool 1: [name] - [approach] - [lessons learned]
+- Tool 1: {name} - [approach] - [lessons learned]
 - Tool 2: ...
 
 ## Validation Patterns
@@ -480,7 +480,7 @@ _custom_validators: Dict[str, Callable] = {}
 
 def register_validator(name: str, validator: Callable) -> None:
     """Register custom validator."""
-    _custom_validators[name] = validator
+    _custom_validators{name} = validator
 
 # User code
 from my_toolkit.validator import register_validator
@@ -522,14 +522,14 @@ After Phase 1 design:
 <!--
 Toolkit Implementation Planning Report
 ======================================
-Toolkit ID: [spec_id]
-Planning Date: [date]
-Primary Language: [Python | TypeScript | Go | Rust]
-Architecture: [Monolithic | Modular | Plugin-based]
+Toolkit ID: {spec_id}
+Planning Date: {date}
+Primary Language: {Python | TypeScript | Go | Rust}
+Architecture: {Monolithic | Modular | Plugin-based}
 
 Technical Context:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Domain: [domain]
+- Domain: {domain}
 - Primary Entity: {entity from domain spec}
 - Validation Strategy: {strategy}
 - Performance Targets: {targets}
@@ -537,13 +537,13 @@ Technical Context:
 
 Components Planned:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Parser: [brief description]
+- Parser: {brief description}
 - Models: {Pydantic | Zod | Struct | etc.}
 - Validator: {validation approach}
 - CLI: {Typer | Commander | Cobra | Clap}
-[IF generator]:
+{IF generator}:
 - Generator: {template engine}
-[IF SDK]:
+{IF SDK}:
 - SDK: {public API approach}
 
 Tech Stack:
@@ -559,9 +559,9 @@ Tech Stack:
 
 Architecture Decisions:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Structure: [Monolithic | Modular | Plugin-based]
-- Rationale: [Why this structure]
-- Extension Points: [count]
+- Structure: {Monolithic | Modular | Plugin-based}
+- Rationale: {Why this structure}
+- Extension Points: {count}
   * {Extension point 1}
   * {Extension point 2}
   ...
@@ -569,9 +569,9 @@ Architecture Decisions:
 
 Research Summary:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Domain Standards Reviewed: [count]
-- Reference Implementations Analyzed: [count]
-- Validation Patterns Identified: [count]
+- Domain Standards Reviewed: {count}
+- Reference Implementations Analyzed: {count}
+- Validation Patterns Identified: {count}
 - Key Recommendations:
   * {Recommendation 1}
   * {Recommendation 2}
@@ -579,11 +579,11 @@ Research Summary:
 
 Generated Files:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- specs/toolkit/[spec_id]/plan.md (this file)
-- specs/toolkit/[spec_id]/research.md (Phase 0)
-- specs/toolkit/[spec_id]/architecture.md (Phase 1)
-- specs/toolkit/[spec_id]/parser-design.md (Phase 1)
-- specs/toolkit/[spec_id]/validator-design.md (Phase 1)
+- specs/toolkit/{spec_id}/plan.md (this file)
+- specs/toolkit/{spec_id}/research.md (Phase 0)
+- specs/toolkit/{spec_id}/architecture.md (Phase 1)
+- specs/toolkit/{spec_id}/parser-design.md (Phase 1)
+- specs/toolkit/{spec_id}/validator-design.md (Phase 1)
 
 Next Steps:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -703,7 +703,7 @@ Run validation checks on the plan:
 Planning Validation Report
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Planning Quality: ✅ PASSED ([score]/5 checks)
+Planning Quality: ✅ PASSED ({score}/5 checks)
 - Technical context: ✅
 - Research completion: ✅
 - Architecture design: ✅
@@ -725,7 +725,7 @@ Implementation Feasibility: ✅ PASSED (3/3 checks)
 
 Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 
-[IF issues]:
+{IF issues}:
 ⚠️  Issues to Address:
 - {Issue 1}
 - {Issue 2}
@@ -767,20 +767,20 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 Planning Summary:
-   Toolkit: [name]
-   Domain: [domain]
-   Primary Language: [Python | TypeScript | Go | Rust]
-   Architecture: [Monolithic | Modular | Plugin-based]
-   Primary Entity: [entity]
+   Toolkit: {name}
+   Domain: {domain}
+   Primary Language: {Python | TypeScript | Go | Rust}
+   Architecture: {Monolithic | Modular | Plugin-based}
+   Primary Entity: {entity}
 
 🔧 Components Planned:
    - Parser: {language parser library}
    - Models: {Pydantic | Zod | Struct-based}
    - Validator: {validation approach}
    - CLI: {Typer | Commander | Cobra | Clap}
-   [IF generator]:
+   {IF generator}:
    - Generator: {template engine}
-   [IF SDK]:
+   {IF SDK}:
    - SDK: {public API}
 
 📚 Tech Stack:
@@ -803,7 +803,7 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 
 ✅ Validation Results: {IF all pass: APPROVED | IF issues: NEEDS REFINEMENT}
 
-   Planning Quality: ✅ ([score]/5 checks)
+   Planning Quality: ✅ ({score}/5 checks)
    - Technical context: ✅
    - Research completion: ✅
    - Architecture design: ✅
@@ -823,12 +823,12 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
    - Architecture feasibility: ✅
    - Dependency completeness: ✅
 
-[IF issues]:
+{IF issues}:
    ⚠️  Issues to Address:
    - {Issue 1}
    - {Issue 2}
 
-[IF recommendations]:
+{IF recommendations}:
    💡 Recommendations:
    - {Recommendation 1}
    - {Recommendation 2}
@@ -842,7 +842,7 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
    - parser.py (from parser-design.md)
    - validator.py (from validator-design.md)
    - cli.py (from architecture.md)
-   [IF components]:
+   {IF components}:
    - {additional files based on components}
 
    Tests: tests/
@@ -873,9 +873,9 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 💡 Suggested commit message:
    docs(plan): add implementation plan for {toolkit-name}
    
-   - Language: [language]
-   - Components: [count] ({component list})
-   - Architecture: [Monolithic | Modular | Plugin-based]
+   - Language: {language}
+   - Components: {count} ({component list})
+   - Architecture: {Monolithic | Modular | Plugin-based}
    - Phase 0: Research complete
    - Phase 1: Design complete
 ```

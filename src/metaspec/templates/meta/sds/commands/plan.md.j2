@@ -128,7 +128,7 @@ Note: Adjusted to align with 1500-line threshold mentioned in Decision Matrix
 
 **Output format (both cases)**:
 ```
-Specification Analysis: [spec_id]
+Specification Analysis: {spec_id}
 
 📊 Complexity Assessment:
    - Lines: {line_count}
@@ -282,12 +282,12 @@ Layer Specifications:
 # Specification Architecture Plan
 
 ## Overview
-- **Specification Name**: [name]
-- **Domain**: [domain]
+- **Specification Name**: {name}
+- **Domain**: {domain}
 - **Complexity**: [Simple/Medium/Complex]
 - **Primary Pattern**: [Lifecycle/Component/CrossCutting/Layered]
 
-## Core Specification (001-[name]-spec)
+## Core Specification (001-{name}-spec)
 
 **Purpose**: High-level overview and integration point
 
@@ -303,7 +303,7 @@ Layer Specifications:
 
 ## Sub-Specifications
 
-### Sub-Spec 1: [name] (002-[name])
+### Sub-Spec 1: {name} (002-{name})
 
 **Purpose**: [specific concern]
 
@@ -321,7 +321,7 @@ Layer Specifications:
 
 **Priority**: P0 (Critical) / P1 (Important) / P2 (Nice-to-have)
 
-### Sub-Spec 2: [name] (003-[name])
+### Sub-Spec 2: {name} (003-{name})
 
 [Same structure as Sub-Spec 1]
 
@@ -342,15 +342,15 @@ graph TD
 - [ ] 001-core-spec (base specification)
 
 **Phase 2: Primary Specifications** (P0)
-- [ ] 002-[name] (critical dependency)
-- [ ] 003-[name] (critical dependency)
+- [ ] 002-{name} (critical dependency)
+- [ ] 003-{name} (critical dependency)
 
 **Phase 3: Supporting Specifications** (P1)
-- [ ] 004-[name] (important feature)
-- [ ] 005-[name] (important feature)
+- [ ] 004-{name} (important feature)
+- [ ] 005-{name} (important feature)
 
 **Phase 4: Advanced Specifications** (P2)
-- [ ] 006-[name] (nice-to-have)
+- [ ] 006-{name} (nice-to-have)
 
 ## Cross-References
 
@@ -397,14 +397,14 @@ graph TD
 
 #### 6. Generate plan.md
 
-**Output location**: `specs/domain/001-[name]-spec/plan.md`
+**Output location**: `specs/domain/001-{name}-spec/plan.md`
 
 **Structure**:
 ```markdown
 # [Specification Name] - Architecture Plan
 
 **Version**: 1.0.0  
-**Created**: [date]  
+**Created**: {date}  
 **Status**: Draft
 
 ---
@@ -424,7 +424,7 @@ graph TD
 ### Recommendation
 [Keep single spec / Split into sub-specifications]
 
-**Rationale**: [Why this decision]
+**Rationale**: {Why this decision}
 
 ---
 
@@ -438,7 +438,7 @@ graph TD
 
 ### Suggested Organization
 ```markdown
-001-[name]-spec/spec.md:
+001-{name}-spec/spec.md:
   1. Specification Overview (lines 1-50)
   2. Glossary (lines 51-100)
   3. Use Cases (lines 101-200)
@@ -490,10 +490,10 @@ graph TD
 <!--
 Specification Planning Report
 =============================
-Spec ID: [spec_id]
-Planning Date: [date]
-Complexity: [Simple | Medium | Complex]
-Decision: [KEEP_SINGLE | SPLIT]
+Spec ID: {spec_id}
+Planning Date: {date}
+Complexity: {Simple | Medium | Complex}
+Decision: {KEEP_SINGLE | SPLIT}
 
 Metrics:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -502,24 +502,24 @@ Metrics:
 - Operation Count: {operation_count}
 - Complexity Score: {score:.2f}
 
-[IF SPLIT]:
+{IF SPLIT}:
 Planning Architecture:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Core Specification: 001-[name]-spec
-- Sub-Specifications: [count]
-  * P0 (Critical): [count] specs
-  * P1 (Important): [count] specs
-  * P2 (Nice-to-have): [count] specs
-- Pattern: [Lifecycle | Component | CrossCutting | Layered]
-- Total Estimated Size: [lines] lines across [count] files
+- Core Specification: 001-{name}-spec
+- Sub-Specifications: {count}
+  * P0 (Critical): {count} specs
+  * P1 (Important): {count} specs
+  * P2 (Nice-to-have): {count} specs
+- Pattern: {Lifecycle | Component | CrossCutting | Layered}
+- Total Estimated Size: {lines} lines across {count} files
 
 Sub-Specification Summary:
-[FOR each sub-spec]:
-- {number}-[name]:
-  * Priority: [P0 | P1 | P2]
-  * Scope: [brief description]
+{FOR each sub-spec}:
+- {number}-{name}:
+  * Priority: {P0 | P1 | P2}
+  * Scope: {brief description}
   * Dependencies: {list}
-  * Estimated Size: [lines] lines
+  * Estimated Size: {lines} lines
 ...
 
 Implementation Phases:
@@ -528,22 +528,22 @@ Implementation Phases:
 - Phase 3 (Supporting): {spec list}
 - Phase 4 (Advanced): {spec list}
 
-[IF KEEP_SINGLE]:
+{IF KEEP_SINGLE}:
 Specification Organization:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 - Recommended structure: Single spec with {section_count} sections
-- Estimated total size: [lines] lines
+- Estimated total size: {lines} lines
 - Maintainability: High (no splitting needed)
 
 Next Steps:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[IF SPLIT]:
+{IF SPLIT}:
 - [ ] Review sub-specification boundaries
 - [ ] Run /metaspec.sds.tasks to create implementation tasks
 - [ ] Run /metaspec.sds.implement to generate sub-specifications
 - [ ] Track implementation progress for each sub-spec
 
-[IF KEEP_SINGLE]:
+{IF KEEP_SINGLE}:
 - [ ] Review specification organization
 - [ ] Proceed with specification development
 - [ ] No splitting needed (manageable as single spec)
@@ -576,7 +576,7 @@ Run validation checks on the plan:
   - Referenced specific metrics
   - Justified by maintainability concerns
 
-[IF SPLIT]:
+{IF SPLIT}:
 - [ ] **Sub-Specification Boundaries**: Logical and clear
   - Each sub-spec has distinct purpose
   - No significant overlap between sub-specs
@@ -603,7 +603,7 @@ Run validation checks on the plan:
   - Pattern is consistently applied
   - Pattern supports evolution
 
-[IF KEEP_SINGLE]:
+{IF KEEP_SINGLE}:
 - [ ] **Organization Structure**: Defined
   - Sections identified
   - Organization supports readability
@@ -634,16 +634,16 @@ Run validation checks on the plan:
 Planning Validation Report
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Planning Quality: ✅ PASSED ([score]/7 checks)
+Planning Quality: ✅ PASSED ({score}/7 checks)
 - Complexity assessment: ✅
 - Decision justification: ✅
-[IF SPLIT]:
+{IF SPLIT}:
 - Sub-spec boundaries: ✅
 - Dependencies: ✅
 - Scope definition: ✅
 - Implementation phases: ✅
 - Pattern appropriateness: ✅
-[IF KEEP_SINGLE]:
+{IF KEEP_SINGLE}:
 - Organization structure: ✅
 
 Constitution Compliance: ✅ PASSED (2/2 principles)
@@ -658,7 +658,7 @@ Maintainability: ✅ PASSED (4/4 checks)
 
 Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 
-[IF issues]:
+{IF issues}:
 ⚠️  Issues to Address:
 - {Issue 1}
 - {Issue 2}
@@ -672,7 +672,7 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 
 **If plan looks good**:
 - Prepend Planning Report to plan.md
-- Save to `specs/domain/001-[name]-spec/plan.md`
+- Save to `specs/domain/001-{name}-spec/plan.md`
 - Proceed to `/metaspec.sds.tasks`
 
 **If plan needs refinement**:
@@ -688,15 +688,15 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 ✅ Specification architecture plan complete
 
 📁 Location:
-   specs/domain/001-[name]-spec/plan.md
+   specs/domain/001-{name}-spec/plan.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 Planning Assessment:
-   Specification: [name]
+   Specification: {name}
    Complexity: {Simple (< 1.0) | Medium (1.0-2.0) | Complex (> 2.0)}
    Complexity Score: {score:.2f}
-   Decision: [KEEP_SINGLE | SPLIT]
+   Decision: {KEEP_SINGLE | SPLIT}
 
    Metrics:
    - Document Length: {line_count} lines
@@ -707,30 +707,30 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 
 📊 Architecture Summary:
 
-[IF KEEP_SINGLE]:
+{IF KEEP_SINGLE}:
    Type: Single Specification
-   - Estimated size: [lines] lines
+   - Estimated size: {lines} lines
    - Sections: {section_count}
    - Maintainability: High (manageable as single spec)
    - Rationale: {Complexity score < 1.0 | Document length < 1500 lines}
 
-[IF SPLIT]:
+{IF SPLIT}:
    Type: Modular Architecture
-   - Core Specification: 001-[name]-spec (overview)
-   - Sub-Specifications: [count] sub-specs
-     * P0 (Critical): [count] specs
-     * P1 (Important): [count] specs
-     * P2 (Nice-to-have): [count] specs
-   - Pattern: [Lifecycle | Component | CrossCutting | Layered]
-   - Total Estimated Size: [lines] lines across [count] files
+   - Core Specification: 001-{name}-spec (overview)
+   - Sub-Specifications: {count} sub-specs
+     * P0 (Critical): {count} specs
+     * P1 (Important): {count} specs
+     * P2 (Nice-to-have): {count} specs
+   - Pattern: {Lifecycle | Component | CrossCutting | Layered}
+   - Total Estimated Size: {lines} lines across {count} files
    - Maintainability: High (modular, independent evolution)
    - Rationale: {Complexity score >= 1.0 | Document length > 1500 lines}
 
    Sub-Specifications:
-   [FOR each sub-spec]:
-   - {number}-[name]
-     * Priority: [P0 | P1 | P2]
-     * Estimated Size: [lines] lines
+   {FOR each sub-spec}:
+   - {number}-{name}
+     * Priority: {P0 | P1 | P2}
+     * Estimated Size: {lines} lines
      * Dependencies: {list or "None"}
    ...
 
@@ -738,23 +738,23 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
    - Phase 1 (Core): {spec list}
    - Phase 2 (Primary): {spec list}
    - Phase 3 (Supporting): {spec list}
-   [IF P2 exists]:
+   {IF P2 exists}:
    - Phase 4 (Advanced): {spec list}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ✅ Validation Results: {IF all pass: APPROVED | IF issues: NEEDS REFINEMENT}
 
-   Planning Quality: ✅ ([score]/7 checks)
+   Planning Quality: ✅ ({score}/7 checks)
    - Complexity assessment: ✅
    - Decision justification: ✅
-   [IF SPLIT]:
+   {IF SPLIT}:
    - Sub-spec boundaries: ✅
    - Dependencies: ✅
    - Scope definition: ✅
    - Implementation phases: ✅
    - Pattern appropriateness: ✅
-   [IF KEEP_SINGLE]:
+   {IF KEEP_SINGLE}:
    - Organization structure: ✅
 
    Constitution Compliance: ✅ (2/2 principles)
@@ -767,12 +767,12 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
    - Testability: ✅
    - Documentation: ✅
 
-[IF issues]:
+{IF issues}:
    ⚠️  Issues to Address:
    - {Issue 1}
    - {Issue 2}
 
-[IF recommendations]:
+{IF recommendations}:
    💡 Recommendations:
    - {Recommendation 1}
    - {Recommendation 2}
@@ -781,7 +781,7 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 
 🔄 Next Steps:
 
-[IF SPLIT]:
+{IF SPLIT}:
    Immediate:
    1. Review sub-specification boundaries with stakeholders
    2. Verify dependency graph is acyclic
@@ -792,7 +792,7 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
    - Run /metaspec.sds.implement to generate sub-specifications
    - Track progress for each sub-spec (P0 → P1 → P2)
 
-[IF KEEP_SINGLE]:
+{IF KEEP_SINGLE}:
    Immediate:
    1. Review proposed specification structure
    2. Confirm section organization
@@ -805,19 +805,19 @@ Overall: {IF all pass: ✅ PLAN APPROVED | IF issues: ⚠️  NEEDS REFINEMENT}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 Suggested commit message:
-   [IF SPLIT]:
+   {IF SPLIT}:
    docs(plan): add modular architecture plan for {spec-name}
    
-   - Split into [count] sub-specifications
+   - Split into {count} sub-specifications
    - Pattern: {pattern}
    - Implementation phases: {phase_count}
-   - Total estimated size: [lines] lines
+   - Total estimated size: {lines} lines
    
-   [IF KEEP_SINGLE]:
+   {IF KEEP_SINGLE}:
    docs(plan): add specification plan for {spec-name}
    
    - Keep as single specification
-   - Estimated size: [lines] lines
+   - Estimated size: {lines} lines
    - Organized into {section_count} sections
 ```
 
