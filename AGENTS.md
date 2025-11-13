@@ -646,6 +646,123 @@ cd my-speckit
 
 ---
 
+## 🧭 Token Optimization: Precision-Guided Navigation
+
+**NEW in v0.5.4+**: Major MetaSpec commands now include **precision-guided navigation** with exact line numbers, enabling massive token savings (84-98%).
+
+### What is Precision-Guided Navigation?
+
+Instead of reading entire command files (1000-2300+ lines), AI can now jump directly to specific sections using `read_file` with `offset` and `limit` parameters.
+
+**Example**:
+```python
+# ❌ Before: Read entire file
+read_file("src/metaspec/templates/meta/sdd/commands/specify.md.j2")
+# Result: 2378 lines (~8000 tokens)
+
+# ✅ After: Read only CLI design section
+read_file("src/metaspec/templates/meta/sdd/commands/specify.md.j2", offset=390, limit=273)
+# Result: 273 lines (~900 tokens)
+# Token savings: 88.3% 🎉
+```
+
+### Commands with Navigation
+
+**Enhanced commands** (6 total, 8615 lines coverage):
+
+| Command | Lines | Navigation Sections | Best Savings |
+|---------|-------|---------------------|--------------|
+| **SDD/specify** | 2378 | 7 main + 7 subsections | 70-94% |
+| **SDS/implement** | 1271 | 6 main + 9 templates | 87-95% |
+| **SDS/specify** | 1060 | 6 main + 8 templates | 70-90% |
+| **SDS/tasks** | 1054 | 7 main + 5 templates + 4 phases | 84-99% |
+| **SDD/implement** | 998 | 7 main + 4 languages + 5 phases | 84-97% |
+| **SDD/plan** | 854 | 7 main + 4 languages + 4 components | 90-98% |
+
+### How to Use Navigation
+
+Each enhanced command starts with a **📖 Navigation Guide** table showing:
+- **Line ranges** for each section
+- **read_file usage** with exact offset/limit
+- **Typical usage patterns** with concrete examples
+- **Token savings** calculation
+
+**Example from SDD/specify**:
+
+```markdown
+📖 Navigation Guide (Quick Reference with Line Numbers)
+
+Core Flow:
+| Step | Lines | Size | read_file Usage |
+|------|-------|------|-----------------|
+| 1. Setup | 55-111 | 56 lines | read_file(target_file, offset=55, limit=56) |
+| 3. CLI Design | 390-663 | 273 lines | read_file(target_file, offset=390, limit=273) |
+
+💡 Typical Usage Patterns:
+# Minimal: Read only Steps 1-2 (135 lines)
+read_file(target_file, offset=55, limit=135)
+
+# CLI Design: Read Component 3 (273 lines)
+read_file(target_file, offset=390, limit=273)
+```
+
+### Language-Specific Navigation (SDD)
+
+**Special feature** for toolkit development: Jump directly to language-specific context.
+
+```python
+# Python toolkit development
+read_file("implement.md.j2", offset=210, limit=25)  # 97% savings! 🏆
+
+# TypeScript toolkit development
+read_file("implement.md.j2", offset=236, limit=25)  # 97% savings! 🏆
+
+# Go toolkit development
+read_file("plan.md.j2", offset=132, limit=15)  # 98% savings! 🏆
+
+# Rust toolkit development
+read_file("plan.md.j2", offset=148, limit=16)  # 98% savings! 🏆
+```
+
+### Best Practices
+
+**When to use navigation**:
+1. ✅ You need specific guidance (e.g., CLI design, templates)
+2. ✅ You're familiar with the command structure
+3. ✅ You want to minimize token usage
+
+**When to read full file**:
+1. ⚠️ First time using the command (learn structure)
+2. ⚠️ Need comprehensive understanding
+3. ⚠️ Unclear which section you need
+
+**Quick Reference Strategy**:
+```python
+# Step 1: Read navigation guide only (first 100 lines)
+read_file(target_file, offset=1, limit=100)
+
+# Step 2: Based on navigation, read specific section
+read_file(target_file, offset=390, limit=273)
+
+# Result: ~370 lines vs 2378 lines = 84% savings
+```
+
+### Token Savings by Scenario
+
+**Real-world examples**:
+
+| Scenario | Before | After | Savings |
+|----------|--------|-------|---------|
+| Quick start | 2378 lines | 135 lines | **94.2%** |
+| CLI design | 2378 lines | 273 lines | **88.3%** |
+| Template reference | 1054 lines | 11 lines | **99.0%** 🏆 |
+| Language context | 854 lines | 16 lines | **98.1%** 🏆 |
+| Operation template | 1271 lines | 45 lines | **96.5%** |
+
+**Average token savings**: 88-98% in typical usage scenarios.
+
+---
+
 ## 🔄 Using Commands with Iteration Support
 
 **CRITICAL**: Validation/analysis commands (checklist, analyze, clarify) support **iteration modes** to preserve history and track progress.
