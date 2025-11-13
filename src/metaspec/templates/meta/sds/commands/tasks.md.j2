@@ -449,6 +449,91 @@ All COMPONENT tasks can be parallel
 - Document dependencies
 - Show parallel opportunities
 
+#### 9.5. Generate Task Generation Report
+
+**Purpose**: Create detailed metadata about the task breakdown for tracking and analysis.
+
+Prepend this as an HTML comment at the top of `tasks.md`:
+
+```html
+<!--
+Task Generation Report
+======================
+Spec ID: {spec_id}
+Generated: {date}
+Strategy: {Single Spec | Multi-Spec}
+
+Task Summary:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Total Tasks: {total_count}
+- Core Specification: {core_count} tasks
+- Sub-Specifications: {sub_count} tasks ({N} sub-specs)
+- Cross-References: {cross_count} tasks
+- Quality Checks: {quality_count} tasks
+
+Task Distribution by Priority:
+- P0 (Critical): {p0_count} tasks
+- P1 (High): {p1_count} tasks
+- P2 (Medium): {p2_count} tasks
+
+Execution Plan:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 1 - Core Specification: {phase1_count} tasks
+Phase 2 - Phase Specifications: {phase2_count} tasks (can be parallel)
+Phase 3 - Supporting Specifications: {phase3_count} tasks
+Phase 4 - Cross-References: {phase4_count} tasks
+Phase 5 - Quality Assurance: {phase5_count} tasks
+
+Dependencies:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sequential Dependencies:
+- {List of tasks that must run in order}
+
+Parallel Opportunities:
+- Phase 2: {N} sub-specs can be developed in parallel
+- Phase 3: {N} support specs can be developed in parallel
+- Estimated time savings: {percentage}%
+
+MVP Scope (v1.0.0):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks Included:
+- Core specification (SDS-T001)
+- P0 sub-specifications ({count} tasks)
+- Essential cross-references ({count} tasks)
+
+Estimated Effort: {X} days
+Target Files: {count} specification files
+
+Future Releases:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+v1.1.0: P1 sub-specifications ({count} tasks, +{X} days)
+v1.2.0: P2 sub-specifications ({count} tasks, +{X} days)
+
+Source Documents:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Plan: specs/domain/{spec_id}/plan.md
+- Specification: specs/domain/{spec_id}/spec.md
+- Constitution: memory/constitution.md (Part II principles)
+
+Constitution Compliance:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Entity Clarity: Tasks cover all entity definitions
+✓ Validation Completeness: Validation rules included
+✓ Operation Semantics: Operations clearly defined
+✓ Implementation Neutrality: Focus on specification
+✓ Extensibility Design: Extensibility considered
+✓ Domain Fidelity: Domain semantics preserved
+✓ Progressive Enhancement: MVP-first approach
+-->
+```
+
+**Report format rules**:
+- Include actual counts (not placeholders)
+- List specific dependencies by Task ID
+- Calculate parallel opportunities percentage
+- Show clear phase boundaries
+- Reference constitution principles explicitly
+
 #### 10. Validation
 
 **Check**:
@@ -460,40 +545,325 @@ All COMPONENT tasks can be parallel
 - [ ] Parallel opportunities identified
 - [ ] File paths are correct (specs/domain/00X-{name}/spec.md)
 
-#### 11. Report Completion
+#### 10.5. Consistency Propagation and Impact Analysis
+
+**Purpose**: Ensure task breakdown aligns with plan, specification, and constitution principles.
+
+Check and update dependent files:
+
+#### A. Plan Alignment Check
+
+**Critical**: Tasks MUST match architecture plan.
+
+```bash
+# Read plan document
+cat specs/domain/{spec_id}/plan.md
+```
+
+**Verify**:
+- [ ] Task count matches plan estimate (±20%)
+- [ ] Sub-specification list matches plan.md
+- [ ] Dependencies match plan's execution order
+- [ ] Priority levels (P0/P1/P2) align with plan
+- [ ] MVP scope aligns with plan's Phase 1
+
+**Action if mismatch**:
+- ⚠️ **CRITICAL**: Plan and tasks are out of sync
+- Re-read plan.md and regenerate tasks
+- Document why there's a mismatch in tasks.md
+
+#### B. Specification Alignment Check
+
+**Critical**: Tasks MUST cover all specification content.
+
+```bash
+# Read current specification
+cat specs/domain/{spec_id}/spec.md
+```
+
+**Verify**:
+- [ ] All entities in spec.md have corresponding tasks
+- [ ] All operations have tasks for definition
+- [ ] All validation rules have tasks for specification
+- [ ] All examples have tasks for documentation
+- [ ] Specification size estimate matches task scope
+
+**Action if missing coverage**:
+- ⚠️ **WARNING**: Tasks incomplete
+- Add missing tasks to appropriate phases
+- Document additions in Task Generation Report
+
+#### C. Related Domain Specifications Check
+
+**Purpose**: Check for dependencies on other specifications.
+
+```bash
+# Find all other domain specifications
+find specs/domain/ -name "spec.md" | grep -v "{spec_id}"
+```
+
+**For each related spec**:
+- **Check** if current tasks reference it
+- **Check** if it references current specification
+- **Add** cross-reference tasks if needed
+
+**Note to tasks.md**:
+```markdown
+## Related Specifications
+- specs/domain/{related_id}/spec.md - {How they relate}
+```
+
+#### D. Toolkit Specifications Check
+
+**Purpose**: Identify if tasks impact toolkit development.
+
+```bash
+# Check for toolkit specs
+ls specs/toolkit/
+```
+
+**If toolkit specs exist**:
+- **Note** toolkit specs that may need updates
+- **Add** note to tasks.md about toolkit impact
+
+```markdown
+## Toolkit Impact
+- specs/toolkit/{toolkit_id}/spec.md may need updates after SDS-T00X
+```
+
+#### E. MetaSpec Commands Check
+
+**Purpose**: Check if custom slash commands are affected.
+
+```bash
+# Check for custom commands
+ls .metaspec/commands/ 2>/dev/null || echo "No custom commands"
+```
+
+**If custom commands exist**:
+- **Check** if they reference this specification
+- **Add** update tasks if needed
+
+#### F. Documentation Check
+
+```bash
+# Check documentation that may reference this specification
+grep -l "{spec_id}" docs/*.md README.md 2>/dev/null || echo "No docs"
+```
+
+**If found**:
+- **Add** task to update documentation
+- **Example**: `SDS-TXXX [DOC] Update {doc_file} with new specification structure`
+
+#### 11. Generate Validation Report
+
+After consistency checks, generate a validation report:
+
+```markdown
+## Validation Report
+
+**Task Structure**: ✅ Valid
+- All tasks follow format
+- Task IDs sequential
+- Dependencies acyclic
+
+**Plan Alignment**: {✅ Aligned | ⚠️ Mismatched}
+- Task count: {actual} vs {planned} (difference: {±X%})
+- {IF mismatch}: Re-generation recommended
+
+**Specification Coverage**: {✅ Complete | ⚠️ Incomplete}
+- Entities: {X/Y} covered
+- Operations: {X/Y} covered
+- Validation rules: {X/Y} covered
+{IF incomplete}:
+- Missing: {list missing items}
+
+**Constitution Compliance**: ✅ Compliant
+- All Part II principles addressed
+- Progressive Enhancement: MVP-first approach
+- Domain Fidelity: Domain semantics preserved
+
+**Impact Analysis**:
+- Related specs: {count} specifications
+- Toolkit impact: {Yes | No}
+- Documentation updates: {count} files
+```
+
+#### 12. Report Completion (Enhanced)
+
+Provide comprehensive summary with validation results and impact analysis:
 
 ```
 ✅ Domain specification task breakdown complete
 
-📊 Summary:
-- Strategy: [Single Spec / Multi-Spec]
-- Total Tasks: [N]
-- Core Specification: [X] tasks
-- Sub-Specifications: [X] tasks
-- Cross-References: [X] tasks
-- Quality Checks: [X] tasks
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔀 Dependencies:
-[Dependency summary from plan.md]
+📊 Task Summary:
+   Specification: {spec_id}
+   Strategy: {Single Spec | Multi-Spec}
+   Generated: {date}
 
-⚡ Parallel Opportunities:
-- Phase 2: [X] sub-specs can be written in parallel
-- Phase 3: [X] support specs can be written in parallel
+   Total Tasks: {total_count}
+   - Core Specification: {core_count} tasks
+   - Sub-Specifications: {sub_count} tasks ({N} sub-specs)
+   - Cross-References: {cross_count} tasks
+   - Quality Checks: {quality_count} tasks
 
-📦 MVP Scope (v1.0.0):
-- Core specification + Priority P0 sub-specs
-- Estimated: [X] days
+   Priority Distribution:
+   - P0 (Critical): {p0_count} tasks → MVP
+   - P1 (High): {p1_count} tasks → v1.1
+   - P2 (Medium): {p2_count} tasks → v1.2
 
-🔄 Next release (v1.1.0):
-- Priority P1 sub-specifications
-- Estimated: [X] days
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📁 Generated: specs/domain/001-{name}-spec/tasks.md
+✅ Validation Results:
 
-🔄 Next step: /metaspec.sds.implement (write specifications)
+   **Task Structure**: ✅ Valid
+   - Format: All tasks follow standard format
+   - IDs: Sequential (SDS-T001 to SDS-T{N})
+   - Dependencies: Acyclic, {X} sequential, {Y} parallel
 
-💡 Suggested commit message:
-   docs: add specification task breakdown for [specification-name]
+   **Plan Alignment**: {✅ Aligned | ⚠️ Deviation}
+   - Task count: {actual} vs {planned_estimate} ({±X%})
+   {IF deviation > 20%}:
+   ⚠️  Significant deviation detected
+   - Reason: {Why task count differs from plan}
+   - Action: Review plan.md or regenerate tasks
+   {END IF}
+
+   **Specification Coverage**: {✅ Complete | ⚠️ Gaps}
+   - Entities: {covered}/{total} covered ({percentage}%)
+   - Operations: {covered}/{total} covered ({percentage}%)
+   - Validation Rules: {covered}/{total} covered ({percentage}%)
+   {IF gaps exist}:
+   ⚠️  Coverage gaps detected:
+   - Missing: {list entities/operations without tasks}
+   - Action: Added tasks {task_ids} to address gaps
+   {END IF}
+
+   **Constitution Compliance**: ✅ Compliant
+   - Progressive Enhancement: MVP-first (P0 → P1 → P2)
+   - Minimal Viable Abstraction: {task_count} tasks (not over-engineered)
+   - Domain Fidelity: All tasks preserve domain semantics
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 Impact Analysis:
+
+   **Files Created/Updated**:
+   ✅ Created:
+   - specs/domain/{spec_id}/tasks.md (this file)
+
+   **Related Files to Review**:
+   {IF related_specs > 0}:
+   📄 Related Specifications ({count}):
+   - specs/domain/{related_id_1}/spec.md - {relationship}
+   - specs/domain/{related_id_2}/spec.md - {relationship}
+   {END IF}
+
+   {IF toolkit_impact}:
+   🔧 Toolkit Impact:
+   - specs/toolkit/{toolkit_id}/spec.md - May need updates
+   {END IF}
+
+   {IF doc_impact}:
+   📚 Documentation Impact ({count} files):
+   - {doc_file_1} - References this specification
+   - {doc_file_2} - May need updates
+   {END IF}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔀 Execution Plan:
+
+   **Sequential Dependencies**:
+   1. Phase 1: SDS-T001 (Core) → Must complete first
+   {IF multi_spec}:
+   2. Phase 2: Core must complete before sub-specs
+   3. Phase 4: Sub-specs must complete before cross-refs
+   {END IF}
+
+   **Parallel Opportunities**:
+   {IF phase2_parallel}:
+   ⚡ Phase 2: {N} sub-specs can run in parallel
+      - Estimated time saving: {percentage}% ({days} days)
+      - Parallelizable: {task_list}
+   {END IF}
+   {IF phase3_parallel}:
+   ⚡ Phase 3: {N} support specs can run in parallel
+      - Estimated time saving: {percentage}% ({days} days)
+   {END IF}
+
+   **Checkpoints**:
+   - After Phase 1: Core specification ready
+   {IF multi_spec}:
+   - After Phase 2: All sub-specifications ready
+   - After Phase 4: Cross-references complete
+   {END IF}
+   - After Phase {N}: Ready for review
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 Release Planning:
+
+   **MVP (v1.0.0)** - P0 Tasks:
+   - Tasks: {p0_count} tasks
+   - Scope: Core + Critical sub-specifications
+   - Estimated effort: {X} days
+   - Target files: {count} specification files
+
+   **v1.1.0** - P1 Tasks:
+   - Tasks: {p1_count} tasks
+   - Additional effort: +{Y} days
+   - Total: {X+Y} days from start
+
+   **v1.2.0** - P2 Tasks:
+   - Tasks: {p2_count} tasks
+   - Additional effort: +{Z} days
+   - Total: {X+Y+Z} days from start
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Generated Files:
+   - specs/domain/{spec_id}/tasks.md (with Task Generation Report)
+
+🔄 Next Steps:
+   1. Review tasks.md structure and dependencies
+   2. Adjust task priorities if needed (edit tasks.md manually)
+   3. Run: /metaspec.sds.implement
+      → This will execute tasks in dependency order
+
+⚠️  Follow-up TODOs:
+   {IF plan_deviation}:
+   - [ ] Review why task count differs from plan.md estimate
+   {END IF}
+   {IF coverage_gaps}:
+   - [ ] Verify added tasks {task_ids} address coverage gaps
+   {END IF}
+   {IF related_specs}:
+   - [ ] Review related specifications for consistency
+   {END IF}
+   {IF toolkit_impact}:
+   - [ ] Update toolkit specifications after implementation
+   {END IF}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 Suggested Commit Message:
+
+   docs(spec): add task breakdown for {spec_id}
+   
+   Task Summary:
+   - Strategy: {Single | Multi}-spec approach
+   - Total: {count} tasks ({p0} P0, {p1} P1, {p2} P2)
+   - Parallel: {N} sub-specs can run in parallel
+   - MVP: {p0_count} tasks for v1.0.0
+   
+   {IF validation_warnings}:
+   Notes:
+   - {validation_warning_1}
+   - {validation_warning_2}
+   {END IF}
 ```
 
 ## Task Templates

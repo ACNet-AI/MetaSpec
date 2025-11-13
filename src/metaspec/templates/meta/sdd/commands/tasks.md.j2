@@ -263,6 +263,100 @@ TESTS    TESTS    TESTS     TESTS    TESTS
 - Document dependencies
 - Show parallel opportunities
 
+#### 8.5. Generate Task Generation Report
+
+**Purpose**: Create detailed metadata about toolkit implementation task breakdown.
+
+Prepend this as an HTML comment at the top of `tasks.md`:
+
+```html
+<!--
+Toolkit Task Generation Report
+===============================
+Toolkit ID: {toolkit_id}
+Generated: {date}
+Language: {Python | TypeScript | Go | Rust}
+
+Task Summary:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Total Tasks: {total_count}
+- Setup & Infrastructure: {setup_count} tasks
+- Models & Entities: {models_count} tasks
+- Parser: {parser_count} tasks
+- Validator: {validator_count} tasks
+- CLI: {cli_count} tasks
+- Tests: {tests_count} tasks
+- Documentation: {docs_count} tasks
+
+Task Distribution by Component:
+- Parser: {parser_count} tasks (P0 - Critical)
+- Validator: {validator_count} tasks (P0 - Critical)
+- CLI: {cli_count} tasks (P1 - High)
+- Generator: {generator_count} tasks (P1 - High)
+- Tests: {tests_count} tasks (P2 - Medium)
+- Docs: {docs_count} tasks (P2 - Medium)
+
+Execution Plan:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 1 - Setup: {phase1_count} tasks
+Phase 2 - Models: {phase2_count} tasks
+Phase 3 - Parser: {phase3_count} tasks
+Phase 4 - Validator: {phase4_count} tasks
+Phase 5 - CLI: {phase5_count} tasks
+Phase 6 - Tests: {phase6_count} tasks (can be parallel)
+Phase 7 - Documentation: {phase7_count} tasks
+
+Dependencies:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Critical Path:
+SETUP → MODELS → PARSER → VALIDATOR → CLI
+
+Parallel Opportunities:
+- Tests can run parallel with implementation
+- Documentation can run parallel with tests
+- Estimated time savings: {percentage}%
+
+MVP Scope (v0.1.0):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Components:
+- Parser: Parse {format} files
+- Validator: Validate against spec
+- Basic CLI: init, validate commands
+- Tests: Core functionality tests
+
+Estimated Effort: {X} days
+Target: Working CLI with basic validation
+
+Future Releases:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+v0.2.0: Generator + Advanced validation ({count} tasks, +{X} days)
+v1.0.0: Full feature set + Comprehensive docs ({count} tasks, +{Y} days)
+
+Source Documents:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Toolkit Spec: specs/toolkit/{toolkit_id}/spec.md
+- Implementation Plan: specs/toolkit/{toolkit_id}/plan.md
+- Domain Spec: specs/domain/{domain_spec_id}/spec.md (dependency)
+- Constitution: memory/constitution.md (Part III principles)
+
+Constitution Compliance:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Entity-First Design: Models defined before logic
+✓ Validator Extensibility: Plugin architecture included
+✓ Spec-First Development: Implementation follows spec
+✓ AI-Agent Friendly: Clear commands and examples
+✓ Progressive Enhancement: MVP → Full feature set
+✓ Automated Quality: Comprehensive test coverage
+-->
+```
+
+**Report format rules**:
+- Include actual counts and language choice
+- Show clear component dependencies
+- Calculate parallel opportunities
+- Reference domain specification dependency
+- Verify Part III constitution compliance
+
 #### 9. Validation
 
 **Check**:
@@ -274,44 +368,303 @@ TESTS    TESTS    TESTS     TESTS    TESTS
 - [ ] Parallel opportunities identified
 - [ ] File paths are absolute or relative to project root
 
-#### 10. Report completion
+#### 9.5. Consistency Propagation and Impact Analysis
+
+**Purpose**: Ensure task breakdown aligns with toolkit spec, plan, and domain specification.
+
+Check and update dependent files:
+
+#### A. Toolkit Spec Alignment Check (CRITICAL)
+
+```bash
+# Read toolkit specification
+cat specs/toolkit/{toolkit_id}/spec.md
+```
+
+**Verify**:
+- [ ] All components in spec.md have corresponding tasks
+- [ ] Task count matches plan estimate (±20%)
+- [ ] Language choice matches spec (Python/TypeScript/Go/Rust)
+- [ ] Architecture type matches (Monolithic/Modular/Plugin-based)
+- [ ] All dependencies listed in spec are covered by setup tasks
+
+**Action if mismatch**:
+- ⚠️ **CRITICAL**: Spec and tasks misaligned
+- Re-read spec.md and regenerate tasks
+
+#### B. Domain Specification Dependency Check (CRITICAL)
+
+```bash
+# Read domain specification (REQUIRED dependency)
+cat specs/domain/{domain_spec_id}/spec.md
+```
+
+**Verify**:
+- [ ] Domain entities have corresponding model tasks
+- [ ] Domain operations have validator tasks
+- [ ] Domain validation rules have implementation tasks
+- [ ] All entity fields are parsable
+
+**Action if missing**:
+- ⚠️ **CRITICAL**: Domain spec not fully covered
+- Add missing model/validator tasks
+
+#### C. Implementation Plan Alignment Check
+
+```bash
+# Read implementation plan
+cat specs/toolkit/{toolkit_id}/plan.md
+```
+
+**Verify**:
+- [ ] Tech stack in tasks matches plan (frameworks, libraries)
+- [ ] File structure matches plan's architecture
+- [ ] Component interfaces match plan's design
+
+#### D. Source Code Structure Check
+
+```bash
+# Check if src/ directory exists
+ls src/{package_name}/ 2>/dev/null || echo "New project"
+```
+
+**If existing project**:
+- **Check** for files that need updating
+- **Add** refactoring tasks if needed
+
+#### E. Related Toolkit Specifications Check
+
+```bash
+# Find other toolkit specs
+find specs/toolkit/ -name "spec.md" | grep -v "{toolkit_id}"
+```
+
+**For each related toolkit**:
+- **Check** for overlapping functionality
+- **Add** integration tasks if needed
+
+#### F. Documentation Check
+
+```bash
+# Check documentation
+grep -l "{toolkit_id}" docs/*.md README.md AGENTS.md 2>/dev/null || echo "No docs yet"
+```
+
+**If found**:
+- **Add** documentation update tasks
+
+#### 10. Generate Validation Report
+
+```markdown
+## Validation Report
+
+**Task Structure**: ✅ Valid
+- Format: All tasks follow standard
+- IDs: Sequential (SDD-T001 to SDD-T{N})
+- Dependencies: Clear critical path
+
+**Toolkit Spec Alignment**: {✅ Aligned | ⚠️ Mismatched}
+- Components: {actual} vs {planned}
+- Language: {language} ✓
+- Architecture: {type} ✓
+
+**Domain Spec Coverage**: {✅ Complete | ⚠️ Incomplete}
+- Entities: {X/Y} have model tasks ({percentage}%)
+- Operations: {X/Y} have validator tasks ({percentage}%)
+{IF incomplete}: Missing: {list}
+
+**Plan Alignment**: {✅ Aligned | ⚠️ Deviation}
+- Tech stack matches plan ✓
+- File structure aligned ✓
+
+**Constitution Compliance**: ✅ Compliant
+- Entity-First Design: Models before logic ✓
+- Spec-First Development: Implementation follows spec ✓
+- Progressive Enhancement: MVP-first approach ✓
+```
+
+#### 11. Report Completion (Enhanced)
+
+Provide comprehensive summary with validation results and impact analysis:
 
 ```
-✅ Task breakdown complete
+✅ Toolkit implementation task breakdown complete
 
-📊 Summary:
-- Total Tasks: [N]
-- Setup: [X] tasks
-- Models: [X] tasks
-- Parser: [X] tasks
-- Validator: [X] tasks
-- CLI: [X] tasks
-- Tests: [X] tasks
-- Docs: [X] tasks
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔀 Dependencies:
-SETUP → MODELS → PARSER → VALIDATOR → CLI → DOCS
+📊 Task Summary:
+   Toolkit: {toolkit_id}
+   Language: {Python | TypeScript | Go | Rust}
+   Architecture: {Monolithic | Modular | Plugin-based}
+   Generated: {date}
 
-⚡ Parallel Opportunities:
-- Phase 2: [X] tasks can run in parallel
-- Phase 3: [X] tasks can run in parallel
-- Phase 4: [X] tasks can run in parallel
+   Total Tasks: {total_count}
+   - Setup & Infrastructure: {setup_count} tasks
+   - Models & Entities: {models_count} tasks
+   - Parser: {parser_count} tasks
+   - Validator: {validator_count} tasks
+   - CLI: {cli_count} tasks
+   - Tests: {tests_count} tasks
+   - Documentation: {docs_count} tasks
 
-📦 MVP Scope (v0.1.0):
-- Phases 1-5 (basic functionality)
-- Estimated: [X] days
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔄 Next release (v0.2.0):
-- Phase 4: Domain validation
-- Phase 5: Additional commands
-- Estimated: [X] days
+✅ Validation Results:
 
-📁 Generated: specs/toolkit/XXX-name/tasks.md
+   **Task Structure**: ✅ Valid
+   - Format: All tasks follow SDD-TXXX [COMP] format
+   - IDs: Sequential (SDD-T001 to SDD-T{N})
+   - Dependencies: Clear critical path defined
 
-🔄 Next step: /metaspec:implement (execute tasks)
+   **Toolkit Spec Alignment**: {✅ Aligned | ⚠️ Mismatched}
+   - Components: {actual} vs {planned} components
+   - Language: {language} ✓
+   - Architecture: {type} ✓
+   {IF mismatch}:
+   ⚠️  Alignment issues:
+   - {Issue description}
+   - Action: {Corrective action taken}
+   {END IF}
 
-💡 Suggested commit message:
-   docs: add implementation task breakdown for [toolkit-name]
+   **Domain Spec Coverage**: {✅ Complete | ⚠️ Incomplete}
+   - Domain Spec: specs/domain/{domain_spec_id}/spec.md
+   - Entities covered: {X}/{Y} ({percentage}%)
+   - Operations covered: {X}/{Y} ({percentage}%)
+   {IF incomplete}:
+   ⚠️  Coverage gaps:
+   - Missing: {list of missing entities/operations}
+   - Added tasks: {task_ids} to address gaps
+   {END IF}
+
+   **Plan Alignment**: {✅ Aligned | ⚠️ Deviation}
+   - Tech stack: {matches | deviates} from plan
+   - File structure: {aligned | needs adjustment}
+   - Task count: {actual} vs {estimate} ({±X%})
+
+   **Constitution Compliance**: ✅ Compliant
+   - Entity-First Design: Models before logic ✓
+   - Spec-First Development: Implementation follows spec ✓
+   - Progressive Enhancement: MVP → v1.0.0 ✓
+   - Automated Quality: {test_count} test tasks included ✓
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 Impact Analysis:
+
+   **Files Created/Updated**:
+   ✅ Created:
+   - specs/toolkit/{toolkit_id}/tasks.md (this file)
+
+   **Dependencies** (CRITICAL):
+   📄 Domain Specification:
+   - specs/domain/{domain_spec_id}/spec.md (REQUIRED)
+   - Must exist before implementation
+
+   {IF related_toolkits}:
+   🔧 Related Toolkits ({count}):
+   - specs/toolkit/{related_id}/spec.md - {relationship}
+   {END IF}
+
+   **Source Code Impact**:
+   {IF new_project}:
+   📦 New Project:
+   - Will create: src/{package_name}/
+   - Structure: {component_list}
+   {ELSE}:
+   📝 Existing Project:
+   - Will update: {file_count} files
+   - May refactor: {refactor_areas}
+   {END IF}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔀 Execution Plan:
+
+   **Critical Path** (Sequential):
+   1. Setup → Infrastructure, dependencies
+   2. Models → Entity definitions from domain spec
+   3. Parser → Parse {format} files
+   4. Validator → Validate against spec rules
+   5. CLI → User interface commands
+
+   **Parallel Opportunities**:
+   {IF has_parallel}:
+   ⚡ Tests: Can run parallel with implementation
+      - Estimated time saving: {percentage}% ({days} days)
+   ⚡ Documentation: Can run parallel with tests
+      - Estimated time saving: {percentage}% ({days} days)
+   {END IF}
+
+   **Checkpoints**:
+   - After Phase 2: Models defined and tested
+   - After Phase 4: Core validation working
+   - After Phase 5: CLI functional
+   - After Phase 6: Full test coverage
+   - After Phase 7: Documentation complete
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 Release Planning:
+
+   **MVP (v0.1.0)** - Basic Functionality:
+   - Components: Parser + Validator + Basic CLI
+   - Commands: init, validate
+   - Estimated effort: {X} days
+   - Goal: Working toolkit for basic use cases
+
+   **v0.2.0** - Enhanced Features:
+   - Components: Generator + Advanced validation
+   - Estimated effort: +{Y} days
+   - Goal: Feature-complete toolkit
+
+   **v1.0.0** - Production Ready:
+   - Components: Full CLI + Comprehensive docs
+   - Estimated effort: +{Z} days
+   - Goal: Production-ready release
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Generated Files:
+   - specs/toolkit/{toolkit_id}/tasks.md (with Task Generation Report)
+
+🔄 Next Steps:
+   1. Review tasks.md structure
+   2. Verify domain specification exists: specs/domain/{domain_spec_id}/spec.md
+   3. Run: /metaspec.sdd.implement
+      → This will execute implementation tasks
+
+⚠️  Follow-up TODOs:
+   {IF spec_mismatch}:
+   - [ ] Resolve toolkit spec alignment issues
+   {END IF}
+   {IF coverage_gaps}:
+   - [ ] Verify domain spec coverage is complete
+   {END IF}
+   {IF plan_deviation}:
+   - [ ] Review why task count differs from plan estimate
+   {END IF}
+   {IF related_toolkits}:
+   - [ ] Check integration with related toolkits
+   {END IF}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 Suggested Commit Message:
+
+   docs(toolkit): add task breakdown for {toolkit_id}
+   
+   Toolkit: {language}-based {type} architecture
+   Components: {component_list}
+   Total: {count} tasks
+   
+   MVP (v0.1.0): {mvp_components}
+   Dependencies: specs/domain/{domain_spec_id}/spec.md
+   
+   {IF validation_warnings}:
+   Notes:
+   - {warning_1}
+   - {warning_2}
+   {END IF}
 ```
 
 ## Task Templates
