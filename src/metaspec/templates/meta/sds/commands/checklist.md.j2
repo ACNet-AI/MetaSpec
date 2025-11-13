@@ -245,28 +245,69 @@ Test for specification issues:
 
 ### 6. Example Checklist Items
 
-**Item Pattern** - Use question format testing requirement quality:
+**Item Pattern**: Use question format testing requirement quality:
 ```
 - [ ] CHK### - Are [aspect] defined/specified/documented for [scenario]? [Quality Dimension, Spec §Reference]
 ```
 
 **Quality Dimensions**: Completeness, Clarity, Consistency, Coverage, Measurability, Traceability
 
-**Common Focus Areas** (generate items dynamically based on spec content):
+---
 
-**Entities**: Are fields typed? Are constraints specified? Do examples exist? [Completeness/Clarity]
-**Operations**: Are schemas defined? Are error cases covered? Are examples provided? [Completeness/Coverage]
-**Validation**: Are rules testable? Are edge cases addressed? Are errors documented? [Measurability/Coverage]
-**Examples**: Do they cover all entities/operations? Are they valid? Do they show edge cases? [Coverage/Consistency]
-**Constitution**: Does design follow principles? Are violations justified? [Consistency/Traceability]
+#### Entity Definitions (5 core items)
 
-**Sample Items**:
 ```markdown
-- [ ] CHK001 - Are all entity fields defined with explicit types? [Completeness, Spec §Entities]
-- [ ] CHK002 - Are operation response schemas documented? [Completeness, Spec §Operations]
-- [ ] CHK003 - Can "valid" be objectively measured? [Measurability, Spec §Validation]
-- [ ] CHK004 - Are error examples provided for failure cases? [Coverage, Spec §Examples]
-- [ ] CHK005 - Does entity design follow 3-5 fields principle? [Consistency, Constitution]
+- [ ] CHK001 - Are all entity fields defined with explicit types (string, number, boolean, array, object)? [Completeness, Spec §Entities]
+- [ ] CHK002 - Is the distinction between required and optional fields clearly specified? [Clarity, Spec §Entities]
+- [ ] CHK003 - Are field constraints documented (enum values, format, ranges)? [Completeness, Spec §Entities]
+- [ ] CHK004 - Are example values provided for entity fields? [Coverage, Spec §Entities]
+- [ ] CHK005 - Does entity design follow Entity-First principle (3-5 core fields)? [Consistency, Constitution §I]
+```
+
+#### Operations (5 core items)
+
+```markdown
+- [ ] CHK006 - Are all operations listed with clear purpose statements? [Completeness, Spec §Operations]
+- [ ] CHK007 - Are request and response schemas defined for operations? [Completeness, Spec §Operations]
+- [ ] CHK008 - Are success and error response formats documented with examples? [Completeness, Spec §Operations]
+- [ ] CHK009 - Are operation examples provided for typical use cases? [Coverage, Spec §Examples]
+- [ ] CHK010 - Is operation naming convention consistent? [Consistency, Spec §Operations]
+```
+
+#### Validation Rules (4 core items)
+
+```markdown
+- [ ] CHK011 - Are structural validation rules (type, required) explicitly defined? [Completeness, Spec §Validation]
+- [ ] CHK012 - Are semantic validation rules (cross-field, logic) specified? [Completeness, Spec §Validation]
+- [ ] CHK013 - Are validation rules testable and objective? [Measurability, Spec §Validation]
+- [ ] CHK014 - Are validation edge cases (empty, null, invalid) specified? [Coverage, Gap]
+```
+
+#### Error Handling (4 core items)
+
+```markdown
+- [ ] CHK015 - Are all error codes defined with clear meanings? [Completeness, Spec §Error Codes]
+- [ ] CHK016 - Are error response formats consistent across operations? [Consistency, Spec §Error Handling]
+- [ ] CHK017 - Are error messages descriptive and actionable? [Clarity, Spec §Error Messages]
+- [ ] CHK018 - Are error examples provided for each error code? [Coverage, Spec §Examples]
+```
+
+#### Examples (4 core items)
+
+```markdown
+- [ ] CHK019 - Are examples provided for all specification entities? [Coverage, Spec §Examples]
+- [ ] CHK020 - Are examples provided for all specification operations? [Coverage, Spec §Examples]
+- [ ] CHK021 - Do examples cover both success and error scenarios? [Coverage, Spec §Examples]
+- [ ] CHK022 - Are examples valid against specification schemas? [Consistency, Spec §Examples]
+```
+
+#### Constitution Alignment (4 core items)
+
+```markdown
+- [ ] CHK023 - Does specification follow Entity-First principle (minimal fields)? [Consistency, Constitution §I]
+- [ ] CHK024 - Is specification minimal (only essential operations)? [Consistency, Constitution]
+- [ ] CHK025 - Are specifications AI-friendly (clear descriptions, examples)? [Clarity, Constitution]
+- [ ] CHK026 - Are domain standards followed (RFCs, conventions)? [Consistency, Constitution]
 ```
 
 ### 7. Anti-Examples: What NOT To Do
