@@ -12,33 +12,34 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-You are creating or updating the **speckit constitution** at `/memory/constitution.md`. This document defines the foundational design principles that govern how this spec-driven toolkit is built, ensuring it remains AI-friendly, extensible, and domain-focused.
+You are updating **Part III: Toolkit Implementation Principles** in `/memory/constitution.md`. This section defines guidelines for building the toolkit (parser, validator, CLI, generator).
 
-Unlike a typical application constitution (which defines project principles), this constitution is specifically for **developing a spec-driven toolkit** - it guides decisions about entity design, validator architecture, workflow design, and CLI interface.
+Unlike specification design principles (Part II), Part III focuses on **implementation quality** - it guides decisions about entity models, validator architecture, CLI design, and code organization.
 
 Follow this execution flow:
 
-### 1. Load existing constitution (if any)
+### 1. Load existing constitution
 
-- Check for `/memory/constitution.md`
-- If exists, load it and identify placeholder tokens `[ALL_CAPS_IDENTIFIER]`
-- If new, use the constitution template structure
+- Read `/memory/constitution.md`
+- Locate `## Part III: Toolkit Implementation Principles` section
+- Preserve Part I and Part II unchanged
 
-### 2. Understand the toolkit domain
+### 2. Understand the toolkit implementation
 
-**Critical**: Before defining principles, understand what domain this toolkit serves:
-- What specifications will users write? (API tests, design tokens, deployment configs?)
-- What entities are needed? (APITest, Component, Service?)
-- What workflows are supported? (validate → generate → execute?)
+**Critical**: Before updating principles, understand what this toolkit implements:
+- What specifications does it process? (Marketing campaigns, MCP servers, API tests?)
+- What components are needed? (Parser, Validator, CLI, Generator?)
+- What technology stack? (Python/TypeScript, Pydantic/Zod, Typer/Commander?)
+- What workflows? (init → validate → generate → execute?)
 
 **Ask clarifying questions if unclear**:
-- "What domain does this toolkit target?"
-- "What kind of specifications will users write?"
-- "What are the main entities?"
+- "What technology stack is used?"
+- "What components does the toolkit have?"
+- "What is the typical user workflow?"
 
-### 3. Derive speckit-specific principles
+### 3. Update Part III principles
 
-Based on the user input and toolkit domain, populate these **standard speckit principles**:
+Based on user input and implementation understanding, update these **standard toolkit implementation principles** in Part III:
 
 #### **I. Entity-First Design**
 - Start with minimal viable entity definition (3-5 core fields)
@@ -88,166 +89,357 @@ Based on the user input and toolkit domain, populate these **standard speckit pr
 
 **Rationale**: Generic toolkits are weak toolkits; domain focus creates value.
 
-### 4. Collect/derive values for placeholders
+### 4. Prepare implementation-specific examples
 
-- `[TOOLKIT_NAME]` - e.g., "API Test Kit", "Design Token Kit"
-- `[TOOLKIT_DOMAIN]` - e.g., "API Testing", "Design Systems", "Infrastructure"
-- `[PRIMARY_ENTITY]` - e.g., "APITest", "DesignToken", "ServiceConfig"
-- `[PRINCIPLE_N_NAME]` - Use standard speckit principles above (can add domain-specific ones)
-- `[PRINCIPLE_N_DESCRIPTION]` - Detailed description with examples
-- `[GOVERNANCE_RULES]` - How to amend constitution, compliance checks
-- `[CONSTITUTION_VERSION]` - Semantic versioning (start at 1.0.0)
-- `[RATIFICATION_DATE]` - Today's date (ISO 8601: YYYY-MM-DD)
-- `[LAST_AMENDED_DATE]` - Today's date if new/updated
+For each principle in Part III, provide implementation-specific examples:
 
-**Version bump rules**:
-- **MAJOR**: Backward incompatible principle changes (e.g., remove Entity-First)
-- **MINOR**: New principles added or major expansions
-- **PATCH**: Clarifications, wording fixes, examples added
+- **Entity-First Design**: What models? What libraries? Field count?
+- **Validator Extensibility**: Plugin system? Custom rules? Error format?
+- **Spec-First Development**: Input formats? Declarative style?
+- **AI-Agent Friendly**: Error messages? Naming conventions?
+- **Progressive Enhancement**: MVP scope? Feature roadmap?
+- **Automated Quality**: Test strategy? CI/CD setup?
 
-### 5. Draft the constitution content
+**Examples by tech stack**:
+- Python: Pydantic models, @validator decorators, Typer CLI
+- TypeScript: Zod schemas, Commander CLI, Jest tests
+- Go: struct tags, cobra CLI, testify
+- Rust: serde, clap CLI, cargo test
 
-Replace all placeholders with concrete text. The constitution should include:
+### 5. Update Part III section
 
-#### Structure:
+Update only the `## Part III: Toolkit Implementation Principles` section with implementation-specific content:
+
 ```markdown
-# [TOOLKIT_NAME] Constitution
+## Part III: Toolkit Implementation Principles
 
-## Toolkit Purpose
-[Brief description of what this toolkit does and what domain it serves]
+**Purpose**: Guidelines for building the toolkit (parser, validator, CLI, generator)
 
-## Core Principles
+### 1. Entity-First Design
 
-### I. Entity-First Design
-[Detailed principle with examples specific to this toolkit's domain]
+[Implementation approach: Pydantic/Zod/struct, field count, validation]
 
-### II. Validator Extensibility
-[How validation works for this toolkit's entities]
+### 2. Validator Extensibility
 
-### III. Spec-First Development
-[What specifications look like for this toolkit]
+[Plugin system, custom rules, error format]
 
-### IV. AI-Agent Friendly
-[How this toolkit helps AI agents understand and use it]
+### 3. Spec-First Development
 
-### V. Progressive Enhancement
-[Planned evolution path for this toolkit]
+[Input formats, declarative style, generation approach]
 
-### VI. Domain Specificity
-[Domain constraints and conventions this toolkit respects]
+### 4. AI-Agent Friendly
 
-## Additional Principles
-[Any domain-specific principles beyond the standard 6]
+[Error messages, naming conventions, documentation]
 
-## Implementation Constraints
-[Technical requirements: Python version, dependencies, performance targets]
+### 5. Progressive Enhancement
 
-## Governance
-[Amendment process, compliance checks, review schedule]
+[MVP scope, feature roadmap, versioning]
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+### 6. Automated Quality
+
+[Testing strategy, CI/CD, coverage targets]
+
+<!-- Managed by /metaspec.sdd.constitution -->
 ```
 
-### 6. Consistency propagation
+**CRITICAL**: Only update Part III. Preserve Part I and Part II exactly as they are.
 
-Update these files to align with the constitution:
+### 6. Consistency propagation and impact analysis
 
-- `specs/toolkit/XXX-name/spec.md` - Ensure entity definitions match Entity-First principle
-- `/.metaspec/commands/design-entity.md` - Reference constitution principles
-- `/.metaspec/commands/design-workflow.md` - Reference Spec-First principle
-- `/README.md` - Update design philosophy section
-- `/AGENTS.md` - Update AI agent guidance
+Check and update dependent files to align with updated principles:
 
-**For each file**:
-- Read the file
-- Identify sections that reference principles
-- Update to match new/changed principles
-- Mark with `<!-- Updated per constitution v[VERSION] -->`
+#### A. Toolkit Specifications
+- **Read** `specs/toolkit/001-*/spec.md` (if exists)
+- **Check** tech stack matches Entity-First principle
+- **Check** validator design matches Validator Extensibility principle
+- **Check** CLI design follows AI-Agent Friendly principle
+- **Note** any inconsistencies
 
-### 7. Generate Sync Impact Report
+#### B. MetaSpec Commands
+- **Read** `/.metaspec/commands/sdd.specify.md` (if exists)
+- **Check** if principles are referenced in guidance
+- **Update** if principle names or descriptions changed
+- **Mark** with `<!-- Updated per constitution v[VERSION] -->`
 
-Prepend this as an HTML comment at the top of constitution file:
+#### C. Toolkit Templates
+- **Read** `/src/metaspec/templates/meta/templates/spec-template.md.j2` (if exists)
+- **Check** template structure matches required principles
+- **Check** mandatory sections align with Entity-First and Spec-First principles
+- **Update** if new principles require new sections
+
+#### D. Source Code Structure
+- **Read** `src/` directory structure (if exists)
+- **Check** if code organization follows Entity-First Design
+- **Check** if validation logic follows Validator Extensibility
+- **Check** if CLI follows AI-Agent Friendly patterns
+- **Note** code that may need refactoring
+
+#### E. Project Documentation
+- **Read** `/README.md`
+- **Check** "Architecture" or "Implementation" sections
+- **Update** if principles changed
+- **Read** `/AGENTS.md`
+- **Check** Part III references in Constitutional Principles section
+- **Update** if principle names changed
+
+#### F. Test Files
+- **Read** `tests/` directory (if exists)
+- **Check** if tests follow Automated Quality principle
+- **Note** test coverage gaps
+
+**Track all changes**:
+- ✅ Updated: List files successfully updated
+- ⚠️ Needs manual review: List files requiring human attention
+- 📝 Recommendations: Suggest code/architecture improvements
+
+### 7. Generate detailed Sync Impact Report
+
+Prepend this as an HTML comment at the top of `/memory/constitution.md`:
 
 ```html
 <!--
-Constitution Update Report
-==========================
+Constitution Part III Update Report
+====================================
 Version Change: [OLD_VERSION] → [NEW_VERSION]
+Updated: [ISO_DATE]
 Rationale: [MAJOR|MINOR|PATCH bump reason]
 
+Changes in Part III (Toolkit Implementation Principles):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Modified Principles:
-- [OLD_PRINCIPLE_NAME] → [NEW_PRINCIPLE_NAME]
-- [PRINCIPLE_NAME]: [description of changes]
+- [PRINCIPLE_NAME]: [description of what changed]
+  Example: "Validator Extensibility: Added plugin system requirements"
 
 Added Principles:
 - [NEW_PRINCIPLE_NAME]: [brief description]
+  Example: "Performance Benchmarking: All validators must meet <100ms target"
 
 Removed Principles:
 - [OLD_PRINCIPLE_NAME]: [deprecation reason]
+  Example: "Manual Testing: Merged into Automated Quality principle"
 
-Affected Files:
-✅ specs/toolkit/XXX-name/spec.md - Updated entity requirements
-✅ /.metaspec/commands/design-entity.md - Added constitution check
-⚠️  /README.md - Pending manual update for design philosophy
+Tech Stack Updates:
+- [LANGUAGE]: [what changed for this stack]
+  Example: "Python: Added Pydantic v2 requirement, mypy strict mode"
 
-Follow-up TODOs:
-- [ ] Update examples in documentation
-- [ ] Add constitution compliance tests
-- [ ] Review existing code against new principles
+Impact Analysis:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Generated: [ISO_DATE]
+✅ Updated Files:
+- /specs/toolkit/001-[name]/spec.md
+  → Tech stack section updated to match Entity-First examples
+- /.metaspec/commands/sdd.specify.md
+  → Added reference to new [PRINCIPLE_NAME] principle
+- /AGENTS.md
+  → Updated Part III principle list
+
+⚠️  Files Requiring Manual Review:
+- /src/[package]/models.py
+  → May need refactoring to follow updated Entity-First principle
+- /src/[package]/validator.py
+  → Check if validator extensibility matches new requirements
+- /tests/
+  → Test coverage may not meet updated Automated Quality targets
+- /README.md
+  → Architecture section may need updates
+- /src/metaspec/templates/meta/templates/spec-template.md.j2
+  → Template may need new sections for new principles
+
+📋 Follow-up TODOs:
+- [ ] Review existing toolkit code against updated principles
+- [ ] Refactor code if architecture doesn't match new principles
+- [ ] Update test suite to meet Automated Quality targets
+- [ ] Update documentation with new implementation patterns
+- [ ] Consider breaking changes if principles require major refactoring
+
+Consistency Check Summary:
+- Toolkit specs reviewed: [COUNT]
+- Specs compliant: [COUNT]
+- Specs needing update: [COUNT]
+- Source files checked: [COUNT]
+- Documentation files updated: [COUNT]
+
+Generated by: /metaspec.sdd.constitution
+Agent: [AI_AGENT_NAME]
 -->
 ```
 
-### 8. Validation checklist
+### 8. Update version and timestamp
 
-Before finalizing:
+Update the version line at the top of `/memory/constitution.md`:
 
-- [ ] No remaining `[PLACEHOLDER]` tokens (except intentionally deferred with TODO)
-- [ ] Version follows semantic versioning
-- [ ] Dates in ISO 8601 format (YYYY-MM-DD)
-- [ ] All 6 standard speckit principles present (or explicitly omitted with reason)
+```markdown
+> Version [NEW_VERSION] | Ratified: [ORIGINAL_DATE] | Last Updated: [TODAY]
+```
+
+**Version bump rules** (CRITICAL):
+
+**MAJOR (X.0.0)** - Part I changes only:
+- Core values modified or removed
+- Project philosophy fundamentally changed
+- Breaking changes to constitutional framework
+- Example: 1.0.0 → 2.0.0
+
+**MINOR (X.Y.0)** - Part II or Part III changes:
+- New principles added to Part III
+- Existing principles significantly expanded
+- New mandatory implementation requirements
+- Principle renamed (semantic change)
+- Tech stack requirements changed
+- Example: 1.1.0 → 1.2.0
+
+**PATCH (X.Y.Z)** - Minor refinements:
+- Clarifications, wording improvements
+- Examples added to existing principles
+- Typo corrections
+- Non-semantic formatting changes
+- Example: 1.1.0 → 1.1.1
+
+**For Part III updates**:
+- If principles added/removed: MINOR bump
+- If principles substantially changed: MINOR bump
+- If only examples/clarifications added: PATCH bump
+- If tech stack requirements changed: MINOR bump
+- If implementation patterns changed: MINOR bump
+
+**Add update marker in Part III**:
+```markdown
+<!-- Managed by /metaspec.sdd.constitution -->
+<!-- Last updated: [TODAY] v[VERSION] - [Brief description of changes] -->
+```
+
+### 9. Validation checklist
+
+Before writing file:
+
+**Structure Validation**:
+- [ ] Part I unchanged (Project Core Values preserved)
+- [ ] Part II unchanged (Specification Design preserved)
+- [ ] Part III updated with implementation-specific content
+- [ ] HTML comment Sync Impact Report prepended at top
+
+**Content Validation**:
+- [ ] All 6 standard toolkit implementation principles present in Part III
 - [ ] Each principle has clear description and rationale
-- [ ] Principles are testable (can verify compliance in code/design)
-- [ ] Governance section includes amendment process
-- [ ] Domain specificity principle includes actual domain constraints
-- [ ] AI-Agent Friendly principle includes concrete examples
+- [ ] Each principle has implementation-specific examples
+- [ ] Tech stack mentioned (Python/TypeScript/Go/Rust)
+- [ ] Examples use actual libraries (Pydantic, Zod, etc.)
+- [ ] No remaining unexplained placeholder tokens (unless TODO marked)
+- [ ] Principles are actionable and testable
 
-### 9. Write constitution file
+**Version Validation**:
+- [ ] Version bump follows semantic versioning rules
+- [ ] Version bump rationale documented in Impact Report
+- [ ] Dates in ISO 8601 format (YYYY-MM-DD)
+- [ ] Version line at top updated: `> Version X.Y.Z | Ratified: ... | Last Updated: ...`
 
-- Write to `/memory/constitution.md`
-- Ensure proper Markdown formatting
-- No trailing whitespace
+**Formatting Validation**:
+- [ ] Proper Markdown formatting
+- [ ] Single blank line between sections
+- [ ] No trailing whitespace
+- [ ] Long lines wrapped at ~100 characters (readability)
+- [ ] Update marker in Part III: `<!-- Last updated: ... -->`
+
+**Impact Validation**:
+- [ ] All affected files listed in Impact Report
+- [ ] Files marked as ✅ Updated or ⚠️ Needs Review
+- [ ] Source code files checked (if applicable)
+- [ ] Follow-up TODOs documented if any
+- [ ] Consistency check results included
+
+### 10. Write updated constitution
+
+**Write order**:
+1. **Prepend** HTML comment Sync Impact Report at top
+2. **Preserve** Part I exactly (Project Core Values)
+3. **Preserve** Part II exactly (Specification Design Principles)
+4. **Update** Part III (Toolkit Implementation Principles)
+5. **Preserve** Governance section at bottom
+
+**Write to**: `/memory/constitution.md`
+
+**Quality checks**:
+- Proper Markdown formatting
 - Single blank line between sections
-- Wrap long lines at ~100 characters
+- No trailing whitespace
+- Consistent heading levels
 
-### 10. Output summary to user
+### 11. Output summary to user
 
-Provide:
+Provide a comprehensive summary:
 
 ```
-✅ Constitution updated to v[VERSION]
+✅ Constitution Part III (Toolkit Implementation) updated to v[NEW_VERSION]
 
-📋 Changes:
-- [Summary of what changed]
-- [New principles added]
-- [Modified principles]
+📊 Version Change: v[OLD_VERSION] → v[NEW_VERSION]
+Bump Type: [MAJOR|MINOR|PATCH]
+Rationale: [Brief reason for version bump]
 
-📁 Updated files:
-- /memory/constitution.md
-- specs/toolkit/XXX-name/spec.md (if exists)
-- /.metaspec/commands/design-entity.md (if exists)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-⚠️  Files needing manual review:
-- [List any files that couldn't be auto-updated]
+📋 Changes in Part III:
+Modified Principles:
+- [PRINCIPLE_NAME]: [What changed]
 
-🔄 Next steps:
-1. Review the constitution in /memory/constitution.md
-2. Use /metaspec:specify to define toolkit capabilities aligned with these principles
-3. Reference these principles during /metaspec:plan and /metaspec:implement
+Added Principles:
+- [NEW_PRINCIPLE_NAME]: [Brief description]
 
-💡 Suggested commit message:
-   docs: adopt toolkit constitution v[VERSION] ([principle summary])
+Removed Principles:
+- [OLD_PRINCIPLE_NAME]: [Reason for removal]
+
+Tech Stack Updates:
+- [LANGUAGE/LIBRARY]: [What was added/changed]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Files Updated:
+✅ Successfully Updated:
+- /memory/constitution.md (Part III)
+- [List other files auto-updated]
+
+⚠️  Require Manual Review:
+- [List files needing human attention]
+- [List source code files that may need refactoring]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Consistency Check Results:
+- Toolkit specifications reviewed: [COUNT]
+- Specifications compliant: [COUNT]
+- Specifications needing update: [COUNT]
+- Source files checked: [COUNT]
+- Documentation files checked: [COUNT]
+
+⚠️  Code Impact:
+- Source files needing refactoring: [COUNT]
+- Tests needing updates: [COUNT]
+- Architecture changes required: [Yes/No]
+
+📋 Follow-up TODOs:
+- [ ] [TODO item 1]
+- [ ] [TODO item 2]
+- [ ] [TODO item 3]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 Next Steps:
+1. Review the Sync Impact Report in /memory/constitution.md (HTML comment at top)
+2. Review Part III changes in /memory/constitution.md
+3. Address files marked ⚠️  Require Manual Review
+4. Refactor code if needed to match updated principles
+5. Use /metaspec.sdd.specify to define toolkit specs following updated principles
+6. Use /metaspec.sdd.checklist to validate implementation quality
+7. Update tests to meet Automated Quality requirements
+
+💡 Suggested Commit Message:
+   docs(constitution): update Part III to v[NEW_VERSION] ([brief description])
+   
+   - [Change 1]
+   - [Change 2]
+   
+   Affects: [list key files]
+   Breaking: [Yes/No - if architecture changes required]
 ```
 
 ## Important Notes

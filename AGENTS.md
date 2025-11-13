@@ -81,11 +81,40 @@ Use these commands in your workflow to help users create and discover speckits.
 - Prohibited patterns
 - Required patterns
 
+### Constitution Structure
+
+The constitution is organized into **three parts**:
+
+```
+memory/constitution.md
+├── Part I: Project Core Values (管理: /speckit.constitution)
+│   - AI-First Design
+│   - Progressive Enhancement
+│   - Minimal Viable Abstraction
+│   - Domain Specificity
+│
+├── Part II: Specification Design Principles (管理: /metaspec.sds.constitution)
+│   - Entity Clarity
+│   - Validation Completeness
+│   - Operation Semantics
+│   - Implementation Neutrality
+│   - Extensibility Design
+│   - Domain Fidelity
+│
+└── Part III: Toolkit Implementation Principles (管理: /metaspec.sdd.constitution)
+    - Entity-First Design
+    - Validator Extensibility
+    - Spec-First Development
+    - AI-Agent Friendly
+    - Progressive Enhancement
+    - Automated Quality
+```
+
 **Key principles:**
-1. **Minimal Viable Abstraction**: Don't over-abstract
-2. **AI-First Design**: Generated systems must be AI-friendly
-3. **Progressive Enhancement**: Start with MVP, add features incrementally
-4. **Domain Specificity**: Respect domain constraints
+1. **Minimal Viable Abstraction** (Part I): Don't over-abstract
+2. **AI-First Design** (Part I): Generated systems must be AI-friendly
+3. **Progressive Enhancement** (Part I): Start with MVP, add features incrementally
+4. **Domain Specificity** (Part I): Respect domain constraints
 
 ---
 
@@ -115,7 +144,7 @@ MetaSpec uses a three-layer architecture to separate concerns:
 #### SDS (Spec-Driven Specification) - 8 Commands
 For defining domain specifications:
 
-- `/metaspec.sds.constitution` - Define specification design principles
+- `/metaspec.sds.constitution` - Update Part II of constitution (Specification Design Principles)
 - `/metaspec.sds.specify` - Define specification entities, operations, validation rules
 - `/metaspec.sds.clarify` - Resolve ambiguities in specification
 - `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
@@ -125,6 +154,7 @@ For defining domain specifications:
 - `/metaspec.sds.analyze` - Check specification consistency
 
 **Location**: Works with `specs/domain/` directory (stores domain specifications)
+**Constitution**: Updates Part II in `/memory/constitution.md`
 
 #### 🌳 Recursive Tree Structure (NEW)
 
@@ -314,7 +344,7 @@ This is how MetaSpec realizes Toolkit value: **not by providing fixed templates,
 #### SDD (Spec-Driven Development) - 8 Commands
 For developing speckits (spec-driven toolkits):
 
-- `/metaspec.sdd.constitution` - Define toolkit development principles
+- `/metaspec.sdd.constitution` - Update Part III of constitution (Toolkit Implementation Principles)
 - `/metaspec.sdd.specify` - Define toolkit specifications
 - `/metaspec.sdd.clarify` - Resolve toolkit ambiguities
 - `/metaspec.sdd.plan` - Plan toolkit implementation
@@ -324,6 +354,7 @@ For developing speckits (spec-driven toolkits):
 - `/metaspec.sdd.analyze` - Check consistency
 
 **Location**: Works with `specs/toolkit/` directory
+**Constitution**: Updates Part III in `/memory/constitution.md`
 
 #### Evolution - 3 Shared Commands
 For controlled specification evolution (both SDS and SDD):
@@ -339,17 +370,24 @@ For controlled specification evolution (both SDS and SDD):
 ```
 MetaSpec commands (19 total):
   - SDS (8 commands)     → Define domain specifications (specs/domain/)
+                         → Update constitution Part II
   - SDD (8 commands)     → Develop toolkits (specs/toolkit/)
+                         → Update constitution Part III
   - Evolution (3 shared) → Manage changes (changes/)
                               ↓
                     Project structure:
+                    ├── memory/
+                    │   └── constitution.md  ← Unified constitution (3 parts)
                     ├── specs/
                     │   ├── domain/   ← SDS manages (domain specifications)
-                    │   └── toolkit/    ← SDD manages (toolkit implementation)
-                    └── changes/        ← Evolution manages (independent)
+                    │   └── toolkit/  ← SDD manages (toolkit implementation)
+                    └── changes/      ← Evolution manages (independent)
 ```
 
-**Key principle**: Clear separation between domain specification (SDS) and toolkit development (SDD), with shared evolution commands.
+**Key principle**: 
+- One unified constitution with three parts
+- SDS and SDD each manage their respective sections
+- Clear separation between domain specification and toolkit development
 
 ### When to Use Which
 

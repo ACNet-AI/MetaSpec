@@ -12,34 +12,34 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-You are creating or updating the **specification constitution** at `/memory/specification-constitution.md`. This document defines the foundational principles that govern how this domain specification is specified, ensuring it remains clear, implementable, and maintainable.
+You are updating **Part II: Specification Design Principles** in `/memory/constitution.md`. This section defines guidelines for defining domain specifications (entities, validation rules, operations).
 
-Unlike toolkit development principles, this constitution focuses on **specification quality** - it guides decisions about entity definitions, validation rules, operation interfaces, and error handling specifications.
+Unlike toolkit implementation principles (Part III), Part II focuses on **specification quality** - it guides decisions about entity definitions, validation rules, operation interfaces, and error handling specifications.
 
 Follow this execution flow:
 
-### 1. Load existing constitution (if any)
+### 1. Load existing constitution
 
-- Check for `/memory/specification-constitution.md`
-- If exists, load it and identify placeholder tokens `[ALL_CAPS_IDENTIFIER]`
-- If new, use the specification constitution template structure
+- Read `/memory/constitution.md`
+- Locate `## Part II: Specification Design Principles` section
+- Preserve Part I and Part III unchanged
 
-### 2. Understand the specification domain
+### 2. Understand the domain specification
 
-**Critical**: Before defining principles, understand what specification this specification defines:
-- What domain does this specification serve? (APIs, Data Formats, Communication Specifications?)
-- What entities are needed? (Server, Tool, Resource, Message?)
-- What operations are defined? (CRUD, Events, RPC?)
-- What validation rules govern the specification?
+**Critical**: Before updating principles, understand what specifications this toolkit defines:
+- What domain does this serve? (Marketing, MCP, API Testing?)
+- What entities are specified? (Campaign, Tool, APITest?)
+- What validation rules are needed? (Budget constraints, Schema validation?)
+- What operations are defined? (CRUD, Events, Commands?)
 
 **Ask clarifying questions if unclear**:
-- "What domain does this specification target?"
-- "What are the core specification entities?"
-- "What operations/interfaces does the specification define?"
+- "What domain specifications does this toolkit support?"
+- "What are the core entities in domain specifications?"
+- "What validation rules should specifications enforce?"
 
-### 3. Derive specification-specific principles
+### 3. Update Part II principles
 
-Based on the user input and specification domain, populate these **standard specification design principles**:
+Based on user input and domain understanding, update these **standard specification design principles** in Part II:
 
 #### **I. Entity Clarity**
 - Entity definitions are complete and unambiguous
@@ -89,161 +89,329 @@ Based on the user input and specification domain, populate these **standard spec
 
 **Rationale**: Domain-faithful specifications are easier to adopt and understand.
 
-### 4. Collect/derive values for placeholders
+### 4. Prepare domain-specific examples
 
-- `[SPECIFICATION_NAME]` - e.g., "MCP", "OpenAPI", "GraphQL"
-- `[SPECIFICATION_DOMAIN]` - e.g., "AI Model Communication", "API Specification", "Data Query"
-- `[PRIMARY_ENTITIES]` - e.g., "Server, Tool, Resource", "Path, Operation, Schema"
-- `[PRINCIPLE_N_NAME]` - Use standard specification design principles above
-- `[PRINCIPLE_N_DESCRIPTION]` - Detailed description with specification-specific examples
-- `[GOVERNANCE_RULES]` - How to amend constitution, specification review process
-- `[CONSTITUTION_VERSION]` - Semantic versioning (start at 1.0.0)
-- `[RATIFICATION_DATE]` - Today's date (ISO 8601: YYYY-MM-DD)
-- `[LAST_AMENDED_DATE]` - Today's date if new/updated
+For each principle in Part II, provide domain-specific examples:
 
-**Version bump rules**:
-- **MAJOR**: Backward incompatible principle changes
-- **MINOR**: New principles added or major expansions
-- **PATCH**: Clarifications, wording fixes, examples added
+- **Entity Clarity**: What entities? What fields? Types?
+- **Validation Completeness**: What validation rules? Constraints?
+- **Operation Semantics**: What operations? Inputs/outputs?
+- **Implementation Neutrality**: How to avoid technology coupling?
+- **Extensibility Design**: How to support evolution?
+- **Domain Fidelity**: What standards to follow? Terminology?
 
-### 5. Draft the constitution content
+**Examples by domain**:
+- Marketing: Campaign (name, type, channels, budget, dates), CPM/CTR/ROAS validation
+- MCP: Tool (name, description, inputSchema), JSON Schema validation
+- API Testing: APITest (endpoint, method, assertions), HTTP status validation
 
-Replace all placeholders with concrete text. The constitution should include:
+### 5. Update Part II section
 
-#### Structure:
+Update only the `## Part II: Specification Design Principles` section with domain-specific content:
+
 ```markdown
-# [SPECIFICATION_NAME] Constitution
+## Part II: Specification Design Principles
 
-## Specification Purpose
-[Brief description of what this specification defines and what domain it serves]
+**Purpose**: Guidelines for defining {domain} specifications (entities, validation rules, operations)
 
-## Core Principles
+### 1. Entity Clarity
 
-### I. Entity Clarity
-[How entity definitions must be specified for this specification]
+[Domain-specific entity examples and rules]
 
-### II. Validation Completeness
-[What validation rules must be documented]
+### 2. Validation Completeness
 
-### III. Operation Semantics
-[How specification operations must be defined]
+[Domain-specific validation rules]
 
-### IV. Implementation Neutrality
-[How to ensure technology independence]
+### 3. Operation Semantics
 
-### V. Extensibility Design
-[How specification evolution is managed]
+[Domain-specific operations]
 
-### VI. Domain Fidelity
-[Domain standards this specification adheres to]
+### 4. Implementation Neutrality
 
-## Additional Principles
-[Any domain-specific principles beyond the standard 6]
+[How to keep specs technology-neutral]
 
-## Specification Constraints
-[Requirements for specifications: formats, schemas, documentation]
+### 5. Extensibility Design
 
-## Governance
-[Amendment process, review schedule, approval requirements]
+[Evolution and versioning strategy]
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+### 6. Domain Fidelity
+
+[Domain standards and conventions to follow]
+
+<!-- Managed by /metaspec.sds.constitution -->
 ```
 
-### 6. Consistency propagation
+**CRITICAL**: Only update Part II. Preserve Part I and Part III exactly as they are.
 
-Update these files to align with the constitution:
+### 6. Consistency propagation and impact analysis
 
-- `/specs/domain/001-{domain}-spec/spec.md` - Ensure entity definitions match Entity Clarity principle
-- `/.metaspec/commands/sds.specify.md` - Reference constitution principles
-- `/README.md` - Update specification overview section
+Check and update dependent files to align with updated principles:
 
-**For each file**:
-- Read the file
-- Identify sections that reference principles
-- Update to match new/changed principles
-- Mark with `<!-- Updated per specification constitution v[VERSION] -->`
+#### A. Domain Specifications
+- **Read** `/specs/domain/001-*/spec.md` (if exists)
+- **Check** entity definitions match Entity Clarity principle
+- **Check** validation rules match Validation Completeness principle
+- **Check** operations match Operation Semantics principle
+- **Note** any inconsistencies
 
-### 7. Generate Sync Impact Report
+#### B. MetaSpec Commands
+- **Read** `/.metaspec/commands/sds.specify.md` (if exists)
+- **Check** if principles are referenced in guidance
+- **Update** if principle names or descriptions changed
+- **Mark** with `<!-- Updated per constitution v[VERSION] -->`
 
-Prepend this as an HTML comment at the top of constitution file:
+#### C. Specification Templates
+- **Read** `/src/metaspec/templates/meta/templates/domain-spec-template.md.j2` (if exists)
+- **Check** template structure matches required principles
+- **Check** mandatory sections align with Entity Clarity and Validation Completeness
+- **Update** if new principles require new sections
+
+#### D. Project Documentation
+- **Read** `/README.md`
+- **Check** "Specification Design" or similar sections
+- **Update** if principles changed
+- **Read** `/AGENTS.md`
+- **Check** Part II references in Constitutional Principles section
+- **Update** if principle names changed
+
+#### E. Example Specifications
+- **Read** `/examples/*/spec.md` (if exists)
+- **Check** if examples follow updated principles
+- **Note** examples that need updating
+
+**Track all changes**:
+- ✅ Updated: List files successfully updated
+- ⚠️ Needs manual review: List files requiring human attention
+- 📝 Recommendations: Suggest improvements to specs/docs
+
+### 7. Generate detailed Sync Impact Report
+
+Prepend this as an HTML comment at the top of `/memory/constitution.md`:
 
 ```html
 <!--
-Specification Constitution Update Report
-====================================
+Constitution Part II Update Report
+===================================
 Version Change: [OLD_VERSION] → [NEW_VERSION]
+Updated: [ISO_DATE]
 Rationale: [MAJOR|MINOR|PATCH bump reason]
 
+Changes in Part II (Specification Design Principles):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Modified Principles:
-- [OLD_PRINCIPLE_NAME] → [NEW_PRINCIPLE_NAME]
-- [PRINCIPLE_NAME]: [description of changes]
+- [PRINCIPLE_NAME]: [description of what changed]
+  Example: "Entity Clarity: Added field type requirement examples"
 
 Added Principles:
 - [NEW_PRINCIPLE_NAME]: [brief description]
+  Example: "Schema Versioning: Specifications must include version strategy"
 
 Removed Principles:
 - [OLD_PRINCIPLE_NAME]: [deprecation reason]
+  Example: "Strict Typing: Merged into Entity Clarity principle"
 
-Affected Files:
-✅ /specs/domain/spec.md - Updated entity requirements
-⚠️  /README.md - Pending manual update for specification overview
+Domain-Specific Updates:
+- [DOMAIN]: [what changed for this domain]
+  Example: "MCP: Added JSON-RPC 2.0 compliance requirement"
 
-Follow-up TODOs:
-- [ ] Update specification examples
-- [ ] Review existing specifications against new principles
+Impact Analysis:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Generated: [ISO_DATE]
+✅ Updated Files:
+- /specs/domain/001-[name]/spec.md
+  → Entity definitions updated to match Entity Clarity examples
+- /.metaspec/commands/sds.specify.md
+  → Added reference to new [PRINCIPLE_NAME] principle
+- /AGENTS.md
+  → Updated Part II principle list
+
+⚠️  Files Requiring Manual Review:
+- /README.md
+  → Specification Design section may need updates
+- /examples/basic-spec.md
+  → Example may not follow new [PRINCIPLE_NAME] principle
+- /src/metaspec/templates/meta/templates/domain-spec-template.md.j2
+  → Template structure may need new sections
+
+📋 Follow-up TODOs:
+- [ ] Review existing domain specifications against updated principles
+- [ ] Add examples demonstrating new [PRINCIPLE_NAME] principle
+- [ ] Update specification validation checklist
+- [ ] Consider toolkit changes if principles affect parsing/validation
+
+Consistency Check Summary:
+- Specifications reviewed: [COUNT]
+- Specifications compliant: [COUNT]
+- Specifications needing update: [COUNT]
+- Documentation files updated: [COUNT]
+
+Generated by: /metaspec.sds.constitution
+Agent: [AI_AGENT_NAME]
 -->
 ```
 
-### 8. Validation checklist
+### 8. Update version and timestamp
 
-Before finalizing:
+Update the version line at the top of `/memory/constitution.md`:
 
-- [ ] No remaining `[PLACEHOLDER]` tokens
-- [ ] Version follows semantic versioning
-- [ ] Dates in ISO 8601 format (YYYY-MM-DD)
-- [ ] All 6 standard specification design principles present
+```markdown
+> Version [NEW_VERSION] | Ratified: [ORIGINAL_DATE] | Last Updated: [TODAY]
+```
+
+**Version bump rules** (CRITICAL):
+
+**MAJOR (X.0.0)** - Part I changes only:
+- Core values modified or removed
+- Project philosophy fundamentally changed
+- Breaking changes to constitutional framework
+- Example: 1.0.0 → 2.0.0
+
+**MINOR (X.Y.0)** - Part II or Part III changes:
+- New principles added to Part II
+- Existing principles significantly expanded
+- New mandatory sections or requirements
+- Principle renamed (semantic change)
+- Example: 1.1.0 → 1.2.0
+
+**PATCH (X.Y.Z)** - Minor refinements:
+- Clarifications, wording improvements
+- Examples added to existing principles
+- Typo corrections
+- Non-semantic formatting changes
+- Example: 1.1.0 → 1.1.1
+
+**For Part II updates**:
+- If principles added/removed: MINOR bump
+- If principles substantially changed: MINOR bump
+- If only examples/clarifications added: PATCH bump
+- If domain-specific rules added: MINOR bump
+
+**Add update marker in Part II**:
+```markdown
+<!-- Managed by /metaspec.sds.constitution -->
+<!-- Last updated: [TODAY] v[VERSION] - [Brief description of changes] -->
+```
+
+### 9. Validation checklist
+
+Before writing file:
+
+**Structure Validation**:
+- [ ] Part I unchanged (Project Core Values preserved)
+- [ ] Part II updated with domain-specific content
+- [ ] Part III unchanged (Toolkit Implementation preserved)
+- [ ] HTML comment Sync Impact Report prepended at top
+
+**Content Validation**:
+- [ ] All 6 standard specification design principles present in Part II
 - [ ] Each principle has clear description and rationale
-- [ ] Principles are verifiable (can check spec compliance)
-- [ ] Governance section includes amendment process
-- [ ] Domain Fidelity principle references actual standards
-- [ ] Implementation Neutrality principle avoids technology mandates
+- [ ] Each principle has domain-specific examples
+- [ ] Domain Fidelity principle references actual standards (RFCs, W3C, etc.)
+- [ ] No remaining unexplained placeholder tokens (unless TODO marked)
+- [ ] Principles are declarative and testable (avoid vague "should")
 
-### 9. Write constitution file
+**Version Validation**:
+- [ ] Version bump follows semantic versioning rules
+- [ ] Version bump rationale documented in Impact Report
+- [ ] Dates in ISO 8601 format (YYYY-MM-DD)
+- [ ] Version line at top updated: `> Version X.Y.Z | Ratified: ... | Last Updated: ...`
 
-- Write to `/memory/specification-constitution.md`
-- Ensure proper Markdown formatting
-- No trailing whitespace
+**Formatting Validation**:
+- [ ] Proper Markdown formatting
+- [ ] Single blank line between sections
+- [ ] No trailing whitespace
+- [ ] Long lines wrapped at ~100 characters (readability)
+- [ ] Update marker in Part II: `<!-- Last updated: ... -->`
+
+**Impact Validation**:
+- [ ] All affected files listed in Impact Report
+- [ ] Files marked as ✅ Updated or ⚠️ Needs Review
+- [ ] Follow-up TODOs documented if any
+- [ ] Consistency check results included
+
+### 10. Write updated constitution
+
+**Write order**:
+1. **Prepend** HTML comment Sync Impact Report at top
+2. **Preserve** Part I exactly (Project Core Values)
+3. **Update** Part II (Specification Design Principles)
+4. **Preserve** Part III exactly (Toolkit Implementation Principles)
+5. **Preserve** Governance section at bottom
+
+**Write to**: `/memory/constitution.md`
+
+**Quality checks**:
+- Proper Markdown formatting
 - Single blank line between sections
-- Wrap long lines at ~100 characters
+- No trailing whitespace
+- Consistent heading levels
 
-### 10. Output summary to user
+### 11. Output summary to user
 
-Provide:
+Provide a comprehensive summary:
 
 ```
-✅ Specification constitution updated to v[VERSION]
+✅ Constitution Part II (Specification Design) updated to v[NEW_VERSION]
 
-📋 Changes:
-- [Summary of what changed]
-- [New principles added]
-- [Modified principles]
+📊 Version Change: v[OLD_VERSION] → v[NEW_VERSION]
+Bump Type: [MAJOR|MINOR|PATCH]
+Rationale: [Brief reason for version bump]
 
-📁 Updated files:
-- /memory/specification-constitution.md
-- /specs/domain/spec.md (if exists)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-⚠️  Files needing manual review:
-- [List any files that couldn't be auto-updated]
+📋 Changes in Part II:
+Modified Principles:
+- [PRINCIPLE_NAME]: [What changed]
 
-🔄 Next steps:
-1. Review the constitution in /memory/specification-constitution.md
-2. Use /metaspec.sds.specify to define specification entities aligned with these principles
-3. Reference these principles during specification design
+Added Principles:
+- [NEW_PRINCIPLE_NAME]: [Brief description]
 
-💡 Suggested commit message:
-   docs: adopt specification constitution v[VERSION] ([principle summary])
+Removed Principles:
+- [OLD_PRINCIPLE_NAME]: [Reason for removal]
+
+Domain-Specific Updates:
+- [DOMAIN]: [What was added/changed]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Files Updated:
+✅ Successfully Updated:
+- /memory/constitution.md (Part II)
+- [List other files auto-updated]
+
+⚠️  Require Manual Review:
+- [List files needing human attention]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Consistency Check Results:
+- Domain specifications reviewed: [COUNT]
+- Specifications compliant: [COUNT]
+- Specifications needing update: [COUNT]
+- Documentation files checked: [COUNT]
+
+📋 Follow-up TODOs:
+- [ ] [TODO item 1]
+- [ ] [TODO item 2]
+- [ ] [TODO item 3]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 Next Steps:
+1. Review the Sync Impact Report in /memory/constitution.md (HTML comment at top)
+2. Review Part II changes in /memory/constitution.md
+3. Address files marked ⚠️  Require Manual Review
+4. Use /metaspec.sds.specify to define specifications following updated principles
+5. Use /metaspec.sds.checklist to validate existing specifications
+
+💡 Suggested Commit Message:
+   docs(constitution): update Part II to v[NEW_VERSION] ([brief description])
+   
+   - [Change 1]
+   - [Change 2]
+   
+   Affects: [list key files]
 ```
 
 ## Important Notes

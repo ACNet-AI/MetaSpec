@@ -1,219 +1,276 @@
-# Constitutional Rules for {{ name }}
+# {{ name }} Constitution
 
-> These rules MUST be followed by all AI agents and developers using this toolkit.
-
-**Domain**: {{ domain }}  
-**Version**: {{ version }}  
-**Last Updated**: {{ date }}
+> Version 1.0.0 | Ratified: {{ date }} | Last Updated: {{ date }}
 
 ---
 
-## 🎯 Core Principles
+## Part I: Project Core Values
 
-### 1. Specification-First Development
+**Purpose**: Foundational values that govern this spec-driven toolkit
 
-- **ALWAYS** define specifications before implementation
-- **NEVER** write code without a validated specification
-- Specifications are the source of truth
+### 1. AI-First Design
 
-### 2. Validation-Driven Workflow
+Every feature must be optimized for AI agent collaboration.
 
-- **ALWAYS** validate specifications before generation
-- **NEVER** skip validation steps
-- Fix validation errors immediately
+**Rules**:
+- Clear error messages with examples
+- Consistent naming conventions
+- Explicit behavior (no magic defaults)
+- All behavior documented
 
-### 3. Incremental Development
+**Rationale**: AI agents need clear feedback to correct mistakes and learn patterns.
 
-- Start with MVP (Minimum Viable Product)
+### 2. Progressive Enhancement
+
+Ship minimal viable product first, iterate based on feedback.
+
+**Rules**:
+- Define MVP scope clearly
 - Add features incrementally
-- Each increment must be fully specified and validated
+- Maintain backward compatibility
+- Document feature maturity (alpha, beta, stable)
+
+**Rationale**: Start simple, grow based on real user needs.
+
+### 3. Minimal Viable Abstraction
+
+Avoid over-engineering. Keep it as simple as possible.
+
+**Rules**:
+- Start with concrete examples
+- Abstract only after seeing 3+ similar patterns
+- Each abstraction must add clear value
+- Remove abstractions that don't earn their keep
+
+**Rationale**: Complexity is the enemy of maintainability.
 
 ### 4. Domain Specificity
 
+Focus on {{ domain }} domain. Generic toolkits are weak toolkits.
+
+**Rules**:
+- Research domain standards before designing
+- Follow domain conventions and best practices
+- Include domain-specific validation
+- Don't force-fit generic solutions
+
+**Rationale**: Domain focus creates real value for users.
+
+<!-- Managed by /speckit.constitution -->
+
+---
+
+## Part II: Specification Design Principles
+
+**Purpose**: Guidelines for defining {{ domain }} specifications (entities, validation rules, operations)
+
+### 1. Entity Clarity
+
+All entity definitions must be complete and unambiguous.
+
+**Rules**:
+- All fields have explicit types and descriptions
+- Required vs optional clearly specified
+- Examples provided for every entity
+- Field naming follows consistent conventions
+
+**Rationale**: Clear entities enable consistent implementations.
+
+### 2. Validation Completeness
+
+All constraints must be explicitly documented.
+
+**Rules**:
+- Document all validation rules
+- Specify error conditions clearly
+- Address edge cases
+- Validation rules traceable to domain requirements
+
+**Rationale**: Complete validation specs prevent implementation divergence.
+
+### 3. Operation Semantics
+
+All operations must have clear purposes and interfaces.
+
+**Rules**:
+- Request/response schemas fully specified
+- Side effects documented
+- Idempotency requirements stated
+- Error handling explicit
+
+**Rationale**: Well-defined operations enable interoperable implementations.
+
+### 4. Implementation Neutrality
+
+Specifications must not mandate specific technologies.
+
+**Rules**:
+- Focus on WHAT, not HOW
+- Platform-agnostic specifications
+- Multiple implementations possible
+- Avoid technology-specific assumptions
+
+**Rationale**: Technology-neutral specifications have longer lifespans.
+
+### 5. Extensibility Design
+
+Extension points must be clearly marked.
+
+**Rules**:
+- Extension points documented
+- Backward compatibility rules defined
+- Versioning strategy specified
+- Deprecation process documented
+
+**Rationale**: Specifications must evolve without breaking implementations.
+
+### 6. Domain Fidelity
+
+Respect domain standards and conventions.
+
+**Rules**:
 {% if domain == "mcp" %}
-**MCP-Specific Rules**:
-- All tools must have clear input/output schemas
-- Resources must specify URI patterns
-- Prompts must include expected response formats
-- Error handling must be explicit
+- Follow MCP specification (version compatibility)
+- Tool/Resource/Prompt structure compliance
+- JSON-RPC 2.0 message format
+- Standard error codes
+{% elif domain == "marketing" %}
+- Follow marketing industry standards
+- Use standard terminology (CPM, CTR, ROAS, CPA)
+- Campaign lifecycle conventions
+- Attribution model specifications
 {% elif domain == "web" %}
-**Web API Rules**:
-- Follow RESTful conventions
-- Document all endpoints with HTTP methods
-- Include request/response examples
-- Specify authentication requirements
-{% elif domain == "ai" %}
-**AI Agent Rules**:
-- Define clear agent capabilities
-- Specify context requirements
-- Include safety constraints
-- Document prompt templates
+- Follow web standards (W3C, WHATWG)
+- RESTful API conventions
+- HTTP semantics (methods, status codes)
+- Content-Type and encoding standards
 {% else %}
-**Generic Rules**:
-- Follow industry best practices for {{ domain }}
-- Document all design decisions
-- Include clear examples
-- Specify validation rules
+- Reference authoritative sources (RFCs, standards bodies)
+- Use domain terminology consistently
+- Follow industry conventions
+- Document domain constraints explicitly
 {% endif %}
 
----
+**Rationale**: Domain-faithful specifications are easier to adopt.
 
-## 🚫 Prohibited Patterns
-
-### Anti-Pattern 1: Implementation Before Specification
-
-**BAD**:
-```
-1. Write code
-2. Try to fit it into a spec
-```
-
-**GOOD**:
-```
-1. Write specification
-2. Validate specification
-3. Generate code from spec
-```
-
-### Anti-Pattern 2: Skipping Validation
-
-**BAD**:
-```bash
-{{ package_name }} generate spec.md  # Without validating
-```
-
-**GOOD**:
-```bash
-{{ package_name }} validate spec.md  # First validate
-{{ package_name }} generate spec.md  # Then generate
-```
-
-### Anti-Pattern 3: Manual Code Generation
-
-**BAD**: Manually writing code that could be generated from specs
-
-**GOOD**: Use generation tools, customize through specifications
+<!-- Managed by /metaspec.sds.constitution -->
 
 ---
 
-## ✅ Required Patterns
+## Part III: Toolkit Implementation Principles
 
-### Pattern 1: Entity Definition
+**Purpose**: Guidelines for building the toolkit (parser, validator, CLI, generator)
 
-Every {{ entity.name }} must define:
+### 1. Entity-First Design
 
-{% for field in entity.fields %}
-- `{{ field.name }}`: {{ field.description }}
-{% endfor %}
+Start with minimal viable entity definition.
 
-### Pattern 2: Validation Before Action
+**Rules**:
+- Define 3-5 core fields for MVP
+- Use type validation (Pydantic, Zod, etc.)
+- Required fields only for essential data
+- Support progressive enhancement
 
-```bash
-# Required workflow
-1. {{ package_name }} validate <spec>
-2. (Fix any errors)
-3. {{ package_name }} generate <spec>
-```
+**Rationale**: Simple entities are easier to understand and validate.
 
-### Pattern 3: Documentation
+### 2. Validator Extensibility
 
-Every specification must include:
-- Clear description
-- Field definitions
-- Validation rules
-- Examples
+Core validator handles structure, support custom rules.
 
----
+**Rules**:
+- Plugin system for custom validators
+- Clear error messages with field path
+- Include fix suggestions in errors
+- Validation performance: <100ms for typical specs
 
-## 🎨 Domain-Specific Constraints
+**Rationale**: Different use cases need different validation logic.
 
-{% if domain == "mcp" %}
-### MCP Constraints
+### 3. Spec-First Development
 
-1. **Tool Schemas**: Every tool must have complete JSON schema
-2. **Resource URIs**: Follow URI template spec (RFC 6570)
-3. **Error Codes**: Use standard MCP error codes
-4. **Version Compatibility**: Specify MCP specification version
-{% elif domain == "web" %}
-### Web API Constraints
+Users write specifications first, toolkit processes them.
 
-1. **HTTP Methods**: Use appropriate verbs (GET, POST, PUT, DELETE)
-2. **Status Codes**: Return correct HTTP status codes
-3. **Content Types**: Specify request/response content types
-4. **Versioning**: Include API version in URLs or headers
-{% elif domain == "ai" %}
-### AI Agent Constraints
+**Rules**:
+- Specifications are declarative (what, not how)
+- Human-readable formats (YAML/JSON/Markdown)
+- Specifications are version-controlled
+- Generate code from specs, not reverse
 
-1. **Safety First**: Include safety constraints in all specs
-2. **Context Limits**: Respect token/context window limits
-3. **Prompt Engineering**: Follow prompt engineering best practices
-4. **Fallback Behavior**: Define fallback for edge cases
-{% else %}
-### General Constraints
+**Rationale**: Spec-first enables AI agents to generate and validate.
 
-1. **Type Safety**: Specify types for all fields
-2. **Validation**: Include validation rules
-3. **Error Handling**: Define error scenarios
-4. **Testing**: Include test scenarios in specs
-{% endif %}
+### 4. AI-Agent Friendly
 
----
+Optimize for AI agent usage.
 
-## 📏 Quality Standards
+**Rules**:
+- Error messages show fix examples
+- Consistent naming conventions (snake_case fields, kebab-case CLI)
+- Documentation includes common patterns
+- Templates for common use cases
 
-### Specification Quality
+**Rationale**: AI agents need clear patterns to learn from.
 
-- **Completeness**: All required fields defined
-- **Clarity**: Clear, unambiguous language
-- **Consistency**: Consistent naming and structure
-- **Testability**: Includes validation criteria
+### 5. Progressive Enhancement
 
-### Generated Code Quality
+Ship MVP first, add features incrementally.
 
-- **Correctness**: Matches specification exactly
-- **Maintainability**: Clean, readable code
-- **Documentation**: Comprehensive docstrings
-- **Testing**: Includes generated tests
+**Rules**:
+- MVP: init + validate commands
+- Phase 2: generate command
+- Phase 3: execute/test commands
+- Phase 4: report/analytics
+- Semantic versioning strictly followed
 
----
+**Rationale**: Validate value before building advanced features.
 
-## 🔄 Change Management
+### 6. Automated Quality
 
-### Modifying Specifications
+Testing and validation are automated.
 
-1. Update specification document
-2. Validate updated specification
-3. Regenerate affected code
-4. Verify changes
+**Rules**:
+- Unit tests for all validators
+- Integration tests for workflows
+- Example specs as test cases
+- CI/CD for quality checks
 
-### Version Control
+**Rationale**: Automation prevents regression and improves confidence.
 
-- Commit specifications to version control
-- Tag releases with version numbers
-- Maintain CHANGELOG.md
-- Document breaking changes
+<!-- Managed by /metaspec.sdd.constitution -->
 
 ---
 
-## 🚨 Emergency Procedures
+## Governance
 
-### If Generation Fails
+### Amendment Process
 
-1. Check validation first: `{{ package_name }} validate <spec>`
-2. Review error messages carefully
-3. Fix specification issues
-4. Regenerate
+**Part I (Project Core Values)**:
+- Changes require project-wide review
+- Breaking changes need major version bump
+- Rationale must be documented
 
-### If Specification is Unclear
+**Part II (Specification Design)**:
+- Updated via `/metaspec.sds.constitution`
+- Changes require minor version bump
+- Consistency check with existing specs
 
-1. Do NOT guess - ask for clarification
-2. Review similar examples
-3. Consult domain documentation
-4. Update specification with learned insights
+**Part III (Toolkit Implementation)**:
+- Updated via `/metaspec.sdd.constitution`
+- Changes require minor version bump
+- Consistency check with existing code
+
+### Version Bump Rules
+
+- **MAJOR**: Part I changes (core values modified)
+- **MINOR**: Part II or Part III changes (new principles added)
+- **PATCH**: Clarifications, examples, wording fixes
+
+### Compliance
+
+All specifications and code must follow this constitution. Use validation commands to check compliance:
+- `/metaspec.sds.checklist` - Validate specification quality
+- `/metaspec.sdd.checklist` - Validate toolkit implementation
 
 ---
 
-**Constitution Version**: 1.0  
+**Constitution Version**: 1.0.0  
 **Generated by**: MetaSpec {{ metaspec_version }}  
 **Domain**: {{ domain }}
-
