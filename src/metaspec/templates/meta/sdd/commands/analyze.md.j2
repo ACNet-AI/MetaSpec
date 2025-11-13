@@ -31,7 +31,65 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 
 ## Execution Flow
 
-### 1. Check for existing analysis
+### 1. Parse Analysis Mode
+
+**CRITICAL**: Determine analysis mode from user input before proceeding.
+
+#### Mode Detection (from $ARGUMENTS)
+
+Parse user intent to select appropriate analysis mode:
+
+| User Input Keywords | Mode Selected | Purpose |
+|-------------------|---------------|---------|
+| "quick", "fast", "lightweight", "brief", "rapid" | **Quick Mode** | Fast structural integrity checks (< 2 min) |
+| "only [dimension]", "just [dimension]", "check [dimension]", "focus on [dimension]" | **Focused Mode** | Deep dive into specific dimension |
+| Empty, "full", "complete", "comprehensive", or other | **Full Mode** | Complete toolkit analysis (default) |
+
+#### Mode Descriptions
+
+**Quick Mode** ⚡ (< 2 min, ~500 tokens):
+- Purpose: Fast structural integrity validation for toolkit specs
+- Checks: 3 essential dimensions only
+  1. Frontmatter Validation  
+  2. Dependency Check (Does toolkit spec reference domain spec?)
+  3. Architecture File Integrity (plan.md, tasks.md exist?)
+- Skip: Deep semantic analysis
+- Use when: Daily development, quick validation, pre-commit checks
+
+**Focused Mode** 🎯 (3-5 min, dimension-specific):
+- Purpose: Deep analysis of single dimension
+- Checks: Only the specified dimension
+- Dimension mapping:
+  - "dependency", "dependencies", "domain" → Domain Spec Compliance
+  - "architecture", "arch" → Architecture Consistency
+  - "tasks" → Task Breakdown Quality
+  - "constitution", "principles" → Constitution Alignment
+  - "completeness" → Specification Completeness
+  - "cross-artifacts" → Cross-Artifact Consistency
+- Use when: Fixing specific issues, targeted improvement
+
+**Full Mode** 📊 (5-10 min, comprehensive):
+- Purpose: Complete toolkit specification quality analysis
+- Checks: All dimensions
+- Use when: Major releases, complete review, initial analysis
+
+**Mode selection example**:
+```
+User: "/metaspec.sdd.analyze quick" → Quick Mode
+User: "/metaspec.sdd.analyze check dependencies" → Focused Mode (Domain Spec Compliance)
+User: "/metaspec.sdd.analyze" → Full Mode (default)
+```
+
+**Display selected mode**:
+```
+🔍 Analysis Mode: Quick Mode ⚡
+📋 Checking: Frontmatter, Dependencies, Architecture Files
+⏱️  Expected time: < 2 minutes
+```
+
+---
+
+### 2. Check for existing analysis
 
 **CRITICAL**: Before generating, check if analysis already exists:
 
@@ -110,7 +168,222 @@ ls specs/toolkit/XXX-name/analysis/
 - Six principles (Entity-First, Validator Extensibility, etc.)
 - MUST/SHOULD requirements
 
-### 4. Detection passes
+### 4. Quick Mode Checks (if Quick Mode selected)
+
+**IF mode = Quick Mode**, execute ONLY these 3 checks and skip to Step 6 (report generation):
+
+#### Quick-A. Frontmatter Validation
+
+**Purpose**: Verify toolkit spec has valid YAML frontmatter
+
+**Check spec.md frontmatter**:
+```bash
+# Extract frontmatter from specs/toolkit/001-xxx/spec.md
+yq eval '.' specs/toolkit/001-xxx/spec.md
+```
+
+**Required fields for toolkit spec**:
+- `spec_id`: Must exist
+- `spec_type`: Should be 'toolkit'
+- `version`: Must exist
+- `dependencies`: Must list at least one domain spec
+
+**Report**:
+```
+✅ PASS: Toolkit spec has valid frontmatter
+  - spec_id: 001-mcp-parser
+  - spec_type: toolkit
+  - version: 0.1.0
+  - dependencies: [domain/001-mcp-spec]
+
+OR
+
+❌ FAIL: Frontmatter issues found
+  - Missing 'dependencies' field → CRITICAL: Must reference domain spec
+  - Missing 'version' field
+```
+
+#### Quick-B. Dependency Check (Domain Spec Reference)
+
+**Purpose**: Verify toolkit spec declares dependency on domain spec
+
+**Check dependencies section**:
+```bash
+# Check if spec.md has Dependencies section
+grep -A 5 "## Dependencies" specs/toolkit/001-xxx/spec.md
+
+# Verify referenced spec exists
+ls specs/domain/001-xxx-spec/spec.md
+```
+
+**Validate**:
+- ✅ Has "Dependencies" section in spec.md
+- ✅ Lists at least one domain spec
+- ✅ Referenced domain spec exists
+- ✅ Domain spec file is valid (can be read)
+
+**Report**:
+```
+✅ PASS: Toolkit correctly references domain spec
+  - Dependency declared: domain/001-mcp-spec
+  - Domain spec exists: ✅
+  - Domain spec valid: ✅
+
+OR
+
+❌ CRITICAL: No domain spec dependency found
+  - specs/toolkit/001-parser/spec.md missing "Dependencies" section
+  - ACTION: Run /metaspec.sdd.specify and add domain spec reference
+  - Cannot proceed: Toolkit without specification violates Spec-Driven principle
+
+OR
+
+❌ HIGH: Referenced domain spec doesn't exist
+  - Declared dependency: domain/001-api-spec
+  - File not found: specs/domain/001-api-spec/spec.md
+  - ACTION: Run /metaspec.sds.specify to create domain spec first
+```
+
+#### Quick-C. Architecture File Integrity
+
+**Purpose**: Verify required toolkit files exist and are readable
+
+**Check file existence**:
+```bash
+# Required files for toolkit
+ls specs/toolkit/001-xxx/spec.md      # Toolkit specification
+ls specs/toolkit/001-xxx/plan.md      # Architecture plan (if planned)
+ls specs/toolkit/001-xxx/tasks.md     # Implementation tasks (if tasked)
+```
+
+**Validate**:
+- ✅ spec.md exists and is readable
+- ✅ plan.md exists (if spec mentions architecture)
+- ✅ tasks.md exists (if spec mentions implementation)
+- ✅ Files are not empty
+- ✅ Files are valid markdown
+
+**Report**:
+```
+✅ PASS: All required files present
+  - spec.md: ✅ (1250 lines)
+  - plan.md: ✅ (850 lines)
+  - tasks.md: ✅ (420 lines)
+
+OR
+
+⚠️ WARNING: Missing optional files
+  - spec.md: ✅
+  - plan.md: ❌ Not found (run /metaspec.sdd.plan to create)
+  - tasks.md: ❌ Not found (run /metaspec.sdd.tasks to create)
+  
+Recommendation: Create plan and tasks before implementation
+
+OR
+
+❌ FAIL: Required file missing
+  - spec.md: ❌ Not found
+  - ACTION: Run /metaspec.sdd.specify to create toolkit spec
+```
+
+**Quick Mode Report Format**:
+```markdown
+# Quick Toolkit Analysis Report ⚡
+
+**Date**: [DATE] | **Mode**: Quick | **Toolkit**: [NAME]
+
+**Summary**:
+- ✅ Frontmatter: Valid
+- ✅ Domain Dependency: Valid (references domain/001-mcp-spec)
+- ✅ Architecture Files: All present
+
+**Total Time**: 30 seconds
+
+---
+
+## ✅ All Structural Checks Passed
+
+**Dependency**:
+- Domain Spec: specs/domain/001-mcp-spec/spec.md ✅
+
+**Files**:
+- spec.md: ✅ (1250 lines)
+- plan.md: ✅ (850 lines)
+- tasks.md: ✅ (420 lines)
+
+**Next Steps**:
+- For detailed analysis, run: `/metaspec.sdd.analyze`
+- For specific dimension, run: `/metaspec.sdd.analyze check [dimension]`
+```
+
+**If issues found**:
+```markdown
+# Quick Toolkit Analysis Report ⚡
+
+**Date**: [DATE] | **Mode**: Quick | **Toolkit**: [NAME]
+
+**Summary**:
+- ❌ Frontmatter: Missing dependencies field
+- ❌ Domain Dependency: No domain spec referenced  
+- ⚠️  Architecture Files: plan.md and tasks.md missing
+
+**Total Issues**: 3 (1 CRITICAL, 2 WARNING)
+
+---
+
+## ❌ Critical Issues Found
+
+### 1. Missing Domain Spec Dependency (CRITICAL)
+
+**Issue**: Toolkit spec doesn't reference any domain specification
+
+**Impact**: Violates Spec-Driven Development principle
+- Toolkit without specification is not a valid speckit
+- Cannot validate correctness against specification
+- Implementation has no reference
+
+**Action Required**:
+1. Identify domain specification this toolkit supports
+2. If domain spec doesn't exist:
+   - Run `/metaspec.sds.specify` to create it first
+3. Update toolkit spec.md:
+   - Add "Dependencies" section
+   - Reference domain spec (e.g., "Depends on: domain/001-api-spec")
+4. Update frontmatter dependencies field
+
+### 2. Missing Architecture Files (WARNING)
+
+**Issue**: plan.md and tasks.md not found
+
+**Impact**: 
+- Cannot implement without plan and tasks
+- No architecture design guidance
+- No task breakdown
+
+**Action Recommended**:
+1. Run `/metaspec.sdd.plan` to create architecture plan
+2. Run `/metaspec.sdd.tasks` to break down implementation tasks
+3. Then proceed with `/metaspec.sdd.implement`
+
+---
+
+## 🔄 Next Steps
+
+1. **Fix CRITICAL issues first** (domain spec dependency)
+2. **Create missing files** (plan, tasks)
+3. **Re-run quick check**: `/metaspec.sdd.analyze quick`
+4. **When resolved**, run full analysis: `/metaspec.sdd.analyze`
+```
+
+**END Quick Mode** - Skip to Step 6 (Generate Report)
+
+---
+
+### 5. Full/Focused Mode Detection Passes
+
+**IF mode = Full Mode OR Focused Mode**, execute these detection passes:
+
+**Note**: In Focused Mode, only execute the selected dimension.
 
 #### A. Feature Dependency Validation (Feature 2 Only)
 

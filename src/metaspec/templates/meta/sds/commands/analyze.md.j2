@@ -33,7 +33,70 @@ Identify inconsistencies, ambiguities, and gaps in domain specifications. **READ
 
 ## Execution Flow
 
-### 1. Check for existing analysis
+### 1. Parse Analysis Mode
+
+**CRITICAL**: Determine analysis mode from user input before proceeding.
+
+#### Mode Detection (from $ARGUMENTS)
+
+Parse user intent to select appropriate analysis mode:
+
+| User Input Keywords | Mode Selected | Purpose |
+|-------------------|---------------|---------|
+| "quick", "fast", "lightweight", "brief", "rapid" | **Quick Mode** | Fast structural integrity checks (< 2 min) |
+| "only [dimension]", "just [dimension]", "check [dimension]", "focus on [dimension]" | **Focused Mode** | Deep dive into specific dimension |
+| Empty, "full", "complete", "comprehensive", or other | **Full Mode** | Complete 10-dimension analysis (default) |
+
+#### Mode Descriptions
+
+**Quick Mode** ⚡ (< 2 min, ~500 tokens):
+- Purpose: Fast structural integrity validation
+- Checks: 3 essential dimensions only
+  1. Frontmatter Validation
+  2. Cross-Reference Integrity  
+  3. Dependency Graph Check
+- Skip: Deep semantic analysis (7 dimensions)
+- Use when: Daily development, quick validation, pre-commit checks
+
+**Focused Mode** 🎯 (3-5 min, dimension-specific):
+- Purpose: Deep analysis of single dimension
+- Checks: Only the specified dimension
+- Dimension mapping:
+  - "entity", "entities" → Entity Definition Quality (A)
+  - "validation", "rules" → Validation Rule Completeness (B)
+  - "operations", "ops" → Operations Completeness (C)
+  - "schema", "consistency" → Schema Consistency (D)
+  - "errors", "error-handling" → Error Handling (E)
+  - "examples" → Examples Completeness (F)
+  - "dependencies", "deps", "cross-ref" → Cross-Entity Dependencies (G)
+  - "constitution", "principles" → Constitution Alignment (H)
+  - "ambiguity", "vague" → Ambiguity Detection (I)
+  - "terminology", "naming" → Terminology Consistency (J)
+  - "artifacts", "cross-artifacts" → Cross-Artifact Consistency (K)
+- Use when: Fixing specific issues, targeted improvement
+
+**Full Mode** 📊 (5-10 min, comprehensive):
+- Purpose: Complete specification quality analysis
+- Checks: All 11 dimensions (A-K)
+- Use when: Major releases, complete review, initial analysis
+
+**Mode selection example**:
+```
+User: "/metaspec.sds.analyze quick" → Quick Mode
+User: "/metaspec.sds.analyze check entities" → Focused Mode (Entity Quality)
+User: "/metaspec.sds.analyze" → Full Mode (default)
+```
+
+**Display selected mode**:
+```
+🔍 Analysis Mode: Quick Mode ⚡
+📋 Checking: Frontmatter, Cross-References, Dependencies
+⏱️  Expected time: < 2 minutes
+```
+
+---
+
+### 2. Check for existing analysis
 
 **CRITICAL**: Before generating, check if analysis already exists:
 
@@ -86,7 +149,184 @@ ls specs/domain/XXX-name/analysis/
 
 **Analysis focus**: Extract minimal context needed for quality checks, not full content.
 
-### 4. Detection Passes
+### 4. Quick Mode Checks (if Quick Mode selected)
+
+**IF mode = Quick Mode**, execute ONLY these 3 checks and skip to Step 6 (report generation):
+
+#### Quick-A. Frontmatter Validation
+
+**Purpose**: Verify YAML frontmatter structure and required fields
+
+**Check each spec.md**:
+```bash
+# Extract frontmatter
+yq eval '.' specs/domain/*/spec.md
+
+# Verify required fields
+- spec_id: Must exist, format: NNN-name
+- parent: Must exist (or null if root)
+- root: Must exist (spec_id of root specification)
+- type: Must be 'root' | 'parent' | 'leaf'
+```
+
+**Validate logic**:
+- ✅ Root specs: parent = null, type = root
+- ✅ Leaf specs: parent != null, type = leaf
+- ✅ Parent specs: parent != null, type = parent, has sub-specifications
+- ✅ spec_id matches directory name
+- ✅ root reference points to valid spec
+
+**Report**:
+```
+✅ PASS: All 5 specs have valid frontmatter
+OR
+❌ FAIL: 2 frontmatter issues found
+  - specs/domain/003-payment/spec.md: Missing 'parent' field
+  - specs/domain/005-shipping/spec.md: spec_id '004-shipping' doesn't match directory name
+```
+
+#### Quick-B. Cross-Reference Integrity
+
+**Purpose**: Verify all internal links resolve correctly
+
+**Extract all references**:
+```bash
+# Find all markdown links to other specs
+grep -r "\[.*\](\.\./.*/spec\.md)" specs/domain/
+
+# Pattern: [Link Text](../XXX-name/spec.md)
+# Pattern: [Link Text](../XXX-name/spec.md#section)
+```
+
+**Verify each reference**:
+- ✅ Target file exists
+- ✅ If anchor specified (#section), verify section exists in target
+- ✅ Relative path resolves correctly
+
+**Report**:
+```
+✅ PASS: All 12 cross-references valid
+OR
+❌ FAIL: 3 broken references found
+  - specs/domain/002-order/spec.md:45
+    → [Payment Spec](../010-payment/spec.md)
+    → ERROR: File ../010-payment/spec.md does not exist
+  
+  - specs/domain/003-payment/spec.md:78
+    → [Order Entity](../002-order/spec.md#entity-order)
+    → ERROR: Anchor #entity-order not found in target
+```
+
+#### Quick-C. Dependency Graph Check
+
+**Purpose**: Verify parent-child relationships and detect cycles
+
+**Build dependency graph**:
+```
+For each spec in specs/domain/*/:
+  Extract: spec_id, parent, root
+  Build graph: spec_id → parent
+```
+
+**Validate graph**:
+- ✅ All parent references point to existing specs
+- ✅ All root references point to existing specs
+- ✅ No circular dependencies (A → B → A)
+- ✅ Root specs have no parent
+- ✅ Leaf specs have no children
+
+**Report**:
+```
+✅ PASS: Dependency graph valid (5 specs, 1 root, 3 parents, 1 leaf)
+
+Specification Tree:
+001-order-spec (root)
+  ├── 002-order-creation (leaf)
+  ├── 003-payment (parent)
+  │   ├── 013-credit-card (leaf)
+  │   └── 014-digital-wallet (leaf)
+  └── 004-fulfillment (leaf)
+
+OR
+
+❌ FAIL: Dependency issues found
+  - specs/domain/005-shipping/spec.md: parent='099-logistics' but spec doesn't exist
+  - Circular dependency detected: 002 → 005 → 002
+```
+
+**Quick Mode Report Format**:
+```markdown
+# Quick Analysis Report ⚡
+
+**Date**: [DATE] | **Mode**: Quick | **Specification**: [NAME]
+
+**Summary**:
+- ✅ Frontmatter: Valid (5/5 specs)
+- ✅ Cross-References: Valid (12/12 links)  
+- ✅ Dependencies: Valid (no cycles, 5 specs)
+
+**Total Time**: 45 seconds
+
+---
+
+## ✅ All Structural Checks Passed
+
+**Next Steps**:
+- For detailed quality analysis, run: `/metaspec.sds.analyze`
+- For specific dimension check, run: `/metaspec.sds.analyze check [dimension]`
+```
+
+**If issues found in Quick Mode**:
+```markdown
+# Quick Analysis Report ⚡
+
+**Date**: [DATE] | **Mode**: Quick | **Specification**: [NAME]
+
+**Summary**:
+- ✅ Frontmatter: Valid (5/5 specs)
+- ❌ Cross-References: 3 broken links found
+- ⚠️  Dependencies: 1 issue found
+
+**Total Issues**: 4 (3 broken links, 1 dependency issue)
+
+---
+
+## ❌ Structural Issues Found
+
+### Cross-Reference Issues (3)
+
+| File | Line | Issue | Target |
+|------|------|-------|--------|
+| 002-order/spec.md | 45 | File not found | ../010-payment/spec.md |
+| 003-payment/spec.md | 78 | Anchor not found | ../002-order/spec.md#entity-order |
+| 005-shipping/spec.md | 102 | File not found | ../020-tracking/spec.md |
+
+**Recommendation**: Fix broken links before proceeding
+
+### Dependency Issues (1)
+
+- specs/domain/005-shipping/spec.md: parent='099-logistics' doesn't exist
+
+**Recommendation**: Update frontmatter with correct parent spec_id
+
+---
+
+## 🔄 Next Steps
+
+1. **Fix issues above** (estimated time: 10-15 min)
+2. **Re-run quick check**: `/metaspec.sds.analyze quick`
+3. **When structural issues resolved**, run full analysis: `/metaspec.sds.analyze`
+```
+
+**END Quick Mode** - Skip to Step 6 (Generate Report)
+
+---
+
+### 5. Full/Focused Mode Detection Passes
+
+**IF mode = Full Mode OR Focused Mode**, execute these detection passes:
+
+**Note**: In Focused Mode, only execute the selected dimension.
 
 #### A. Entity Definition Quality
 
@@ -279,21 +519,80 @@ ls specs/domain/XXX-name/analysis/
 ✅ All checklist items have valid spec references
 ```
 
-### 5. Severity Assignment
+### 6. Severity Assignment (Full/Focused Mode only)
 
 **CRITICAL**: Constitution violation, missing operation schema, undefined entities
 **HIGH**: Missing validation rules, incomplete error handling, ambiguous requirements
 **MEDIUM**: Terminology drift, missing examples, underspecified constraints
 **LOW**: Style improvement, minor inconsistency
 
-### 6. Generate Analysis Report
+### 7. Generate Analysis Report
+
+**Report generation varies by mode:**
+
+#### A. Quick Mode Report (already defined in Step 4)
+
+Quick Mode uses simplified report format defined in Step 4. No additional report generation needed.
+
+#### B. Focused Mode Report
+
+**IF mode = Focused Mode**, generate dimension-specific report:
+
+```markdown
+# Focused Analysis Report 🎯
+
+**Date**: [DATE] | **Mode**: Focused ([Dimension Name])  
+**Specification**: [NAME] v[VERSION]
+
+**Dimension**: [Selected Dimension Name]
+**Analysis Time**: [X] minutes
+
+---
+
+## Summary
+
+**Issues Found**: [N] ([X] CRITICAL, [Y] HIGH, [Z] MEDIUM, [W] LOW)
+
+[Dimension-specific summary table]
+
+---
+
+## Detailed Findings
+
+[Only findings for selected dimension, full detail]
+
+---
+
+## Recommendations
+
+**Immediate Actions** (CRITICAL/HIGH):
+1. [Action 1]
+2. [Action 2]
+
+**Improvements** (MEDIUM/LOW):
+1. [Improvement 1]
+2. [Improvement 2]
+
+---
+
+## Next Steps
+
+- Fix issues above
+- Re-run focused check: `/metaspec.sds.analyze check [dimension]`
+- When satisfied, run full analysis: `/metaspec.sds.analyze`
+```
+
+#### C. Full Mode Report
+
+**IF mode = Full Mode**, generate comprehensive report:
 
 **Output format** (token-efficient, table-based):
 
 ```markdown
-# Domain Specification Analysis Report
+# Domain Specification Analysis Report 📊
 
-**Date**: [DATE] | **Specification**: [NAME] v[VERSION]
+**Date**: [DATE] | **Mode**: Full Analysis  
+**Specification**: [NAME] v[VERSION]
 
 **Summary Statistics**:
 - Total Issues: [N] ([X] CRITICAL, [Y] HIGH, [Z] MEDIUM, [W] LOW)
