@@ -24,6 +24,52 @@ This command is for defining **domain specifications, rules, and standards**:
 
 **NOT for toolkit implementation** - Use `/metaspec.sdd.specify` for that.
 
+---
+
+### 📖 Navigation Guide (Quick Reference with Line Numbers)
+
+**🎯 AI Token Optimization**: Use `read_file` with `offset` and `limit` to read only needed sections.
+
+**Core Flow** (Read sequentially):
+
+| Step | Lines | Size | read_file Usage |
+|------|-------|------|-----------------|
+| 0. Check Context | 54-104 | 50 lines | `read_file(target_file, offset=54, limit=50)` |
+| 1. Determine Spec | 105-134 | 29 lines | `read_file(target_file, offset=105, limit=29)` |
+| 2. Gather Content | 135-165 | 30 lines | `read_file(target_file, offset=135, limit=30)` |
+| 3. Generate Sections | 166-457 | 291 lines | See templates below ⬇️ |
+| 4. Write File | 458-542 | 84 lines | `read_file(target_file, offset=458, limit=84)` |
+| 5-11. Validate & Report | 543-973 | 430 lines | `read_file(target_file, offset=543, limit=430)` |
+
+**📋 Key Templates in Step 3** (Jump to specific templates):
+
+| Template | Lines | Size | Usage |
+|----------|-------|------|-------|
+| Overview & Glossary | 170-203 | 33 lines | `read_file(target_file, offset=170, limit=33)` |
+| Use Cases | 204-245 | 41 lines | `read_file(target_file, offset=204, limit=41)` |
+| **Entity Template** ⭐ | 252-283 | 31 lines | `read_file(target_file, offset=252, limit=31)` |
+| Workflow & State | 284-359 | 75 lines | `read_file(target_file, offset=284, limit=75)` |
+| **Operations** ⭐ | 366-395 | 29 lines | `read_file(target_file, offset=366, limit=29)` |
+| Validation Rules | 396-415 | 19 lines | `read_file(target_file, offset=396, limit=19)` |
+| Error Handling | 416-435 | 19 lines | `read_file(target_file, offset=416, limit=19)` |
+| Examples | 436-457 | 21 lines | `read_file(target_file, offset=436, limit=21)` |
+
+**💡 Typical Usage Patterns**:
+```python
+# Quick start: Read only Steps 0-2 (109 lines)
+read_file(target_file, offset=54, limit=111)
+
+# Just templates: Read Step 3 only (291 lines)
+read_file(target_file, offset=166, limit=291)
+
+# Just Entity template: Read specific template (31 lines)
+read_file(target_file, offset=252, limit=31)
+```
+
+**Token Savings**: Reading specific sections saves 70-90% tokens vs reading full file (1039 lines).
+
+---
+
 Follow this execution flow:
 
 ### 0. Check Invocation Context (NEW - Critical for Recursive Structure)

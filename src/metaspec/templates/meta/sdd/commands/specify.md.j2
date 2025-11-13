@@ -24,6 +24,71 @@ This command is for defining **toolkit implementation specifications**:
 
 **NOT for specification definition** - Use `/metaspec.sds.specify` for that.
 
+---
+
+### 📖 Navigation Guide (Quick Reference with Line Numbers)
+
+**🎯 AI Token Optimization**: Use `read_file` with `offset` and `limit` to read only needed sections.
+
+**Core Flow** (Read sequentially):
+
+| Step | Lines | Size | read_file Usage |
+|------|-------|------|-----------------|
+| 1. Setup & Verify | 55-111 | 56 lines | `read_file(target_file, offset=55, limit=56)` |
+| 2. Gather Content | 112-191 | 79 lines | `read_file(target_file, offset=112, limit=79)` |
+| 3. Generate Sections | 192-1772 | 1580 lines | See components below ⬇️ **LARGE** |
+| 4. Write File | 1773-1821 | 48 lines | `read_file(target_file, offset=1773, limit=48)` |
+| 5-9. Validate & Report | 1822-2338 | 516 lines | `read_file(target_file, offset=1822, limit=516)` |
+
+**📋 Key Components in Step 3** (Jump to specific components):
+
+| Component | Lines | Size | Priority | Usage |
+|-----------|-------|------|----------|-------|
+| Overview & Dependencies | 196-298 | 102 lines | 🔴 MUST READ | `read_file(target_file, offset=196, limit=102)` |
+| Component 1: Parser | 303-344 | 41 lines | 🟢 Optional | `read_file(target_file, offset=303, limit=41)` |
+| Component 2: Validator | 345-389 | 44 lines | 🟢 Optional | `read_file(target_file, offset=345, limit=44)` |
+| **Component 3: CLI Commands** ⭐ | 390-663 | 273 lines | 🔴 **KEY** | `read_file(target_file, offset=390, limit=273)` |
+| **Component 4: Slash Commands** ⭐⭐ | 664-1612 | 948 lines | 🔴 **LARGE** | See subsections below ⬇️ |
+| Component 5: Generator | 1613-1639 | 26 lines | 🟢 Optional | `read_file(target_file, offset=1613, limit=26)` |
+| Architecture & Requirements | 1640-1772 | 132 lines | 🟡 Important | `read_file(target_file, offset=1640, limit=132)` |
+
+**🎨 Component 4: Slash Commands Subsections** (Most requested - 948 lines total):
+
+| Subsection | Lines | Size | Usage |
+|------------|-------|------|-------|
+| Overview & Frontmatter | 664-721 | 57 lines | `read_file(target_file, offset=664, limit=57)` |
+| Dual-Source Architecture | 722-766 | 44 lines | `read_file(target_file, offset=722, limit=44)` |
+| **Source 1: Custom Commands** ⭐ | 767-1016 | 249 lines | `read_file(target_file, offset=767, limit=249)` |
+| Command Templates (3 types) | 1083-1333 | 250 lines | `read_file(target_file, offset=1083, limit=250)` |
+| Command Inventory | 1334-1412 | 78 lines | `read_file(target_file, offset=1334, limit=78)` |
+| **Source 2: Library Commands** ⭐ | 1413-1559 | 146 lines | `read_file(target_file, offset=1413, limit=146)` |
+| Strategy & Integration | 1560-1612 | 52 lines | `read_file(target_file, offset=1560, limit=52)` |
+
+**💡 Typical Usage Patterns**:
+```python
+# Minimal: Read only Steps 1-2 (135 lines)
+read_file(target_file, offset=55, limit=135)
+
+# CLI Design: Read Component 3 (273 lines)
+read_file(target_file, offset=390, limit=273)
+
+# Slash Commands Overview: Read Component 4 intro (101 lines)
+read_file(target_file, offset=664, limit=101)
+
+# Custom Slash Commands: Read Source 1 (249 lines)
+read_file(target_file, offset=767, limit=249)
+
+# Library Slash Commands: Read Source 2 (146 lines)
+read_file(target_file, offset=1413, limit=146)
+```
+
+**Token Savings**: 
+- Full file: 2339 lines (~8000 tokens)
+- Targeted reading: 135-500 lines (~500-2000 tokens)
+- **Savings: 70-94% tokens** 🎉
+
+---
+
 Follow this execution flow:
 
 ### 1. Determine Toolkit and Load Existing Specification
