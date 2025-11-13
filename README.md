@@ -45,6 +45,27 @@ What you can generate:
 
 **3. Full Lifecycle** - Covers **complete lifecycle** (creation, updates, maintenance)
 
+**4. Precision-Guided Navigation** - Built-in line-number navigation across 6 core commands lets AI jump directly to relevant sections with `read_file(offset, limit)`, cutting token usage by **84-98%**
+
+---
+
+## 🧭 Token Optimization
+
+MetaSpec 0.5.4 introduces **precision-guided navigation** so AI agents can read just the slices of large command templates they need.
+
+- **How it works**: Every enhanced command begins with a 📖 Navigation Guide listing line ranges. Combine it with `read_file(target_file, offset, limit)` to stream only that segment.
+- **Coverage**: `specify` (SDS/SDD), `implement` (SDS/SDD), `tasks` (SDS), `plan` (SDD) — **8615 lines** of navigation guidance overall.
+- **Savings**: Real-world scenarios show **84-98% token reductions** (language-specific sections reach **97-98%**).
+- **More examples**: See `AGENTS.md` → *Token Optimization: Precision-Guided Navigation* for full tables and best practices.
+
+```bash
+# Jump straight to CLI design section of SDD/specify
+read_file("src/metaspec/templates/meta/sdd/commands/specify.md.j2", offset=390, limit=273)
+
+# Grab Python-specific implementation steps only (97% savings)
+read_file("src/metaspec/templates/meta/sdd/commands/implement.md.j2", offset=210, limit=25)
+```
+
 ---
 
 ## 🚀 Quick Start
@@ -436,6 +457,11 @@ uv run mypy src/metaspec       # Type check
 ---
 
 ## 🏗️ Status
+
+**v0.5.4** - Precision-Guided Navigation 🚀  
+- Added line-number navigation to `specify`, `implement`, `tasks`, `plan` (SDS/SDD) for 84-98% token savings  
+- Enhanced `/metaspec.*.analyze` with Quick / Focused / Full modes  
+- Fixed 6 Jinja2 template issues and refreshed documentation (CHANGELOG, AGENTS)
 
 **v0.5.3** - Alpha Release 🎉
 
