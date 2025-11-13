@@ -245,94 +245,28 @@ Test for specification issues:
 
 ### 6. Example Checklist Items
 
-#### Entity Definitions (`entity-design.md`)
-
-```markdown
-- [ ] CHK001 - Are all specification entities clearly defined with purpose statements? [Completeness, Spec §Entities]
-- [ ] CHK002 - Are all entity fields defined with explicit types (string, number, boolean, array, object)? [Completeness, Spec §Entities]
-- [ ] CHK003 - Is the distinction between required and optional fields clearly specified? [Clarity, Spec §Entities]
-- [ ] CHK004 - Are field descriptions specific enough to understand specification semantics? [Clarity, Spec §Entities]
-- [ ] CHK005 - Are field constraints documented (enum values, format specifications, ranges)? [Completeness, Spec §Entities]
-- [ ] CHK006 - Are example values provided for every entity field? [Coverage, Spec §Entities]
-- [ ] CHK007 - Are entity relationships (references, dependencies) clearly defined? [Completeness, Spec §Entities]
-- [ ] CHK008 - Does entity design follow Entity-First principle (3-5 core fields)? [Consistency, Constitution §I]
-- [ ] CHK009 - Are entity field names self-explanatory and consistent? [Clarity, Constitution]
-- [ ] CHK010 - Are domain-specific field constraints documented? [Coverage, Spec §Domain Constraints]
+**Item Pattern** - Use question format testing requirement quality:
+```
+- [ ] CHK### - Are [aspect] defined/specified/documented for [scenario]? [Quality Dimension, Spec §Reference]
 ```
 
-#### Operations (`operations.md`)
+**Quality Dimensions**: Completeness, Clarity, Consistency, Coverage, Measurability, Traceability
 
+**Common Focus Areas** (generate items dynamically based on spec content):
+
+**Entities**: Are fields typed? Are constraints specified? Do examples exist? [Completeness/Clarity]
+**Operations**: Are schemas defined? Are error cases covered? Are examples provided? [Completeness/Coverage]
+**Validation**: Are rules testable? Are edge cases addressed? Are errors documented? [Measurability/Coverage]
+**Examples**: Do they cover all entities/operations? Are they valid? Do they show edge cases? [Coverage/Consistency]
+**Constitution**: Does design follow principles? Are violations justified? [Consistency/Traceability]
+
+**Sample Items**:
 ```markdown
-- [ ] CHK001 - Are all specification operations listed with clear purpose statements? [Completeness, Spec §Operations]
-- [ ] CHK002 - Are request schemas defined for all operations? [Completeness, Spec §Operations]
-- [ ] CHK003 - Are response schemas defined for all operations? [Completeness, Spec §Operations]
-- [ ] CHK004 - Are success response formats documented with examples? [Completeness, Spec §Operations]
-- [ ] CHK005 - Are error response formats documented with examples? [Completeness, Spec §Operations]
-- [ ] CHK006 - Are operation constraints specified (timeouts, rate limits, retries)? [Completeness, Spec §Operations]
-- [ ] CHK007 - Are operation examples provided for success cases? [Coverage, Spec §Examples]
-- [ ] CHK008 - Are operation examples provided for error cases? [Coverage, Spec §Examples]
-- [ ] CHK009 - Is the operation naming convention consistent? [Consistency, Spec §Operations]
-- [ ] CHK010 - Are operation dependencies documented? [Completeness, Spec §Operations]
-```
-
-#### Validation Rules (`validation.md`)
-
-```markdown
-- [ ] CHK001 - Are structural validation rules (type, required) explicitly defined? [Completeness, Spec §Validation Rules]
-- [ ] CHK002 - Are semantic validation rules (cross-field, logic) specified? [Completeness, Spec §Validation Rules]
-- [ ] CHK003 - Are domain-specific validation rules documented with rationale? [Coverage, Spec §Domain Validation]
-- [ ] CHK004 - Is error message format specified for validation failures? [Clarity, Spec §Validation Rules]
-- [ ] CHK005 - Are validation error codes defined? [Completeness, Spec §Error Codes]
-- [ ] CHK006 - Is validation logic consistent across similar fields? [Consistency, Spec §Validation Rules]
-- [ ] CHK007 - Are validation rules testable and objective? [Measurability, Spec §Validation Rules]
-- [ ] CHK008 - Are validation edge cases (empty, null, invalid) specified? [Coverage, Gap]
-- [ ] CHK009 - Can validation rules be objectively verified? [Measurability, Spec §Validation Rules]
-- [ ] CHK010 - Are validation examples provided? [Coverage, Spec §Examples]
-```
-
-#### Error Handling (`error-handling.md`)
-
-```markdown
-- [ ] CHK001 - Are all specification error codes defined with clear meanings? [Completeness, Spec §Error Codes]
-- [ ] CHK002 - Are error response formats consistent across operations? [Consistency, Spec §Error Handling]
-- [ ] CHK003 - Are error messages descriptive and actionable? [Clarity, Spec §Error Messages]
-- [ ] CHK004 - Are error scenarios documented for each operation? [Coverage, Spec §Operations]
-- [ ] CHK005 - Are recovery strategies specified for errors? [Completeness, Spec §Error Handling]
-- [ ] CHK006 - Are error examples provided for each error code? [Coverage, Spec §Examples]
-- [ ] CHK007 - Are error messages AI-friendly with fix suggestions? [Clarity, Constitution]
-- [ ] CHK008 - Are error severity levels defined (critical, warning, info)? [Completeness, Spec §Error Handling]
-- [ ] CHK009 - Are error code ranges documented (e.g., E001-E099 for validation)? [Completeness, Spec §Error Codes]
-- [ ] CHK010 - Is error handling consistent with domain standards? [Consistency, Constitution]
-```
-
-#### Examples (`examples.md`)
-
-```markdown
-- [ ] CHK001 - Are examples provided for all specification entities? [Coverage, Spec §Examples]
-- [ ] CHK002 - Are examples provided for all specification operations? [Coverage, Spec §Examples]
-- [ ] CHK003 - Do entity examples include all required fields? [Completeness, Spec §Examples]
-- [ ] CHK004 - Do operation examples show typical use cases? [Coverage, Spec §Examples]
-- [ ] CHK005 - Do examples cover error scenarios? [Coverage, Spec §Examples]
-- [ ] CHK006 - Are examples valid against specification schemas? [Consistency, Spec §Examples]
-- [ ] CHK007 - Are complex scenarios illustrated with examples? [Coverage, Spec §Examples]
-- [ ] CHK008 - Do examples demonstrate edge cases? [Coverage, Gap]
-- [ ] CHK009 - Are example formats consistent (JSON, YAML, etc.)? [Consistency, Spec §Examples]
-- [ ] CHK010 - Are examples self-contained and executable? [Completeness, Spec §Examples]
-```
-
-#### Constitution Alignment (`constitution.md`)
-
-```markdown
-- [ ] CHK001 - Does entity design follow Entity-First principle (3-5 core fields)? [Consistency, Constitution §I]
-- [ ] CHK002 - Are entity field names self-explanatory? [Clarity, Constitution]
-- [ ] CHK003 - Is specification minimal (only essential operations)? [Consistency, Constitution]
-- [ ] CHK004 - Is specification extensible (supports future additions)? [Consistency, Constitution]
-- [ ] CHK005 - Are specifications AI-friendly (clear descriptions, examples)? [Clarity, Constitution]
-- [ ] CHK006 - Are domain standards followed (RFCs, conventions)? [Consistency, Constitution]
-- [ ] CHK007 - Are all constitution principles addressed in specification? [Completeness, Constitution]
-- [ ] CHK008 - Are any principle violations explicitly justified? [Traceability, Constitution]
-- [ ] CHK009 - Does specification avoid over-engineering (progressive enhancement)? [Consistency, Constitution]
-- [ ] CHK010 - Is constitution referenced in design decisions? [Traceability, Spec]
+- [ ] CHK001 - Are all entity fields defined with explicit types? [Completeness, Spec §Entities]
+- [ ] CHK002 - Are operation response schemas documented? [Completeness, Spec §Operations]
+- [ ] CHK003 - Can "valid" be objectively measured? [Measurability, Spec §Validation]
+- [ ] CHK004 - Are error examples provided for failure cases? [Coverage, Spec §Examples]
+- [ ] CHK005 - Does entity design follow 3-5 fields principle? [Consistency, Constitution]
 ```
 
 ### 7. Anti-Examples: What NOT To Do

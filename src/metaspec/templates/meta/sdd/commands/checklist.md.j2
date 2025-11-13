@@ -183,79 +183,28 @@ Test for specification issues:
 
 ### 5. Example Checklist Items
 
-#### Entity Design Quality (`entity-design.md`)
-
-```markdown
-- [ ] CHK001 - Are all entity fields defined with explicit types (string, number, boolean, array, object)? [Completeness, Spec §Entity Definitions]
-- [ ] CHK002 - Is the distinction between required and optional fields clearly specified? [Clarity, Spec §Entity Definitions]
-- [ ] CHK003 - Are field descriptions specific enough to guide implementation? [Clarity, Spec §Entity Definitions]
-- [ ] CHK004 - Are example values provided for every field? [Coverage, Spec §Entity Definitions]
-- [ ] CHK005 - Are field validation rules (regex, enum, range) documented? [Completeness, Spec §Entity Definitions]
-- [ ] CHK006 - Is the rationale for each field explained? [Traceability, Spec §Entity Definitions]
-- [ ] CHK007 - Are entity relationships (if any) clearly defined? [Completeness, Gap]
-- [ ] CHK008 - Does entity design follow Entity-First principle (3-5 core fields)? [Consistency, Constitution §I]
-- [ ] CHK009 - Are nested objects avoided in MVP (progressive enhancement)? [Consistency, Constitution §V]
-- [ ] CHK010 - Are domain-specific field constraints documented? [Coverage, Spec §Domain Constraints]
+**Item Pattern** - Use question format testing specification quality:
+```
+- [ ] CHK### - Are [aspect] defined/specified/documented for [scenario]? [Quality Dimension, Spec §Reference]
 ```
 
-#### Validation Rules Quality (`validation.md`)
+**Quality Dimensions**: Completeness, Clarity, Consistency, Coverage, Measurability, Traceability
 
+**Common Focus Areas** (generate items dynamically based on toolkit spec content):
+
+**Entities**: Are fields typed? Are rationales provided? Do examples exist? Follow Entity-First? [Completeness/Traceability]
+**Validation**: Are rules specified? Are error messages clear? Is extensibility defined? [Completeness/Consistency]
+**Workflow**: Are steps ordered? Are I/O specified? Are workflows testable? [Clarity/Measurability]
+**CLI**: Are commands documented? Are exit codes defined? Are examples provided? [Completeness/Coverage]
+**Constitution**: Do principles align? Are violations justified? Is progressive enhancement clear? [Consistency/Traceability]
+
+**Sample Items**:
 ```markdown
-- [ ] CHK001 - Are structural validation rules (type, required) explicitly defined? [Completeness, Spec §Validation Requirements]
-- [ ] CHK002 - Are semantic validation rules (cross-field, logic) specified? [Completeness, Spec §Validation Requirements]
-- [ ] CHK003 - Are domain-specific validation rules documented with rationale? [Coverage, Spec §Domain-Specific Validation]
-- [ ] CHK004 - Is error message format specified with examples? [Clarity, Spec §Validation Requirements]
-- [ ] CHK005 - Are error messages AI-friendly (actionable, with fix suggestions)? [Consistency, Constitution §IV]
-- [ ] CHK006 - Is validation performance target specified (<100ms)? [Measurability, Spec §Quality Criteria]
-- [ ] CHK007 - Is custom validator registration mechanism defined? [Completeness, Constitution §II]
-- [ ] CHK008 - Are validation layers (structural/semantic/domain) clearly separated? [Clarity, Plan §Validator Design]
-- [ ] CHK009 - Can validation rules be objectively tested? [Measurability, Spec §Validation Requirements]
-- [ ] CHK010 - Are validation edge cases (empty, null, invalid) specified? [Coverage, Gap]
-```
-
-#### Workflow Quality (`workflow.md`)
-
-```markdown
-- [ ] CHK001 - Are workflow steps clearly ordered and numbered? [Clarity, Spec §Workflow Definitions]
-- [ ] CHK002 - Are inputs specified for each workflow step? [Completeness, Spec §Workflow Definitions]
-- [ ] CHK003 - Are outputs specified for each workflow step? [Completeness, Spec §Workflow Definitions]
-- [ ] CHK004 - Are CLI commands mapped to workflow steps? [Consistency, Spec §CLI Commands]
-- [ ] CHK005 - Are success indicators measurable? [Measurability, Spec §Workflow Definitions]
-- [ ] CHK006 - Are error scenarios documented for each step? [Coverage, Gap]
-- [ ] CHK007 - Are example usages provided for workflows? [Coverage, Spec §Workflow Definitions]
-- [ ] CHK008 - Is the init → validate → execute flow clearly defined? [Completeness, Spec §Workflow Definitions]
-- [ ] CHK009 - Are workflow dependencies explicit? [Clarity, Spec §Workflow Definitions]
-- [ ] CHK010 - Can workflow success be objectively verified? [Measurability, Spec §Success Indicators]
-```
-
-#### CLI Interface Quality (`cli.md`)
-
-```markdown
-- [ ] CHK001 - Are all CLI commands listed with clear purposes? [Completeness, Spec §CLI Commands]
-- [ ] CHK002 - Are command arguments and options documented? [Completeness, Spec §CLI Commands]
-- [ ] CHK003 - Are command examples provided? [Coverage, Spec §CLI Commands]
-- [ ] CHK004 - Are exit codes specified (0=success, 1=failure)? [Completeness, Spec §CLI Commands]
-- [ ] CHK005 - Is output format defined (text and JSON)? [Clarity, Spec §CLI Commands]
-- [ ] CHK006 - Are error messages for CLI errors specified? [Completeness, Gap]
-- [ ] CHK007 - Is help text format defined? [Clarity, Gap]
-- [ ] CHK008 - Are interactive vs non-interactive modes clear? [Clarity, Spec §CLI Commands]
-- [ ] CHK009 - Is command naming consistent (init, validate, run)? [Consistency, Spec §CLI Commands]
-- [ ] CHK010 - Are command aliases (if any) documented? [Completeness, Gap]
-```
-
-#### Constitution Alignment (`constitution.md`)
-
-```markdown
-- [ ] CHK001 - Does entity design follow Entity-First principle (minimal fields)? [Consistency, Constitution §I]
-- [ ] CHK002 - Does validator design support extensibility (custom validators)? [Consistency, Constitution §II]
-- [ ] CHK003 - Does spec-first workflow enable users to write specs first? [Consistency, Constitution §III]
-- [ ] CHK004 - Are error messages AI-friendly (clear, actionable, with examples)? [Consistency, Constitution §IV]
-- [ ] CHK005 - Is progressive enhancement path clear (MVP vs future features)? [Consistency, Constitution §V]
-- [ ] CHK006 - Are domain-specific constraints documented and justified? [Consistency, Constitution §VI]
-- [ ] CHK007 - Are all six constitution principles addressed in spec? [Completeness, Constitution]
-- [ ] CHK008 - Are any principle violations explicitly justified? [Traceability, Constitution]
-- [ ] CHK009 - Does quality criteria align with constitution targets? [Consistency, Constitution + Spec §Quality Criteria]
-- [ ] CHK010 - Is constitution referenced in design decisions? [Traceability, Plan]
+- [ ] CHK001 - Are all entity fields defined with explicit types? [Completeness, Spec §Entity Definitions]
+- [ ] CHK002 - Are validation error messages AI-friendly? [Consistency, Constitution §IV]
+- [ ] CHK003 - Are workflow success criteria measurable? [Measurability, Spec §Workflow]
+- [ ] CHK004 - Are CLI command exit codes specified? [Completeness, Spec §CLI]
+- [ ] CHK005 - Does entity design follow Entity-First principle? [Consistency, Constitution §I]
 ```
 
 ### 6. Anti-Examples: What NOT To Do
