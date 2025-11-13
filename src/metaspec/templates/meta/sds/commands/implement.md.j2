@@ -16,6 +16,60 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 **Important**: This command runs AFTER `/metaspec.sds.tasks`. It is the execution engine for specification development.
 
+---
+
+### 📖 Navigation Guide (Quick Reference with Line Numbers)
+
+**🎯 AI Token Optimization**: Use `read_file` with `offset` and `limit` to read only needed sections.
+
+**Core Execution Flow** (Read sequentially):
+
+| Step | Lines | Size | Priority | read_file Usage |
+|------|-------|------|----------|-----------------|
+| 1-3. Prerequisites & Context | 21-108 | 87 lines | 🔴 MUST READ | `read_file(target_file, offset=21, limit=87)` |
+| 4. Execute Writing | 109-151 | 42 lines | 🔴 MUST READ | `read_file(target_file, offset=109, limit=42)` |
+| **5. Task Execution Details** ⭐ | 152-619 | 467 lines | 🔴 **KEY** | See subsections below ⬇️ |
+| 6-10. Checkpoints & Validation | 620-832 | 212 lines | 🟡 Important | `read_file(target_file, offset=620, limit=212)` |
+| 11-13. Reporting & Propagation | 833-938 | 105 lines | 🟡 Important | `read_file(target_file, offset=833, limit=105)` |
+| 14. Final Report | 939-1216 | 277 lines | 🟢 Reference | `read_file(target_file, offset=939, limit=277)` |
+
+**📋 Section 5: Task Execution Details** (Most important - 467 lines):
+
+| Task Type | Lines | Size | Usage |
+|-----------|-------|------|-------|
+| **Refactor Core Spec** | 152-295 | 143 lines | `read_file(target_file, offset=152, limit=143)` |
+| Create Sub-Specs (PHASE) | 296-333 | 37 lines | `read_file(target_file, offset=296, limit=37)` |
+| Create Sub-Specs (COMPONENT) | 334-358 | 24 lines | `read_file(target_file, offset=334, limit=24)` |
+| Create Sub-Specs (SUPPORT) | 359-396 | 37 lines | `read_file(target_file, offset=359, limit=37)` |
+| **Entity Templates** | 359-421 | 62 lines | `read_file(target_file, offset=359, limit=62)` |
+| **Operation Templates** | 422-467 | 45 lines | `read_file(target_file, offset=422, limit=45)` |
+| Validation Templates | 468-499 | 31 lines | `read_file(target_file, offset=468, limit=31)` |
+| Example Templates | 500-535 | 35 lines | `read_file(target_file, offset=500, limit=35)` |
+| Refinement Tasks | 536-619 | 83 lines | `read_file(target_file, offset=536, limit=83)` |
+
+**💡 Typical Usage Patterns**:
+```python
+# Quick start: Read Prerequisites only (87 lines)
+read_file(target_file, offset=21, limit=87)
+
+# Core execution: Read Steps 1-4 (130 lines)
+read_file(target_file, offset=21, limit=130)
+
+# Refactoring guidance: Read Refactor section (143 lines)
+read_file(target_file, offset=152, limit=143)
+
+# Template reference: Read specific template (31-143 lines)
+read_file(target_file, offset=422, limit=45)  # Operations
+```
+
+**Token Savings**: 
+- Full file: 1216 lines (~4200 tokens)
+- Prerequisites only: 87 lines (~300 tokens) → **93% savings**
+- Refactor section: 143 lines (~500 tokens) → **88% savings**
+- Template reference: 31-62 lines (~100-200 tokens) → **95% savings**
+
+---
+
 ### Execution Flow
 
 #### 1. Check Prerequisites

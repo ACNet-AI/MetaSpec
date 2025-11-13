@@ -16,6 +16,68 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 **Important**: This command runs AFTER `/metaspec:tasks`. It is the execution engine for toolkit development.
 
+---
+
+### 📖 Navigation Guide (Quick Reference with Line Numbers)
+
+**🎯 AI Token Optimization**: Use `read_file` with `offset` and `limit` to read only needed sections.
+
+**Core Execution Flow** (Read sequentially):
+
+| Step | Lines | Size | Priority | read_file Usage |
+|------|-------|------|----------|-----------------|
+| 1-5. Prerequisites & Setup | 21-167 | 146 lines | 🔴 MUST READ | `read_file(target_file, offset=21, limit=146)` |
+| 6. Execute Implementation | 168-209 | 41 lines | 🔴 MUST READ | `read_file(target_file, offset=168, limit=41)` |
+| **7. Task Execution Details** ⭐ | 210-302 | 92 lines | 🔴 **KEY** | See subsections below ⬇️ |
+| 8-10. Checkpoints & Reporting | 303-394 | 91 lines | 🟡 Important | `read_file(target_file, offset=303, limit=91)` |
+| 11-13. Validation & Saves | 395-519 | 124 lines | 🟡 Important | `read_file(target_file, offset=395, limit=124)` |
+| 14-15. Propagation & Validation | 520-646 | 126 lines | 🟡 Important | `read_file(target_file, offset=520, limit=126)` |
+| 16. Final Report | 647-935 | 288 lines | 🟢 Reference | `read_file(target_file, offset=647, limit=288)` |
+
+**📋 Section 7: Task Execution Details by Language** (92 lines):
+
+| Component | Lines | Size | Usage |
+|-----------|-------|------|-------|
+| **Python Implementation** | 210-235 | 25 lines | `read_file(target_file, offset=210, limit=25)` |
+| **TypeScript Implementation** | 236-261 | 25 lines | `read_file(target_file, offset=236, limit=25)` |
+| **Go Implementation** | 262-285 | 23 lines | `read_file(target_file, offset=262, limit=23)` |
+| **Rust Implementation** | 286-302 | 16 lines | `read_file(target_file, offset=286, limit=16)` |
+
+**🎯 Phase-Specific Reading** (By component type):
+
+| Phase | Lines | Size | Usage |
+|-------|-------|------|-------|
+| Setup & Models | 71-142, 210-235 | 97 lines | `read_file(target_file, offset=71, limit=71)` + `offset=210, limit=25` |
+| Parser Development | 236-261 | 25 lines | `read_file(target_file, offset=236, limit=25)` |
+| Validator Development | 262-285 | 23 lines | `read_file(target_file, offset=262, limit=23)` |
+| CLI Development | 286-302 | 16 lines | `read_file(target_file, offset=286, limit=16)` |
+| Testing & Docs | 303-362 | 59 lines | `read_file(target_file, offset=303, limit=59)` |
+
+**💡 Typical Usage Patterns**:
+```python
+# Quick start: Read Prerequisites only (146 lines)
+read_file(target_file, offset=21, limit=146)
+
+# Python implementation: Read Python-specific guidance (25 lines)
+read_file(target_file, offset=210, limit=25)
+
+# Validation phase: Read validation guidance (124 lines)
+read_file(target_file, offset=395, limit=124)
+
+# Specific language: Jump to language section
+read_file(target_file, offset=236, limit=25)  # TypeScript
+read_file(target_file, offset=262, limit=23)  # Go
+read_file(target_file, offset=286, limit=16)  # Rust
+```
+
+**Token Savings**: 
+- Full file: 935 lines (~3200 tokens)
+- Prerequisites only: 146 lines (~500 tokens) → **84% savings**
+- Language-specific: 16-25 lines (~60-90 tokens) → **97% savings**
+- Phase-specific: 59-97 lines (~200-330 tokens) → **90% savings**
+
+---
+
 ### Execution Flow
 
 #### 1. Check prerequisites
