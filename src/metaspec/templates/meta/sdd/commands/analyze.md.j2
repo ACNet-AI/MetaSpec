@@ -20,6 +20,15 @@ Identify inconsistencies, ambiguities, and gaps across toolkit specification art
 
 **Constitution Authority**: constitution.md is non-negotiable. Constitution violations are CRITICAL and require spec adjustment.
 
+## Operating Principles
+
+### Context Efficiency (inspired by spec-kit)
+
+- **Minimal high-signal tokens**: Focus on actionable findings, not exhaustive documentation
+- **Progressive disclosure**: Load artifacts incrementally; don't dump all content into analysis
+- **Token-efficient output**: Limit findings to 50 items; aggregate remainder in overflow summary
+- **Deterministic results**: Rerunning without changes should produce consistent IDs and counts
+
 ## Execution Flow
 
 ### 1. Check for existing analysis
@@ -270,17 +279,18 @@ ls specs/toolkit/XXX-name/analysis/
 
 ### 6. Generate analysis report
 
-**Output format**:
+**Output format** (token-efficient, table-based):
 
 ```markdown
 # Toolkit Specification Analysis Report
 
-**Date**: [DATE]
-**Analyzed Files**:
-- spec.md
-- plan.md
-- tasks.md
-- constitution.md
+**Date**: [DATE] | **Feature**: [NAME] v[VERSION]
+
+**Summary Statistics**:
+- Total Issues: [N] ([X] CRITICAL, [Y] HIGH, [Z] MEDIUM, [W] LOW)
+- Artifacts Analyzed: spec.md, plan.md, tasks.md, constitution.md
+- Constitution Compliance: ✅ PASS | ❌ FAIL ([N] violations)
+- Cross-Document Coverage: [X]%
 
 ---
 
@@ -317,42 +327,34 @@ ls specs/toolkit/XXX-name/analysis/
 
 ---
 
-## Summary
+## Findings Summary
 
-**Total Issues**: [N]
-- CRITICAL: [X]
-- HIGH: [Y]
-- MEDIUM: [Z]
-- LOW: [W]
+**⚠️ Output Limit**: Showing top 50 findings. Additional issues aggregated in overflow summary below.
 
-**Constitution Compliance**: ✅ PASS | ❌ FAIL ([N] violations)
+| ID | Severity | Category | Location | Summary | Recommendation |
+|----|----------|----------|----------|---------|----------------|
+| C1 | CRITICAL | Constitution | spec.md §Entity | 8 required fields violates Entity-First (3-5 max) | Make 5 fields optional |
+| C2 | CRITICAL | Workflow | spec.md §CLI | 'execute' command has no workflow | Add workflow or remove command |
+| H1 | HIGH | Validation | spec.md §Entity | Field 'assertions' format unspecified | Define assertion syntax |
+| H2 | HIGH | Constitution | plan.md §Validator | No custom validator mechanism | Add register_validator() interface |
+| M1 | MEDIUM | Consistency | Multiple | "entity" vs "model" terminology drift | Standardize on "entity" |
+| M2 | MEDIUM | Ambiguity | spec.md §Quality | "Fast validation" lacks quantification | Specify "<100ms" |
+| L1 | LOW | Style | spec.md | Minor formatting inconsistency | Update formatting |
 
----
-
-## Critical Issues
-
-| ID | Category | Location | Issue | Recommendation |
-|----|----------|----------|-------|----------------|
-| C1 | Constitution | spec.md §Entity | 8 required fields violates Entity-First (3-5 max) | Make 5 fields optional |
-| C2 | Workflow | spec.md §CLI | 'execute' command has no workflow | Add workflow or remove command |
+**Note**: If total findings > 50, group remaining by category in "Overflow Summary" section below.
 
 ---
 
-## High Priority Issues
+## Overflow Summary (if findings > 50)
 
-| ID | Category | Location | Issue | Recommendation |
-|----|----------|----------|-------|----------------|
-| H1 | Validation | spec.md §Entity | Field 'assertions' format unspecified | Define assertion syntax |
-| H2 | Constitution | plan.md §Validator | No custom validator mechanism | Add register_validator() interface |
+**Additional Issues by Category**:
+- Entity Quality: +4 issues (mostly documentation gaps)
+- Validation Rules: +6 issues (underspecified rules)
+- CLI Interface: +3 issues (missing examples)
 
----
+**Total Overflow**: 13 issues (not shown in detail above)
 
-## Medium Priority Issues
-
-| ID | Category | Location | Issue | Recommendation |
-|----|----------|----------|-------|----------------|
-| M1 | Consistency | Multiple | "entity" vs "model" terminology drift | Standardize on "entity" |
-| M2 | Ambiguity | spec.md §Quality | "Fast validation" lacks quantification | Specify "<100ms" |
+**Recommendation**: Focus on top 50 findings first. Run analyze again after fixes to surface next batch.
 
 ---
 

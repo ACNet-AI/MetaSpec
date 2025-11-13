@@ -22,6 +22,15 @@ Identify inconsistencies, ambiguities, and gaps in domain specifications. **READ
 
 **Constitution Authority**: constitution.md defines specification design principles. Violations are CRITICAL.
 
+## Operating Principles
+
+### Context Efficiency (inspired by spec-kit)
+
+- **Minimal high-signal tokens**: Focus on actionable findings, not exhaustive documentation
+- **Progressive disclosure**: Load artifacts incrementally; don't dump all content into analysis
+- **Token-efficient output**: Limit findings to 50 items; aggregate remainder in overflow summary
+- **Deterministic results**: Rerunning without changes should produce consistent IDs and counts
+
 ## Execution Flow
 
 ### 1. Check for existing analysis
@@ -62,20 +71,20 @@ ls specs/domain/XXX-name/analysis/
 - ❌ tasks.md (implementation tasks)
 - ❌ Any files in `specs/toolkit/`
 
-### 3. Extract Specification Elements
+### 3. Build Semantic Models
+
+**Create internal representations** (do not include raw artifacts in output):
 
 **From spec.md**:
-- Specification overview and purpose
-- Core entities (name, schema, fields)
-- Entity validation rules
-- Specification operations (requests/responses)
-- Error codes and handling
-- Specification examples
+- Entity inventory: `{name, fields[], requiredFields[], hasExamples, hasValidation}`
+- Operation inventory: `{name, hasRequestSchema, hasResponseSchema, hasErrorCases}`
+- Validation rule inventory: `{entity, field, rule, isSpecific, errorCode}`
+- Error code inventory: `{code, description, hasExample}`
 
 **From constitution.md**:
-- Specification design principles
-- MUST/SHOULD requirements specific to specifications
-- Quality standards for specifications
+- Principle inventory: `{name, type: MUST/SHOULD, category, checkPattern}`
+
+**Analysis focus**: Extract minimal context needed for quality checks, not full content.
 
 ### 4. Detection Passes
 
@@ -248,17 +257,20 @@ ls specs/domain/XXX-name/analysis/
 
 ### 6. Generate Analysis Report
 
-**Output format**:
+**Output format** (token-efficient, table-based):
 
 ```markdown
 # Domain Specification Analysis Report
 
-**Date**: [DATE]
-**Specification**: [NAME]
-**Version**: [VERSION]
-**Analyzed Files**:
-- specs/domain/XXX-{name}/spec.md
-- memory/constitution.md
+**Date**: [DATE] | **Specification**: [NAME] v[VERSION]
+
+**Summary Statistics**:
+- Total Issues: [N] ([X] CRITICAL, [Y] HIGH, [Z] MEDIUM, [W] LOW)
+- Entities Analyzed: [N]
+- Operations Analyzed: [N]
+- Constitution Compliance: ✅ PASS | ❌ FAIL ([N] violations)
+
+**Analyzed Files**: spec.md, constitution.md
 
 ---
 
@@ -295,42 +307,34 @@ ls specs/domain/XXX-name/analysis/
 
 ---
 
-## Summary
+## Findings Summary
 
-**Total Issues**: [N]
-- CRITICAL: [X]
-- HIGH: [Y]
-- MEDIUM: [Z]
-- LOW: [W]
+**⚠️ Output Limit**: Showing top 50 findings. Additional issues aggregated in overflow summary below.
 
-**Constitution Compliance**: ✅ PASS | ❌ FAIL ([N] violations)
+| ID | Severity | Category | Location | Summary | Recommendation |
+|----|----------|----------|----------|---------|----------------|
+| C1 | CRITICAL | Constitution | spec.md §Entities | Entity 'Server' has 8 required fields (max 5) | Make 3 fields optional |
+| C2 | CRITICAL | Schema | spec.md §Operations | Operation 'tools/call' missing response schema | Define response schema with result/error fields |
+| H1 | HIGH | Validation | spec.md §Entities | Field 'inputSchema' validation rule missing | Add "must conform to JSON Schema Draft 7" |
+| H2 | HIGH | Error Handling | spec.md §Operations | Operation 'initialize' missing error scenarios | Document timeout, invalid params errors |
+| M1 | MEDIUM | Examples | spec.md §Examples | Entity 'Resource' has no example | Add example with typical values |
+| M2 | MEDIUM | Ambiguity | spec.md §Validation | "Must be valid" is vague | Specify validation standard |
+| L1 | LOW | Terminology | spec.md §Entities | Entity 'Server' uses 'version', 'Tool' uses 'toolVersion' | Standardize on 'version' |
 
----
-
-## Critical Issues
-
-| ID | Category | Location | Issue | Recommendation |
-|----|----------|----------|-------|----------------|
-| C1 | Schema | spec.md §Operations | Operation 'tools/call' missing response schema | Define response schema with result/error fields |
-| C2 | Constitution | spec.md §Entities | Entity 'Server' has 8 required fields (max 5) | Make 3 fields optional |
+**Note**: If total findings > 50, group remaining by category in "Overflow Summary" section below.
 
 ---
 
-## High Priority Issues
+## Overflow Summary (if findings > 50)
 
-| ID | Category | Location | Issue | Recommendation |
-|----|----------|----------|-------|----------------|
-| H1 | Validation | spec.md §Entities | Field 'inputSchema' validation rule missing | Add "must conform to JSON Schema Draft 7" |
-| H2 | Error Handling | spec.md §Operations | Operation 'initialize' missing error scenarios | Document timeout, invalid params errors |
+**Additional Issues by Category**:
+- Entity Quality: +5 issues (mostly missing examples)
+- Validation Rules: +3 issues (underspecified rules)
+- Examples: +7 issues (missing edge case examples)
 
----
+**Total Overflow**: 15 issues (not shown in detail above)
 
-## Medium Priority Issues
-
-| ID | Category | Location | Issue | Recommendation |
-|----|----------|----------|-------|----------------|
-| M1 | Examples | spec.md §Examples | Entity 'Resource' has no example | Add example with typical values |
-| M2 | Ambiguity | spec.md §Validation | "Must be valid" is vague | Specify validation standard |
+**Recommendation**: Focus on top 50 findings first. Run analyze again after fixes to surface next batch.
 
 ---
 
