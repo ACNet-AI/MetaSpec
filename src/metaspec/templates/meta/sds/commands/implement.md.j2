@@ -830,6 +830,356 @@ git commit -m "docs: add supporting specifications (Phase 3)"
 git commit -m "docs: validate cross-references (Phase 4)"
 ```
 
+#### 11. Generate Implementation Report
+
+**Purpose**: Create detailed record of implementation work for tracking and quality assurance.
+
+After all tasks complete, prepend this HTML comment to `specs/domain/{spec_id}/IMPLEMENTATION.md` (create if not exists):
+
+```html
+<!--
+Specification Implementation Report
+====================================
+Spec ID: {spec_id}
+Implementation Date: {start_date} to {end_date}
+Duration: {days} days
+Strategy: {Single Spec | Multi-Spec}
+
+Implementation Summary:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks Completed: {completed}/{total} ({percentage}%)
+- Phase 1 (Core): {phase1_complete}/{phase1_total}
+- Phase 2 (Phase Specs): {phase2_complete}/{phase2_total}
+- Phase 3 (Supporting): {phase3_complete}/{phase3_total}
+- Phase 4 (Cross-Refs): {phase4_complete}/{phase4_total}
+- Phase 5 (Quality): {phase5_complete}/{phase5_total}
+
+Files Created/Updated:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Created: {created_count} specification files
+- Core: specs/domain/{core_id}/spec.md ({lines} lines)
+{FOR each sub-spec}:
+- Sub: specs/domain/{sub_id}/spec.md ({lines} lines)
+{END FOR}
+
+Updated: {updated_count} files
+- tasks.md: Task status updated
+- plan.md: Implementation notes added
+
+Specification Metrics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Total Entities: {entity_count}
+Total Operations: {operation_count}
+Total Validation Rules: {validation_count}
+Total Examples: {example_count}
+Average Spec Size: {avg_lines} lines
+Total Lines: {total_lines} lines
+
+Quality Metrics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Completeness: {percentage}%
+- All entities defined: {Yes | No}
+- All operations specified: {Yes | No}
+- All validation rules documented: {Yes | No}
+- All examples provided: {Yes | No}
+
+Cross-Reference Validation: {✅ Valid | ⚠️ Issues}
+- Internal references: {valid}/{total}
+- External references: {valid}/{total}
+{IF issues}:
+- Broken references: {list}
+{END IF}
+
+Constitution Compliance: {✅ Compliant | ⚠️ Needs Review}
+- Entity Clarity: {✅ | ⚠️ | ❌}
+- Validation Completeness: {✅ | ⚠️ | ❌}
+- Operation Semantics: {✅ | ⚠️ | ❌}
+- Implementation Neutrality: {✅ | ⚠️ | ❌}
+- Extensibility Design: {✅ | ⚠️ | ❌}
+- Domain Fidelity: {✅ | ⚠️ | ❌}
+
+Issues Encountered:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{IF issues exist}:
+1. {Issue description}
+   - Resolution: {How it was resolved}
+   - Impact: {What changed}
+{ELSE}:
+No significant issues
+{END IF}
+
+Next Steps:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- [ ] Review all specifications for consistency
+- [ ] Run /metaspec.sds.analyze for comprehensive check
+- [ ] Update toolkit specifications (if any)
+- [ ] Update project documentation
+-->
+```
+
+**Also update tasks.md**:
+Mark completed tasks with `[x]` and add completion notes.
+
+#### 12. Consistency Propagation and Impact Analysis
+
+**Purpose**: Verify implementation consistency across all files.
+
+#### A. Specification Cross-Validation
+
+```bash
+# Validate all created specifications
+for spec in specs/domain/*/spec.md; do
+  echo "Checking: $spec"
+  # Check YAML frontmatter
+  grep -A 5 "^---$" "$spec" | head -6
+  # Count entities, operations
+  grep "^### Entity:" "$spec" | wc -l
+  grep "^### Operation:" "$spec" | wc -l
+done
+```
+
+**Verify**:
+- [ ] All specs have valid YAML frontmatter
+- [ ] Parent-child relationships correct
+- [ ] Root specification consistent
+- [ ] No orphaned specifications
+
+#### B. Cross-Reference Validation
+
+```bash
+# Find all internal references
+grep -r "\[.*\](\.\./.*/spec\.md)" specs/domain/*/spec.md
+
+# Verify each reference exists
+for ref in {list of references}; do
+  if [ -f "$ref" ]; then
+    echo "✅ $ref exists"
+  else
+    echo "❌ BROKEN: $ref"
+  fi
+done
+```
+
+**Action if broken**:
+- Fix references immediately
+- Re-check after fixes
+
+#### C. Tasks Status Synchronization
+
+```bash
+# Verify all tasks marked complete
+cat specs/domain/{spec_id}/tasks.md | grep "^\- \[ \]" || echo "All done!"
+```
+
+**Update tasks.md**:
+- Mark all completed tasks with `[x]`
+- Add completion timestamps
+- Note any skipped tasks
+
+#### D. Related Files Impact Check
+
+```bash
+# Check if toolkit specs need updates
+find specs/toolkit/ -name "spec.md" -exec grep -l "{spec_id}" {} \;
+
+# Check documentation
+grep -l "{spec_id}" docs/*.md README.md 2>/dev/null
+```
+
+**If found**:
+- Note which files need manual review
+- Add to follow-up TODOs
+
+#### 13. Completion Validation (Enhanced)
+
+**Final quality checks before reporting completion**:
+
+```bash
+# Run comprehensive validation
+/metaspec.sds.analyze
+```
+
+**Manual checks**:
+- [ ] All specifications have examples
+- [ ] All entities have complete field definitions
+- [ ] All operations have request/response schemas
+- [ ] All validation rules are testable
+- [ ] Cross-references are bidirectional
+- [ ] Terminology is consistent across specs
+- [ ] No placeholder content remains
+- [ ] Size targets met (specs within 600-1500 lines)
+
+**Constitution alignment final check**:
+- [ ] Specifications are minimal (no over-specification)
+- [ ] Domain fidelity maintained (no implementation details)
+- [ ] Validation rules are complete (all cases covered)
+- [ ] Operations are well-defined (clear semantics)
+- [ ] Entities are clear (unambiguous definitions)
+- [ ] Extensibility considered (future-proof design)
+
+#### 14. Report Completion (Enhanced)
+
+Provide comprehensive implementation summary:
+
+```
+✅ Domain specification implementation complete
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 Implementation Summary:
+   Specification: {spec_id}
+   Duration: {start_date} to {end_date} ({days} days)
+   Strategy: {Single Spec | Multi-Spec}
+
+   Tasks Completed: {completed}/{total} ({percentage}%)
+   - Phase 1 (Core): {phase1_tasks} tasks ✅
+   - Phase 2 (Phase Specs): {phase2_tasks} tasks ✅
+   - Phase 3 (Supporting): {phase3_tasks} tasks ✅
+   - Phase 4 (Cross-Refs): {phase4_tasks} tasks ✅
+   - Phase 5 (Quality): {phase5_tasks} tasks ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Files Created/Updated:
+
+   **Created** ({count} specification files):
+   ✅ Core: specs/domain/{core_id}/spec.md
+      - {entity_count} entities, {operation_count} operations
+      - {validation_count} validation rules, {example_count} examples
+      - Size: {lines} lines ✅
+   
+   {FOR each sub-specification}:
+   ✅ Sub: specs/domain/{sub_id}/spec.md
+      - {entity_count} entities, {operation_count} operations
+      - Size: {lines} lines ✅
+   {END FOR}
+
+   **Updated**:
+   ✅ tasks.md: All tasks marked complete
+   ✅ plan.md: Implementation notes added
+   ✅ IMPLEMENTATION.md: Full report generated
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Validation Results:
+
+   **Specification Quality**: {✅ Excellent | ⚠️ Good | ❌ Needs Work}
+   - Total entities: {entity_count}
+   - Total operations: {operation_count}
+   - Total validation rules: {validation_count}
+   - Total examples: {example_count}
+   - Average size: {avg_lines} lines/spec
+
+   **Cross-Reference Integrity**: {✅ Valid | ⚠️ Issues Found}
+   - Internal references: {valid}/{total} ✅
+   - External references: {valid}/{total} ✅
+   {IF issues}:
+   ⚠️  Broken references:
+   - {reference_1} → {issue}
+   - {reference_2} → {issue}
+   Action: Fix before finalizing
+   {END IF}
+
+   **Constitution Compliance**: {✅ Fully Compliant | ⚠️ Minor Issues}
+   - Entity Clarity: {✅ | ⚠️} {comment}
+   - Validation Completeness: {✅ | ⚠️} {comment}
+   - Operation Semantics: {✅ | ⚠️} {comment}
+   - Implementation Neutrality: {✅ | ⚠️} {comment}
+   - Extensibility Design: {✅ | ⚠️} {comment}
+   - Domain Fidelity: {✅ | ⚠️} {comment}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 Impact Analysis:
+
+   **Related Files to Review**:
+   {IF toolkit_impact}:
+   🔧 Toolkit Specifications ({count}):
+   - specs/toolkit/{toolkit_id}/spec.md - Update models to match entities
+   {END IF}
+
+   {IF doc_impact}:
+   📚 Documentation ({count} files):
+   - docs/{file}.md - Update specification references
+   - README.md - Update overview with new specs
+   {END IF}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 Metrics:
+
+   **Size Distribution**:
+   - Total lines: {total_lines}
+   - Average: {avg_lines} lines/spec
+   - Range: {min_lines} - {max_lines} lines
+   - Target compliance: {in_range}/{total} specs ✅
+
+   **Content Density**:
+   - Entities per spec: {avg_entities}
+   - Operations per spec: {avg_operations}
+   - Validation rules per spec: {avg_validations}
+   - Examples per spec: {avg_examples}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 Next Steps:
+
+   1. Run comprehensive analysis:
+      → /metaspec.sds.analyze
+      
+   2. Generate quality checklist:
+      → /metaspec.sds.checklist
+      
+   3. {IF toolkit_exists}:
+      Update toolkit implementation:
+      → /metaspec.sdd.implement
+      {END IF}
+      
+   4. Update project documentation:
+      - README.md with specification overview
+      - AGENTS.md with specification usage guidance
+
+⚠️  Follow-up TODOs:
+
+   {IF cross_ref_issues}:
+   - [ ] Fix broken cross-references: {list}
+   {END IF}
+   {IF size_issues}:
+   - [ ] Review oversized specifications: {list}
+   {END IF}
+   {IF toolkit_impact}:
+   - [ ] Update toolkit models and validators
+   {END IF}
+   {IF doc_impact}:
+   - [ ] Update documentation files: {list}
+   {END IF}
+   - [ ] Run final quality check: /metaspec.sds.analyze
+   - [ ] Generate quality report: /metaspec.sds.checklist
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 Suggested Commit Message:
+
+   docs(spec): complete {spec_id} specification implementation
+   
+   Implementation:
+   - Strategy: {Single | Multi}-spec approach
+   - Created: {count} specification files
+   - Total: {entity_count} entities, {operation_count} operations
+   - Size: {total_lines} lines
+   
+   Quality:
+   - Cross-references: {valid}/{total} valid
+   - Constitution: {✅ Compliant | ⚠️ Needs Review}
+   - Size targets: {in_range}/{total} specs in range
+   
+   {IF issues}:
+   Known Issues:
+   - {issue_1}
+   - {issue_2}
+   {END IF}
+```
+
 ## Important Notes
 
 1. **Specification quality is paramount**

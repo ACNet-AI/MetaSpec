@@ -478,6 +478,446 @@ git commit -m "docs: add documentation (Phase 6)"
 git commit -m "test: add integration tests (Phase 7)"
 ```
 
+#### 13. Generate Implementation Report
+
+**Purpose**: Create detailed record of toolkit implementation for quality assurance.
+
+After all tasks complete, create `specs/toolkit/{toolkit_id}/IMPLEMENTATION.md` with HTML comment:
+
+```html
+<!--
+Toolkit Implementation Report
+==============================
+Toolkit ID: {toolkit_id}
+Language: {Python | TypeScript | Go | Rust}
+Architecture: {Monolithic | Modular | Plugin-based}
+Implementation Date: {start_date} to {end_date}
+Duration: {days} days
+
+Implementation Summary:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks Completed: {completed}/{total} ({percentage}%)
+- Phase 1 (Setup): {phase1_complete}/{phase1_total}
+- Phase 2 (Models): {phase2_complete}/{phase2_total}
+- Phase 3 (Parser): {phase3_complete}/{phase3_total}
+- Phase 4 (Validator): {phase4_complete}/{phase4_total}
+- Phase 5 (CLI): {phase5_complete}/{phase5_total}
+- Phase 6 (Tests): {phase6_complete}/{phase6_total}
+- Phase 7 (Docs): {phase7_complete}/{phase7_total}
+
+Files Created/Updated:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Created: {created_count} files
+{FOR each file}:
+- {file_path} ({lines} lines, {language})
+{END FOR}
+
+Updated: {updated_count} files
+- tasks.md: All tasks marked complete
+- README.md: Usage documentation added
+- tests/: {test_count} test files
+
+Code Metrics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Total Lines of Code: {loc}
+- Source code: {source_loc} lines
+- Test code: {test_loc} lines
+- Documentation: {doc_loc} lines
+
+Test Coverage: {coverage}%
+- Unit tests: {unit_tests} tests, {unit_coverage}%
+- Integration tests: {integration_tests} tests
+- All tests passing: {✅ Yes | ⚠️ {failed} failing}
+
+Dependencies:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Domain Specification: specs/domain/{domain_spec_id}/spec.md
+- Entities implemented: {implemented}/{total}
+- Operations implemented: {implemented}/{total}
+- Validation rules implemented: {implemented}/{total}
+
+External Dependencies: {count}
+{FOR each dependency}:
+- {package_name}: {version}
+{END FOR}
+
+Quality Metrics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Completeness: {percentage}%
+- All models defined: {Yes | No}
+- Parser functional: {Yes | No}
+- Validator working: {Yes | No}
+- CLI commands working: {Yes | No}
+- Documentation complete: {Yes | No}
+
+Linter Status: {✅ No issues | ⚠️ {count} warnings | ❌ {count} errors}
+Type Checking: {✅ Passed | ⚠️ {count} issues}
+
+Constitution Compliance: {✅ Compliant | ⚠️ Needs Review}
+- Entity-First Design: {✅ | ⚠️ | ❌}
+- Validator Extensibility: {✅ | ⚠️ | ❌}
+- Spec-First Development: {✅ | ⚠️ | ❌}
+- AI-Agent Friendly: {✅ | ⚠️ | ❌}
+- Progressive Enhancement: {✅ | ⚠️ | ❌}
+- Automated Quality: {✅ | ⚠️ | ❌}
+
+Issues Encountered:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{IF issues exist}:
+1. {Issue description}
+   - Resolution: {How it was resolved}
+   - Impact: {Code changes made}
+{ELSE}:
+No significant issues
+{END IF}
+
+Next Steps:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- [ ] Run /metaspec.sdd.analyze for comprehensive check
+- [ ] Fix any linter/type-check issues
+- [ ] Publish package (if ready)
+- [ ] Update toolkit documentation in main project
+-->
+```
+
+**Also update tasks.md**:
+Mark all completed tasks with `[x]`.
+
+#### 14. Consistency Propagation and Impact Analysis
+
+**Purpose**: Verify implementation aligns with specifications and quality standards.
+
+#### A. Domain Specification Compliance Check (CRITICAL)
+
+```bash
+# Compare implemented code with domain specification
+cat specs/domain/{domain_spec_id}/spec.md
+
+# Check entity implementation
+grep "class.*Entity" src/{package}/*.py  # or .ts/.go
+```
+
+**Verify**:
+- [ ] All domain entities have corresponding model classes
+- [ ] All entity fields implemented correctly
+- [ ] All domain operations have implementation
+- [ ] All validation rules enforced in code
+
+**Action if missing**:
+- ⚠️ **CRITICAL**: Domain spec not fully implemented
+- Add missing implementations
+
+#### B. Toolkit Specification Alignment Check
+
+```bash
+# Verify components match toolkit spec
+cat specs/toolkit/{toolkit_id}/spec.md
+```
+
+**Verify**:
+- [ ] All specified components implemented
+- [ ] Language matches spec (Python/TypeScript/Go/Rust)
+- [ ] Architecture matches spec (Monolithic/Modular/Plugin)
+- [ ] CLI commands match spec
+
+#### C. Code Quality Checks
+
+```bash
+# Run linter
+{IF Python}:
+ruff check src/{package}/
+mypy src/{package}/
+{ELSE IF TypeScript}:
+npm run lint
+npm run type-check
+{ELSE IF Go}:
+go vet ./...
+golangci-lint run
+{ELSE IF Rust}:
+cargo clippy
+{END IF}
+
+# Run tests
+{IF Python}:
+pytest tests/ -v --cov=src/{package}
+{ELSE IF TypeScript}:
+npm test
+{ELSE IF Go}:
+go test ./... -cover
+{ELSE IF Rust}:
+cargo test
+{END IF}
+```
+
+**Quality gates**:
+- [ ] No linter errors
+- [ ] Type checking passes
+- [ ] All tests passing
+- [ ] Test coverage > 80%
+
+#### D. Tasks Status Synchronization
+
+```bash
+# Mark all tasks complete in tasks.md
+cat specs/toolkit/{toolkit_id}/tasks.md
+```
+
+**Update**:
+- Mark all tasks `[x]`
+- Add completion notes
+
+#### E. Related Files Impact Check
+
+```bash
+# Check if domain spec or documentation needs updates
+find specs/domain/ docs/ -type f -name "*.md"
+```
+
+**If toolkit changes affect**:
+- Domain specification → Note for review
+- Project documentation → Update README/AGENTS.md
+
+#### 15. Completion Validation (Enhanced)
+
+**Final quality checks**:
+
+```bash
+# Comprehensive validation
+/metaspec.sdd.analyze
+```
+
+**Manual checks**:
+- [ ] All CLI commands work correctly
+- [ ] Parser handles all input formats
+- [ ] Validator enforces all rules from domain spec
+- [ ] Error messages are clear and helpful
+- [ ] Examples in README work
+- [ ] AGENTS.md has complete usage guide
+- [ ] Package can be installed successfully
+
+**Code quality final check**:
+- [ ] No TODO/FIXME comments left
+- [ ] All functions have docstrings
+- [ ] All complex logic has comments
+- [ ] No debug print statements
+- [ ] No hardcoded values (use config)
+
+**Constitution alignment final check**:
+- [ ] Models defined before business logic (Entity-First)
+- [ ] Validator is extensible (plugins/rules can be added)
+- [ ] Implementation strictly follows domain spec (Spec-First)
+- [ ] CLI is intuitive for AI agents (AI-Agent Friendly)
+- [ ] MVP functional, advanced features optional (Progressive)
+- [ ] Comprehensive test coverage (Automated Quality)
+
+#### 16. Report Completion (Enhanced)
+
+Provide comprehensive implementation summary:
+
+```
+✅ Toolkit implementation complete
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 Implementation Summary:
+   Toolkit: {toolkit_id}
+   Language: {Python | TypeScript | Go | Rust}
+   Architecture: {Monolithic | Modular | Plugin-based}
+   Duration: {start_date} to {end_date} ({days} days)
+
+   Tasks Completed: {completed}/{total} ({percentage}%)
+   - Setup & Infrastructure: {phase1_tasks} tasks ✅
+   - Entity Models: {phase2_tasks} tasks ✅
+   - Parser: {phase3_tasks} tasks ✅
+   - Validator: {phase4_tasks} tasks ✅
+   - CLI Commands: {phase5_tasks} tasks ✅
+   - Tests: {phase6_tasks} tasks ✅
+   - Documentation: {phase7_tasks} tasks ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 Files Created/Updated:
+
+   **Created** ({count} files, {loc} lines):
+   ✅ Models: src/{package}/models.{ext}
+      - {entity_count} entity classes
+      - {lines} lines
+   
+   ✅ Parser: src/{package}/parser.{ext}
+      - Parses {format} files
+      - {lines} lines
+   
+   ✅ Validator: src/{package}/validator.{ext}
+      - Enforces {rule_count} validation rules
+      - {lines} lines
+   
+   ✅ CLI: src/{package}/cli.{ext}
+      - {command_count} commands (init, validate, generate, etc.)
+      - {lines} lines
+   
+   ✅ Tests: tests/ ({test_count} test files)
+      - {unit_test_count} unit tests
+      - {integration_test_count} integration tests
+      - Coverage: {coverage}% ✅
+
+   **Updated**:
+   ✅ tasks.md: All tasks marked complete
+   ✅ README.md: Usage guide and examples
+   ✅ AGENTS.md: AI agent usage patterns
+   ✅ IMPLEMENTATION.md: Full implementation report
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Validation Results:
+
+   **Code Quality**: {✅ Excellent | ⚠️ Good | ❌ Needs Work}
+   - Total LOC: {loc} lines
+   - Source: {source_loc} lines
+   - Tests: {test_loc} lines
+   - Test coverage: {coverage}% ✅
+   - Linter: {✅ No issues | ⚠️ {count} warnings}
+   - Type checking: {✅ Passed | ⚠️ {count} issues}
+
+   **Domain Specification Compliance**: {✅ Complete | ⚠️ Partial}
+   - Domain Spec: specs/domain/{domain_spec_id}/spec.md
+   - Entities: {implemented}/{total} implemented ({percentage}%)
+   - Operations: {implemented}/{total} implemented ({percentage}%)
+   - Validation rules: {implemented}/{total} enforced ({percentage}%)
+   {IF incomplete}:
+   ⚠️  Not fully implemented:
+   - Missing: {list}
+   - Action: Add in next iteration
+   {END IF}
+
+   **Toolkit Specification Alignment**: {✅ Aligned | ⚠️ Deviation}
+   - Components: All specified components implemented ✅
+   - Language: {language} matches spec ✅
+   - Architecture: {type} matches spec ✅
+   - CLI commands: {implemented}/{specified} ✅
+
+   **Tests**: {✅ All Passing | ⚠️ {failed} Failing | ❌ Not Run}
+   - Unit tests: {unit_passed}/{unit_total} passing
+   - Integration tests: {int_passed}/{int_total} passing
+   - Coverage: {coverage}% (target: >80%)
+   {IF failing_tests}:
+   ⚠️  Failing tests:
+   - {test_1}: {reason}
+   - {test_2}: {reason}
+   Action: Fix before release
+   {END IF}
+
+   **Constitution Compliance**: {✅ Fully Compliant | ⚠️ Minor Issues}
+   - Entity-First Design: {✅ | ⚠️} {comment}
+   - Validator Extensibility: {✅ | ⚠️} {comment}
+   - Spec-First Development: {✅ | ⚠️} {comment}
+   - AI-Agent Friendly: {✅ | ⚠️} {comment}
+   - Progressive Enhancement: {✅ | ⚠️} {comment}
+   - Automated Quality: {✅ | ⚠️} {comment}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 Impact Analysis:
+
+   **Dependencies**:
+   📦 External Packages ({count}):
+   {FOR each dependency}:
+   - {package}: {version}
+   {END FOR}
+
+   **Related Files to Review**:
+   {IF domain_spec_impact}:
+   📄 Domain Specification:
+   - specs/domain/{domain_spec_id}/spec.md
+   - Review if entity definitions need updates
+   {END IF}
+
+   {IF doc_impact}:
+   📚 Documentation:
+   - README.md: Updated with usage examples ✅
+   - AGENTS.md: Added AI agent patterns ✅
+   - docs/: {updated_count} files updated
+   {END IF}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📈 Metrics:
+
+   **Code Statistics**:
+   - Total lines: {total_loc}
+   - Source code: {source_loc} lines ({percentage}%)
+   - Test code: {test_loc} lines ({percentage}%)
+   - Documentation: {doc_loc} lines ({percentage}%)
+   - Test-to-code ratio: 1:{ratio}
+
+   **Complexity**:
+   - Files: {file_count}
+   - Classes: {class_count}
+   - Functions: {function_count}
+   - Average function length: {avg_lines} lines
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 Next Steps:
+
+   1. Run final analysis:
+      → /metaspec.sdd.analyze
+      
+   2. Generate quality checklist:
+      → /metaspec.sdd.checklist
+      
+   3. Test installation:
+      → pip install -e .  # or npm install / go build
+      → {package-name} --help
+      
+   4. Verify CLI commands:
+      → {package-name} init
+      → {package-name} validate example.yaml
+      → {package-name} generate
+
+⚠️  Follow-up TODOs:
+
+   {IF linter_issues}:
+   - [ ] Fix linter warnings: {count} issues
+   {END IF}
+   {IF type_issues}:
+   - [ ] Fix type-check issues: {count} issues
+   {END IF}
+   {IF failing_tests}:
+   - [ ] Fix failing tests: {list}
+   {END IF}
+   {IF coverage_low}:
+   - [ ] Improve test coverage: {current}% → 80%+
+   {END IF}
+   {IF incomplete_impl}:
+   - [ ] Complete domain spec implementation: {missing_items}
+   {END IF}
+   - [ ] Run final quality check: /metaspec.sdd.analyze
+   - [ ] Publish package (if ready)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 Suggested Commit Message:
+
+   feat(toolkit): complete {toolkit_id} implementation
+   
+   Implementation:
+   - Language: {language}
+   - Architecture: {type}
+   - Components: Parser, Validator, CLI, {others}
+   - LOC: {source_loc} source, {test_loc} tests
+   
+   Quality:
+   - Tests: {test_count} tests, {coverage}% coverage
+   - Domain spec: {percentage}% implemented
+   - Linter: {✅ Clean | ⚠️ {count} warnings}
+   
+   {IF issues}:
+   Known Issues:
+   - {issue_1}
+   - {issue_2}
+   {END IF}
+```
+
 ## Important Notes
 
 1. **TDD is mandatory**
