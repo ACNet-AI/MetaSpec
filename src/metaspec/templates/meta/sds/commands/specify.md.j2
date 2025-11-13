@@ -18,7 +18,7 @@ The text the user typed after `/metaspec.sds.specify` is the **domain specificat
 
 This command is for defining **domain specifications, rules, and standards**:
 - Focus: WHAT the domain specification is
-- Output: `specs/domain/001-{name}/spec.md`
+- Output: `specs/domain/001-[name]/spec.md`
 - Independent of any implementation
 - Pure domain specification
 
@@ -82,7 +82,7 @@ SPEC_NUMBER="013"
 **Step 1a: Generate Specification Name**
 
 Based on user input, generate:
-- Short name: `{domain}-{component}-spec`
+- Short name: `[domain]-{component}-spec`
 - Example: "mcp-core-spec", "graphql-schema", "oauth2-flow"
 - Check existing `specs/domain/` directory structure
 
@@ -103,7 +103,7 @@ ls specs/domain/ | grep -E '^[0-9]{3}-' | sort -n
 
 **Step 1c: Load Existing or Create New**
 
-- Check for `specs/domain/{number}-{name}/spec.md`
+- Check for `specs/domain/{number}-[name]/spec.md`
 - If exists, load for updating
 - If new, create new directory structure
 
@@ -226,7 +226,7 @@ Define specification entities (NOT toolkit entities):
 ```markdown
 ### Entity: {EntityName}
 
-**Purpose**: {What this entity represents in the specification}
+**Purpose**: [What this entity represents in the specification]
 
 **Schema**:
 ```yaml
@@ -285,10 +285,10 @@ Define state machines and transition rules for entities with lifecycle:
 **Allowed Transitions**:
 
 #### `{state_1}` → `{state_2}`
-- **Trigger**: {What causes this transition}
-- **Precondition**: {What must be true before transition}
-- **Action**: {What happens during transition}
-- **Postcondition**: {What must be true after transition}
+- **Trigger**: [What causes this transition]
+- **Precondition**: [What must be true before transition]
+- **Action**: [What happens during transition]
+- **Postcondition**: [What must be true after transition]
 
 Example:
 #### `pending` → `confirmed`
@@ -340,7 +340,7 @@ Define operations/interfaces:
 ```markdown
 ### Operation: {operation_name}
 
-**Purpose**: {What this operation does}
+**Purpose**: [What this operation does]
 
 **Request Schema**:
 ```yaml
@@ -432,7 +432,7 @@ Provide complete specification examples:
 
 ### 4. Write Specification File
 
-**Location**: `specs/domain/{number}-{name}/spec.md`
+**Location**: `specs/domain/{number}-[name]/spec.md`
 
 **IMPORTANT**: Add YAML frontmatter for recursive structure tracking
 
@@ -445,9 +445,9 @@ Based on context from Step 0, generate spec.md with:
 - **If direct invocation** (root specification):
   ```yaml
   ---
-  spec_id: {number}-{name}
+  spec_id: {number}-[name]
   parent: null
-  root: {number}-{name}
+  root: {number}-[name]
   type: root
   ---
   ```
@@ -455,7 +455,7 @@ Based on context from Step 0, generate spec.md with:
 - **If from implement** (sub-specification):
   ```yaml
   ---
-  spec_id: {number}-{name}
+  spec_id: {number}-[name]
   parent: {parent_id}
   root: {root_id}
   type: leaf
@@ -525,13 +525,13 @@ Collect information for the report:
 
 ```markdown
 Report Data:
-- Spec ID: {spec_id}
-- Version: {version} (1.0.0 for new, increment for updates)
-- Date: {today}
+- Spec ID: [spec_id]
+- Version: [version] (1.0.0 for new, increment for updates)
+- Date: [today]
 - Type: New | Update
-- Entity Count: {count of entities}
-- Operation Count: {count of operations}
-- Validation Rules: {count of rules}
+- Entity Count: [count of entities]
+- Operation Count: [count of operations]
+- Validation Rules: [count of rules]
 - Workflow States: {count if workflow exists, else 0}
 ```
 
@@ -543,56 +543,56 @@ Create detailed report and **prepend** to spec.md:
 <!--
 Domain Specification Report
 ===========================
-Spec ID: {spec_id}
-Version: {version}
-Created/Updated: {date}
-Type: {New | Update}
+Spec ID: [spec_id]
+Version: [version]
+Created/Updated: [date]
+Type: [New | Update]
 
 Specification Summary:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Name: {Specification Name}
-Domain: {domain}
-Status: {Draft | Stable | Deprecated}
+Domain: [domain]
+Status: [Draft | Stable | Deprecated]
 
-Core Entities ({count}):
-- {Entity 1}: {brief description}
-- {Entity 2}: {brief description}
+Core Entities ([count]):
+- {Entity 1}: [brief description]
+- {Entity 2}: [brief description]
 ...
 
-Operations ({count}):
-- {Operation 1}: {brief description}
-- {Operation 2}: {brief description}
+Operations ([count]):
+- {Operation 1}: [brief description]
+- {Operation 2}: [brief description]
 ...
 
-Validation Rules ({count}):
-- Entity validation: {count} rules
-- Operation validation: {count} rules
-- Cross-entity validation: {count} rules
+Validation Rules ([count]):
+- Entity validation: [count] rules
+- Operation validation: [count] rules
+- Cross-entity validation: [count] rules
 
-{IF workflow exists:}
+[IF workflow exists]:
 Workflow:
-- State machines: {count}
-- Total states: {count}
-- Total transitions: {count}
+- State machines: [count]
+- Total states: [count]
+- Total transitions: [count]
 
 Impact Analysis:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ Files Created/Updated:
-- specs/domain/{spec_id}/spec.md
+- specs/domain/[spec_id]/spec.md
 
 ⚠️  Related Files to Review:
 - README.md (add spec to documentation)
 - AGENTS.md (document spec location and purpose)
-{IF has dependencies:}
-- Related specs: {list of dependent specs}
+[IF has dependencies]:
+- Related specs: [list of dependent specs]
 
 📋 Follow-up TODOs:
 - [ ] Review specification completeness
 - [ ] Run /metaspec.sds.analyze to check consistency
 - [ ] Update project documentation (README, AGENTS)
-{IF complex specification:}
+[IF complex specification]:
 - [ ] Consider running /metaspec.sds.plan for sub-specifications
-{IF toolkit needed:}
+[IF toolkit needed]:
 - [ ] Create toolkit with /metaspec.sdd.specify
 
 Constitution Compliance Check:
@@ -691,7 +691,7 @@ Checking specs/toolkit/002-auth-validator/spec.md...
 
 ```bash
 # Check if any custom commands reference this spec
-find .metaspec/commands/ -name "*.md" -exec grep -l "{spec_id}" {} \;
+find .metaspec/commands/ -name "*.md" -exec grep -l "[spec_id]" {} \;
 
 # For each command:
 # - Does it embed specification knowledge?
@@ -783,7 +783,7 @@ Check specification file structure:
   - Examples
 
 - [ ] **File Organization**: Correct
-  - File at correct path: specs/domain/{id}/{name}/spec.md
+  - File at correct path: specs/domain/{id}/[name]/spec.md
   - Directory structure follows convention
 
 #### Content Validation
@@ -929,7 +929,7 @@ Cross-Reference Validation: ✅ PASSED (3/3 checks)
 
 Overall Score: 24/24 (100%) ✅
 
-{IF any warnings or suggestions:}
+[IF any warnings or suggestions]:
 ⚠️  Warnings:
 - {Warning 1}
 - {Warning 2}
@@ -945,7 +945,7 @@ Update the success output to include validation and impact information:
 
 ### 10. Create README.md (Optional)
 
-If this is a new specification spec, create `specs/domain/{number}-{name}/README.md`:
+If this is a new specification spec, create `specs/domain/{number}-[name]/README.md`:
 
 ```markdown
 # {Specification Name}
@@ -959,11 +959,11 @@ Brief overview of the specification.
 
 ## Status
 
-**Current Status**: {Draft | Stable | Deprecated}
+**Current Status**: [Draft | Stable | Deprecated]
 
 ## Quick Start
 
-{How to read and use this domain specification}
+[How to read and use this domain specification]
 ```
 
 ### 6. Update Dependencies (If needed)
@@ -985,47 +985,47 @@ If this specification depends on other specifications, document in spec.md:
 ✅ Domain specification created/updated successfully
 
 📁 Location:
-   specs/domain/{number}-{name}/spec.md
+   specs/domain/{number}-[name]/spec.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 Specification Summary:
    Name: {Specification Name}
-   Version: {version}
-   Status: {Draft | Stable | Deprecated}
-   Type: {Root | Leaf} Specification
+   Version: [version]
+   Status: [Draft | Stable | Deprecated]
+   Type: [Root | Leaf] Specification
    {IF leaf: Parent: {parent_id}}
 
 📊 Content Statistics:
-   - Core Entities: {count} entities defined
+   - Core Entities: [count] entities defined
      * {Entity 1}
      * {Entity 2}
      * ...
    
-   - Operations: {count} operations defined
+   - Operations: [count] operations defined
      * {Operation 1}
      * {Operation 2}
      * ...
    
-   - Validation Rules: {count} rules specified
-     * Entity validation: {count} rules
-     * Operation validation: {count} rules
-     * Cross-entity validation: {count} rules
+   - Validation Rules: [count] rules specified
+     * Entity validation: [count] rules
+     * Operation validation: [count] rules
+     * Cross-entity validation: [count] rules
    
-   {IF workflow exists:}
-   - Workflow: {count} state machine(s)
+   [IF workflow exists]:
+   - Workflow: [count] state machine(s)
      * {Entity 1} State Machine: {state_count} states, {transition_count} transitions
      * ...
    
-   {IF glossary included:}
-   - Glossary: {count} terms defined
+   [IF glossary included]:
+   - Glossary: [count] terms defined
    
-   {IF use cases included:}
-   - Use Cases: {count} scenarios documented
+   [IF use cases included]:
+   - Use Cases: [count] scenarios documented
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ Validation Results: PASSED ({score}/24 checks)
+✅ Validation Results: PASSED ([score]/24 checks)
 
    Structure: ✅ {4/4 checks passed}
    Content: ✅ {5/5 checks passed}
@@ -1033,12 +1033,12 @@ If this specification depends on other specifications, document in spec.md:
    Documentation: ✅ {5/5 checks passed}
    Cross-References: ✅ {3/3 checks passed}
 
-{IF any warnings:}
+[IF any warnings]:
    ⚠️  Warnings:
    - {Warning 1}
    - {Warning 2}
 
-{IF any suggestions:}
+[IF any suggestions]:
    💡 Suggestions:
    - {Suggestion 1}
    - {Suggestion 2}
@@ -1048,21 +1048,21 @@ If this specification depends on other specifications, document in spec.md:
 📋 Impact Analysis:
 
    ✅ Files Created/Updated:
-   - specs/domain/{spec_id}/spec.md
+   - specs/domain/[spec_id]/spec.md
 
    ⚠️  Files Requiring Manual Review:
    - README.md (add specification to list)
    - AGENTS.md (document specification purpose)
-   {IF conflicts detected:}
+   [IF conflicts detected]:
    - specs/domain/{conflicting_spec}/spec.md (naming conflict detected)
-   {IF toolkits affected:}
+   [IF toolkits affected]:
    - specs/toolkit/{affected_toolkit}/spec.md (may need updates)
 
    📊 Consistency Check:
-   - Domain specifications reviewed: {count}
-   - Conflicts detected: {count}
-   - Toolkits potentially affected: {count}
-   - Documentation needing updates: {count} files
+   - Domain specifications reviewed: [count]
+   - Conflicts detected: [count]
+   - Toolkits potentially affected: [count]
+   - Documentation needing updates: [count] files
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -1072,32 +1072,32 @@ If this specification depends on other specifications, document in spec.md:
    1. Review specification completeness
    2. Update README.md with new specification
    3. Update AGENTS.md with specification documentation
-   {IF conflicts:}
+   [IF conflicts]:
    4. ⚠️  Resolve naming conflicts with other specs
-   {IF toolkits affected:}
+   [IF toolkits affected]:
    5. ⚠️  Review and update affected toolkits
 
    Recommended:
    - Run /metaspec.sds.analyze to check full consistency
-   {IF complex:}
+   [IF complex]:
    - Consider /metaspec.sds.plan for sub-specifications
-   {IF needs toolkit:}
+   [IF needs toolkit]:
    - Create toolkit with /metaspec.sdd.specify
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 Suggested commit message:
-   {IF new:}
-   docs(spec): add {spec_id} domain specification
+   [IF new]:
+   docs(spec): add [spec_id] domain specification
    
-   - Define {count} core entities
-   - Specify {count} operations
-   - Include {count} validation rules
-   {IF workflow:}
-   - Document {count} workflow state machine(s)
+   - Define [count] core entities
+   - Specify [count] operations
+   - Include [count] validation rules
+   [IF workflow]:
+   - Document [count] workflow state machine(s)
    
-   {IF update:}
-   docs(spec): update {spec_id} domain specification
+   [IF update]:
+   docs(spec): update [spec_id] domain specification
    
    - {summary of changes}
 ```
@@ -1121,7 +1121,7 @@ If this specification depends on other specifications, document in spec.md:
 
 ### Naming Conventions
 
-- **Specification names**: `{domain}-{component}-spec`
+- **Specification names**: `[domain]-{component}-spec`
 - **Entity names**: PascalCase (e.g., `ServerInfo`, `ToolDefinition`)
 - **Operations**: snake_case (e.g., `tools/list`, `initialize`)
 - **Fields**: camelCase (e.g., `userName`, `isActive`)
