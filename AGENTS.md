@@ -656,10 +656,15 @@ cd my-speckit
 /metaspec.sds.clarify  # Clarify ambiguities (recommended)
 /metaspec.sds.checklist  # Quality check (recommended)
 
-# Phase 2: Design toolkit
+# Phase 2: Develop toolkit (complete workflow)
 /metaspec.sdd.constitution  # Define toolkit principles
 /metaspec.sdd.specify "Define parser and validator"  # Toolkit spec
-/metaspec.sdd.plan  # Architecture design
+/metaspec.sdd.clarify  # Clarify technical decisions (recommended)
+/metaspec.sdd.plan  # Plan architecture
+/metaspec.sdd.checklist  # Validate requirements (recommended)
+/metaspec.sdd.tasks  # Break down implementation
+/metaspec.sdd.analyze  # Check architecture consistency (recommended)
+/metaspec.sdd.implement  # Write code
 ```
 
 **Example 1b: Complex Specification (Needs Splitting)**
@@ -675,10 +680,15 @@ cd my-speckit
 /metaspec.sds.analyze  # Check task consistency (BEFORE implement)
 /metaspec.sds.implement  # Write sub-specification documents (NOT code)
 
-# Phase 2: Design toolkit (same as simple path)
+# Phase 2: Develop toolkit (complete workflow, same as Example 1)
 /metaspec.sdd.constitution
 /metaspec.sdd.specify "Define parser and validator"
+/metaspec.sdd.clarify
 /metaspec.sdd.plan
+/metaspec.sdd.checklist
+/metaspec.sdd.tasks
+/metaspec.sdd.analyze
+/metaspec.sdd.implement
 ```
 
 **Example 2: Iterating on specification**
