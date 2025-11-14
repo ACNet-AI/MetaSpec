@@ -41,7 +41,7 @@ src/metaspec/templates/
 │
 └── meta/                     # Third layer: MetaSpec self-development (SDS + SDD)
     ├── sds/                 # Domain specification commands
-    │   └── commands/        # /metaspec.sds.* (5 commands)
+    │   └── commands/        # /metaspec.sds.* (8 commands)
     └── sdd/                 # Speckit development commands
         └── commands/        # /metaspec.sdd.* (8 commands)
 ```

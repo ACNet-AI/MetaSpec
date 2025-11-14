@@ -372,17 +372,25 @@ cd my-spec-kit
 pip install -e .
 
 # Step 4: Use built-in MetaSpec commands for AI-assisted development
-# Phase 1: Define domain specification (SDS)
+# Phase 1: Define domain specification (SDS - 8 commands)
 # /metaspec.sds.constitution  - Define specification design principles
 # /metaspec.sds.specify       - Define specification entities
+# /metaspec.sds.clarify       - Resolve specification ambiguities
 # /metaspec.sds.plan          - Plan specification architecture
+# /metaspec.sds.tasks         - Break down specification work
 # /metaspec.sds.implement     - Write specification documents
+# /metaspec.sds.checklist     - Generate quality checklist
+# /metaspec.sds.analyze       - Check specification consistency
 
-# Phase 2: Develop toolkit (SDD)
+# Phase 2: Develop toolkit (SDD - 8 commands)
 # /metaspec.sdd.constitution  - Define toolkit principles
 # /metaspec.sdd.specify       - Define toolkit specifications
+# /metaspec.sdd.clarify       - Resolve toolkit ambiguities
 # /metaspec.sdd.plan          - Plan implementation architecture
+# /metaspec.sdd.tasks         - Break down implementation work
 # /metaspec.sdd.implement     - Build your speckit
+# /metaspec.sdd.checklist     - Validate quality
+# /metaspec.sdd.analyze       - Check consistency
 
 # Step 5: Share with community
 metaspec contribute my-spec-kit

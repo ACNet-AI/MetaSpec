@@ -18,15 +18,18 @@ If you just want to **use** {{ name }}, see the root `AGENTS.md` and `README.md`
 
 ## 🏗️ MetaSpec Architecture
 
-This speckit includes 16 AI-assisted development commands organized in three layers:
+This speckit includes 19 AI-assisted development commands organized in three layers:
 
-### Layer 1: SDS (Spec-Driven Specification) - 5 Commands
+### Layer 1: SDS (Spec-Driven Specification) - 8 Commands
 
 Define domain domain specifications:
 
 - `/metaspec.sds.constitution` - Define specification design principles
 - `/metaspec.sds.specify` - Define specification entities, operations, validation rules
 - `/metaspec.sds.clarify` - Resolve ambiguities in domain specification
+- `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
+- `/metaspec.sds.tasks` - Break down specification work
+- `/metaspec.sds.implement` - Write specification documents
 - `/metaspec.sds.checklist` - Generate quality checklist for specification
 - `/metaspec.sds.analyze` - Check specification consistency
 
@@ -168,7 +171,7 @@ MetaSpec commands support iteration modes to track progress:
 │   └── {{ package_name }}/
 └── .metaspec/
     ├── README.md          ← You are here
-    ├── commands/          ← 16 MetaSpec commands
+    ├── commands/          ← 19 MetaSpec commands
     └── templates/         ← Output format templates
 ```
 
