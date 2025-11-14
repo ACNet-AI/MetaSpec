@@ -114,13 +114,24 @@ def sync_command(
 
     # Step 6: Get new commands from installed MetaSpec
     try:
-        from jinja2 import FileSystemLoader
+        from jinja2 import FileSystemLoader, PackageLoader
 
+        import metaspec
         from metaspec.generator import Generator
         gen = Generator()
-        if not isinstance(gen.env.loader, FileSystemLoader):
-            raise RuntimeError("Unexpected loader type")
-        template_dir = Path(gen.env.loader.searchpath[0]) / "meta"
+
+        # Support both FileSystemLoader and PackageLoader
+        if isinstance(gen.env.loader, FileSystemLoader):
+            template_dir = Path(gen.env.loader.searchpath[0]) / "meta"
+        elif isinstance(gen.env.loader, PackageLoader):
+            # Use package location for editable installs
+            template_dir = Path(metaspec.__file__).parent / "templates" / "meta"
+        else:
+            raise RuntimeError(f"Unsupported loader type: {type(gen.env.loader)}")
+
+        if not template_dir.exists():
+            raise RuntimeError(f"Template directory not found: {template_dir}")
+
     except Exception as e:
         console.print(
             "[red]Error:[/red] Could not locate MetaSpec templates: " + str(e),
