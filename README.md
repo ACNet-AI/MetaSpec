@@ -294,15 +294,17 @@ cd my-spec-kit
 # /metaspec.sds.analyze      - Check task consistency (if complex, AFTER tasks, BEFORE implement, checkpoint) ⭐
 # /metaspec.sds.implement    - Write specification documents, NOT code (if complex) ⭐
 
-# SDD Commands (8) - Develop spec-driven toolkit
-# /metaspec.sdd.constitution - Define toolkit principles
-# /metaspec.sdd.specify      - Define toolkit specifications
-# /metaspec.sdd.clarify      - Resolve toolkit ambiguities
-# /metaspec.sdd.plan         - Plan implementation architecture
-# /metaspec.sdd.tasks        - Generate actionable task lists
-# /metaspec.sdd.implement    - Execute implementation
-# /metaspec.sdd.checklist    - Validate specification quality
-# /metaspec.sdd.analyze      - Analyze consistency
+# SDD Commands (8) - Develop spec-driven toolkit (follows spec-kit workflow)
+#   Complete: constitution → specify → [clarify] → plan → [checklist] → tasks → [analyze] → implement
+#
+# /metaspec.sdd.constitution - Define toolkit implementation principles (required)
+# /metaspec.sdd.specify      - Define toolkit specifications (required)
+# /metaspec.sdd.clarify      - Clarify technical decisions (recommended, BEFORE plan, input quality gate)
+# /metaspec.sdd.plan         - Plan implementation architecture (required)
+# /metaspec.sdd.checklist    - Validate requirements completeness (recommended, AFTER plan, quality gate)
+# /metaspec.sdd.tasks        - Break down implementation work (required)
+# /metaspec.sdd.analyze      - Check architecture consistency (recommended, AFTER tasks, BEFORE implement, checkpoint)
+# /metaspec.sdd.implement    - Build your speckit - write code (required)
 
 # Evolution Commands (3) - Controlled changes (shared)
 # /metaspec.proposal "change" --type sds|sdd - Create change proposals
@@ -397,18 +399,22 @@ pip install -e .
 # /metaspec.sds.implement     - Write specification documents (NOT code) ⭐
 
 # Phase 2: Develop toolkit (SDD - 8 commands)
-#   Core: constitution → specify → plan → tasks → implement
-#   Quality: checklist → analyze
-#   On-demand: clarify
+#   Complete Path: constitution → specify → [clarify] → plan → [checklist] → tasks → [analyze] → implement
+#   (Same as spec-kit workflow - toolkit development always needs full process)
 #
-# /metaspec.sdd.constitution  - Define toolkit principles
+# Core (required):
+# /metaspec.sdd.constitution  - Define toolkit implementation principles
 # /metaspec.sdd.specify       - Define toolkit specifications
+#
+# Quality gates (recommended):
+# /metaspec.sdd.clarify       - Clarify technical decisions (BEFORE plan, input quality gate)
+#
+# Core (required) - continued:
 # /metaspec.sdd.plan          - Plan implementation architecture
+# /metaspec.sdd.checklist     - Validate requirements completeness (AFTER plan, quality gate)
 # /metaspec.sdd.tasks         - Break down implementation work
-# /metaspec.sdd.implement     - Build your speckit
-# /metaspec.sdd.checklist     - Validate quality (recommended)
-# /metaspec.sdd.analyze       - Check consistency (recommended)
-# /metaspec.sdd.clarify       - Resolve toolkit ambiguities (optional)
+# /metaspec.sdd.analyze       - Check architecture consistency (AFTER tasks, BEFORE implement, checkpoint)
+# /metaspec.sdd.implement     - Build your speckit (write code)
 
 # Step 5: Share with community
 metaspec contribute my-spec-kit

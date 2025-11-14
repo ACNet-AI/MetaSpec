@@ -13,22 +13,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 📝 Documentation
 
-**SDS Workflow Clarification**
-- Distinguished core vs optional commands (aligned with [GitHub spec-kit](https://github.com/github/spec-kit) pattern)
-- Added Simple Path (4-5 commands: 2 required + 2 recommended + 1 optional) and Complex Path (7-8 commands: 5 required + 2 recommended + 1 optional) workflows
-- Clarified `/metaspec.sds.implement` creates specification documents, NOT code
-- Marked complex-path-only commands with ⭐ (plan, tasks, implement)
+**Workflow Alignment with spec-kit**
+- Corrected SDS/SDD command order based on [GitHub spec-kit](https://github.com/github/spec-kit) official guidance
+- **SDS**: Two paths (Simple: 2-4 commands | Complex: 5-8 commands, follows spec-kit when splitting)
+- **SDD**: One complete path (always 5-8 commands, follows spec-kit workflow)
+- **Quality gates**: clarify (before plan) → checklist (after plan) → analyze (after tasks, before implement)
+
+**Key fixes**:
+1. Corrected command order: `specify → clarify → plan → checklist → tasks → analyze → implement`
+2. Clarified `/metaspec.sds.implement` creates specification documents, NOT code
+3. Explained why checklist and analyze don't overlap (WHAT vs HOW validation)
+4. SDD always uses complete workflow (toolkit development is always complex)
 
 **Updated files**:
-- `README.md`: Command listings with workflow annotations
-- `AGENTS.md`: Added two workflow paths with examples
+- `README.md`: Command listings with workflow annotations and quality gate positions
+- `AGENTS.md`: SDS/SDD workflows, examples, and typical workflow section
 - `src/metaspec/templates/base/.metaspec/README.md.j2`: Template for generated speckits
 
 **Impact**:
-- Reduces confusion about "must use all 8 commands"
-- Prevents misunderstanding that `implement` generates code
-- Clearer guidance for choosing simple vs complex specification workflows
-- All newly generated speckits will include improved documentation
+- Aligns MetaSpec with spec-kit best practices
+- Clear quality gate positioning (input → plan → execution checkpoints)
+- Reduces confusion about command overlapping and order
+- Distinguishes simple spec definition from complex toolkit development
 
 ---
 

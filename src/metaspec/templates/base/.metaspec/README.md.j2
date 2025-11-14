@@ -108,33 +108,32 @@ Manage specification changes:
 
 **Output**: `specs/domain/001-{domain}-spec/spec.md`
 
-### Phase 2: Design Toolkit (SDD)
+### Phase 2: Develop Toolkit (SDD)
+
+**Complete Path** (follows spec-kit workflow - toolkit development always needs full process):
 
 ```bash
-# Step 1: Define toolkit principles
-/metaspec.sdd.constitution
+# Core Flow
+/metaspec.sdd.constitution  # 1. Define toolkit implementation principles
+/metaspec.sdd.specify       # 2. Define toolkit specifications
 
-# Step 2: Define toolkit specs
-/metaspec.sdd.specify
+# Quality Gates
+/metaspec.sdd.clarify       # 3. Clarify technical decisions (BEFORE plan)
 
-# Step 3: Plan implementation
-/metaspec.sdd.plan
-```
+# Core Flow (Continued)
+/metaspec.sdd.plan          # 4. Plan implementation architecture
 
-**Output**: `specs/toolkit/001-{name}/spec.md` + `plan.md`
+# Quality Gates
+/metaspec.sdd.checklist     # 5. Validate requirements (AFTER plan)
 
-### Phase 3: Implement Toolkit (SDD)
+# Core Flow (Continued)
+/metaspec.sdd.tasks         # 6. Break down implementation work
 
-```bash
-# Step 1: Break down tasks
-/metaspec.sdd.tasks
+# Quality Gates
+/metaspec.sdd.analyze       # 7. Check architecture consistency (BEFORE implement)
 
-# Step 2: Execute implementation
-/metaspec.sdd.implement
-
-# Step 3: Validate quality
-/metaspec.sdd.checklist
-/metaspec.sdd.analyze
+# Core Flow (Continued)
+/metaspec.sdd.implement     # 8. Build toolkit - write code
 ```
 
 **Output**: Working code in `src/` directory

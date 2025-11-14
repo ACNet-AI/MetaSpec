@@ -346,12 +346,17 @@ For developing speckits (spec-driven toolkits):
 
 - `/metaspec.sdd.constitution` - Update Part III of constitution (Toolkit Implementation Principles)
 - `/metaspec.sdd.specify` - Define toolkit specifications
-- `/metaspec.sdd.clarify` - Resolve toolkit ambiguities
-- `/metaspec.sdd.plan` - Plan toolkit implementation
+- `/metaspec.sdd.clarify` - Clarify technical decisions (recommended BEFORE plan; input quality gate)
+- `/metaspec.sdd.plan` - Plan toolkit implementation architecture
+- `/metaspec.sdd.checklist` - Validate requirements completeness (recommended AFTER plan; quality gate)
 - `/metaspec.sdd.tasks` - Break down implementation work
-- `/metaspec.sdd.implement` - Build toolkit code
-- `/metaspec.sdd.checklist` - Validate quality
-- `/metaspec.sdd.analyze` - Check consistency
+- `/metaspec.sdd.analyze` - Check architecture consistency (recommended AFTER tasks, BEFORE implement; checkpoint)
+- `/metaspec.sdd.implement` - Build toolkit code (write actual implementation)
+
+**Workflow**: Follows [spec-kit](https://github.com/github/spec-kit) pattern completely (toolkit development always needs full process)
+```
+constitution → specify → [clarify] → plan → [checklist] → tasks → [analyze] → implement
+```
 
 **Location**: Works with `specs/toolkit/` directory
 **Constitution**: Updates Part III in `/memory/constitution.md`
@@ -398,10 +403,11 @@ MetaSpec commands (19 total):
 - Focus on WHAT the domain specification is
 
 **Use SDD commands** (`/metaspec.sdd.*`):
-- Developing spec-driven toolkits
+- Developing spec-driven toolkits (always uses complete workflow like spec-kit)
 - Planning and implementing parsers, validators, CLI
 - Building tools to support a specification
 - Focus on HOW to implement the toolkit
+- Unlike SDS, toolkit development always needs full process (no "Simple Path")
 
 **Use Evolution commands** (`/metaspec.*`):
 - Specification is stable and in use (domain specification or toolkit)
@@ -411,10 +417,13 @@ MetaSpec commands (19 total):
 - Use `--type sds` for specification changes, `--type sdd` for toolkit changes
 
 **Typical workflow**:
-1. SDS: Define domain specification (`/metaspec.sds.specify`)
-2. SDD: Design toolkit to support it (`/metaspec.sdd.specify`, `/metaspec.sdd.plan`)
-3. SDD: Implement toolkit (`/metaspec.sdd.tasks`, `/metaspec.sdd.implement`)
-4. Evolution: Manage changes to either specification or toolkit (`/metaspec.proposal --type sds|sdd`)
+1. **SDS**: Define domain specification
+   - Simple: `/metaspec.sds.specify` → `/metaspec.sds.checklist`
+   - Complex: `/metaspec.sds.specify` → `/metaspec.sds.plan` → `/metaspec.sds.tasks` → `/metaspec.sds.implement`
+2. **SDD**: Develop toolkit (always complete workflow, like spec-kit)
+   - `/metaspec.sdd.specify` → `/metaspec.sdd.clarify` → `/metaspec.sdd.plan` → `/metaspec.sdd.checklist` → `/metaspec.sdd.tasks` → `/metaspec.sdd.analyze` → `/metaspec.sdd.implement`
+3. **Evolution**: Manage changes to either specification or toolkit
+   - `/metaspec.proposal --type sds|sdd`
 
 ### Recommended Practice: SDS + SDD Separation
 
