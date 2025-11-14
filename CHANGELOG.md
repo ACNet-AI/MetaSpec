@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **SDS Workflow Clarification**
 - Distinguished core vs optional commands (aligned with [GitHub spec-kit](https://github.com/github/spec-kit) pattern)
-- Added Simple Path (2-4 commands) and Complex Path (5-7 commands) workflows
+- Added Simple Path (4-5 commands: 2 required + 2 recommended + 1 optional) and Complex Path (7-8 commands: 5 required + 2 recommended + 1 optional) workflows
 - Clarified `/metaspec.sds.implement` creates specification documents, NOT code
 - Marked complex-path-only commands with ⭐ (plan, tasks, implement)
 
