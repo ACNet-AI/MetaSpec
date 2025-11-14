@@ -289,7 +289,7 @@ cd my-spec-kit
 # /metaspec.sds.specify      - Define specification entities and operations (required)
 # /metaspec.sds.plan         - Plan specification architecture (if complex) ⭐
 # /metaspec.sds.tasks        - Break down specification work (if complex) ⭐
-# /metaspec.sds.implement    - Write specification documents (if complex) ⭐
+# /metaspec.sds.implement    - Write specification documents, NOT code (if complex) ⭐
 # /metaspec.sds.checklist    - Generate quality checklist (recommended)
 # /metaspec.sds.analyze      - Check specification consistency (recommended)
 # /metaspec.sds.clarify      - Resolve specification ambiguities (optional, on-demand)
@@ -389,7 +389,7 @@ pip install -e .
 # If complex (splitting needed):
 # /metaspec.sds.plan          - Plan specification architecture ⭐
 # /metaspec.sds.tasks         - Break down specification work ⭐
-# /metaspec.sds.implement     - Write specification documents ⭐
+# /metaspec.sds.implement     - Write specification documents (NOT code) ⭐
 #
 # Quality (recommended):
 # /metaspec.sds.checklist     - Generate quality checklist

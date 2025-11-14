@@ -149,7 +149,7 @@ For defining domain specifications:
 - `/metaspec.sds.clarify` - Resolve ambiguities in specification
 - `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
 - `/metaspec.sds.tasks` - Break down specification work
-- `/metaspec.sds.implement` - Write specification documents
+- `/metaspec.sds.implement` - Write specification documents (creates sub-spec files, NOT code)
 - `/metaspec.sds.checklist` - Generate quality checklist for specification
 - `/metaspec.sds.analyze` - Check specification consistency
 
@@ -573,7 +573,7 @@ examples/
 /metaspec.sds.specify       # 2. Create root specification
 /metaspec.sds.plan          # 3. Plan sub-specification architecture ⭐
 /metaspec.sds.tasks         # 4. Break down specification tasks ⭐
-/metaspec.sds.implement     # 5. Implement sub-specifications ⭐
+/metaspec.sds.implement     # 5. Write sub-specification documents (NOT code) ⭐
 
 # Quality Assurance (Recommended)
 /metaspec.sds.checklist     # 6. Generate quality checklist
@@ -656,7 +656,7 @@ cd my-speckit
 /metaspec.sds.specify "Define MCP specification"  # Create root specification
 /metaspec.sds.plan  # Plan sub-specification architecture
 /metaspec.sds.tasks  # Break down specification tasks
-/metaspec.sds.implement  # Implement sub-specifications
+/metaspec.sds.implement  # Write sub-specification documents (NOT code)
 /metaspec.sds.checklist  # Quality check (recommended)
 /metaspec.sds.analyze  # Consistency check (recommended)
 
