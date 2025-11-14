@@ -73,9 +73,9 @@ Manage specification changes:
 /metaspec.sds.constitution  # 1. Define specification principles
 /metaspec.sds.specify       # 2. Define specification entities
 
-# Quality Assurance (Recommended)
-/metaspec.sds.checklist     # 3. Generate quality checklist
-/metaspec.sds.analyze       # 4. Check consistency
+# Quality Gates (Recommended)
+/metaspec.sds.clarify       # 3. Clarify ambiguities
+/metaspec.sds.checklist     # 4. Final quality validation
 ```
 
 **Complex Path** (If splitting needed):
@@ -84,13 +84,24 @@ Manage specification changes:
 # Core Flow
 /metaspec.sds.constitution  # 1. Define specification principles
 /metaspec.sds.specify       # 2. Define root specification
-/metaspec.sds.plan          # 3. Plan sub-specification architecture
-/metaspec.sds.tasks         # 4. Break down specification tasks
-/metaspec.sds.implement     # 5. Write sub-specification documents (NOT code)
 
-# Quality Assurance (Recommended)
-/metaspec.sds.checklist     # 6. Generate quality checklist
-/metaspec.sds.analyze       # 7. Check consistency
+# Quality Gates
+/metaspec.sds.clarify       # 3. Clarify ambiguities (BEFORE plan)
+
+# Core Flow (Continued)
+/metaspec.sds.plan          # 4. Plan sub-specification architecture
+
+# Quality Gates
+/metaspec.sds.checklist     # 5. Validate requirements (AFTER plan)
+
+# Core Flow (Continued)
+/metaspec.sds.tasks         # 6. Break down specification tasks
+
+# Quality Gates
+/metaspec.sds.analyze       # 7. Check task consistency (BEFORE implement)
+
+# Core Flow (Continued)
+/metaspec.sds.implement     # 8. Write sub-specification documents (NOT code)
 ```
 
 **On-Demand**: Use `/metaspec.sds.clarify` to resolve ambiguities at any stage.

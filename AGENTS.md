@@ -146,12 +146,12 @@ For defining domain specifications:
 
 - `/metaspec.sds.constitution` - Update Part II of constitution (Specification Design Principles)
 - `/metaspec.sds.specify` - Define specification entities, operations, validation rules
-- `/metaspec.sds.clarify` - Resolve ambiguities in specification
+- `/metaspec.sds.clarify` - Clarify underspecified areas (recommended BEFORE plan; input quality gate)
 - `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
 - `/metaspec.sds.tasks` - Break down specification work
+- `/metaspec.sds.analyze` - Cross-artifact consistency check (run AFTER tasks, BEFORE implement; checkpoint)
 - `/metaspec.sds.implement` - Write specification documents (creates sub-spec files, NOT code)
-- `/metaspec.sds.checklist` - Generate quality checklist for specification
-- `/metaspec.sds.analyze` - Check specification consistency
+- `/metaspec.sds.checklist` - Generate quality checklist (like "unit tests for specifications"; output quality gate)
 
 **Location**: Works with `specs/domain/` directory (stores domain specifications)
 **Constitution**: Updates Part II in `/memory/constitution.md`
@@ -556,12 +556,9 @@ examples/
 /metaspec.sds.constitution  # 1. Define specification design principles
 /metaspec.sds.specify       # 2. Create specs/domain/001-{domain}-specification/spec.md
 
-# Quality Assurance (Recommended)
-/metaspec.sds.checklist     # 3. Generate quality checklist
-/metaspec.sds.analyze       # 4. Check specification consistency
-
-# On-Demand Optimization (Optional)
-/metaspec.sds.clarify       # Resolve ambiguities (if issues found)
+# Quality Gates (Recommended)
+/metaspec.sds.clarify       # 3. Clarify ambiguities (input quality gate)
+/metaspec.sds.checklist     # 4. Final quality validation (output quality gate)
 ```
 
 **Path 2: Complex Specification** (Needs splitting)
@@ -571,16 +568,24 @@ examples/
 # Core Flow (Required)
 /metaspec.sds.constitution  # 1. Define specification design principles
 /metaspec.sds.specify       # 2. Create root specification
-/metaspec.sds.plan          # 3. Plan sub-specification architecture ⭐
-/metaspec.sds.tasks         # 4. Break down specification tasks ⭐
-/metaspec.sds.implement     # 5. Write sub-specification documents (NOT code) ⭐
 
-# Quality Assurance (Recommended)
-/metaspec.sds.checklist     # 6. Generate quality checklist
-/metaspec.sds.analyze       # 7. Check specification consistency
+# Quality Gates (Recommended)
+/metaspec.sds.clarify       # 3. Clarify ambiguities (BEFORE plan, input quality gate)
 
-# On-Demand Optimization (Optional)
-/metaspec.sds.clarify       # Resolve ambiguities (any stage)
+# Core Flow (Required) - Continued
+/metaspec.sds.plan          # 4. Plan sub-specification architecture ⭐
+
+# Quality Gates (Recommended)
+/metaspec.sds.checklist     # 5. Validate requirements (AFTER plan, quality gate)
+
+# Core Flow (Required) - Continued
+/metaspec.sds.tasks         # 6. Break down specification tasks ⭐
+
+# Quality Gates (Recommended)
+/metaspec.sds.analyze       # 7. Check task consistency (AFTER tasks, checkpoint)
+
+# Core Flow (Required) - Continued
+/metaspec.sds.implement     # 8. Write sub-specification documents (NOT code) ⭐
 ```
 
 📌 **How to choose**: Start with Path 1. If `/metaspec.sds.specify` output shows complexity, run `/metaspec.sds.plan` to decide if splitting is needed. If yes, switch to Path 2.
@@ -639,8 +644,8 @@ cd my-speckit
 # Phase 1: Define specification (Simple Path)
 /metaspec.sds.constitution  # Define specification design principles
 /metaspec.sds.specify "Define domain specification"  # Create specification
+/metaspec.sds.clarify  # Clarify ambiguities (recommended)
 /metaspec.sds.checklist  # Quality check (recommended)
-/metaspec.sds.analyze  # Consistency check (recommended)
 
 # Phase 2: Design toolkit
 /metaspec.sdd.constitution  # Define toolkit principles
@@ -654,11 +659,12 @@ cd my-speckit
 # Phase 1: Define specification (Complex Path)
 /metaspec.sds.constitution  # Define specification design principles
 /metaspec.sds.specify "Define MCP specification"  # Create root specification
+/metaspec.sds.clarify  # Clarify ambiguities (BEFORE plan)
 /metaspec.sds.plan  # Plan sub-specification architecture
+/metaspec.sds.checklist  # Validate requirements (AFTER plan)
 /metaspec.sds.tasks  # Break down specification tasks
+/metaspec.sds.analyze  # Check task consistency (BEFORE implement)
 /metaspec.sds.implement  # Write sub-specification documents (NOT code)
-/metaspec.sds.checklist  # Quality check (recommended)
-/metaspec.sds.analyze  # Consistency check (recommended)
 
 # Phase 2: Design toolkit (same as simple path)
 /metaspec.sdd.constitution

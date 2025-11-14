@@ -282,17 +282,17 @@ cd my-spec-kit
 # SDS Commands (8) - Define domain specification
 # 
 # Core Flow (2-5 commands depending on complexity):
-#   Simple: constitution → specify → [checklist] → [analyze]
-#   Complex: constitution → specify → plan → tasks → implement → [checklist] → [analyze]
+#   Simple: constitution → specify → [clarify] → [checklist]
+#   Complex: constitution → specify → [clarify] → plan → [checklist] → tasks → [analyze] → implement
 #
 # /metaspec.sds.constitution - Define specification design principles (required)
 # /metaspec.sds.specify      - Define specification entities and operations (required)
+# /metaspec.sds.clarify      - Clarify ambiguities (recommended, BEFORE plan, input quality gate)
 # /metaspec.sds.plan         - Plan specification architecture (if complex) ⭐
+# /metaspec.sds.checklist    - Validate requirements completeness (recommended, AFTER plan, quality gate)
 # /metaspec.sds.tasks        - Break down specification work (if complex) ⭐
+# /metaspec.sds.analyze      - Check task consistency (if complex, AFTER tasks, BEFORE implement, checkpoint) ⭐
 # /metaspec.sds.implement    - Write specification documents, NOT code (if complex) ⭐
-# /metaspec.sds.checklist    - Generate quality checklist (recommended)
-# /metaspec.sds.analyze      - Check specification consistency (recommended)
-# /metaspec.sds.clarify      - Resolve specification ambiguities (optional, on-demand)
 
 # SDD Commands (8) - Develop spec-driven toolkit
 # /metaspec.sdd.constitution - Define toolkit principles
@@ -379,24 +379,22 @@ pip install -e .
 # Step 4: Use built-in MetaSpec commands for AI-assisted development
 #
 # Phase 1: Define domain specification (SDS - 8 commands)
-#   Simple Path: constitution → specify → [checklist] → [analyze]
-#   Complex Path: constitution → specify → plan → tasks → implement → [checklist] → [analyze]
+#   Simple Path: constitution → specify → [clarify] → [checklist]
+#   Complex Path: constitution → specify → [clarify] → plan → [checklist] → tasks → [analyze] → implement
 #
 # Core (required):
 # /metaspec.sds.constitution  - Define specification design principles
 # /metaspec.sds.specify       - Define specification entities
 #
+# Quality gates (recommended):
+# /metaspec.sds.clarify       - Clarify ambiguities (BEFORE plan, input quality gate)
+#
 # If complex (splitting needed):
 # /metaspec.sds.plan          - Plan specification architecture ⭐
+# /metaspec.sds.checklist     - Validate requirements completeness (AFTER plan, quality gate)
 # /metaspec.sds.tasks         - Break down specification work ⭐
+# /metaspec.sds.analyze       - Check task consistency (AFTER tasks, BEFORE implement, checkpoint) ⭐
 # /metaspec.sds.implement     - Write specification documents (NOT code) ⭐
-#
-# Quality (recommended):
-# /metaspec.sds.checklist     - Generate quality checklist
-# /metaspec.sds.analyze       - Check specification consistency
-#
-# On-demand (optional):
-# /metaspec.sds.clarify       - Resolve specification ambiguities
 
 # Phase 2: Develop toolkit (SDD - 8 commands)
 #   Core: constitution → specify → plan → tasks → implement
