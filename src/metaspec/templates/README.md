@@ -206,7 +206,7 @@ my-speckit/
     │   ├── metaspec.sds.plan.md            # from meta/sds/commands/
     │   ├── metaspec.sdd.constitution.md    # from meta/sdd/commands/
     │   ├── metaspec.sdd.plan.md            # from meta/sdd/commands/
-    │   ├── metaspec.proposal.md            # from meta/evolution/commands/
+    │   ├── metaspec.evolution.proposal.md  # from meta/evolution/commands/
     │   └── ... (19 commands total: 8 SDS + 8 SDD + 3 Evolution)
     └── templates/
         ├── constitution-template.md   # from meta/templates/

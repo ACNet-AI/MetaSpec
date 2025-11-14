@@ -329,7 +329,7 @@ class Generator:
             template_map[source_path] = output_path
 
         # Evolution commands (3): Shared specification evolution commands
-        # File naming: metaspec.{command}.md to use /metaspec.{command} prefix
+        # File naming: metaspec.evolution.{command}.md (unified naming pattern)
         # These commands support both SDS and SDD through --type parameter
         evolution_commands = [
             "proposal",  # Propose changes (SDS or SDD)
@@ -339,7 +339,7 @@ class Generator:
 
         for cmd in evolution_commands:
             source_path = f"meta/evolution/commands/{cmd}.md.j2"
-            output_path = f".metaspec/commands/metaspec.{cmd}.md"
+            output_path = f".metaspec/commands/metaspec.evolution.{cmd}.md"
             template_map[source_path] = output_path
 
         # MetaSpec README.md (Developer guide for speckit developers)

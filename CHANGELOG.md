@@ -26,6 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Root Cause**: Code only checked for `FileSystemLoader`, but Generator uses `PackageLoader` in editable installs
 
+**Unified Command Naming (Breaking Change for v0.5.x users)**
+- Unified naming pattern for all command groups: `metaspec.{group}.{command}.md`
+- Evolution commands now use: `metaspec.evolution.apply.md` (previously `metaspec.apply.md`)
+- Rationale: Consistent naming pattern across all command groups (SDS, SDD, Evolution)
+- Benefits: ✅ Unified pattern, ✅ Better extensibility, ✅ Easier automation, ✅ Clearer grouping
+- Migration: `metaspec sync` automatically removes old v0.5.x naming and installs new naming
+- **Action Required**: If upgrading from v0.5.x, run `metaspec sync` to migrate naming
+
 ---
 
 ## [0.6.0] - 2025-11-14

@@ -198,9 +198,9 @@ generated-speckit/
 │       ├── metaspec.sdd.checklist.md
 │       ├── metaspec.sdd.analyze.md
 │       │
-│       ├── metaspec.proposal.md           ← Evolution commands
-│       ├── metaspec.apply.md
-│       └── metaspec.archive.md
+│       ├── metaspec.evolution.proposal.md ← Evolution commands
+│       ├── metaspec.evolution.apply.md
+│       └── metaspec.evolution.archive.md
 │
 ├── specs/
 │   ├── domain/    ← SDS output (domain specifications)

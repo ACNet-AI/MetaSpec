@@ -150,6 +150,7 @@ def sync_command(
 
         for source_file in source_dir.glob("*.md.j2"):
             # Remove .j2 extension for destination
+            # Unified naming: metaspec.{group}.{command}.md
             dest_file = commands_dir / f"metaspec.{command_group}.{source_file.stem}"
 
             # Read and render template (basic rendering, no complex logic)
@@ -159,6 +160,15 @@ def sync_command(
 
             dest_file.write_text(content)
             updated_files.append(dest_file.name)
+
+    # Step 7.5: Clean up old Evolution naming (v0.5.x → v0.6.x migration)
+    # Remove old naming pattern from pre-v0.6.0 versions
+    old_evolution_files = ["metaspec.apply.md", "metaspec.archive.md", "metaspec.proposal.md"]
+    for old_file_name in old_evolution_files:
+        old_file = commands_dir / old_file_name
+        if old_file.exists():
+            console.print(f"   🧹 Removing old naming (v0.5.x): {old_file_name}")
+            old_file.unlink()
 
     # Step 8: Update version in pyproject.toml
     _update_generated_version(current_version)
