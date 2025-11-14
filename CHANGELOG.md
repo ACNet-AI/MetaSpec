@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.1] - 2025-11-14
+
+### 🐛 Bug Fixes
+
+**sync Command - PackageLoader Support**
+- Fixed `metaspec sync` failing with "Unexpected loader type" error
+- Now supports both `FileSystemLoader` (pip install) and `PackageLoader` (editable installs)
+- Added template directory existence validation
+- Improved error messages for troubleshooting
+
+**Impact**: 
+- ✅ Works with: `pip install metaspec`
+- ✅ Works with: `pip install -e .` (development mode)
+- ✅ Works with: `uv pip install -e .`
+
+**Root Cause**: Code only checked for `FileSystemLoader`, but Generator uses `PackageLoader` in editable installs
+
+---
+
 ## [0.6.0] - 2025-11-14
 
 ### ✨ Features
