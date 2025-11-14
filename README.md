@@ -486,7 +486,12 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**Current Version**: v0.5.6 (Alpha) 🚀
+**Current Version**: v0.5.7 (Alpha) 🚀
+
+**Latest Updates** (v0.5.7):
+- 📝 Clarified SDS workflow with Simple vs Complex paths
+- 📝 Distinguished core/optional commands (aligned with GitHub spec-kit)
+- 📝 Prevented confusion: `sds.implement` creates docs NOT code
 
 **Core Features**:
 - ✅ Meta-specification framework with YAML validation

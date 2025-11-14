@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.7] - 2025-11-14
+
+### 📝 Documentation
+
+**SDS Workflow Clarification**
+- Distinguished core vs optional commands (aligned with [GitHub spec-kit](https://github.com/github/spec-kit) pattern)
+- Added Simple Path (2-4 commands) and Complex Path (5-7 commands) workflows
+- Clarified `/metaspec.sds.implement` creates specification documents, NOT code
+- Marked complex-path-only commands with ⭐ (plan, tasks, implement)
+
+**Updated files**:
+- `README.md`: Command listings with workflow annotations
+- `AGENTS.md`: Added two workflow paths with examples
+- `src/metaspec/templates/base/.metaspec/README.md.j2`: Template for generated speckits
+
+**Impact**:
+- Reduces confusion about "must use all 8 commands"
+- Prevents misunderstanding that `implement` generates code
+- Clearer guidance for choosing simple vs complex specification workflows
+- All newly generated speckits will include improved documentation
+
+---
+
 ## [0.5.6] - 2025-11-14
 
 ### 🐛 Bug Fixes
