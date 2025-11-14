@@ -280,14 +280,19 @@ metaspec init my-spec-kit
 cd my-spec-kit
 
 # SDS Commands (8) - Define domain specification
-# /metaspec.sds.constitution - Define specification design principles
-# /metaspec.sds.specify      - Define specification entities and operations
-# /metaspec.sds.clarify      - Resolve specification ambiguities
-# /metaspec.sds.plan         - Plan specification architecture and sub-specifications
-# /metaspec.sds.tasks        - Break down specification work
-# /metaspec.sds.implement    - Write specification documents
-# /metaspec.sds.checklist    - Generate quality checklist for specification
-# /metaspec.sds.analyze      - Check specification consistency
+# 
+# Core Flow (2-5 commands depending on complexity):
+#   Simple: constitution → specify → [checklist] → [analyze]
+#   Complex: constitution → specify → plan → tasks → implement → [checklist] → [analyze]
+#
+# /metaspec.sds.constitution - Define specification design principles (required)
+# /metaspec.sds.specify      - Define specification entities and operations (required)
+# /metaspec.sds.plan         - Plan specification architecture (if complex) ⭐
+# /metaspec.sds.tasks        - Break down specification work (if complex) ⭐
+# /metaspec.sds.implement    - Write specification documents (if complex) ⭐
+# /metaspec.sds.checklist    - Generate quality checklist (recommended)
+# /metaspec.sds.analyze      - Check specification consistency (recommended)
+# /metaspec.sds.clarify      - Resolve specification ambiguities (optional, on-demand)
 
 # SDD Commands (8) - Develop spec-driven toolkit
 # /metaspec.sdd.constitution - Define toolkit principles
@@ -372,25 +377,40 @@ cd my-spec-kit
 pip install -e .
 
 # Step 4: Use built-in MetaSpec commands for AI-assisted development
+#
 # Phase 1: Define domain specification (SDS - 8 commands)
+#   Simple Path: constitution → specify → [checklist] → [analyze]
+#   Complex Path: constitution → specify → plan → tasks → implement → [checklist] → [analyze]
+#
+# Core (required):
 # /metaspec.sds.constitution  - Define specification design principles
 # /metaspec.sds.specify       - Define specification entities
-# /metaspec.sds.clarify       - Resolve specification ambiguities
-# /metaspec.sds.plan          - Plan specification architecture
-# /metaspec.sds.tasks         - Break down specification work
-# /metaspec.sds.implement     - Write specification documents
+#
+# If complex (splitting needed):
+# /metaspec.sds.plan          - Plan specification architecture ⭐
+# /metaspec.sds.tasks         - Break down specification work ⭐
+# /metaspec.sds.implement     - Write specification documents ⭐
+#
+# Quality (recommended):
 # /metaspec.sds.checklist     - Generate quality checklist
 # /metaspec.sds.analyze       - Check specification consistency
+#
+# On-demand (optional):
+# /metaspec.sds.clarify       - Resolve specification ambiguities
 
 # Phase 2: Develop toolkit (SDD - 8 commands)
+#   Core: constitution → specify → plan → tasks → implement
+#   Quality: checklist → analyze
+#   On-demand: clarify
+#
 # /metaspec.sdd.constitution  - Define toolkit principles
 # /metaspec.sdd.specify       - Define toolkit specifications
-# /metaspec.sdd.clarify       - Resolve toolkit ambiguities
 # /metaspec.sdd.plan          - Plan implementation architecture
 # /metaspec.sdd.tasks         - Break down implementation work
 # /metaspec.sdd.implement     - Build your speckit
-# /metaspec.sdd.checklist     - Validate quality
-# /metaspec.sdd.analyze       - Check consistency
+# /metaspec.sdd.checklist     - Validate quality (recommended)
+# /metaspec.sdd.analyze       - Check consistency (recommended)
+# /metaspec.sdd.clarify       - Resolve toolkit ambiguities (optional)
 
 # Step 5: Share with community
 metaspec contribute my-spec-kit

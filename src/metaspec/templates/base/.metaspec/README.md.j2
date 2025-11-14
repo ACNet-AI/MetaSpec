@@ -66,17 +66,34 @@ Manage specification changes:
 
 ### Phase 1: Define Specification (SDS)
 
+**Simple Path** (Recommended starting point):
+
 ```bash
-# Step 1: Define specification principles
-/metaspec.sds.constitution
+# Core Flow
+/metaspec.sds.constitution  # 1. Define specification principles
+/metaspec.sds.specify       # 2. Define specification entities
 
-# Step 2: Define specification entities
-/metaspec.sds.specify
-
-# Step 3: Validate specification quality
-/metaspec.sds.checklist
-/metaspec.sds.analyze
+# Quality Assurance (Recommended)
+/metaspec.sds.checklist     # 3. Generate quality checklist
+/metaspec.sds.analyze       # 4. Check consistency
 ```
+
+**Complex Path** (If splitting needed):
+
+```bash
+# Core Flow
+/metaspec.sds.constitution  # 1. Define specification principles
+/metaspec.sds.specify       # 2. Define root specification
+/metaspec.sds.plan          # 3. Plan sub-specification architecture
+/metaspec.sds.tasks         # 4. Break down specification tasks
+/metaspec.sds.implement     # 5. Implement sub-specifications
+
+# Quality Assurance (Recommended)
+/metaspec.sds.checklist     # 6. Generate quality checklist
+/metaspec.sds.analyze       # 7. Check consistency
+```
+
+**On-Demand**: Use `/metaspec.sds.clarify` to resolve ambiguities at any stage.
 
 **Output**: `specs/domain/001-{domain}-spec/spec.md`
 

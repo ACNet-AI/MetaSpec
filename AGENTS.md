@@ -546,16 +546,44 @@ examples/
 
 #### MetaSpec Workflow for SDS + SDD
 
+**SDS has two workflow paths** (like [GitHub spec-kit](https://github.com/github/spec-kit)):
+
+**Path 1: Simple Specification** (Recommended starting point)
+- Use when: Single specification document, no need to split
+
 ```bash
-# Phase 1: Domain Specification (SDS)
-/metaspec.sds.constitution  # Define specification design principles
-/metaspec.sds.specify       # Create specs/domain/001-{domain}-specification/spec.md
-/metaspec.sds.clarify       # Resolve specification ambiguities
-/metaspec.sds.plan          # Plan specification architecture (if complex)
-/metaspec.sds.tasks         # Break down specification work
-/metaspec.sds.implement     # Write specification documents
-/metaspec.sds.checklist     # Generate quality checklist for specification
-/metaspec.sds.analyze       # Check specification consistency
+# Core Flow (Required)
+/metaspec.sds.constitution  # 1. Define specification design principles
+/metaspec.sds.specify       # 2. Create specs/domain/001-{domain}-specification/spec.md
+
+# Quality Assurance (Recommended)
+/metaspec.sds.checklist     # 3. Generate quality checklist
+/metaspec.sds.analyze       # 4. Check specification consistency
+
+# On-Demand Optimization (Optional)
+/metaspec.sds.clarify       # Resolve ambiguities (if issues found)
+```
+
+**Path 2: Complex Specification** (Needs splitting)
+- Use when: Large specification requiring multiple sub-specifications
+
+```bash
+# Core Flow (Required)
+/metaspec.sds.constitution  # 1. Define specification design principles
+/metaspec.sds.specify       # 2. Create root specification
+/metaspec.sds.plan          # 3. Plan sub-specification architecture ⭐
+/metaspec.sds.tasks         # 4. Break down specification tasks ⭐
+/metaspec.sds.implement     # 5. Implement sub-specifications ⭐
+
+# Quality Assurance (Recommended)
+/metaspec.sds.checklist     # 6. Generate quality checklist
+/metaspec.sds.analyze       # 7. Check specification consistency
+
+# On-Demand Optimization (Optional)
+/metaspec.sds.clarify       # Resolve ambiguities (any stage)
+```
+
+📌 **How to choose**: Start with Path 1. If `/metaspec.sds.specify` output shows complexity, run `/metaspec.sds.plan` to decide if splitting is needed. If yes, switch to Path 2.
 
 # Phase 2: Toolkit Specification (SDD)
 /metaspec.sdd.constitution  # Define toolkit principles
@@ -605,19 +633,37 @@ examples/
 
 ### Practical Examples
 
-**Example 1: Starting a new speckit**
+**Example 1: Starting a new speckit (Simple Specification)**
 ```bash
 cd my-speckit
-# Phase 1: Define specification
+# Phase 1: Define specification (Simple Path)
 /metaspec.sds.constitution  # Define specification design principles
-/metaspec.sds.specify "Define domain specification"  # Specification entities
-/metaspec.sds.checklist  # Generate quality checklist
-/metaspec.sds.analyze  # Check specification consistency
+/metaspec.sds.specify "Define domain specification"  # Create specification
+/metaspec.sds.checklist  # Quality check (recommended)
+/metaspec.sds.analyze  # Consistency check (recommended)
 
 # Phase 2: Design toolkit
 /metaspec.sdd.constitution  # Define toolkit principles
 /metaspec.sdd.specify "Define parser and validator"  # Toolkit spec
 /metaspec.sdd.plan  # Architecture design
+```
+
+**Example 1b: Complex Specification (Needs Splitting)**
+```bash
+cd my-speckit
+# Phase 1: Define specification (Complex Path)
+/metaspec.sds.constitution  # Define specification design principles
+/metaspec.sds.specify "Define MCP specification"  # Create root specification
+/metaspec.sds.plan  # Plan sub-specification architecture
+/metaspec.sds.tasks  # Break down specification tasks
+/metaspec.sds.implement  # Implement sub-specifications
+/metaspec.sds.checklist  # Quality check (recommended)
+/metaspec.sds.analyze  # Consistency check (recommended)
+
+# Phase 2: Design toolkit (same as simple path)
+/metaspec.sdd.constitution
+/metaspec.sdd.specify "Define parser and validator"
+/metaspec.sdd.plan
 ```
 
 **Example 2: Iterating on specification**
