@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.2] - 2025-11-15
+
+### 🐛 Bug Fixes
+
+**Unified Command Naming Pattern (Fixes Duplicate Files)**
+- Implemented consistent naming across all command groups: `metaspec.{group}.{command}.md`
+- Evolution commands now: `metaspec.evolution.apply.md` (not `metaspec.apply.md`)
+- Generator (`metaspec init`) now uses unified naming from the start
+- Sync command automatically migrates v0.5.x projects (removes old naming)
+- Updated documentation to reflect unified naming pattern
+
+**Why unified naming?**
+- ✅ Consistent pattern across SDS, SDD, Evolution
+- ✅ Better extensibility for future command groups
+- ✅ Easier automation and tooling
+- ✅ Clearer logical grouping
+
+**Migration**: Run `metaspec sync` to migrate from v0.5.x or v0.6.0/0.6.1
+
+**Fixes**: Duplicate Evolution command files bug (reported in METASPEC-SYNC-BUG-REPORT.md)
+
+---
+
 ## [0.6.1] - 2025-11-14
 
 ### 🐛 Bug Fixes
@@ -25,14 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Works with: `uv pip install -e .`
 
 **Root Cause**: Code only checked for `FileSystemLoader`, but Generator uses `PackageLoader` in editable installs
-
-**Unified Command Naming (Breaking Change for v0.5.x users)**
-- Unified naming pattern for all command groups: `metaspec.{group}.{command}.md`
-- Evolution commands now use: `metaspec.evolution.apply.md` (previously `metaspec.apply.md`)
-- Rationale: Consistent naming pattern across all command groups (SDS, SDD, Evolution)
-- Benefits: ✅ Unified pattern, ✅ Better extensibility, ✅ Easier automation, ✅ Clearer grouping
-- Migration: `metaspec sync` automatically removes old v0.5.x naming and installs new naming
-- **Action Required**: If upgrading from v0.5.x, run `metaspec sync` to migrate naming
 
 ---
 
