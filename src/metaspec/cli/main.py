@@ -11,6 +11,7 @@ from metaspec.cli.contribute import contribute_command
 from metaspec.cli.info import info_command, list_command
 from metaspec.cli.init import init_command
 from metaspec.cli.search import install_command, search_command
+from metaspec.cli.sync import sync_command
 
 app = typer.Typer(
     name="metaspec",
@@ -27,6 +28,7 @@ app.command(name="install")(install_command)
 app.command(name="contribute")(contribute_command)
 app.command(name="list")(list_command)
 app.command(name="info")(info_command)
+app.command(name="sync")(sync_command)
 
 
 @app.command("version")
