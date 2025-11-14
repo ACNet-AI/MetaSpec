@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.8] - 2025-11-14
+
+### 🐛 Bug Fixes
+
+**Workflow Order Correction**
+- Fixed SDS/SDD workflow command order to align with [GitHub spec-kit](https://github.com/github/spec-kit) official pattern
+- Corrected quality gate positions: clarify (before plan) → checklist (after plan) → analyze (after tasks, before implement)
+- Previous order was: `specify → plan → tasks → implement → checklist → analyze` ❌
+- Correct order is: `specify → clarify → plan → checklist → tasks → analyze → implement` ✅
+
+### 📝 Documentation
+
+**SDS vs SDD Clarification**
+- Distinguished SDS (two paths: Simple 4-5 commands | Complex 7-8 commands) from SDD (one complete path: 7-8 commands)
+- Clarified SDD always follows complete spec-kit workflow (toolkit development is always complex)
+- Completed SDD workflow examples in AGENTS.md with all 8 commands
+- Fixed command count descriptions (was 2-4/5-7, now correctly 4-5/7-8)
+
+**Quality Gate Explanation**
+- Clarified why checklist and analyze don't overlap:
+  - checklist: validates WHAT (requirements completeness in single document)
+  - analyze: validates HOW (cross-artifact consistency and coverage)
+  - Different check layers: unit test (checklist) vs integration test (analyze)
+
+**Updated files**:
+- `README.md`: Workflow order corrections and SDD clarification
+- `AGENTS.md`: SDS/SDD distinction, workflow examples, typical workflow section
+- `src/metaspec/templates/base/.metaspec/README.md.j2`: Template for generated speckits
+- `CHANGELOG.md`: Command count corrections
+
+**Impact**:
+- Users will follow correct workflow order aligned with spec-kit best practices
+- Clear guidance preventing confusion about command sequence
+- Proper quality gate positioning ensures validation at right stages
+
+---
+
 ## [0.5.7] - 2025-11-14
 
 ### 📝 Documentation
