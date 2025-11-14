@@ -114,8 +114,12 @@ def sync_command(
 
     # Step 6: Get new commands from installed MetaSpec
     try:
+        from jinja2 import FileSystemLoader
+
         from metaspec.generator import Generator
         gen = Generator()
+        if not isinstance(gen.env.loader, FileSystemLoader):
+            raise RuntimeError("Unexpected loader type")
         template_dir = Path(gen.env.loader.searchpath[0]) / "meta"
     except Exception as e:
         console.print(
@@ -175,7 +179,8 @@ def _read_generated_version() -> str | None:
     try:
         with open("pyproject.toml", "rb") as f:
             data = tomllib.load(f)
-            return data.get("tool", {}).get("metaspec", {}).get("generated_by")
+            version = data.get("tool", {}).get("metaspec", {}).get("generated_by")
+            return str(version) if version is not None else None
     except Exception:
         return None
 
