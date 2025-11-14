@@ -466,22 +466,22 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**v0.5.5** - Version Sync Fix 🔧  
-- Fixed version number inconsistency in `__init__.py` (ensures all version indicators are synchronized)
+**Current Version**: v0.5.6 (Alpha) 🚀
 
-**v0.5.4** - Precision-Guided Navigation 🚀  
-- Added line-number navigation to `specify`, `implement`, `tasks`, `plan` (SDS/SDD) for 84-98% token savings  
-- Enhanced `/metaspec.*.analyze` with Quick / Focused / Full modes  
-- Fixed 6 Jinja2 template issues and refreshed documentation (CHANGELOG, AGENTS)
-
-**v0.5.3** - Alpha Release 🎉
-
-Core features complete: YAML validation, multi-domain generation, CLI tools, AI agent support, built-in MetaSpec commands (19 commands: 8 SDS + 8 SDD + 3 Evolution), recursive tree structure for specifications, unified spec interface.
+**Core Features**:
+- ✅ Meta-specification framework with YAML validation
+- ✅ Multi-domain speckit generation (SD-Development, SD-Design, SD-Testing, etc.)
+- ✅ 19 AI-assisted MetaSpec commands (8 SDS + 8 SDD + 3 Evolution)
+- ✅ Precision-guided navigation (84-98% token savings)
+- ✅ Recursive tree structure for complex specifications
+- ✅ CLI tools and community registry
 
 **Quality Metrics**:
 - ✅ 90.99% test coverage (151/151 tests passing)
 - ✅ Full CLI functionality tested
 - ✅ Production-ready code quality
+
+📝 See [CHANGELOG.md](./CHANGELOG.md) for release history
 
 ---
 

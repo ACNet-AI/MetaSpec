@@ -9,6 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.6] - 2025-11-14
+
+### 🐛 Bug Fixes
+
+**Documentation Command Count Fix**
+- Fixed SDS command count: was showing 5, now correctly shows 8 commands
+- Fixed total command count: was showing 16, now correctly shows 19 commands (8 SDS + 8 SDD + 3 Evolution)
+- Added missing SDS commands in documentation: `plan`, `tasks`, `implement`
+
+**Files Updated**:
+- `README.md`: Quick start example now shows all 8 SDS and 8 SDD commands
+- `src/metaspec/templates/base/.metaspec/README.md.j2`: Updated command counts and added missing commands
+- `src/metaspec/templates/base/AGENTS.md.j2`: Fixed command count in developer section
+- `docs/quickstart.md`: Updated command count from 16 to 19
+- `docs/architecture.md`: Fixed SDS command count from 5 to 8
+
+**Impact**:
+- All newly generated speckits will show correct command counts
+- Documentation now matches actual implementation (8 SDS + 8 SDD + 3 Evolution = 19 commands)
+
+---
+
 ## [0.5.5] - 2025-11-13
 
 ### 🐛 Bug Fixes
