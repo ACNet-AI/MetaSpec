@@ -442,6 +442,10 @@ metaspec list                      # List installed speckits
 metaspec info <name>               # Show speckit details
 metaspec version                   # Show MetaSpec version
 
+# Maintenance (run in speckit directory)
+metaspec sync                      # Sync commands to latest MetaSpec version
+metaspec sync --check-only         # Check version without updating
+
 # Examples
 metaspec init                      # Interactive mode
 metaspec init my-speckit           # Quick start (uses 'default')
