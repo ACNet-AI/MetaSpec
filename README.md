@@ -490,12 +490,12 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**Current Version**: v0.5.8 (Alpha) 🚀
+**Current Version**: v0.6.0 (Alpha) 🚀
 
-**Latest Updates** (v0.5.8):
-- 🐛 Fixed workflow order to align with spec-kit (clarify → plan → checklist → tasks → analyze → implement)
-- 📝 Distinguished SDS (Simple/Complex paths) from SDD (complete workflow only)
-- 📝 Clarified quality gate purposes (checklist=unit test, analyze=integration test)
+**Latest Updates** (v0.6.0):
+- ✨ Added `metaspec sync` command to update MetaSpec commands in existing speckits
+- 📦 Version tracking in generated speckits (records MetaSpec version)
+- 🔄 Safe and reversible updates with automatic backups
 
 **Core Features**:
 - ✅ Meta-specification framework with YAML validation

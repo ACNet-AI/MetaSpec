@@ -7,25 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [0.6.0] - 2025-11-14
+
 ### ✨ Features
 
 **metaspec sync Command**
 - Added `metaspec sync` command to update MetaSpec commands in generated speckits
-- Automatically backs up existing commands before updating
-- Detects version differences and shows what changed
-- Safe and reversible (backups created with timestamps)
+- Automatically backs up existing commands before updating (timestamped backups)
+- Detects version differences and shows changelog
+- Safe and reversible operations with Git-friendly workflow
 
 **Version Tracking**
 - Generated speckits now record the MetaSpec version used to create them
-- Stored in `pyproject.toml` under `[tool.metaspec]`
-- Enables version detection and intelligent sync
+- Stored in `pyproject.toml` under `[tool.metaspec]` section
+- Enables intelligent version detection and sync recommendations
 
 **Usage**:
 ```bash
 cd my-speckit
-metaspec sync              # Update to latest
-metaspec sync --check-only # Check version only
+metaspec sync              # Update to latest version
+metaspec sync --check-only # Check version without updating
+metaspec sync --force      # Force update even if versions match
 ```
+
+**Benefits**:
+- Easily get workflow fixes (like v0.5.8 workflow order correction)
+- No need to regenerate entire speckit
+- Review changes with `git diff .metaspec/`
+- Rollback if needed (automatic backups)
+
+**Implementation**:
+- New file: `src/metaspec/cli/sync.py`
+- Updated: Command registration, template generation
+- ~200 lines of code for complete sync functionality
 
 ---
 
