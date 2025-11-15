@@ -219,6 +219,23 @@ Test for specification issues:
 - Are missing definitions noted? [Gap]
 - Are unresolved questions marked (TODO, TBD)? [Ambiguity]
 
+#### **Workflow Design Quality** ⭐ NEW (v0.7.0+)
+Test if specification defines complete user workflows:
+- Does specification include "Workflow Specification" section? [Completeness, Constitution §II.7]
+- Are at least 2 distinct workflow phases defined? [Completeness]
+- Is each workflow phase mapped to specific operations? [Completeness]
+- Are entry and exit criteria specified for each phase? [Clarity]
+- Are phase transitions and dependencies documented? [Completeness]
+- Are decision points and branching logic explained? [Clarity]
+- Is an end-to-end workflow example provided? [Coverage]
+- Are all operations referenced in at least one workflow phase? [Consistency]
+- Is workflow purpose clearly stated (why this sequence)? [Clarity]
+- Do workflow examples demonstrate typical user journeys? [Coverage]
+
+**Purpose**: Ensures specifications define integrated workflows, not just isolated operations.
+
+**Rationale**: Operations without workflow guidance are hard to use. Users need clear paths from start to finish. This aligns with MetaSpec's own workflow design (SDS/SDD).
+
 ### 5. Checklist Item Structure
 
 **Pattern**:
@@ -309,6 +326,25 @@ Test for specification issues:
 - [ ] CHK025 - Are specifications AI-friendly (clear descriptions, examples)? [Clarity, Constitution]
 - [ ] CHK026 - Are domain standards followed (RFCs, conventions)? [Consistency, Constitution]
 ```
+
+#### Workflow Design (10 core items) ⭐ NEW (v0.7.0+)
+
+```markdown
+- [ ] CHK027 - Does specification include a "Workflow Specification" section? [Completeness, Constitution §II.7]
+- [ ] CHK028 - Are at least 2 distinct workflow phases defined? [Completeness, Spec §Workflow]
+- [ ] CHK029 - Is each workflow phase mapped to specific operations? [Completeness, Spec §Workflow]
+- [ ] CHK030 - Are entry criteria specified for each workflow phase? [Clarity, Spec §Workflow]
+- [ ] CHK031 - Are exit criteria specified for each workflow phase? [Clarity, Spec §Workflow]
+- [ ] CHK032 - Are phase transitions and dependencies documented? [Completeness, Spec §Workflow]
+- [ ] CHK033 - Are decision points and branching logic explained? [Clarity, Spec §Workflow]
+- [ ] CHK034 - Is an end-to-end workflow example provided? [Coverage, Spec §Workflow]
+- [ ] CHK035 - Are all operations referenced in at least one workflow phase? [Consistency, Spec §Workflow]
+- [ ] CHK036 - Do workflow examples demonstrate typical user journeys? [Coverage, Spec §Examples]
+```
+
+**Purpose**: Validates workflow completeness per Constitution Part II Principle 7.
+
+**Why it matters**: Operations without workflow context are hard to use. Users need guidance on sequencing and relationships.
 
 ### 7. Anti-Examples: What NOT To Do
 

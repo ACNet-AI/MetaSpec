@@ -73,11 +73,12 @@ Parse user intent to select appropriate analysis mode:
   - "ambiguity", "vague" → Ambiguity Detection (I)
   - "terminology", "naming" → Terminology Consistency (J)
   - "artifacts", "cross-artifacts" → Cross-Artifact Consistency (K)
+  - "workflow", "workflows", "user-journey" → Workflow Completeness (L) ⭐ NEW (v0.7.0+)
 - Use when: Fixing specific issues, targeted improvement
 
 **Full Mode** 📊 (5-10 min, comprehensive):
 - Purpose: Complete specification quality analysis
-- Checks: All 11 dimensions (A-K)
+- Checks: All 12 dimensions (A-L) ⭐ Updated (v0.7.0+)
 - Use when: Major releases, complete review, initial analysis
 
 **Mode selection example**:
@@ -518,6 +519,56 @@ OR
 ✅ All entities have examples
 ✅ All checklist items have valid spec references
 ```
+
+#### L. Workflow Completeness ⭐ NEW (v0.7.0+)
+
+**Check specification workflow definition** (per Constitution Part II Principle 7):
+
+**Check spec.md for Workflow Specification section**:
+- ✅ "Workflow Specification" section exists
+- ✅ At least 2 distinct workflow phases defined
+- ✅ Each phase has clear purpose statement
+- ✅ Entry and exit criteria specified for each phase
+- ✅ Operations mapped to specific workflow phases
+- ✅ Phase transitions and dependencies documented
+- ✅ Decision points and branching logic explained
+- ✅ End-to-end workflow example provided
+- ✅ All operations referenced in at least one workflow phase
+
+**Check workflow quality**:
+- ✅ Workflow demonstrates integrated user journey (not just operation list)
+- ✅ Phase sequence is logical and complete
+- ✅ No "orphan" operations without workflow context
+- ✅ Workflow examples match specification operations
+
+**Severity Rules**:
+- **CRITICAL**: No "Workflow Specification" section (Constitution §II.7 violation)
+- **HIGH**: Workflow section exists but <2 phases OR operations not mapped
+- **MEDIUM**: Workflow exists but missing entry/exit criteria or examples
+- **LOW**: Workflow complete but could be clearer (e.g., better decision point docs)
+
+**Report**:
+```
+❌ CRITICAL: Missing "Workflow Specification" section [Constitution §II.7]
+  Recommendation: Add workflow section defining user journey phases
+❌ HIGH: Only 1 workflow phase defined, need at least 2 [Spec §Workflow]
+  Recommendation: Break workflow into distinct phases (e.g., Planning → Execution → Analysis)
+❌ HIGH: 3 operations not referenced in any workflow phase [Spec §Workflow]
+  Operations: /marketing.project, /marketing.product, /marketing.channel
+  Recommendation: Map all operations to workflow phases
+❌ MEDIUM: Workflow Phase 2 missing exit criteria [Spec §Workflow]
+  Recommendation: Define when Phase 2 is complete
+✅ All workflow phases have clear purposes
+✅ End-to-end workflow example provided
+```
+
+**Score Calculation** (15% weight):
+```
+Workflow Score = (Checks Passed / Total Checks) * 15%
+Example: 6/9 checks passed = (6/9) * 15% = 10%
+```
+
+**Why it matters**: Operations without workflow context are "tool boxes", not "workflow systems". Users need guidance on sequencing and relationships (per marketing-spec-kit feedback).
 
 ### 6. Severity Assignment (Full/Focused Mode only)
 

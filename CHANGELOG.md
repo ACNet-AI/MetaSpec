@@ -9,6 +9,104 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.1] - 2025-11-15
+
+### ✨ Quality Gates Enhancement - Workflow Validation
+
+**Implemented Phase 2 of Workflow-Driven Design Philosophy**
+
+v0.7.0 introduced Workflow Completeness principle. v0.7.1 adds automated validation to enforce it.
+
+### Added
+
+#### Checklist (SDS) - Category 8: Workflow Design Quality
+- **Added 10 new checklist items** (CHK027-CHK036) for workflow validation
+- Validates workflow specification completeness per Constitution Part II Principle 7
+- Checks:
+  - "Workflow Specification" section exists
+  - At least 2 distinct workflow phases defined
+  - Operations mapped to workflow phases
+  - Entry/exit criteria specified
+  - Phase transitions and dependencies documented
+  - Decision points and branching logic explained
+  - End-to-end workflow example provided
+  - All operations referenced in at least one phase
+
+**Location**: `/metaspec.sds.checklist` command template
+
+**Purpose**: Catch workflow gaps during specification review phase
+
+#### Analyze (SDS) - Dimension L: Workflow Completeness
+- **Added 12th analysis dimension** (L) with 15% weight
+- Severity rules:
+  - **CRITICAL**: No "Workflow Specification" section (Constitution violation)
+  - **HIGH**: <2 phases OR operations not mapped to phases
+  - **MEDIUM**: Missing entry/exit criteria or examples
+  - **LOW**: Workflow exists but could be clearer
+- Score calculation: `(Checks Passed / 9) * 15%`
+- Focused mode support: `/metaspec.sds.analyze workflow`
+
+**Location**: `/metaspec.sds.analyze` command template
+
+**Why it matters**: Prevents "high-score but no workflow" problem discovered in marketing-spec-kit
+
+### Changed
+
+- **Full Analysis Mode**: Now checks 12 dimensions (A-L) instead of 11
+- **Focused Mode**: Added `workflow`, `workflows`, `user-journey` keywords
+- **Checklist Categories**: 8 categories (was 7)
+- **Total Checklist Items**: 36 items (was 26)
+
+### Quality Impact
+
+**Before v0.7.1**:
+```
+Specification passes all checks → ✅ 100%
+But missing workflow definition → ❌ Users confused
+```
+
+**After v0.7.1**:
+```
+Specification without workflow → ❌ CRITICAL in analyze
+                               → ❌ 10 failed in checklist
+                               → 📉 Score < 70%
+→ Forces workflow definition before high scores
+```
+
+### Backward Compatibility
+
+✅ Fully compatible with v0.7.0
+- Existing specifications with workflows: no impact
+- Existing specifications without workflows: will now fail new checks (as intended)
+- All other dimensions unchanged
+
+### Migration Guide
+
+**For existing projects**:
+1. Run `/metaspec.sds.analyze workflow` to check current status
+2. If missing workflow section, add via `/metaspec.sds.specify`
+3. Re-run `/metaspec.sds.checklist` (update mode) to verify
+4. Re-run `/metaspec.sds.analyze` for full score
+
+**For new projects**: Workflow validation automatic with v0.7.1 templates
+
+### Rationale
+
+**Feedback-driven improvement**: marketing-spec-kit passed all quality checks (98/100) but lacked workflow definition. v0.7.1 ensures this can't happen again.
+
+**Three-layer enforcement**:
+1. **v0.7.0**: Constitution requires workflows (principle)
+2. **v0.7.1**: Checklist validates workflows (quality gate)
+3. **v0.7.1**: Analyze scores workflows (quantitative measure)
+
+### References
+
+- **Feedback Source**: `/Users/guyue/marketing-spec-kit/docs/internal/metaspec-feedback.md`
+- **Related Version**: v0.7.0 (introduced Workflow Completeness principle)
+- **Philosophy**: Enforcement through automated quality gates
+
+---
+
 ## [0.7.0] - 2025-11-15
 
 ### ⭐ Major Feature - Workflow-Driven Design Philosophy
