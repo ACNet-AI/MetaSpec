@@ -2,8 +2,10 @@
 Unit tests for metaspec.cli.contribute module.
 """
 
-from unittest.mock import MagicMock, mock_open, patch
+from pathlib import Path
+from unittest.mock import MagicMock, patch
 
+import pytest
 from typer.testing import CliRunner
 
 from metaspec.cli.main import app
@@ -44,6 +46,18 @@ def create_passing_validation_result() -> ValidationResult:
     return ValidationResult(checks=checks, passed=True, warnings=[])
 
 
+def create_failing_validation_result() -> ValidationResult:
+    """Create a failing validation result for tests."""
+    checks = [
+        ValidationCheck(
+            name="pyproject.toml",
+            passed=False,
+            message="Not found",
+        ),
+    ]
+    return ValidationResult(checks=checks, passed=False, warnings=[])
+
+
 class TestContributeCommand:
     """Tests for contribute command."""
 
@@ -53,33 +67,23 @@ class TestContributeCommand:
         assert result.exit_code == 0
         assert "contribute" in result.stdout.lower()
 
-    def test_contribute_command_option(self) -> None:
-        """Test contribute has command option."""
+    def test_contribute_has_open_flag(self) -> None:
+        """Test contribute has --open flag."""
         result = runner.invoke(app, ["contribute", "--help"])
         assert result.exit_code == 0
-        # Check that command-related content is in help (works with both Rich and plain output)
-        assert ("command" in result.stdout.lower() or "speckit command name" in result.stdout.lower())
+        assert "open" in result.stdout.lower()
 
-    @patch("metaspec.cli.contribute.CommunityRegistry.detect_speckit_info")
-    def test_contribute_command_not_found(self, mock_detect: MagicMock) -> None:
-        """Test contribute with command that doesn't exist."""
-        mock_detect.return_value = None
-
-        result = runner.invoke(app, ["contribute", "nonexistent-command"])
-        # Should fail or warn
-        assert result.exit_code != 0 or "not found" in result.stdout.lower()
-
-    def test_contribute_requires_command(self) -> None:
-        """Test that contribute requires a command argument."""
-        result = runner.invoke(app, ["contribute"])
-        # Should fail without command
-        assert result.exit_code != 0
-
-    def test_contribute_interactive_flag(self) -> None:
-        """Test contribute has interactive flag."""
+    def test_contribute_has_check_only_flag(self) -> None:
+        """Test contribute has --check-only flag."""
         result = runner.invoke(app, ["contribute", "--help"])
         assert result.exit_code == 0
-        assert "interactive" in result.stdout.lower()
+        assert "check-only" in result.stdout.lower()
+
+    def test_contribute_has_save_json_flag(self) -> None:
+        """Test contribute has --save-json flag."""
+        result = runner.invoke(app, ["contribute", "--help"])
+        assert result.exit_code == 0
+        assert "save-json" in result.stdout.lower()
 
     def test_contribute_command_description(self) -> None:
         """Test contribute shows proper description."""
@@ -88,255 +92,284 @@ class TestContributeCommand:
         assert "community" in result.stdout.lower() or "registry" in result.stdout.lower()
 
     @patch("metaspec.cli.contribute.SpeckitValidator")
-    @patch("metaspec.cli.contribute.shutil.which")
-    @patch("metaspec.cli.contribute.CommunityRegistry")
-    @patch("metaspec.cli.contribute.Prompt.ask")
-    @patch("metaspec.cli.contribute.Confirm.ask")
-    @patch("builtins.open", new_callable=mock_open)
-    def test_contribute_interactive_full_flow(
+    def test_contribute_check_only_passing(
         self,
-        mock_file: MagicMock,
-        mock_confirm: MagicMock,
-        mock_prompt: MagicMock,
-        mock_registry_class: MagicMock,
-        mock_which: MagicMock,
         mock_validator_class: MagicMock,
     ) -> None:
-        """Test complete interactive contribution flow."""
-        # Mock validation passing
-        mock_validator = MagicMock()
+        """Test contribute with --check-only and passing validation."""
+        mock_validator = mock_validator_class.return_value
         mock_validator.validate.return_value = create_passing_validation_result()
-        mock_validator_class.return_value = mock_validator
-
-        # Mock command exists
-        mock_which.return_value = "/usr/local/bin/my-spec-kit"
-
-        # Mock registry detection
-        mock_registry = MagicMock()
-        mock_registry.detect_speckit_info.return_value = {
-            "version": "1.0.0",
-            "cli_commands": ["init", "validate"],
-        }
-        mock_registry_class.return_value = mock_registry
-
-        # Mock user inputs
-        mock_prompt.side_effect = [
-            "my-spec-kit",  # name
-            "A testing toolkit",  # description
-            "my-spec-kit",  # pypi package
-            "https://github.com/user/repo",  # repository
-            "John Doe",  # author
-            "1.0.0",  # version
-            "testing,validation",  # tags
-        ]
-        mock_confirm.side_effect = [
-            True,  # use detected commands
-        ]
-
-        result = runner.invoke(
-            app,
-            ["contribute", "--command", "my-spec-kit"],
-        )
-
-        # Should complete successfully
-        assert result.exit_code == 0
-        assert "Generated metadata" in result.stdout or mock_file.called
-
-    @patch("metaspec.cli.contribute.SpeckitValidator")
-    @patch("metaspec.cli.contribute.shutil.which")
-    @patch("metaspec.cli.contribute.CommunityRegistry")
-    @patch("metaspec.cli.contribute.Prompt.ask")
-    @patch("metaspec.cli.contribute.Confirm.ask")
-    @patch("builtins.open", new_callable=mock_open)
-    def test_contribute_with_detected_commands(
-        self,
-        mock_file: MagicMock,
-        mock_confirm: MagicMock,
-        mock_prompt: MagicMock,
-        mock_registry_class: MagicMock,
-        mock_which: MagicMock,
-        mock_validator_class: MagicMock,
-    ) -> None:
-        """Test contribution uses detected commands."""
-        # Mock validation passing
-        mock_validator = MagicMock()
-        mock_validator.validate.return_value = create_passing_validation_result()
-        mock_validator_class.return_value = mock_validator
-
-        # Mock command exists
-        mock_which.return_value = "/usr/local/bin/test-kit"
-
-        # Mock registry with detected commands
-        mock_registry = MagicMock()
-        mock_registry.detect_speckit_info.return_value = {
-            "version": "0.5.0",
-            "cli_commands": ["init", "validate", "generate"],
-        }
-        mock_registry_class.return_value = mock_registry
-
-        # Mock user inputs
-        mock_prompt.side_effect = [
-            "test-kit",  # name
-            "Testing toolkit",  # description
-            "test-kit",  # pypi package
-            "",  # repository (optional)
-            "",  # author (optional)
-            "0.5.0",  # version
-            "testing",  # tags
-        ]
-        mock_confirm.side_effect = [
-            True,  # use detected commands
-        ]
-
-        result = runner.invoke(
-            app,
-            ["contribute", "--command", "test-kit"],
-        )
-
-        # Should complete successfully
-        assert result.exit_code == 0
-        assert "Detected commands" in result.stdout or result.exit_code == 0
-
-    @patch("metaspec.cli.contribute.shutil.which")
-    @patch("metaspec.cli.contribute.Confirm.ask")
-    def test_contribute_command_not_in_path_continue(
-        self,
-        mock_confirm: MagicMock,
-        mock_which: MagicMock,
-    ) -> None:
-        """Test contribution continues when command not in PATH but user confirms."""
-        # Mock command not found
-        mock_which.return_value = None
-
-        # User chooses not to continue
-        mock_confirm.return_value = False
-
-        result = runner.invoke(
-            app,
-            ["contribute", "--command", "missing-cmd"],
-        )
-
-        # Should exit
-        assert result.exit_code == 1
-
-    @patch("metaspec.cli.contribute.SpeckitValidator")
-    @patch("metaspec.cli.contribute.shutil.which")
-    @patch("metaspec.cli.contribute.CommunityRegistry")
-    @patch("metaspec.cli.contribute.Prompt.ask")
-    @patch("metaspec.cli.contribute.Confirm.ask")
-    @patch("builtins.open", new_callable=mock_open)
-    def test_contribute_custom_commands(
-        self,
-        mock_file: MagicMock,
-        mock_confirm: MagicMock,
-        mock_prompt: MagicMock,
-        mock_registry_class: MagicMock,
-        mock_which: MagicMock,
-        mock_validator_class: MagicMock,
-    ) -> None:
-        """Test contribution with custom commands instead of detected ones."""
-        # Mock validation passing
-        mock_validator = MagicMock()
-        mock_validator.validate.return_value = create_passing_validation_result()
-        mock_validator_class.return_value = mock_validator
-
-        # Mock command exists
-        mock_which.return_value = "/usr/bin/custom-kit"
-
-        # Mock registry
-        mock_registry = MagicMock()
-        mock_registry.detect_speckit_info.return_value = {
-            "version": "1.0.0",
-            "cli_commands": ["default1", "default2"],
-        }
-        mock_registry_class.return_value = mock_registry
-
-        # Mock user inputs
-        mock_prompt.side_effect = [
-            "custom-kit",  # name
-            "Custom toolkit",  # description
-            "custom-kit",  # pypi package
-            "",  # repository
-            "",  # author
-            "1.0.0",  # version
-            "custom,tools",  # tags
-            "custom1,custom2,custom3",  # custom commands
-        ]
-        mock_confirm.side_effect = [
-            False,  # don't use detected commands
-        ]
-
-        result = runner.invoke(
-            app,
-            ["contribute", "--command", "custom-kit"],
-        )
-
-        # Should complete successfully
-        assert result.exit_code == 0
-
-    @patch("metaspec.cli.contribute.SpeckitValidator")
-    def test_contribute_check_only_passing(self, mock_validator_class: MagicMock) -> None:
-        """Test --check-only flag with passing validation."""
-        # Mock validation passing
-        mock_validator = MagicMock()
-        mock_validator.validate.return_value = create_passing_validation_result()
-        mock_validator_class.return_value = mock_validator
 
         result = runner.invoke(app, ["contribute", "--check-only"])
 
-        # Should exit with 0 when validation passes
         assert result.exit_code == 0
-        # Validation was called
         assert mock_validator.validate.called
         assert mock_validator.display_results.called
 
     @patch("metaspec.cli.contribute.SpeckitValidator")
-    def test_contribute_check_only_failing(self, mock_validator_class: MagicMock) -> None:
-        """Test --check-only flag with failing validation."""
-        # Mock validation failing
-        failing_checks = [
-            ValidationCheck(
-                name="pyproject.toml",
-                passed=False,
-                message="pyproject.toml not found",
-                fix_suggestion="Create pyproject.toml",
-            ),
-        ]
-        mock_validator = MagicMock()
-        mock_validator.validate.return_value = ValidationResult(
-            checks=failing_checks, passed=False, warnings=["Missing files"]
-        )
-        mock_validator_class.return_value = mock_validator
+    def test_contribute_check_only_failing(
+        self,
+        mock_validator_class: MagicMock,
+    ) -> None:
+        """Test contribute with --check-only and failing validation."""
+        mock_validator = mock_validator_class.return_value
+        mock_validator.validate.return_value = create_failing_validation_result()
 
         result = runner.invoke(app, ["contribute", "--check-only"])
 
-        # Should exit with 1 when validation fails
         assert result.exit_code == 1
+        assert mock_validator.validate.called
 
-    def test_contribute_non_interactive_fails(self) -> None:
-        """Test that non-interactive mode shows error."""
-        result = runner.invoke(
-            app,
-            ["contribute", "--command", "test", "--no-interactive"],
-        )
-
-        # Should fail with error message
-        assert result.exit_code == 1
-        assert "Interactive mode is required" in result.stdout
-
-    @patch("metaspec.cli.contribute.Prompt.ask")
-    def test_contribute_no_command_interactive_prompt(
-        self, mock_prompt: MagicMock
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    @patch("metaspec.cli.contribute._extract_repository_url")
+    @patch("metaspec.cli.contribute._extract_metadata_info")
+    def test_contribute_default_flow(
+        self,
+        mock_extract_metadata: MagicMock,
+        mock_extract_repo: MagicMock,
+        mock_validator_class: MagicMock,
     ) -> None:
-        """Test that missing command triggers interactive prompt."""
-        # Mock command input, then other prompts will fail
-        mock_prompt.side_effect = [
-            "test-kit",  # command name
-            Exception("Stop here for test"),  # Stop execution
-        ]
+        """Test contribute default flow (validation + URL display)."""
+        # Setup mocks
+        mock_validator = mock_validator_class.return_value
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_extract_repo.return_value = "https://github.com/test/repo"
+        mock_extract_metadata.return_value = {
+            "name": "test-spec",
+            "version": "1.0.0",
+            "description": "Test description",
+            "cli_commands": ["test"],
+        }
 
-        runner.invoke(app, ["contribute"])
+        result = runner.invoke(app, ["contribute"])
 
-        # Should attempt to prompt for command
-        assert mock_prompt.called
+        assert result.exit_code == 0
+        assert "Bot will extract" in result.stdout
+        assert "https://github.com/test/repo" in result.stdout
+        assert "Next step" in result.stdout
+        assert mock_extract_repo.called
 
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    @patch("metaspec.cli.contribute._extract_repository_url")
+    def test_contribute_no_repository(
+        self,
+        mock_extract_repo: MagicMock,
+        mock_validator_class: MagicMock,
+    ) -> None:
+        """Test contribute when repository URL cannot be detected."""
+        mock_validator = mock_validator_class.return_value
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_extract_repo.return_value = None
+
+        result = runner.invoke(app, ["contribute"])
+
+        assert result.exit_code == 1
+        assert "Could not detect repository URL" in result.stdout
+        assert "pyproject.toml" in result.stdout
+
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    @patch("metaspec.cli.contribute._extract_repository_url")
+    @patch("metaspec.cli.contribute._extract_metadata_info")
+    @patch("metaspec.cli.contribute.webbrowser.open")
+    def test_contribute_with_open_flag(
+        self,
+        mock_webbrowser: MagicMock,
+        mock_extract_metadata: MagicMock,
+        mock_extract_repo: MagicMock,
+        mock_validator_class: MagicMock,
+    ) -> None:
+        """Test contribute with --open flag opens browser."""
+        # Setup mocks
+        mock_validator = mock_validator_class.return_value
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_extract_repo.return_value = "https://github.com/test/repo"
+        mock_extract_metadata.return_value = {
+            "name": "test-spec",
+            "version": "1.0.0",
+            "description": "Test description",
+            "cli_commands": ["test"],
+        }
+
+        result = runner.invoke(app, ["contribute", "--open"])
+
+        assert result.exit_code == 0
+        assert mock_webbrowser.called
+        assert "Browser opened" in result.stdout or "Opening GitHub" in result.stdout
+
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    @patch("metaspec.cli.contribute._extract_repository_url")
+    @patch("metaspec.cli.contribute._extract_metadata_info")
+    @patch("builtins.open")
+    @patch("metaspec.cli.contribute.json.dump")
+    def test_contribute_with_save_json_flag(
+        self,
+        mock_json_dump: MagicMock,
+        mock_open: MagicMock,
+        mock_extract_metadata: MagicMock,
+        mock_extract_repo: MagicMock,
+        mock_validator_class: MagicMock,
+    ) -> None:
+        """Test contribute with --save-json flag saves metadata."""
+        # Setup mocks
+        mock_validator = mock_validator_class.return_value
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_extract_repo.return_value = "https://github.com/test/repo"
+        mock_extract_metadata.return_value = {
+            "name": "test-spec",
+            "version": "1.0.0",
+            "description": "Test description",
+            "command": "test",
+            "cli_commands": ["test"],
+        }
+
+        result = runner.invoke(app, ["contribute", "--save-json"])
+
+        assert result.exit_code == 0
+        assert "Saved preview" in result.stdout
+        assert mock_json_dump.called
+
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    def test_contribute_failing_validation_stops(
+        self,
+        mock_validator_class: MagicMock,
+    ) -> None:
+        """Test contribute stops if validation fails."""
+        mock_validator = mock_validator_class.return_value
+        mock_validator.validate.return_value = create_failing_validation_result()
+
+        result = runner.invoke(app, ["contribute"])
+
+        assert result.exit_code == 1
+        assert "Please fix the issues" in result.stdout
+
+
+class TestExtractRepositoryUrl:
+    """Tests for _extract_repository_url helper function."""
+
+    @patch("metaspec.cli.contribute.Path")
+    @patch("builtins.open")
+    @patch("metaspec.cli.contribute.tomllib.load")
+    def test_extract_from_pyproject_toml(
+        self,
+        mock_toml_load: MagicMock,
+        mock_open: MagicMock,
+        mock_path: MagicMock,
+    ) -> None:
+        """Test extracting repository URL from pyproject.toml."""
+        from metaspec.cli.contribute import _extract_repository_url
+
+        # Setup mocks
+        mock_path_instance = MagicMock(spec=Path)
+        mock_path_instance.exists.return_value = True
+        mock_path.return_value = mock_path_instance
+
+        mock_toml_load.return_value = {
+            "project": {
+                "urls": {
+                    "repository": "https://github.com/test/repo",
+                }
+            }
+        }
+
+        with patch("metaspec.cli.contribute.Path", return_value=mock_path_instance):
+            result = _extract_repository_url()
+
+        assert result == "https://github.com/test/repo"
+
+    @patch("metaspec.cli.contribute.Path")
+    def test_extract_from_git_remote(
+        self,
+        mock_path: MagicMock,
+    ) -> None:
+        """Test extracting repository URL from git remote."""
+        from metaspec.cli.contribute import _extract_repository_url
+
+        # Setup mocks - pyproject.toml doesn't exist
+        mock_path_instance = MagicMock(spec=Path)
+        mock_path_instance.exists.return_value = False
+        mock_path.return_value = mock_path_instance
+
+        # Mock subprocess.run (imported inside the function)
+        with patch("metaspec.cli.contribute.Path", return_value=mock_path_instance):
+            with patch("subprocess.run") as mock_subprocess:
+                mock_subprocess.return_value = MagicMock(
+                    returncode=0,
+                    stdout="https://github.com/test/repo.git\n",
+                )
+                result = _extract_repository_url()
+
+        assert result == "https://github.com/test/repo"
+
+    @patch("metaspec.cli.contribute.Path")
+    def test_extract_returns_none_when_not_found(
+        self,
+        mock_path: MagicMock,
+    ) -> None:
+        """Test _extract_repository_url returns None when not found."""
+        from metaspec.cli.contribute import _extract_repository_url
+
+        mock_path_instance = MagicMock(spec=Path)
+        mock_path_instance.exists.return_value = False
+
+        with patch("metaspec.cli.contribute.Path", return_value=mock_path_instance):
+            with patch("subprocess.run") as mock_subprocess:
+                mock_subprocess.return_value = MagicMock(returncode=1)
+                result = _extract_repository_url()
+
+        assert result is None
+
+
+class TestExtractMetadataInfo:
+    """Tests for _extract_metadata_info helper function."""
+
+    @patch("metaspec.cli.contribute.Path")
+    @patch("builtins.open")
+    @patch("metaspec.cli.contribute.tomllib.load")
+    def test_extract_metadata_from_pyproject(
+        self,
+        mock_toml_load: MagicMock,
+        mock_open: MagicMock,
+        mock_path: MagicMock,
+    ) -> None:
+        """Test extracting metadata from pyproject.toml."""
+        from metaspec.cli.contribute import _extract_metadata_info
+
+        # Setup mocks
+        mock_path_instance = MagicMock(spec=Path)
+        mock_path_instance.exists.return_value = True
+        mock_path.return_value = mock_path_instance
+
+        mock_toml_load.return_value = {
+            "project": {
+                "name": "test-spec",
+                "version": "1.0.0",
+                "description": "Test description",
+                "scripts": {
+                    "test-cmd": "module:main",
+                },
+            }
+        }
+
+        with patch("metaspec.cli.contribute.Path", return_value=mock_path_instance):
+            result = _extract_metadata_info()
+
+        assert result["name"] == "test-spec"
+        assert result["version"] == "1.0.0"
+        assert result["description"] == "Test description"
+        assert result["cli_commands"] == ["test-cmd"]
+
+
+class TestGenerateIssueUrl:
+    """Tests for _generate_issue_url helper function."""
+
+    def test_generate_issue_url_format(self) -> None:
+        """Test issue URL format is correct."""
+        from metaspec.cli.contribute import _generate_issue_url
+
+        repo_url = "https://github.com/test/repo"
+        result = _generate_issue_url(repo_url)
+
+        assert "github.com/ACNet-AI/awesome-spec-kits/issues/new" in result
+        assert "template=register.yml" in result
+        assert "repository=https%3A%2F%2Fgithub.com%2Ftest%2Frepo" in result
+        assert "title=Register+Speckit" in result

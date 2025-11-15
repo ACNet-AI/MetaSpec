@@ -246,10 +246,21 @@ metaspec contribute --check-only
 # → Validates requirements (pyproject.toml, README, LICENSE, etc.)
 # → Shows what's missing with fix suggestions
 
-# Contribute your speckit
-metaspec contribute my-speckit
-# → Validates + Generates metadata JSON
-# → Submit PR to awesome-spec-kits
+# Contribute your speckit (one command!)
+metaspec contribute --open
+# → Validates your project
+# → Opens pre-filled GitHub issue in browser
+# → Bot automatically extracts metadata from your repo
+# → Done in ~30 seconds!
+
+# Or just get the URL
+metaspec contribute
+# → Shows registration URL to paste in browser
+
+# Preview metadata (optional)
+metaspec contribute --save-json
+# → Generates JSON file for preview
+# → Note: Bot extracts from repo, JSON is optional
 ```
 
 **Join the community**:

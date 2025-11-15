@@ -5,49 +5,52 @@ Command for contributing speckits to the community registry.
 """
 
 import json
-import shutil
 import sys
+import tomllib
+import webbrowser
 from pathlib import Path
+from urllib.parse import urlencode
 
 import typer
 from rich.console import Console
-from rich.prompt import Confirm, Prompt
+from rich.panel import Panel
 
-from metaspec.registry import CommunityRegistry, CommunitySpeckit
+from metaspec.registry import CommunitySpeckit
 from metaspec.validation import SpeckitValidator
 
 console = Console()
 
 
 def contribute_command(
-    command: str | None = typer.Option(
-        None,
-        "--command",
-        "-c",
-        help="Speckit command name (auto-detected if not provided)",
-    ),
-    interactive: bool = typer.Option(
-        True,
-        "--interactive/--no-interactive",
-        help="Enable interactive prompts",
+    open_browser: bool = typer.Option(
+        False,
+        "--open",
+        help="Open GitHub issue page in browser after validation",
     ),
     check_only: bool = typer.Option(
         False,
         "--check-only",
-        help="Only validate requirements without generating metadata",
+        help="Only validate requirements without opening browser",
+    ),
+    save_json: bool = typer.Option(
+        False,
+        "--save-json",
+        help="Save metadata to JSON file (for preview)",
     ),
 ) -> None:
     """
-    Generate metadata JSON for contributing to the community registry.
+    Validate and submit your speckit to the community registry.
 
-    This command helps you prepare your speckit for community contribution.
+    This command validates your speckit and helps you contribute it to
+    awesome-spec-kits. The bot will automatically extract metadata from
+    your repository.
 
     Args:
-        command: Speckit command name (auto-detected if installed)
-        interactive: Enable interactive prompts (default: True)
-        check_only: Only validate without generating metadata
+        open_browser: Open pre-filled GitHub issue page
+        check_only: Only validate, don't open browser
+        save_json: Save metadata JSON for preview (optional)
     """
-    console.print("[cyan]Contribute Speckit to Community[/cyan]\n")
+    console.print("[cyan]🚀 Contribute Speckit to Community[/cyan]\n")
 
     # Step 1: Validate speckit requirements
     validator = SpeckitValidator()
@@ -58,111 +61,162 @@ def contribute_command(
     if check_only:
         sys.exit(0 if validation_result.passed else 1)
 
-    # If validation failed, ask user whether to continue
+    # If validation failed, cannot continue
     if not validation_result.passed:
         console.print()
-        if interactive:
-            if not Confirm.ask(
-                "[yellow]Validation failed. Continue anyway?[/yellow]", default=False
-            ):
-                console.print("\n[dim]Tip: Fix the issues above and try again[/dim]")
-                sys.exit(1)
-        else:
-            console.print(
-                "\n[red]Validation failed. Use --check-only to see details[/red]"
-            )
-            sys.exit(1)
+        console.print("[yellow]⚠️  Please fix the issues above before contributing[/yellow]")
+        console.print("\n[dim]Tip: Re-run validation with --check-only[/dim]")
+        sys.exit(1)
 
     console.print()
 
-    # Auto-detect command if not provided
-    if command is None:
-        if interactive:
-            command = Prompt.ask("Speckit command name")
-        else:
-            console.print(
-                "[red]Error: --command is required in non-interactive mode[/red]"
-            )
-            sys.exit(1)
-
-    # Verify command exists
-    if not shutil.which(command):
-        console.print(
-            f"[yellow]Warning: Command '{command}' not found in PATH[/yellow]"
-        )
-        if interactive:
-            if not Confirm.ask("Continue anyway?", default=False):
-                sys.exit(1)
-
-    # Auto-detect info
-    registry = CommunityRegistry()
-    detected_info = (
-        registry.detect_speckit_info(command) if shutil.which(command) else None
-    ) or {}
-
-    # Collect metadata
-    if interactive:
-        console.print("\n[cyan]Enter speckit information:[/cyan]")
-
-        name = Prompt.ask("  Name", default=command)
-        description = Prompt.ask("  Description")
-        pypi_package = Prompt.ask("  PyPI package", default=name)
-        repository = Prompt.ask("  Repository URL (optional)", default="")
-        author = Prompt.ask("  Author name (optional)", default="")
-        version = Prompt.ask("  Version", default=detected_info.get("version", "0.1.0"))
-
-        # Tags
-        console.print("\n  Tags (comma-separated, e.g. 'api,testing,validation'):")
-        tags_input = Prompt.ask("  Tags", default="")
-        tags = [t.strip() for t in tags_input.split(",") if t.strip()]
-
-        # CLI commands
-        detected_commands = detected_info.get("cli_commands", [])
-        if detected_commands:
-            console.print(f"\n  Detected commands: {', '.join(detected_commands)}")
-            use_detected = Confirm.ask("  Use detected commands?", default=True)
-            cli_commands = detected_commands if use_detected else []
-        else:
-            cli_commands = []
-
-        if not cli_commands:
-            console.print(
-                "\n  CLI commands (comma-separated, e.g. 'init,validate,generate'):"
-            )
-            commands_input = Prompt.ask("  Commands", default="info")
-            cli_commands = [c.strip() for c in commands_input.split(",") if c.strip()]
-    else:
-        # Non-interactive mode requires all info
-        console.print("[red]Error: Interactive mode is required for contribute[/red]")
-        console.print("Please run without --no-interactive flag")
+    # Step 2: Extract repository information
+    repo_url = _extract_repository_url()
+    if not repo_url:
+        console.print("[red]❌ Could not detect repository URL[/red]")
+        console.print("\n💡 Please add repository URL to pyproject.toml:")
+        console.print('   [project.urls]')
+        console.print('   repository = "https://github.com/user/repo"')
         sys.exit(1)
 
-    # Create metadata
-    metadata = CommunitySpeckit(
-        name=name,
-        command=command,
-        description=description,
-        version=version,
-        pypi_package=pypi_package if pypi_package else None,
-        repository=repository if repository else None,
-        author=author if author else None,
-        tags=tags,
-        cli_commands=cli_commands,
+    # Step 3: Extract metadata for preview
+    metadata_info = _extract_metadata_info()
+
+    # Display what the bot will extract
+    console.print("[cyan]📊 Bot will extract:[/cyan]")
+    info_panel = Panel(
+        f"[white]Repository:[/white] {repo_url}\n"
+        f"[white]Name:[/white] {metadata_info.get('name', 'N/A')}\n"
+        f"[white]Version:[/white] {metadata_info.get('version', 'N/A')}\n"
+        f"[white]Description:[/white] {metadata_info.get('description', 'N/A')}\n"
+        f"[white]CLI Commands:[/white] {', '.join(metadata_info.get('cli_commands', [])) or 'N/A'}",
+        title="📋 Metadata Preview",
+        border_style="cyan",
     )
+    console.print(info_panel)
 
-    # Generate JSON file
-    output_file = Path(f"{name}.json")
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(metadata.model_dump(), f, indent=2, ensure_ascii=False)
+    # Step 4: Generate issue URL
+    issue_url = _generate_issue_url(repo_url)
 
-    console.print(f"\n[green]✓ Generated metadata:[/green] {output_file}")
+    # Step 5: Save JSON if requested
+    if save_json:
+        metadata = CommunitySpeckit(
+            name=metadata_info.get("name", ""),
+            command=metadata_info.get("command", ""),
+            description=metadata_info.get("description", ""),
+            version=metadata_info.get("version", "0.1.0"),
+            repository=repo_url,
+            cli_commands=metadata_info.get("cli_commands", []),
+        )
+        output_file = Path(f"{metadata_info.get('name', 'speckit')}.json")
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(metadata.model_dump(exclude_none=True), f, indent=2, ensure_ascii=False)
+        console.print(f"\n[green]✅ Saved preview:[/green] {output_file}")
+        console.print("[dim]Note: This is for preview only. The bot extracts metadata from your repo.[/dim]")
 
-    # Display next steps
-    console.print("\n[cyan]Next steps to contribute to community:[/cyan]")
-    console.print("  1. Review the generated JSON file")
-    console.print("  2. Fork: https://github.com/ACNet-AI/awesome-spec-kits")
-    console.print(f"  3. Add file: speckits/{output_file}")
-    console.print("  4. Submit PR with your changes")
-    console.print(
-        "\n[dim]See: https://github.com/ACNet-AI/awesome-spec-kits/blob/main/CONTRIBUTING.md[/dim]"
-    )
+    # Step 6: Open browser or show URL
+    console.print()
+    if open_browser:
+        console.print("[cyan]🌐 Opening GitHub in your browser...[/cyan]")
+        try:
+            webbrowser.open(issue_url)
+            console.print("[green]✅ Browser opened![/green]")
+        except Exception as e:
+            console.print(f"[yellow]⚠️  Could not open browser: {e}[/yellow]")
+            console.print(f"\n[cyan]📋 Registration URL:[/cyan]\n{issue_url}")
+    else:
+        console.print("[cyan]📋 Next step: Create registration issue[/cyan]")
+        console.print(f"\n{issue_url}")
+        console.print("\n💡 [dim]Tip: Use --open to open in browser automatically[/dim]")
+
+    console.print()
+    console.print("[green]🎉 Ready to contribute![/green]")
+    console.print("\n[dim]What happens next:[/dim]")
+    console.print("[dim]  1. Bot validates your repository[/dim]")
+    console.print("[dim]  2. Bot extracts metadata from pyproject.toml[/dim]")
+    console.print("[dim]  3. Bot creates PR automatically[/dim]")
+    console.print("[dim]  4. Maintainers review and merge[/dim]")
+
+
+def _extract_repository_url() -> str | None:
+    """Extract repository URL from pyproject.toml or git remote."""
+    # Try pyproject.toml first
+    pyproject_path = Path("pyproject.toml")
+    if pyproject_path.exists():
+        try:
+            with open(pyproject_path, "rb") as f:
+                data = tomllib.load(f)
+            urls = data.get("project", {}).get("urls", {})
+            repo_url_raw = (
+                urls.get("Repository")
+                or urls.get("repository")
+                or urls.get("Source")
+                or urls.get("source")
+                or urls.get("Homepage")
+                or urls.get("homepage")
+            )
+            if repo_url_raw and isinstance(repo_url_raw, str) and "github.com" in repo_url_raw:
+                return str(repo_url_raw).rstrip("/")
+        except Exception:
+            pass
+
+    # Try git remote
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode == 0:
+            remote_url = result.stdout.strip()
+            # Convert git URL to HTTPS
+            if remote_url.startswith("git@github.com:"):
+                remote_url = remote_url.replace("git@github.com:", "https://github.com/")
+            if remote_url.endswith(".git"):
+                remote_url = remote_url[:-4]
+            if "github.com" in remote_url:
+                return remote_url.rstrip("/")
+    except Exception:
+        pass
+
+    return None
+
+
+def _extract_metadata_info() -> dict:
+    """Extract metadata from pyproject.toml."""
+    pyproject_path = Path("pyproject.toml")
+    if not pyproject_path.exists():
+        return {}
+
+    try:
+        with open(pyproject_path, "rb") as f:
+            data = tomllib.load(f)
+
+        project = data.get("project", {})
+        scripts = project.get("scripts", {})
+
+        return {
+            "name": project.get("name", ""),
+            "version": project.get("version", ""),
+            "description": project.get("description", ""),
+            "command": list(scripts.keys())[0] if scripts else "",
+            "cli_commands": list(scripts.keys()),
+        }
+    except Exception:
+        return {}
+
+
+def _generate_issue_url(repo_url: str) -> str:
+    """Generate pre-filled GitHub issue URL for awesome-spec-kits."""
+    base_url = "https://github.com/ACNet-AI/awesome-spec-kits/issues/new"
+
+    # Use the issue template
+    params = {
+        "template": "register.yml",
+        "title": f"Register Speckit: {Path.cwd().name}",
+        "repository": repo_url,
+    }
+
+    return f"{base_url}?{urlencode(params)}"

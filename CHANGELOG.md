@@ -9,6 +9,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.4] - 2025-11-15
+
+### 🎉 Changed - Major UX Improvement
+
+**`metaspec contribute` - Redesigned for Simplicity**
+
+Completely redesigned `metaspec contribute` to focus on its true value: validation + one-click submission.
+
+**Why**: awesome-spec-kits bot already extracts all metadata automatically, making manual JSON generation unnecessary. The new design aligns with the actual workflow.
+
+**New behavior**:
+```bash
+# Validate only
+metaspec contribute --check-only
+
+# Default: Show pre-filled issue URL  
+metaspec contribute
+# → Validates + displays GitHub issue URL
+
+# One-click: Open browser automatically
+metaspec contribute --open
+# → Validates + opens pre-filled issue in browser (done in ~30 seconds!)
+
+# Optional: Preview metadata
+metaspec contribute --save-json
+# → Saves JSON file for preview (not required)
+```
+
+**Key improvements**:
+- ✅ **Simpler**: No interactive prompts
+- ✅ **Faster**: 15-30 minutes → 30 seconds
+- ✅ **Clearer**: Shows what bot will extract
+- ✅ **One-click**: `--open` opens browser
+- ✅ **Honest**: JSON is optional, not required
+
+**Breaking Changes**:
+- ❌ Removed: `--command` option (auto-detected)
+- ❌ Removed: `--interactive` flag
+- ❌ Changed: No longer generates JSON by default
+- ✅ Added: `--open` flag
+- ✅ Added: `--save-json` flag
+
+**Migration**:
+```bash
+# Old (v0.6.3)
+metaspec contribute my-command
+# → Interactive prompts
+
+# New (v0.6.4+)
+metaspec contribute --open
+# → One command, done!
+```
+
+**Implementation**:
+- Auto-extract repository URL from pyproject.toml or git remote
+- Auto-extract metadata from pyproject.toml
+- Generate pre-filled GitHub issue URL
+- Display what bot will extract
+- Optional JSON preview with `--save-json`
+
+**Philosophy**: The best automation is invisible automation. Users shouldn't manually enter data that bots can extract automatically.
+
+---
+
 ## [0.6.3] - 2025-11-15
 
 ### ✨ Features
