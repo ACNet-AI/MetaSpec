@@ -96,7 +96,8 @@ def contribute_command(
     console.print(info_panel)
 
     # Step 4: Generate issue URL
-    issue_url = _generate_issue_url(repo_url)
+    speckit_name = metadata_info.get("name", Path.cwd().name)
+    issue_url = _generate_issue_url(repo_url, speckit_name)
 
     # Step 5: Save JSON if requested
     if save_json:
@@ -208,7 +209,7 @@ def _extract_metadata_info() -> dict:
         return {}
 
 
-def _generate_issue_url(repo_url: str) -> str:
+def _generate_issue_url(repo_url: str, speckit_name: str) -> str:
     """Generate pre-filled GitHub issue URL for awesome-spec-kits."""
     base_url = "https://github.com/ACNet-AI/awesome-spec-kits/issues/new"
 
@@ -216,6 +217,7 @@ def _generate_issue_url(repo_url: str) -> str:
     # Template file: .github/ISSUE_TEMPLATE/register-speckit.yml
     params = {
         "template": "register-speckit.yml",  # Correct template name
+        "title": f"[Register] {speckit_name}",  # Issue title
         "repository": repo_url,  # Matches "id: repository" in template
     }
 

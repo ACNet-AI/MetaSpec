@@ -370,8 +370,10 @@ class TestGenerateIssueUrl:
         from metaspec.cli.contribute import _generate_issue_url
 
         repo_url = "https://github.com/test/repo"
-        result = _generate_issue_url(repo_url)
+        speckit_name = "test-speckit"
+        result = _generate_issue_url(repo_url, speckit_name)
 
         assert "github.com/ACNet-AI/awesome-spec-kits/issues/new" in result
         assert "template=register-speckit.yml" in result  # Correct template name
+        assert "title=%5BRegister%5D+test-speckit" in result  # [Register] test-speckit
         assert "repository=https%3A%2F%2Fgithub.com%2Ftest%2Frepo" in result

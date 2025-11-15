@@ -1,6 +1,6 @@
 [project]
 name = "meta-spec"
-version = "0.6.5"
+version = "0.6.6"
 description = "Meta-specification framework for generating Spec-Driven X (SD-X) toolkits for AI agents"
 readme = "README.md"
 requires-python = ">=3.11"

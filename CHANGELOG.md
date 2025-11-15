@@ -9,6 +9,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.6] - 2025-11-15
+
+### 🐛 Bug Fixes
+
+**Added Missing Issue Title in Registration URL**
+
+Fixed Issue title only showing `[Register]` prefix without speckit name.
+
+**Problem**:
+- v0.6.5 fixed template name but removed `title` parameter
+- Resulted in generic Issue titles: just `[Register]`
+- Less informative for maintainers reviewing registrations
+
+**Fix**:
+- Added `title` URL parameter back with speckit name
+- Title format: `[Register] {speckit-name}`
+- Example: `[Register] marketing-spec-kit`
+
+**Before (v0.6.5)**:
+```
+https://.../issues/new?template=register-speckit.yml&repository=...
+→ Title: "[Register]" (generic)
+```
+
+**After (v0.6.6)**:
+```
+https://.../issues/new?template=register-speckit.yml&title=%5BRegister%5D+my-speckit&repository=...
+→ Title: "[Register] my-speckit" (descriptive)
+```
+
+**Implementation**:
+- Extract speckit name from `pyproject.toml` (with fallback to directory name)
+- Pass to `_generate_issue_url()` function
+- Include in URL parameters for pre-filled title
+
+**All 156 tests passing.**
+
+---
+
 ## [0.6.5] - 2025-11-15
 
 ### 🐛 Bug Fixes - Critical
