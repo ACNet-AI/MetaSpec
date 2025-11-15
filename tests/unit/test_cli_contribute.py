@@ -7,8 +7,41 @@ from unittest.mock import MagicMock, mock_open, patch
 from typer.testing import CliRunner
 
 from metaspec.cli.main import app
+from metaspec.validation import ValidationCheck, ValidationResult
 
 runner = CliRunner()
+
+
+def create_passing_validation_result() -> ValidationResult:
+    """Create a passing validation result for tests."""
+    checks = [
+        ValidationCheck(
+            name="pyproject.toml",
+            passed=True,
+            message="Valid (name: test, version: 1.0.0)",
+        ),
+        ValidationCheck(
+            name="README.md",
+            passed=True,
+            message="Found (100 characters)",
+        ),
+        ValidationCheck(
+            name="LICENSE",
+            passed=True,
+            message="Found",
+        ),
+        ValidationCheck(
+            name="CLI Entry Point",
+            passed=True,
+            message="Found: test-command",
+        ),
+        ValidationCheck(
+            name="GitHub Repository",
+            passed=True,
+            message="Found: https://github.com/test/repo",
+        ),
+    ]
+    return ValidationResult(checks=checks, passed=True, warnings=[])
 
 
 class TestContributeCommand:
@@ -54,6 +87,7 @@ class TestContributeCommand:
         assert result.exit_code == 0
         assert "community" in result.stdout.lower() or "registry" in result.stdout.lower()
 
+    @patch("metaspec.cli.contribute.SpeckitValidator")
     @patch("metaspec.cli.contribute.shutil.which")
     @patch("metaspec.cli.contribute.CommunityRegistry")
     @patch("metaspec.cli.contribute.Prompt.ask")
@@ -66,8 +100,14 @@ class TestContributeCommand:
         mock_prompt: MagicMock,
         mock_registry_class: MagicMock,
         mock_which: MagicMock,
+        mock_validator_class: MagicMock,
     ) -> None:
         """Test complete interactive contribution flow."""
+        # Mock validation passing
+        mock_validator = MagicMock()
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_validator_class.return_value = mock_validator
+
         # Mock command exists
         mock_which.return_value = "/usr/local/bin/my-spec-kit"
 
@@ -102,6 +142,7 @@ class TestContributeCommand:
         assert result.exit_code == 0
         assert "Generated metadata" in result.stdout or mock_file.called
 
+    @patch("metaspec.cli.contribute.SpeckitValidator")
     @patch("metaspec.cli.contribute.shutil.which")
     @patch("metaspec.cli.contribute.CommunityRegistry")
     @patch("metaspec.cli.contribute.Prompt.ask")
@@ -114,8 +155,14 @@ class TestContributeCommand:
         mock_prompt: MagicMock,
         mock_registry_class: MagicMock,
         mock_which: MagicMock,
+        mock_validator_class: MagicMock,
     ) -> None:
         """Test contribution uses detected commands."""
+        # Mock validation passing
+        mock_validator = MagicMock()
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_validator_class.return_value = mock_validator
+
         # Mock command exists
         mock_which.return_value = "/usr/local/bin/test-kit"
 
@@ -172,6 +219,7 @@ class TestContributeCommand:
         # Should exit
         assert result.exit_code == 1
 
+    @patch("metaspec.cli.contribute.SpeckitValidator")
     @patch("metaspec.cli.contribute.shutil.which")
     @patch("metaspec.cli.contribute.CommunityRegistry")
     @patch("metaspec.cli.contribute.Prompt.ask")
@@ -184,8 +232,14 @@ class TestContributeCommand:
         mock_prompt: MagicMock,
         mock_registry_class: MagicMock,
         mock_which: MagicMock,
+        mock_validator_class: MagicMock,
     ) -> None:
         """Test contribution with custom commands instead of detected ones."""
+        # Mock validation passing
+        mock_validator = MagicMock()
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_validator_class.return_value = mock_validator
+
         # Mock command exists
         mock_which.return_value = "/usr/bin/custom-kit"
 
@@ -219,6 +273,45 @@ class TestContributeCommand:
 
         # Should complete successfully
         assert result.exit_code == 0
+
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    def test_contribute_check_only_passing(self, mock_validator_class: MagicMock) -> None:
+        """Test --check-only flag with passing validation."""
+        # Mock validation passing
+        mock_validator = MagicMock()
+        mock_validator.validate.return_value = create_passing_validation_result()
+        mock_validator_class.return_value = mock_validator
+
+        result = runner.invoke(app, ["contribute", "--check-only"])
+
+        # Should exit with 0 when validation passes
+        assert result.exit_code == 0
+        # Validation was called
+        assert mock_validator.validate.called
+        assert mock_validator.display_results.called
+
+    @patch("metaspec.cli.contribute.SpeckitValidator")
+    def test_contribute_check_only_failing(self, mock_validator_class: MagicMock) -> None:
+        """Test --check-only flag with failing validation."""
+        # Mock validation failing
+        failing_checks = [
+            ValidationCheck(
+                name="pyproject.toml",
+                passed=False,
+                message="pyproject.toml not found",
+                fix_suggestion="Create pyproject.toml",
+            ),
+        ]
+        mock_validator = MagicMock()
+        mock_validator.validate.return_value = ValidationResult(
+            checks=failing_checks, passed=False, warnings=["Missing files"]
+        )
+        mock_validator_class.return_value = mock_validator
+
+        result = runner.invoke(app, ["contribute", "--check-only"])
+
+        # Should exit with 1 when validation fails
+        assert result.exit_code == 1
 
     def test_contribute_non_interactive_fails(self) -> None:
         """Test that non-interactive mode shows error."""
