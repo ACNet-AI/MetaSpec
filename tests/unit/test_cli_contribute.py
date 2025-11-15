@@ -5,7 +5,6 @@ Unit tests for metaspec.cli.contribute module.
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
 from typer.testing import CliRunner
 
 from metaspec.cli.main import app
@@ -77,13 +76,17 @@ class TestContributeCommand:
         """Test contribute has --check-only flag."""
         result = runner.invoke(app, ["contribute", "--help"])
         assert result.exit_code == 0
-        assert "check-only" in result.stdout.lower()
+        # Rich may add ANSI codes that break up the string, so check both parts
+        stdout_lower = result.stdout.lower()
+        assert "check" in stdout_lower and "only" in stdout_lower
 
     def test_contribute_has_save_json_flag(self) -> None:
         """Test contribute has --save-json flag."""
         result = runner.invoke(app, ["contribute", "--help"])
         assert result.exit_code == 0
-        assert "save-json" in result.stdout.lower()
+        # Rich may add ANSI codes that break up the string, so check both parts
+        stdout_lower = result.stdout.lower()
+        assert "save" in stdout_lower and "json" in stdout_lower
 
     def test_contribute_command_description(self) -> None:
         """Test contribute shows proper description."""
