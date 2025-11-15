@@ -115,7 +115,24 @@ def contribute_command(
         console.print(f"\n[green]✅ Saved preview:[/green] {output_file}")
         console.print("[dim]Note: This is for preview only. The bot extracts metadata from your repo.[/dim]")
 
-    # Step 6: Open browser or show URL
+    # Step 6: Important reminder about required checkboxes
+    console.print()
+    reminder_panel = Panel(
+        "[green]✅ We've already validated these (you can check them immediately):[/green]\n"
+        "[dim]✓ pyproject.toml with name, version, description[/dim]\n"
+        "[dim]✓ README.md documentation[/dim]\n"
+        "[dim]✓ CLI commands in [project.scripts][/dim]\n"
+        "[dim]✓ Open source license[/dim]\n\n"
+        "[yellow]⚠️  Please confirm manually on GitHub:[/yellow]\n"
+        "[white]✓ I am the maintainer or have permission to register this speckit[/white]\n\n"
+        "[dim]Note: GitHub requires all 5 boxes checked, even though we've verified 4.\n"
+        "This is a GitHub security limitation (can't pre-check required boxes via URL).[/dim]",
+        title="📋 GitHub Issue Checkboxes",
+        border_style="cyan",
+    )
+    console.print(reminder_panel)
+
+    # Step 7: Open browser or show URL
     console.print()
     if open_browser:
         console.print("[cyan]🌐 Opening GitHub in your browser...[/cyan]")
@@ -133,10 +150,12 @@ def contribute_command(
     console.print()
     console.print("[green]🎉 Ready to contribute![/green]")
     console.print("\n[dim]What happens next:[/dim]")
-    console.print("[dim]  1. Bot validates your repository[/dim]")
-    console.print("[dim]  2. Bot extracts metadata from pyproject.toml[/dim]")
-    console.print("[dim]  3. Bot creates PR automatically[/dim]")
-    console.print("[dim]  4. Maintainers review and merge[/dim]")
+    console.print("[dim]  1. Check the 5 required checkboxes[/dim]")
+    console.print("[dim]  2. Submit the Issue[/dim]")
+    console.print("[dim]  3. Bot validates your repository[/dim]")
+    console.print("[dim]  4. Bot extracts metadata from pyproject.toml[/dim]")
+    console.print("[dim]  5. Bot creates PR automatically[/dim]")
+    console.print("[dim]  6. Maintainers review and merge[/dim]")
 
 
 def _extract_repository_url() -> str | None:

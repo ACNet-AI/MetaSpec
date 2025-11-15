@@ -9,6 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.7] - 2025-11-15
+
+### ✨ Improvements
+
+**Added Clear Reminder for Required Checkboxes**
+
+Improved user experience by adding prominent reminder about GitHub Issue's required checkboxes.
+
+**Context**:
+- GitHub Issue Forms have 5 required checkboxes
+- GitHub security design: required checkboxes cannot be pre-checked via URL
+- Users need to manually check them before submitting
+
+**What we added**:
+- Prominent yellow panel with "Action Required" title
+- Lists all 5 required checkboxes users need to check
+- Explains why they can't be pre-checked
+- Updates "What happens next" flow to include checkbox step
+
+**User experience improvement**:
+```
+Before (v0.6.6):
+→ User opens browser
+→ Sees empty checkboxes
+→ Might be confused: "Why aren't these checked?"
+→ Has to figure out what to do
+
+After (v0.6.7):
+→ Clear warning before browser opens
+→ Lists all 5 checkboxes to check
+→ Explains GitHub's limitation
+→ User knows exactly what to expect
+```
+
+**Design philosophy**:
+- Simple > Complex: Accept GitHub's constraint, communicate clearly
+- Clear > Perfect: Explicit reminder > Attempting workarounds
+- User-friendly: Set expectations upfront, minimize confusion
+
+**All 156 tests passing.**
+
+---
+
 ## [0.6.6] - 2025-11-15
 
 ### 🐛 Bug Fixes
