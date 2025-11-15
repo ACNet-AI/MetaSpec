@@ -100,6 +100,7 @@ memory/constitution.md
 │   - Implementation Neutrality
 │   - Extensibility Design
 │   - Domain Fidelity
+│   - Workflow Completeness ⭐ NEW
 │
 └── Part III: Toolkit Implementation Principles (管理: /metaspec.sdd.constitution)
     - Entity-First Design
@@ -115,6 +116,122 @@ memory/constitution.md
 2. **AI-First Design** (Part I): Generated systems must be AI-friendly
 3. **Progressive Enhancement** (Part I): Start with MVP, add features incrementally
 4. **Domain Specificity** (Part I): Respect domain constraints
+5. **Workflow Completeness** (Part II): ⭐ **NEW** - Define complete user workflows, not just isolated operations
+
+---
+
+## 🚀 Workflow-Driven Design Philosophy
+
+**CRITICAL NEW PRINCIPLE** (v0.7.0+): MetaSpec now requires **workflow-first design** for all domain specifications.
+
+### Why Workflow Matters
+
+❌ **Don't build**: "Tool箱" (collection of isolated operations)  
+✅ **Do build**: "Workflow Systems" (integrated end-to-end user journeys)
+
+### The Problem We Solved
+
+**Before v0.7.0**: Developers could create speckits that passed all quality checks but lacked clear user workflows. Users received "13 commands" without knowing which to use first, or how they relate.
+
+**After v0.7.0**: All domain specifications MUST define:
+1. **Workflow Phases** - Distinct stages in the user journey
+2. **Phase Purposes** - Why each phase exists
+3. **Operation Mapping** - Which operations belong to which phase
+4. **Sequencing** - Entry/exit criteria, dependencies, ordering
+5. **End-to-End Examples** - Complete workflow demonstrations
+
+### MetaSpec as Example
+
+MetaSpec itself demonstrates perfect workflow design:
+
+```
+SDS Workflow:
+  Phase 1: Constitution → /metaspec.sds.constitution
+  Phase 2: Specification → /metaspec.sds.specify
+  Phase 3: Quality Gates → /metaspec.sds.clarify, /metaspec.sds.checklist
+  Phase 4: Implementation → /metaspec.sds.plan, /metaspec.sds.tasks, /metaspec.sds.implement
+  Phase 5: Validation → /metaspec.sds.analyze
+
+SDD Workflow:
+  Phase 1: Constitution → /metaspec.sdd.constitution
+  Phase 2: Specification → /metaspec.sdd.specify, /metaspec.sdd.clarify
+  Phase 3: Architecture → /metaspec.sdd.plan, /metaspec.sdd.checklist
+  Phase 4: Implementation → /metaspec.sdd.tasks, /metaspec.sdd.analyze, /metaspec.sdd.implement
+```
+
+**Your mission**: Ensure all speckits you help create follow this same pattern.
+
+### Required Workflow Elements
+
+When defining domain specifications, ALWAYS include:
+
+1. **Phase Definitions**
+   ```yaml
+   Phase 1: [Name]
+     Purpose: [Why this phase exists]
+     Entry: [When user enters]
+     Operations: [Which operations]
+     Outputs: [What is produced]
+     Exit: [When complete]
+   ```
+
+2. **Operation-to-Phase Mapping**
+   - Every operation MUST belong to at least one workflow phase
+   - No "orphan" operations without clear usage context
+
+3. **Workflow Examples**
+   - Show complete end-to-end usage
+   - Demonstrate phase transitions
+   - Include success indicators
+
+4. **Decision Points**
+   - Document when users choose between paths
+   - Explain branching logic
+   - Provide decision criteria
+
+### Enforcement
+
+The new **Part II Principle 7: Workflow Completeness** ensures:
+- `/metaspec.sds.constitution` includes workflow requirements
+- `/metaspec.sds.specify` generates Workflow Specification sections
+- `/metaspec.sds.checklist` (future) validates workflow completeness
+- `/metaspec.sds.analyze` (future) scores workflow quality
+
+### Examples
+
+**Good Workflow-Driven Design**:
+```
+Marketing Operations Workflow:
+  Phase 1: Strategic Planning
+    - Operations: /marketing.plan.create, /marketing.plan.validate
+    - Output: Approved marketing plan
+  
+  Phase 2: Campaign Design
+    - Operations: /marketing.campaign.design, /marketing.campaign.get
+    - Output: Campaign specifications
+  
+  Phase 3: Content Creation
+    - Operations: /marketing.generate.post, /marketing.generate.article
+    - Output: Ready-to-publish content
+```
+
+**Bad (Pre-v0.7.0) Design**:
+```
+Marketing Operations:
+  - /marketing.project (what's this for?)
+  - /marketing.campaign (when to use?)
+  - /marketing.generate.post (how does this relate to campaign?)
+  ❌ Users confused about sequence and relationships
+```
+
+### Your Checklist
+
+When helping users create speckits, verify:
+- [ ] Domain specification includes "Workflow Specification" section
+- [ ] All operations are mapped to workflow phases
+- [ ] Each phase has clear purpose, entry/exit criteria
+- [ ] End-to-end workflow examples provided
+- [ ] Constitution Part II includes Workflow Completeness principle
 
 ---
 

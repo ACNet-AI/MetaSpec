@@ -89,6 +89,23 @@ Based on user input and domain understanding, update these **standard specificat
 
 **Rationale**: Domain-faithful specifications are easier to adopt and understand.
 
+#### **VII. Workflow Completeness**
+- All specifications define complete user workflows from start to finish
+- Distinct phases/stages of the user journey are clearly identified
+- Operation ordering and dependencies are documented
+- Decision points and branching logic are specified
+- End-to-end workflow examples are provided
+- Operations are mapped to specific workflow phases
+
+**Rationale**: Users need guidance on how to use operations in sequence. Isolated operations are less valuable than integrated workflows. Workflow definition enables better AI assistance and automation.
+
+**Example workflow structure**:
+```
+Phase 1: Planning → operations: create_plan, validate_plan
+Phase 2: Execution → operations: execute_task, monitor_progress  
+Phase 3: Analysis → operations: generate_report, optimize
+```
+
 ### 4. Prepare domain-specific examples
 
 For each principle in Part II, provide domain-specific examples:
@@ -99,11 +116,12 @@ For each principle in Part II, provide domain-specific examples:
 - **Implementation Neutrality**: How to avoid technology coupling?
 - **Extensibility Design**: How to support evolution?
 - **Domain Fidelity**: What standards to follow? Terminology?
+- **Workflow Completeness**: What workflow phases? Operation ordering? User journey?
 
 **Examples by domain**:
-- Marketing: Campaign (name, type, channels, budget, dates), CPM/CTR/ROAS validation
-- MCP: Tool (name, description, inputSchema), JSON Schema validation
-- API Testing: APITest (endpoint, method, assertions), HTTP status validation
+- Marketing: Campaign (name, type, channels, budget, dates), CPM/CTR/ROAS validation, Workflow: Planning → Campaign Design → Content Creation → Execution → Analysis
+- MCP: Tool (name, description, inputSchema), JSON Schema validation, Workflow: Server Init → Tool Discovery → Tool Execution → Result Processing
+- API Testing: APITest (endpoint, method, assertions), HTTP status validation, Workflow: Test Design → Setup → Execution → Validation → Reporting
 
 ### 5. Update Part II section
 
@@ -137,6 +155,24 @@ Update only the `## Part II: Specification Design Principles` section with domai
 ### 6. Domain Fidelity
 
 [Domain standards and conventions to follow]
+
+### 7. Workflow Completeness
+
+[Complete user workflows from start to finish]
+
+**Required workflow elements**:
+- Phase definitions with clear purposes
+- Operation ordering and dependencies
+- Entry and exit criteria for each phase
+- Decision points and branching logic
+- End-to-end workflow examples
+
+**Example workflow**:
+```
+Phase 1: [Phase Name] → operations: [op1, op2]
+Phase 2: [Phase Name] → operations: [op3, op4]
+Phase 3: [Phase Name] → operations: [op5, op6]
+```
 
 <!-- Managed by /metaspec.sds.constitution -->
 ```

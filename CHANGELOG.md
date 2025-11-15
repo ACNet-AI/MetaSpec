@@ -9,6 +9,141 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.0] - 2025-11-15
+
+### ⭐ Major Feature - Workflow-Driven Design Philosophy
+
+**Introduced Workflow Completeness Principle for Domain Specifications**
+
+MetaSpec now enforces **workflow-first design** for all domain specifications, addressing a fundamental design gap where speckits could pass all quality checks but lack clear user workflows.
+
+**Problem We Solved**:
+- Before v0.7.0: Developers created speckits with isolated operations ("tool箱")
+- Users received collections of commands without knowing usage order or relationships
+- High quality scores but poor usability - no end-to-end guidance
+- Example: "13 commands" but unclear which to use first, how they connect
+
+**Solution**:
+- Added **Part II Principle 7: Workflow Completeness** to Constitution
+- All domain specifications MUST now define complete user workflows
+- Workflows include phases, operation mapping, sequencing, and examples
+- MetaSpec itself demonstrates this principle with SDS/SDD workflows
+
+### ✨ Added
+
+#### Constitution Template Updates
+- **Added Part II Principle 7**: "Workflow Completeness"
+  - Requires complete user workflows from start to finish
+  - Distinct phases/stages with clear purposes
+  - Operation ordering and dependencies
+  - Decision points and branching logic
+  - End-to-end workflow examples
+  - Operations mapped to workflow phases
+- Example workflow structure in constitution template
+- Domain-specific workflow examples (Marketing, MCP, API Testing)
+
+#### Domain Specification Template
+- **Added "Workflow Specification" section** to `domain-spec-template.md.j2`
+  - `user_workflows` in frontmatter YAML
+  - Workflow phases with purpose, entry/exit criteria
+  - Operation-to-phase mapping
+  - Workflow example usage
+  - Design rationale emphasizing integrated workflows
+- Positioned after "Use Cases", before "Core Entities"
+
+#### Documentation Updates
+- **AGENTS.md**: New "Workflow-Driven Design Philosophy" section
+  - Explains why workflow matters (systems vs toolboxes)
+  - Shows MetaSpec's own workflows as examples
+  - Required workflow elements checklist
+  - Good vs bad design examples
+  - Enforcement mechanisms
+- **Constitution Structure**: Updated to show Workflow Completeness as 7th principle
+
+### 🎯 Philosophy
+
+**Core Principle**:
+```
+❌ Don't build: "Tool箱" (isolated operations)
+✅ Do build: "Workflow Systems" (integrated user journeys)
+```
+
+**MetaSpec as Example**:
+```
+SDS Workflow:
+  Phase 1: Constitution → /metaspec.sds.constitution
+  Phase 2: Specification → /metaspec.sds.specify
+  Phase 3: Quality Gates → /metaspec.sds.clarify, /metaspec.sds.checklist
+  Phase 4: Implementation → /metaspec.sds.plan, /metaspec.sds.tasks, /metaspec.sds.implement
+  Phase 5: Validation → /metaspec.sds.analyze
+```
+
+**Required Elements**:
+1. **Workflow Phases** - Distinct stages in user journey
+2. **Phase Purposes** - Why each phase exists
+3. **Operation Mapping** - Which operations belong to which phase
+4. **Sequencing** - Entry/exit criteria, dependencies, ordering
+5. **End-to-End Examples** - Complete workflow demonstrations
+
+### 🔄 Impact on Existing Projects
+
+**Backward Compatibility**: ✅ Fully compatible
+- Existing speckits continue to work
+- No breaking changes to APIs or commands
+- Templates add new sections but don't remove existing content
+
+**Migration Path**:
+- New projects automatically get workflow-focused templates
+- Existing projects can add workflow sections via `/metaspec.sds.specify`
+- Constitution updates guide workflow definition
+- Future: `/metaspec.sds.checklist` and `/metaspec.sds.analyze` will validate workflow completeness
+
+### 📊 Quality Enforcement
+
+**Current (v0.7.0)**:
+- ✅ Constitution template includes Workflow Completeness principle
+- ✅ Domain spec template includes Workflow Specification section
+- ✅ AGENTS.md documents workflow requirements
+
+**Future (v0.7.x)**:
+- 🔜 `/metaspec.sds.checklist` validates workflow completeness
+- 🔜 `/metaspec.sds.analyze` scores workflow quality (Dimension 7: 15% weight)
+- 🔜 Low scores (<70%) if workflow missing or incomplete
+
+### 💡 Rationale
+
+**Feedback Source**: Real-world development of `marketing-spec-kit`
+- Followed complete SDS + SDD workflow
+- All quality checks passed (50/50, 98/100)
+- Final result: 13 isolated commands without clear workflow
+- Discovery: MetaSpec showed perfect workflows but didn't require them
+
+**Design Philosophy Alignment**:
+- MetaSpec demonstrates workflow-first design
+- New principle ensures generated speckits follow same pattern
+- "Practice what you preach" - consistency across framework
+
+**User Experience**:
+- Users need guidance on operation sequencing
+- Isolated operations less valuable than integrated workflows
+- Workflow definition enables better AI assistance and automation
+
+### 🎉 Benefits
+
+1. **Clearer User Guidance**: Users know which operations to use when
+2. **Better AI Support**: AI agents understand operation context and sequencing
+3. **Improved Usability**: Speckits are systems, not just tool collections
+4. **Design Consistency**: All speckits follow MetaSpec's workflow pattern
+5. **Quality Assurance**: Future validation catches workflow gaps early
+
+### 📚 References
+
+- **Feedback Document**: `/Users/guyue/marketing-spec-kit/docs/internal/metaspec-feedback.md`
+- **Related Issue**: Design gap identified through real-world usage
+- **Philosophy**: Workflow Systems vs Tool Boxes
+
+---
+
 ## [0.6.8] - 2025-11-15
 
 ### 🐛 Bug Fixes - Critical

@@ -58,6 +58,30 @@ validation_rules:
   []
 {% endif %}
 
+user_workflows:
+{% if user_workflows %}
+{% for workflow in user_workflows %}
+  - name: {{ workflow.name }}
+    purpose: {{ workflow.purpose }}
+    phases:
+    {% if workflow.phases %}
+    {% for phase in workflow.phases %}
+      - name: {{ phase.name }}
+        purpose: {{ phase.purpose }}
+        entry_criteria: {{ phase.entry_criteria | default("") }}
+        operations: {{ phase.operations | default([]) | tojson }}
+        outputs: {{ phase.outputs | default([]) | tojson }}
+        exit_criteria: {{ phase.exit_criteria | default("") }}
+    {% endfor %}
+    {% else %}
+      []
+    {% endif %}
+    example: {{ workflow.example | default("") }}
+{% endfor %}
+{% else %}
+  []
+{% endif %}
+
 workflows:
 {% if workflows %}
 {% for workflow in workflows %}
@@ -135,6 +159,50 @@ references: {{ references | default([]) | tojson }}
 
 {% endif %}
 {% endfor %}
+
+{% endif %}
+{% if user_workflows %}
+## Workflow Specification
+
+> **Purpose**: Define complete user workflows from start to finish, showing how operations are used in sequence to accomplish domain goals.
+
+{% for workflow in user_workflows %}
+### Workflow: {{ workflow.name }}
+
+**Purpose**: {{ workflow.purpose }}
+
+**Phases**:
+
+{% if workflow.phases %}
+{% for phase in workflow.phases %}
+#### Phase {{ loop.index }}: {{ phase.name }}
+
+- **Purpose**: {{ phase.purpose }}
+{% if phase.entry_criteria %}- **Entry Criteria**: {{ phase.entry_criteria }}
+{% endif %}- **Operations**: {% if phase.operations %}{% for op in phase.operations %}`{{ op }}`{% if not loop.last %}, {% endif %}{% endfor %}{% else %}_None specified_{% endif %}
+{% if phase.outputs %}- **Outputs**: {% for output in phase.outputs %}`{{ output }}`{% if not loop.last %}, {% endif %}{% endfor %}
+{% endif %}
+{% if phase.exit_criteria %}- **Exit Criteria**: {{ phase.exit_criteria }}
+{% endif %}
+
+{% endfor %}
+{% else %}
+> _No phases defined for this workflow._
+{% endif %}
+
+{% if workflow.example %}
+**Example Usage**:
+```
+{{ workflow.example | indent(width=0) }}
+```
+{% endif %}
+
+{% endfor %}
+
+**Design Rationale**: 
+- Operations are not isolated tools - they serve specific phases in user workflows
+- Each phase has clear entry/exit criteria to guide users
+- Workflow examples demonstrate end-to-end usage patterns
 
 {% endif %}
 ## Core Entities
