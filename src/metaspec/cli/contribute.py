@@ -14,6 +14,7 @@ from rich.console import Console
 from rich.prompt import Confirm, Prompt
 
 from metaspec.registry import CommunityRegistry, CommunitySpeckit
+from metaspec.validation import SpeckitValidator
 
 console = Console()
 
@@ -30,6 +31,11 @@ def contribute_command(
         "--interactive/--no-interactive",
         help="Enable interactive prompts",
     ),
+    check_only: bool = typer.Option(
+        False,
+        "--check-only",
+        help="Only validate requirements without generating metadata",
+    ),
 ) -> None:
     """
     Generate metadata JSON for contributing to the community registry.
@@ -39,8 +45,35 @@ def contribute_command(
     Args:
         command: Speckit command name (auto-detected if installed)
         interactive: Enable interactive prompts (default: True)
+        check_only: Only validate without generating metadata
     """
     console.print("[cyan]Contribute Speckit to Community[/cyan]\n")
+
+    # Step 1: Validate speckit requirements
+    validator = SpeckitValidator()
+    validation_result = validator.validate()
+    validator.display_results(validation_result)
+
+    # If check-only mode, exit after validation
+    if check_only:
+        sys.exit(0 if validation_result.passed else 1)
+
+    # If validation failed, ask user whether to continue
+    if not validation_result.passed:
+        console.print()
+        if interactive:
+            if not Confirm.ask(
+                "[yellow]Validation failed. Continue anyway?[/yellow]", default=False
+            ):
+                console.print("\n[dim]Tip: Fix the issues above and try again[/dim]")
+                sys.exit(1)
+        else:
+            console.print(
+                "\n[red]Validation failed. Use --check-only to see details[/red]"
+            )
+            sys.exit(1)
+
+    console.print()
 
     # Auto-detect command if not provided
     if command is None:

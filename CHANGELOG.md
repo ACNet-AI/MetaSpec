@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.3] - 2025-11-15
+
+### ✨ Features
+
+**metaspec contribute - Validation Enhancement (Phase 1)**
+- Added pre-flight validation for speckit requirements
+- New `--check-only` flag to validate without generating metadata
+- Validates: pyproject.toml, README.md, LICENSE, CLI entry points, GitHub repository
+- Actionable error messages with fix suggestions
+- Beautiful validation results table with pass/fail status
+
+**Usage**:
+```bash
+metaspec contribute --check-only  # Validate only
+metaspec contribute               # Validate + generate metadata
+```
+
+**Benefits**:
+- ✅ Catch issues before contribution
+- ✅ Clear guidance on what's missing
+- ✅ Improved community submission quality
+- ✅ Better user experience
+
+---
+
 ## [0.6.2] - 2025-11-15
 
 ### 🐛 Bug Fixes

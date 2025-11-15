@@ -170,7 +170,7 @@ Together, these create a **flexible specification network** where AI agents navi
 | `metaspec install <name>` | 📦 Install speckit from community |
 | `metaspec list` | 📋 List installed speckits |
 | `metaspec info <name>` | ℹ️ Show speckit information |
-| `metaspec contribute <name>` | 🤝 Contribute to community registry |
+| `metaspec contribute [--check-only]` | 🤝 Validate & contribute to community |
 
 **Common usage:**
 ```bash
@@ -241,9 +241,14 @@ metaspec info <command>
 ### For Developers
 
 ```bash
+# Validate your speckit before contributing
+metaspec contribute --check-only
+# → Validates requirements (pyproject.toml, README, LICENSE, etc.)
+# → Shows what's missing with fix suggestions
+
 # Contribute your speckit
 metaspec contribute my-speckit
-# → Generates metadata JSON
+# → Validates + Generates metadata JSON
 # → Submit PR to awesome-spec-kits
 ```
 
@@ -435,7 +440,7 @@ metaspec init [NAME] [OPTIONS]     # Create speckit (interactive or template-bas
 # Community
 metaspec search <query>            # Search community speckits
 metaspec install <name>            # Install from community
-metaspec contribute <name>         # Contribute to community
+metaspec contribute [--check-only] # Validate & contribute to community
 
 # Information
 metaspec list                      # List installed speckits
