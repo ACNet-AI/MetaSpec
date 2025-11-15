@@ -170,6 +170,29 @@ def sync_command(
             console.print(f"   🧹 Removing old naming (v0.5.x): {old_file_name}")
             old_file.unlink()
 
+    # Step 7.6: Update .metaspec/README.md (critical for consistency)
+    readme_source = template_dir.parent / "base" / ".metaspec" / "README.md.j2"
+    readme_dest = metaspec_dir / "README.md"
+    if readme_source.exists():
+        console.print(f"   📝 Updating {readme_dest.name}...")
+        content = readme_source.read_text()
+        # Render with speckit name from pyproject.toml
+        try:
+            with open("pyproject.toml", "rb") as f:
+                import tomllib
+                data = tomllib.load(f)
+                speckit_name = data.get("project", {}).get("name", "this speckit")
+                content = content.replace("{{ name }}", speckit_name)
+                content = content.replace("{{ metaspec_version }}", current_version)
+        except Exception:
+            # Fallback if pyproject.toml can't be read
+            content = content.replace("{{ name }}", "this speckit")
+            content = content.replace("{{ metaspec_version }}", current_version)
+
+        readme_dest.write_text(content)
+        updated_files.append(readme_dest.name)
+        console.print(f"   ✅ Updated {readme_dest.name}")
+
     # Step 8: Update version in pyproject.toml
     _update_generated_version(current_version)
 

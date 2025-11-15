@@ -9,6 +9,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.8] - 2025-11-15
+
+### 🐛 Bug Fixes - Critical
+
+**Fixed Documentation Inconsistency in `metaspec sync`**
+
+Fixed a critical bug where `metaspec sync` updated command files but not `.metaspec/README.md`, causing documentation to reference old command names.
+
+**Problem**:
+- `metaspec sync` only synchronized `.metaspec/commands/` directory
+- Did NOT sync `.metaspec/README.md`
+- After sync: commands use new naming (`metaspec.evolution.*.md`)
+- But README still referenced old naming (`/metaspec.proposal`, etc.)
+- **Result**: Documentation contradicted actual files
+
+**Impact**: 🔴 Critical
+- Severity: High - Documentation misleads users
+- Affected: All speckits using `metaspec sync` from v0.6.2+
+- Confusion: Users follow README but commands don't exist
+
+**Fix**:
+- Added `.metaspec/README.md` to sync process (Step 7.6)
+- Extracts speckit name from `pyproject.toml`
+- Renders template with current version
+- Updates Evolution command references in template:
+  - `/metaspec.proposal` → `/metaspec.evolution.proposal`
+  - `/metaspec.apply` → `/metaspec.evolution.apply`
+  - `/metaspec.archive` → `/metaspec.evolution.archive`
+
+**Before (v0.6.7)**:
+```
+metaspec sync
+→ Updates .metaspec/commands/metaspec.evolution.*.md
+→ .metaspec/README.md still shows: /metaspec.proposal
+→ User runs /metaspec.proposal → File not found!
+```
+
+**After (v0.6.8)**:
+```
+metaspec sync
+→ Updates .metaspec/commands/metaspec.evolution.*.md
+→ Updates .metaspec/README.md → /metaspec.evolution.proposal
+→ Documentation and files consistent!
+```
+
+**Implementation**:
+- Modified `src/metaspec/cli/sync.py`:
+  - Added Step 7.6: Sync `.metaspec/README.md`
+  - Renders template with speckit name and version
+  - Increments updated files count
+- Updated template `src/metaspec/templates/base/.metaspec/README.md.j2`:
+  - All Evolution command references now use unified naming
+  - Examples updated to show correct commands
+
+**All 156 tests passing.**
+
+**Credit**: Bug discovered by user reviewing documentation consistency.
+
+---
+
 ## [0.6.7] - 2025-11-15
 
 ### ✨ Improvements

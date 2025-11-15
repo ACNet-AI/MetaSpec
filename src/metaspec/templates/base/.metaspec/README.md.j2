@@ -54,9 +54,9 @@ Develop toolkit implementation:
 
 Manage specification changes:
 
-- `/metaspec.proposal` - Propose changes (use `--type sds|sdd`)
-- `/metaspec.apply` - Apply approved changes
-- `/metaspec.archive` - Archive completed changes
+- `/metaspec.evolution.proposal` - Propose changes (use `--type sds|sdd`)
+- `/metaspec.evolution.apply` - Apply approved changes
+- `/metaspec.evolution.archive` - Archive completed changes
 
 **Output**: `changes/` directory
 
@@ -142,16 +142,16 @@ Manage specification changes:
 
 ```bash
 # Propose specification change
-/metaspec.proposal "Add GraphQL support" --type sds
+/metaspec.evolution.proposal "Add GraphQL support" --type sds
 
 # Propose toolkit change
-/metaspec.proposal "Add streaming support" --type sdd
+/metaspec.evolution.proposal "Add streaming support" --type sdd
 
 # Apply approved changes
-/metaspec.apply <proposal-id>
+/metaspec.evolution.apply <proposal-id>
 
 # Archive completed changes
-/metaspec.archive <proposal-id>
+/metaspec.evolution.archive <proposal-id>
 ```
 
 ---
