@@ -9,6 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.5] - 2025-11-15
+
+### 🐛 Bug Fixes - Critical
+
+**Fixed `metaspec contribute` Registration Failure**
+
+Fixed a critical bug that completely broke the speckit registration workflow.
+
+**Problem**:
+- Used incorrect GitHub Issue template name: `register.yml`
+- Correct template name is: `register-speckit.yml`
+- Resulted in empty Issue body, bot couldn't process registration
+- All registration attempts failed
+
+**Impact**: 🔴 Critical
+- Severity: High - Broke entire registration workflow
+- Affected: All users attempting to register speckits
+- Duration: Since v0.6.4 release
+
+**Fix**:
+- Updated template name: `register.yml` → `register-speckit.yml`
+- Removed `title` URL parameter (handled by GitHub Issue Forms)
+- Updated URL generation to match GitHub Issue Forms API
+- Updated tests to verify correct template name
+
+**Verification**:
+```bash
+# Before (v0.6.4) - BROKEN
+https://github.com/.../issues/new?template=register.yml&...
+# → Empty Issue body, bot couldn't process
+
+# After (v0.6.5) - FIXED
+https://github.com/.../issues/new?template=register-speckit.yml&repository=...
+# → Repository field pre-filled, bot processes automatically
+```
+
+**References**:
+- Bug Report: marketing-spec-kit registration failure
+- Broken Example: awesome-spec-kits#6 (empty body)
+- Working Template: `.github/ISSUE_TEMPLATE/register-speckit.yml`
+
+**All 156 tests passing.**
+
+---
+
 ## [0.6.4] - 2025-11-15
 
 ### 🎉 Changed - Major UX Improvement

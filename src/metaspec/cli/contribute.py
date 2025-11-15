@@ -212,11 +212,11 @@ def _generate_issue_url(repo_url: str) -> str:
     """Generate pre-filled GitHub issue URL for awesome-spec-kits."""
     base_url = "https://github.com/ACNet-AI/awesome-spec-kits/issues/new"
 
-    # Use the issue template
+    # Use the correct issue template name (GitHub Issue Forms)
+    # Template file: .github/ISSUE_TEMPLATE/register-speckit.yml
     params = {
-        "template": "register.yml",
-        "title": f"Register Speckit: {Path.cwd().name}",
-        "repository": repo_url,
+        "template": "register-speckit.yml",  # Correct template name
+        "repository": repo_url,  # Matches "id: repository" in template
     }
 
     return f"{base_url}?{urlencode(params)}"

@@ -373,6 +373,5 @@ class TestGenerateIssueUrl:
         result = _generate_issue_url(repo_url)
 
         assert "github.com/ACNet-AI/awesome-spec-kits/issues/new" in result
-        assert "template=register.yml" in result
+        assert "template=register-speckit.yml" in result  # Correct template name
         assert "repository=https%3A%2F%2Fgithub.com%2Ftest%2Frepo" in result
-        assert "title=Register+Speckit" in result
