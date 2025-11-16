@@ -9,6 +9,125 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.2] - 2025-11-16
+
+### 🔧 Critical Bug Fix - SDD Specify Command Generation Logic
+
+**Fixes MetaSpec generating entity commands instead of workflow commands for speckits**
+
+This release addresses a fundamental design flaw in `/metaspec.sdd.specify` that caused it to generate entity operation commands (e.g., `/marketing.project`, `/marketing.campaign`) instead of workflow commands (e.g., `/marketingspec.discover`, `/marketingspec.strategy`) when creating new speckits.
+
+### Context
+
+**Issue discovered**: When using MetaSpec to generate a new speckit, the toolkit spec could incorrectly define entity operation commands (e.g., 22 entity commands), contradicting the design pattern used by both spec-kit and MetaSpec itself (which only use workflow commands).
+
+**Root cause**: The SDD specify template contained misleading prompts that suggested generating commands from domain entities, rather than from workflow phases.
+
+### Changed
+
+#### `/metaspec.sdd.specify` Command Template
+
+**Fix 1: Added "Determine Toolkit Type" Section** (NEW)
+- Introduces explicit distinction between:
+  - **Type A: Data-Access Toolkit** (Rare) - API clients with entity operations
+  - **Type B: Workflow-Guidance Toolkit** (Speckit Standard) - Speckits with workflow commands
+- Includes checkpoint to confirm Type B selection before proceeding
+- Provides clear examples of both patterns
+- Default: Type B (Workflow-Guidance) for speckits
+
+**Fix 2: Modified "Entities & Structures" Prompt**
+- Changed from: "Need commands to work with entities" ❌
+- Changed to: "Entities are specification structures, not data objects" ✅
+- Added explicit warning: "Do NOT generate entity operation commands"
+- Provides anti-pattern example:
+  ```
+  ❌ Wrong: Domain has Project, Campaign → Generate /marketing.project
+  ✅ Right: Workflow has Discover, Strategy → Generate /marketingspec.discover
+  ```
+
+**Fix 3: Strengthened "Workflows & Phases" Guidance**
+- Marked as "⭐ CRITICAL FOR TYPE B"
+- Added detailed workflow-to-command derivation examples using MetaSpec's own pattern
+- Added domain-specific speckit example showing correct workflow command derivation
+- Emphasized: "Derive workflow commands from phases, not entity commands from entities"
+
+**Fix 4: Added "Anti-Patterns to Avoid" Section** (NEW)
+- Lists 3 common mistakes:
+  1. Entity-Based Commands (for Type B toolkits)
+  2. Forgetting MetaSpec's Own Pattern
+  3. Missing Workflow Analysis
+- Includes before/after examples for each anti-pattern
+
+### Impact
+
+**Before this fix**:
+```
+/metaspec.sdd.specify
+  ↓
+AI sees: "Domain has 9 entities"
+  ↓
+AI generates: 22 entity operation commands ❌
+  ↓
+Result: /marketing.project, /marketing.campaign, etc.
+```
+
+**After this fix**:
+```
+/metaspec.sdd.specify
+  ↓
+AI confirms: Type B - Workflow-Guidance ✅
+  ↓
+AI analyzes: Workflow phases (not entities)
+  ↓
+AI generates: 10 workflow commands ✅
+  ↓
+Result: /marketingspec.discover, /marketingspec.strategy, etc.
+```
+
+### Migration Guide
+
+**For existing speckits generated with older MetaSpec**:
+
+If your toolkit spec contains entity operation commands instead of workflow commands:
+
+1. **Check your current commands**:
+   ```bash
+   cat specs/toolkit/001-*/spec.md | grep "Component 4"
+   ```
+
+2. **If you see entity commands** (e.g., `/domain.entity`):
+   - ❌ This is the old, incorrect pattern
+
+3. **Regenerate toolkit spec**:
+   ```bash
+   # Backup current spec
+   mv specs/toolkit/001-*/ specs/toolkit/001-*.backup/
+   
+   # Regenerate with fixed command
+   /metaspec.sdd.specify
+   
+   # Verify you now have workflow commands
+   cat specs/toolkit/001-*/spec.md | grep "Component 4"
+   ```
+
+4. **Expected result**: Workflow commands (e.g., `/domainspec.discover`)
+
+**No action needed if**:
+- Your toolkit already uses workflow commands
+- Your toolkit was hand-crafted (not auto-generated)
+
+### References
+
+- **Fix Proposal**: `docs/internal/sdd-specify-fix-proposal.md`
+- **Pattern Source**: MetaSpec's own command structure (dogfooding)
+- **Precedent**: spec-kit uses only workflow commands
+
+### Why This Matters
+
+This fix ensures MetaSpec's SDD workflow correctly generates workflow-guidance toolkits (Type B) by default, aligning with its own design pattern and the broader speckit ecosystem. Without this fix, generated speckits would contradict the core philosophy of spec-driven development.
+
+---
+
 ## [0.7.1] - 2025-11-15
 
 ### ✨ Quality Gates Enhancement - Workflow Validation
@@ -48,7 +167,7 @@ v0.7.0 introduced Workflow Completeness principle. v0.7.1 adds automated validat
 
 **Location**: `/metaspec.sds.analyze` command template
 
-**Why it matters**: Prevents "high-score but no workflow" problem discovered in marketing-spec-kit
+**Why it matters**: Prevents "high-score but no workflow" problem discovered in real-world usage
 
 ### Changed
 
@@ -92,7 +211,7 @@ Specification without workflow → ❌ CRITICAL in analyze
 
 ### Rationale
 
-**Feedback-driven improvement**: marketing-spec-kit passed all quality checks (98/100) but lacked workflow definition. v0.7.1 ensures this can't happen again.
+**Feedback-driven improvement**: A real-world speckit passed all quality checks (98/100) but lacked workflow definition. v0.7.1 ensures this can't happen again.
 
 **Three-layer enforcement**:
 1. **v0.7.0**: Constitution requires workflows (principle)
@@ -101,7 +220,6 @@ Specification without workflow → ❌ CRITICAL in analyze
 
 ### References
 
-- **Feedback Source**: `/Users/guyue/marketing-spec-kit/docs/internal/metaspec-feedback.md`
 - **Related Version**: v0.7.0 (introduced Workflow Completeness principle)
 - **Philosophy**: Enforcement through automated quality gates
 
@@ -210,7 +328,7 @@ SDS Workflow:
 
 ### 💡 Rationale
 
-**Feedback Source**: Real-world development of `marketing-spec-kit`
+**Feedback Source**: Real-world speckit development
 - Followed complete SDS + SDD workflow
 - All quality checks passed (50/50, 98/100)
 - Final result: 13 isolated commands without clear workflow
@@ -236,7 +354,6 @@ SDS Workflow:
 
 ### 📚 References
 
-- **Feedback Document**: `/Users/guyue/marketing-spec-kit/docs/internal/metaspec-feedback.md`
 - **Related Issue**: Design gap identified through real-world usage
 - **Philosophy**: Workflow Systems vs Tool Boxes
 
@@ -361,7 +478,7 @@ Fixed Issue title only showing `[Register]` prefix without speckit name.
 **Fix**:
 - Added `title` URL parameter back with speckit name
 - Title format: `[Register] {speckit-name}`
-- Example: `[Register] marketing-spec-kit`
+- Example: `[Register] my-speckit`
 
 **Before (v0.6.5)**:
 ```
@@ -421,7 +538,7 @@ https://github.com/.../issues/new?template=register-speckit.yml&repository=...
 ```
 
 **References**:
-- Bug Report: marketing-spec-kit registration failure
+- Issue: Speckit registration failure discovered in testing
 - Broken Example: awesome-spec-kits#6 (empty body)
 - Working Template: `.github/ISSUE_TEMPLATE/register-speckit.yml`
 

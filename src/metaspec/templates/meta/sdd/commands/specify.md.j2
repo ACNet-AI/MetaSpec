@@ -807,6 +807,92 @@ Option C: Composed (Recommended)
 
 **Overview**: Derive commands by analyzing your domain specification and extracting domain-specific terminology.
 
+---
+
+### 🚨 CRITICAL: Determine Toolkit Type First ⭐ NEW (v0.7.2+)
+
+**Before analyzing specification**, determine toolkit type to avoid generating wrong command patterns.
+
+#### Type A: Data-Access Toolkit (Rare)
+
+**Purpose**: Provide API access to existing data  
+**Examples**: REST API client, Database ORM  
+**Commands**: Entity operations (CRUD)  
+**Pattern**: `/{domain}.{entity}.{operation}`
+
+```bash
+# Example: API client
+/api.user.get
+/api.user.create
+/api.post.list
+```
+
+**When to use**:
+- ❌ Toolkit accesses existing data store
+- ❌ Provides CRUD operations on data
+- ❌ Not for specification creation
+
+#### Type B: Workflow-Guidance Toolkit (Speckit Standard) ⭐ RECOMMENDED
+
+**Purpose**: Guide users to create and manage specifications  
+**Examples**: spec-kit, MetaSpec, domain-specific speckits  
+**Commands**: Workflow actions  
+**Pattern**: `/{domain}spec.{action}` or `/{domain}.{action}`
+
+```bash
+# Example: spec-kit (real project - adapt to your domain)
+/speckit.constitution
+/speckit.specify
+/speckit.clarify
+/speckit.plan
+/speckit.tasks
+/speckit.implement
+/speckit.checklist
+/speckit.analyze
+```
+
+**When to use**:
+- ✅ Toolkit guides specification creation (THIS IS WHAT YOU WANT!)
+- ✅ Provides workflow commands
+- ✅ Follows spec-kit / MetaSpec pattern
+- ✅ Reference: MetaSpec itself uses this pattern
+
+#### How to Choose?
+
+**Ask yourself**:
+
+Q: Is this toolkit helping users **create specifications**?  
+✅ YES → **Type B: Workflow-Guidance** (Use workflow commands)  
+❌ NO → Continue to next question
+
+Q: Is this toolkit providing **API access** to existing data?  
+✅ YES → **Type A: Data-Access** (Use entity operations)  
+❌ NO → Type B is correct
+
+**Default for Speckits**: ✅ **Type B: Workflow-Guidance**
+
+**🎯 Key Insight**: 
+- Domain spec's **entities** = specification structure (WHAT to specify)
+- Toolkit's **commands** = workflow actions (HOW to create specs)
+- **NOT**: Entity CRUD operations
+
+---
+
+**CHECKPOINT** ⚠️
+
+**Before proceeding to STEP 1, confirm toolkit type**:
+
+- [ ] I have determined this is Type B: Workflow-Guidance toolkit
+- [ ] I understand domain entities are specification structures, not data objects
+- [ ] I will derive workflow commands, not entity operations
+- [ ] I have reviewed MetaSpec's own command structure as reference
+
+**If you selected Type A**: This is rare for speckits. Double-check your decision.
+
+**If you selected Type B**: ✅ Continue to STEP 1 (most common for speckits)
+
+---
+
 **STEP 1: Analyze Domain Specification**
 
 **Before defining Slash Commands**, analyze the SDS domain specification in `specs/domain/`.
@@ -818,32 +904,84 @@ Option C: Composed (Recommended)
    - [ ] Will AI need to reference these rules repeatedly?
    - **If YES** → Need commands to access specification knowledge
 
-2. **Entities & Structures**
+2. **Specification Structure** (For Reference Only)
    - [ ] Does the specification define multiple entity types?
    - [ ] Do entities have specific structures (schemas, fields, validation)?
-   - **If YES** → Need commands to work with entities
+   - **Purpose**: Understand specification complexity
+   - **⚠️ CRITICAL - For Type B (Workflow-Guidance) Toolkits**:
+     - Entities are **specification structures**, not data objects
+     - ❌ Do NOT generate entity operation commands
+     - ✅ Instead, generate workflow commands that guide users to create these entities
+   - **Example**:
+     - Domain spec defines: Project, Campaign, Channel entities
+     - ❌ Wrong: Generate `/domain.project`, `/domain.campaign` commands (entity operations)
+     - ✅ Right: Generate `/domainspec.constitution`, `/domainspec.specify` commands (workflow actions, adapted from spec-kit pattern)
 
 3. **Validation Rules**
    - [ ] Does the specification specify validation constraints?
    - [ ] Must outputs be validated against schemas?
    - **If YES** → Need validation commands
 
-4. **Workflows & Phases**
+4. **Workflows & Phases** ⭐ CRITICAL FOR TYPE B
+
+   **For Type B (Workflow-Guidance) toolkits - THIS IS WHAT YOU WANT!**
+   
    - [ ] Does the specification define a multi-phase workflow?
    - [ ] Are there specific actions in each phase?
-   - **If YES** → Analyze workflow type:
-     - **Type A (State Machine)**: Abstract states (draft → review → approved)
-       → Use navigation commands: `get-workflow`, `next-phase`
-     - **Type B (Action Sequence)**: Concrete actions OR lifecycle phases
-       → Each action/phase becomes a command
+   - **If YES** → ✅ **Derive workflow commands from these phases**
    
-   **Example - MetaSpec SDD Workflow** (Real Implementation - Dogfooding):
-   - Development workflow: constitution → specify → clarify → plan → tasks → implement → checklist → analyze
-   - Derived commands: `sdd.constitution`, `sdd.specify`, `sdd.clarify`, `sdd.plan`, `sdd.tasks`, `sdd.implement`, `sdd.checklist`, `sdd.analyze`
-   - Pattern: Workflow action → namespaced command (simple verbs with namespace prefix)
-   - Note: This is how MetaSpec itself was built - we eat our own dog food
+   **How to Derive** (MetaSpec's Own Pattern - Dogfooding):
    
-   **Key principle**: If specification phases are **verb-able actions** (can be turned into verbs), derive commands from them directly
+   ```
+   Specification Workflow Phase → Command Verb → Command Name
+   ────────────────────────────────────────────────────────────
+   CONSTITUTION principles      → constitution  → /metaspec.sds.constitution
+   SPECIFY requirements         → specify       → /metaspec.sds.specify
+   CLARIFY ambiguities          → clarify       → /metaspec.sds.clarify
+   PLAN architecture            → plan          → /metaspec.sds.plan
+   CREATE tasks                 → tasks         → /metaspec.sds.tasks
+   IMPLEMENT solution           → implement     → /metaspec.sds.implement
+   CHECK quality                → checklist     → /metaspec.sds.checklist
+   ANALYZE results              → analyze       → /metaspec.sds.analyze
+   ```
+   
+   **Key Principle**: If specification phases are **verb-able actions**, derive commands directly.
+   
+   **Example - spec-kit Pattern** (Adapt to Your Domain):
+   ```
+   Specification Workflow Phase → Command Verb → Command Name
+   ────────────────────────────────────────────────────────────
+   CONSTITUTION principles      → constitution  → /speckit.constitution
+   SPECIFY requirements         → specify       → /speckit.specify
+   CLARIFY ambiguities          → clarify       → /speckit.clarify
+   PLAN architecture            → plan          → /speckit.plan
+   CREATE tasks                 → tasks         → /speckit.tasks
+   IMPLEMENT solution           → implement     → /speckit.implement
+   CHECK quality                → checklist     → /speckit.checklist
+   ANALYZE results              → analyze       → /speckit.analyze
+   ```
+   
+   **🎯 Adaptation Principle**: Use spec-kit's 8-phase workflow as a base, then customize:
+   - Keep core phases (constitution, specify, plan, implement)
+   - Adapt command names to your domain terminology
+   - Add/remove phases based on domain requirements
+   - Example: Marketing domain might add "research" or "campaign" phases
+   
+   **⚠️ Anti-Pattern to Avoid**:
+   ```
+   ❌ WRONG: Deriving from domain entities
+   Domain has: Project, Campaign, Channel
+   → Generating: /domain.project, /domain.campaign, /domain.channel
+   This creates a data-access tool, not a workflow-guidance tool!
+   
+   ✅ RIGHT: Deriving from workflow phases (adapt spec-kit pattern)
+   Base workflow: constitution → specify → clarify → plan → tasks → implement
+   Adapt to domain: Add domain-specific phases as needed
+   → Generating: /domainspec.constitution, /domainspec.specify, /domainspec.clarify, etc.
+   This creates a workflow-guidance tool (Speckit standard)!
+   ```
+   
+   **Note**: MetaSpec itself was built this way - we eat our own dog food.
 
 5. **Examples & Templates**
    - [ ] Does the specification include examples or templates?
@@ -886,6 +1024,69 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 - ❌ Skipping this analysis → Generic commands without domain context
 - ✅ Complete analysis → Simple, memorable commands derived from specification phases
 - 💡 Use simple verbs; add namespace if needed; context goes in help text
+
+---
+
+### ⚠️ ANTI-PATTERNS TO AVOID ⭐ NEW (v0.7.2+)
+
+**Before proceeding to command naming**, review these common mistakes:
+
+#### Anti-Pattern 1: Entity-Based Commands (For Type B Toolkits)
+
+**❌ WRONG**:
+```bash
+# Deriving commands from domain entities
+Domain spec defines: Project, Product, Plan, Campaign, Channel
+→ Commands: /domain.project, /domain.product, /domain.plan
+```
+
+**Why wrong**: This creates a "data-access" tool, not a "workflow-guidance" tool.
+
+**✅ RIGHT**:
+```bash
+# Deriving commands from workflow phases (adapt spec-kit pattern)
+Base pattern: constitution → specify → clarify → plan → tasks → implement
+Your domain workflow: (analyze domain workflow phases)
+→ Commands: /domainspec.constitution, /domainspec.specify, /domainspec.clarify, etc.
+(Customize phase names based on domain terminology)
+```
+
+**Key difference**:
+- Entity commands = Access/manipulate data objects
+- Workflow commands = Guide users through specification creation
+
+#### Anti-Pattern 2: Forgetting MetaSpec's Own Pattern
+
+**MetaSpec itself uses workflow commands**:
+- ✅ `/metaspec.sds.specify` (workflow action)
+- ❌ NOT `/metaspec.specification.create` (entity operation)
+
+**Your toolkit should follow the same pattern**.
+
+#### Anti-Pattern 3: Missing Workflow Analysis
+
+**If you skipped** the "Workflows & Phases" analysis:
+- ⚠️ STOP and go back
+- Workflow is the CORE of Type B toolkits
+- Without workflow analysis, you'll default to entity commands
+
+---
+
+**🎯 Golden Rule for Type B Toolkits**:
+
+1. **Start with spec-kit pattern** (proven workflow: 8 phases)
+2. **Adapt to your domain** (rename phases, add domain-specific steps)
+3. **Never derive from entities** (entities are specification structures, not commands)
+4. **Always derive from workflow** (phases/actions → commands)
+
+**Example Adaptation**:
+```
+spec-kit base:      /speckit.constitution → specify → clarify → plan → tasks → implement → checklist → analyze
+Marketing domain:   /marketspec.constitution → discover → strategy → design → content → execute → measure → optimize
+API Testing domain: /apispec.constitution → define → schema → test → mock → validate → document → deploy
+```
+
+**Key insight**: spec-kit's workflow is a template, not a requirement. Customize freely!
 
 ---
 
