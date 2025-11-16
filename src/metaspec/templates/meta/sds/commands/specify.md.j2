@@ -175,11 +175,30 @@ ls specs/domain/ | grep -E '^[0-9]{3}-' | sort -n
    - Example: "Tool name must be unique", "inputSchema must be valid JSON Schema"
 
 6. **Specification Operations**: What operations/interfaces does the specification define?
-   - Example: `initialize`, `tools/list`, `tools/call`
+   - **⚠️ IMPORTANT**: This is for API/Protocol specifications that define interfaces
+   - **Example (API Spec)**: `initialize`, `tools/list`, `tools/call` (MCP protocol operations)
+   - **Example (REST API)**: `GET /users`, `POST /orders` (HTTP endpoints)
+   - **⚠️ NOT for**: Toolkit commands like `/domain.entity` - those belong in SDD!
+   
+   **When to define Specification Operations**:
+   - ✅ Your domain IS an API/Protocol specification (MCP, REST API, GraphQL)
+   - ✅ You're defining interfaces that implementers must follow
+   - ✅ These are specification-level operations, not toolkit commands
+   
+   **When NOT to define**:
+   - ❌ Your domain is NOT an API specification (Marketing, E-commerce, CRM)
+   - ❌ You want to define toolkit commands (use `/metaspec.sdd.specify` instead)
+   - ❌ You're confused - if unsure, leave empty and define commands in SDD
+   
+   **Key distinction**:
+   - **Specification Operations** (SDS) = Interfaces the specification defines (e.g., API endpoints)
+   - **Toolkit Commands** (SDD) = Commands your toolkit provides (e.g., `/domainspec.discover`)
+   - These are completely different! Most domains don't need Specification Operations.
 
 **Important Notes**:
 - This is SDS (Spec-Driven Specification) - focus on specification definition only
 - Do NOT include implementation details (Parser, Validator, CLI)
+- Do NOT define toolkit commands here - use `/metaspec.sdd.specify` for that
 - For toolkit development, use `/metaspec.sdd.specify` instead
 
 **If user input is vague**, make informed guesses based on domain standards and document assumptions.
@@ -890,10 +909,12 @@ If this specification depends on other specifications, document in spec.md:
      * {Entity 2}
      * ...
    
-   - Operations: {count} operations defined
-     * {Operation 1}
+   - Specification Operations: {count} API/protocol operations defined
+     * {Operation 1} (e.g., API endpoint, protocol message)
      * {Operation 2}
      * ...
+     ⚠️ Note: Only for API/Protocol specs (MCP, REST API). Most domains leave this empty.
+            Toolkit commands should be defined in SDD, not here!
    
    - Validation Rules: {count} rules specified
      * Entity validation: {count} rules

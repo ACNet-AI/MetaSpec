@@ -9,6 +9,145 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.3] - 2025-11-16
+
+### 📝 Documentation Improvement - SDS "Specification Operations" Clarification
+
+**Prevents confusion between Specification Operations and Toolkit Commands in domain specs**
+
+This release completes the command generation fix by clarifying the SDS (Spec-Driven Specification) side, preventing users from defining toolkit commands in domain specifications.
+
+### Context
+
+**Related to v0.7.2**: v0.7.2 fixed SDD (toolkit generation logic), but the root cause was in SDS where "Specification Operations" was being misused as "Toolkit Commands".
+
+**Discovery**: Real-world usage revealed that Domain Spec's "Specification Operations" section was being used to define toolkit commands (e.g., `/marketing.project`, `/marketing.campaign`), when it should only be used for API/Protocol interface definitions.
+
+### The Confusion
+
+#### Two Different "Operations" Were Being Mixed:
+
+**Type 1: Specification Operations** (SDS - Correct Usage) ✅
+```yaml
+# API/Protocol Specification
+Operations:
+  - initialize: Server startup (MCP protocol)
+  - GET /users: List users (REST API)
+  - tools/list: Enumerate tools (MCP operation)
+```
+- These are **interface definitions** that the specification defines
+- Implementers must follow these interfaces
+- Only for API/Protocol specifications
+
+**Type 2: Toolkit Commands** (Should be in SDD) ❌
+```yaml
+# Marketing Spec-Kit (Incorrect - was in Domain Spec)
+Operations:
+  - /marketing.project: Access project
+  - /marketing.campaign: Access campaign
+```
+- These are **toolkit commands** for operating data
+- Should be defined in Toolkit Spec (SDD), not Domain Spec (SDS)
+- Most domains don't need Specification Operations at all
+
+### Changed
+
+#### `/metaspec.sds.specify` Command Template
+
+**Added Clear Usage Guidance** (Line 177-196):
+- Explicit warning: "This is for API/Protocol specifications that define interfaces"
+- Examples: MCP protocol operations, REST API endpoints
+- Clear "When to use" vs "When NOT to use" guidance
+- Key distinction between Specification Operations (SDS) and Toolkit Commands (SDD)
+
+**Added Output Warnings** (Line 912-917):
+```markdown
+- Specification Operations: {count} API/protocol operations defined
+  ⚠️ Note: Only for API/Protocol specs (MCP, REST API). Most domains leave this empty.
+          Toolkit commands should be defined in SDD, not here!
+```
+
+### When to Define Specification Operations
+
+**✅ Use when**:
+- Your domain IS an API/Protocol specification (MCP, REST API, GraphQL, gRPC)
+- You're defining interfaces that implementers must follow
+- These are specification-level operations (WHAT interfaces exist)
+
+**❌ Don't use when**:
+- Your domain is NOT an API specification (Marketing, E-commerce, CRM, etc.)
+- You want to define toolkit commands (use `/metaspec.sdd.specify` instead)
+- You're unsure - if confused, leave empty and define commands in SDD
+
+**Key principle**: Most domains don't need Specification Operations. This is specifically for API/Protocol specifications.
+
+### Impact
+
+**Before this fix**:
+```
+User creates Marketing domain spec
+  ↓
+Defines "Operations": /marketing.project, /marketing.campaign...
+  ↓
+SDD inherits these as commands
+  ↓
+Generates wrong command type ❌
+```
+
+**After this fix**:
+```
+User creates Marketing domain spec
+  ↓
+Sees: "Only for API/Protocol specs, most domains leave empty"
+  ↓
+Leaves Operations empty
+  ↓
+SDD independently designs workflow commands ✅
+```
+
+### Migration Guide
+
+**For existing speckits with misused Specification Operations**:
+
+1. **Check your domain type**:
+   ```bash
+   # Is your domain an API/Protocol spec?
+   - MCP, REST API, GraphQL → Keep Specification Operations
+   - Marketing, E-commerce, CRM → Remove/leave empty
+   ```
+
+2. **If NOT an API spec, clean domain spec**:
+   ```bash
+   # Edit: specs/domain/001-{domain}-spec/spec.md
+   # Remove or set to empty:
+   operations: []
+   ```
+
+3. **Verify toolkit spec has workflow commands**:
+   ```bash
+   # specs/toolkit/001-{name}/spec.md should have:
+   Commands:
+     - /domainspec.constitution
+     - /domainspec.specify
+     - ...workflow commands (not entity commands)
+   ```
+
+### Why This Matters
+
+This fix completes the command generation problem by addressing both sides:
+- **v0.7.2**: Fixed SDD (toolkit generation logic) - prevents generating entity commands
+- **v0.7.3**: Fixed SDS (specification guidance) - prevents defining wrong operations
+
+Together, these ensure speckits follow the correct workflow-guidance pattern from specification to implementation.
+
+### References
+
+- **Fix Document**: `docs/internal/sds-operations-clarification-fix.md`
+- **Related Version**: v0.7.2 (fixed SDD side)
+- **Discovery Source**: Real-world speckit development feedback
+
+---
+
 ## [0.7.2] - 2025-11-16
 
 ### 🔧 Critical Bug Fix - SDD Specify Command Generation Logic
