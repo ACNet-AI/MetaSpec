@@ -7,7 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### 🔄 v0.8.0 - Workflow Completeness Enhancement
+---
+
+## [0.8.1] - 2025-11-17
+
+### 🐛 Bugfix - Version Number Consistency
+
+**Fix version number mismatch in v0.8.0 release**
+
+#### Issue
+v0.8.0 was uploaded to PyPI with inconsistent version numbers:
+- `pyproject.toml`: 0.8.0 ✅
+- `__init__.py` `__version__`: 0.7.3 ❌
+
+This caused `import metaspec; metaspec.__version__` to return `"0.7.3"` instead of `"0.8.0"`.
+
+#### Fix
+- Updated `__init__.py` to `__version__ = "0.8.1"`
+- All version references now consistent
+
+**Note**: v0.8.0 on PyPI should not be used. Please upgrade to v0.8.1.
+
+---
+
+## [0.8.0] - 2025-11-17 ⚠️ DEPRECATED
+
+**⚠️ WARNING**: This version has a bug where `__version__` returns `"0.7.3"`. Please use v0.8.1 instead.
+
+### 🔄 Workflow Completeness Enhancement
 
 **Date**: 2025-11-17  
 **Focus**: Clarify two types of workflows and eliminate project-specific examples
