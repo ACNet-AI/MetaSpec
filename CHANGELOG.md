@@ -81,6 +81,29 @@ Operations:
 
 **Key principle**: Most domains don't need Specification Operations. This is specifically for API/Protocol specifications.
 
+### ⚠️ Important Clarification
+
+**This fix is ONLY about "Specification Operations"**. Domain Specs still MUST include:
+
+✅ **Workflow Specification** (v0.7.0 requirement):
+```yaml
+user_workflows:
+  - name: Marketing Workflow
+    phases:
+      - Discover: Research market needs
+      - Strategy: Plan campaigns
+      - Design: Create content
+      - Execute: Launch campaigns
+      - Analyze: Measure results
+```
+
+This describes **how users use the specification**, not API interfaces or toolkit commands.
+
+**Summary**:
+- ✅ **Keep**: Workflow Specification (describes user workflow)
+- ⚠️ **Conditional**: Specification Operations (only for API specs)
+- ❌ **Remove**: Toolkit Commands (belongs in SDD)
+
 ### Impact
 
 **Before this fix**:

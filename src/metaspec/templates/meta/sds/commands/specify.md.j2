@@ -193,12 +193,19 @@ ls specs/domain/ | grep -E '^[0-9]{3}-' | sort -n
    **Key distinction**:
    - **Specification Operations** (SDS) = Interfaces the specification defines (e.g., API endpoints)
    - **Toolkit Commands** (SDD) = Commands your toolkit provides (e.g., `/domainspec.discover`)
+   - **Workflow Specification** (SDS) = How users use the specification (REQUIRED, see v0.7.0)
    - These are completely different! Most domains don't need Specification Operations.
+   
+   **⚠️ Don't confuse**:
+   - Specification Operations ≠ Workflow Specification
+   - Even if you leave Operations empty, you MUST still define Workflow Specification
+   - Workflow describes user journey, Operations describe API interfaces
 
 **Important Notes**:
 - This is SDS (Spec-Driven Specification) - focus on specification definition only
 - Do NOT include implementation details (Parser, Validator, CLI)
 - Do NOT define toolkit commands here - use `/metaspec.sdd.specify` for that
+- You MUST define Workflow Specification (see v0.7.0 Workflow Completeness principle)
 - For toolkit development, use `/metaspec.sdd.specify` instead
 
 **If user input is vague**, make informed guesses based on domain standards and document assumptions.
