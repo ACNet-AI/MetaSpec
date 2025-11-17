@@ -162,9 +162,11 @@ references: {{ references | default([]) | tojson }}
 
 {% endif %}
 {% if user_workflows %}
-## Workflow Specification
+## Specification Usage Workflow (Type 2) ⭐ UPDATED v0.8.0
 
-> **Purpose**: Define complete user workflows from start to finish, showing how operations are used in sequence to accomplish domain goals.
+> **Purpose**: Define the end-to-end process of creating and using this specification. Each step maps to a slash command in your toolkit.
+>
+> **Note**: This is NOT business execution workflow - this describes HOW users create/use/validate the specification itself.
 
 {% for workflow in user_workflows %}
 ### Workflow: {{ workflow.name }}
@@ -200,9 +202,16 @@ references: {{ references | default([]) | tojson }}
 {% endfor %}
 
 **Design Rationale**: 
-- Operations are not isolated tools - they serve specific phases in user workflows
-- Each phase has clear entry/exit criteria to guide users
-- Workflow examples demonstrate end-to-end usage patterns
+- This workflow defines HOW users create/use/validate this specification
+- Each phase maps 1:1 to a slash command in the toolkit (e.g., `/domainspec.{action}`)
+- 8-12 steps typical for complete specification creation workflow
+- NOT business execution - this is specification creation guidance
+
+**Key Distinction** (MetaSpec example):
+- **Type 2 (this)**: How to create specification  
+  Example: SDS workflow (Constitution → Specify → Clarify → Plan → ... → Implement)
+- **Type 1 (below)**: Entity lifecycle during business execution  
+  Example: Specification entity (draft → review → approved → deprecated)
 
 {% endif %}
 ## Core Entities
@@ -251,7 +260,11 @@ references: {{ references | default([]) | tojson }}
 {% endif %}
 
 {% if workflows %}
-## Workflow
+## Entity State Machines (Type 1) ⭐ UPDATED v0.8.0
+
+> **Purpose**: Define lifecycle and transitions for individual entities with status fields.
+>
+> **Note**: This describes business object lifecycles (e.g., Order status), NOT specification creation workflow.
 
 {% for workflow in workflows %}
 ### State Machine: {{ workflow.entity }}

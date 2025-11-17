@@ -7,6 +7,197 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🔄 v0.8.0 - Workflow Completeness Enhancement
+
+**Date**: 2025-11-17  
+**Focus**: Clarify two types of workflows and eliminate project-specific examples
+
+#### Context
+
+Based on community feedback, MetaSpec's workflow guidance was incomplete:
+- ✅ Type 1 (Entity State Machines) was well-documented
+- ❌ Type 2 (Specification Usage Workflow) lacked clear guidance
+- ❌ Examples used project-specific terminology (SDM, marketing)
+
+This caused confusion: developers didn't know what granularity of workflow to define, or where Type 2 workflows should be documented.
+
+#### Changes
+
+##### 1. Clarified Two Types of Workflows
+
+**Added clear distinction throughout all documentation**:
+
+**Type 1: Entity State Machines**
+- Purpose: Entity lifecycle during business execution
+- Example: Order (pending → confirmed → shipped → delivered)
+- Used by: Business logic, domain operations
+- Defines: Status field transitions, business rules
+- Optional: Only for stateful entities
+
+**Type 2: Specification Usage Workflow** ⭐ NEW
+- Purpose: End-to-end specification creation process
+- Example: SDS Workflow (Constitution → Specify → Clarify → ... → Implement)
+- Used by: Users creating specifications, AI agents
+- Defines: Action steps, slash commands, quality gates
+- **Required**: For all Speckits
+
+##### 2. Updated All Examples to Use MetaSpec Itself
+
+**Before** (v0.7.x):
+```yaml
+# Used project-specific examples
+SDM Workflow: Constitution → Discover → Strategy → Create
+Marketing Operations: /marketing.project, /marketing.campaign
+```
+
+**After** (v0.8.0):
+```yaml
+# Uses MetaSpec's own workflows
+SDS Workflow: Constitution → Specify → Clarify → Plan → ... → Implement
+Specification Entity: draft → review → approved → deprecated
+```
+
+**Rationale**: MetaSpec should be self-demonstrating. Every example now uses MetaSpec's own SDS/SDD workflows, making it universally applicable without project-specific bias.
+
+##### 3. Updated Constitution (Part II: Workflow Completeness)
+
+**Added to `memory/constitution.md`**:
+- Restructured into three parts (Part I, II, III)
+- **Part II, Principle 7: Workflow Completeness**
+  - Defines both workflow types clearly
+  - Specifies Type 2 as REQUIRED for all speckits
+  - Provides MetaSpec's own workflow as example
+  - Explains the rationale (pre-v0.7.0 vs post-v0.7.0)
+
+##### 4. Enhanced `/metaspec.sds.specify` Command
+
+**File**: `src/metaspec/templates/meta/sds/commands/specify.md.j2`
+
+**Changes**:
+- Lines 464-568: Replaced SDM example with complete MetaSpec SDS Workflow (8 steps)
+- Lines 439-445: Updated workflow type examples (SDS, SDD, SD-X instead of SDM)
+- Lines 624-638: Updated comparison example using MetaSpec entities
+
+**Example improvement**:
+```markdown
+# Before
+Workflow: Spec-Driven Marketing (SDM)
+Step 1: Constitution → Define brand principles
+Step 2: Discover → Research market needs
+...
+
+# After
+Workflow: SDS (Spec-Driven Specification)
+Step 1: Constitution → Establish specification design principles
+Step 2: Specify → Create initial specification document
+Step 3: Clarify → Resolve underspecified areas
+...
+Step 8: Implement → Write sub-specification documents
+```
+
+##### 5. Enhanced `/metaspec.sdd.specify` Command
+
+**File**: `src/metaspec/templates/meta/sdd/commands/specify.md.j2`
+
+**Changes**:
+- Lines 929-947: Added explicit guidance to check Domain Spec for Specification Usage Workflow
+- Added key question: "What is the recommended workflow for users to create specifications using these entities?"
+- Emphasized: If workflow not in Domain Spec → go back and define it first
+
+**New guidance**:
+```markdown
+**First, check your Domain Specification**:
+- [ ] Does it have a "Specification Usage Workflow" section?
+- [ ] Does this workflow define the end-to-end process?
+- [ ] Are workflow steps defined at action level (8-12 steps)?
+- **If YES** → Use this workflow directly to derive commands
+- **If NO** → Go back to Domain Spec and define it first
+```
+
+##### 6. Updated Domain Spec Template
+
+**File**: `src/metaspec/templates/meta/templates/domain-spec-template.md.j2`
+
+**Changes**:
+- Lines 210-214: Updated "Key Distinction" to use MetaSpec examples
+  - Type 2: SDS workflow (Constitution → Specify → Clarify → ...)
+  - Type 1: Specification entity (draft → review → approved → deprecated)
+
+##### 7. Enhanced AGENTS.md
+
+**File**: `AGENTS.md`
+
+**Changes**:
+- Lines 127-169: Added new section "Two Types of Workflows" with clear comparison
+- Lines 247-284: Updated examples to use MetaSpec SDS/SDD workflows
+- Lines 290-304: Enhanced checklist to distinguish Type 1 vs Type 2 requirements
+
+**Structure**:
+```markdown
+### Two Types of Workflows ⭐ UPDATED v0.8.0
+
+#### Type 1: Entity State Machines (Business Execution)
+[Clear definition and example]
+
+#### Type 2: Specification Usage Workflow (Specification Creation) ⭐ NEW
+[Clear definition and example]
+
+**Key Distinction**: ...
+**Most speckits need BOTH**: ...
+```
+
+#### Impact
+
+**For Speckit Developers**:
+- ✅ Clear understanding of two workflow types
+- ✅ Know where to define each type (Domain Spec)
+- ✅ Can directly map Type 2 workflow to slash commands
+- ✅ Universal examples (MetaSpec) applicable to any domain
+
+**For AI Agents**:
+- ✅ Consistent examples across all documentation
+- ✅ Clear Type 2 workflow → command derivation pattern
+- ✅ No confusion from project-specific terminology
+
+**For MetaSpec Itself**:
+- ✅ Self-demonstrating: Uses own workflows as examples
+- ✅ No maintenance burden of keeping project-specific examples updated
+- ✅ Dogfooding: MetaSpec practices what it preaches
+
+#### Files Changed
+
+1. `src/metaspec/templates/meta/sds/commands/specify.md.j2` (+104 lines)
+2. `src/metaspec/templates/meta/sdd/commands/specify.md.j2` (+17 lines)
+3. `src/metaspec/templates/meta/templates/domain-spec-template.md.j2` (+3 lines)
+4. `src/metaspec/templates/meta/sds/commands/constitution.md.j2` (+47 lines) ⭐ **KEY FILE**
+5. `memory/constitution.md` (+184 lines, restructured)
+6. `AGENTS.md` (+60 lines, restructured)
+
+**⚠️ Note**: File #4 (`constitution.md.j2` command template) is the most critical update, as it defines Part II principles for all generated speckits.
+
+#### Enforcement
+
+The Workflow Completeness principle (Part II, Principle 7) ensures:
+- `/metaspec.sds.constitution` includes workflow requirements
+- `/metaspec.sds.specify` generates both workflow types
+- `/metaspec.sds.checklist` (future) validates workflow completeness
+- `/metaspec.sds.analyze` (future) scores workflow quality
+
+#### Migration Guide
+
+**For existing speckits**:
+1. Review Domain Spec: Does it have "Specification Usage Workflow"?
+2. If NO: Run `/metaspec.sds.specify` again with Type 2 workflow guidance
+3. Define 8-12 action steps (Constitution → Specify → ... → Implement pattern)
+4. Map each step to a slash command
+5. Update Toolkit Spec to reference Domain Spec workflow
+
+**For new speckits**:
+- Start with MetaSpec's SDS workflow as template
+- Adapt to your domain terminology
+- Keep core phases (constitution, specify, plan, implement)
+- Add/remove phases based on domain requirements
+
 ---
 
 ## [0.7.3] - 2025-11-16

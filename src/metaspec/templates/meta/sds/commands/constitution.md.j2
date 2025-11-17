@@ -89,15 +89,54 @@ Based on user input and domain understanding, update these **standard specificat
 
 **Rationale**: Domain-faithful specifications are easier to adopt and understand.
 
-#### **VII. Workflow Completeness**
-- All specifications define complete user workflows from start to finish
-- Distinct phases/stages of the user journey are clearly identified
-- Operation ordering and dependencies are documented
-- Decision points and branching logic are specified
-- End-to-end workflow examples are provided
-- Operations are mapped to specific workflow phases
+#### **VII. Workflow Completeness** ⭐ UPDATED v0.8.0
 
-**Rationale**: Users need guidance on how to use operations in sequence. Isolated operations are less valuable than integrated workflows. Workflow definition enables better AI assistance and automation.
+**Two Types of Workflows** (both may be needed):
+
+**Type 1: Entity State Machines** (Optional - for stateful entities)
+- Define entity lifecycle during business execution
+- Example: Order (pending → confirmed → shipped → delivered)
+- Document allowed/forbidden transitions
+- Specify preconditions and postconditions
+- Only include if domain has stateful entities
+
+**Type 2: Specification Usage Workflow** (Required - for all Speckits)
+- Define end-to-end specification creation process
+- Example: SDS Workflow (Constitution → Specify → Clarify → Plan → ... → Implement)
+- 8-12 action steps typical
+- Each step maps to a slash command (e.g., `/domainspec.action`)
+- Include quality gates and validation checkpoints
+- **REQUIRED for all Speckits**
+
+**Rules**:
+- Type 2 workflow is REQUIRED for all speckits
+- Each workflow step has clear goal, inputs, outputs
+- Steps are sequential with dependencies
+- Each step maps 1:1 to a command
+- No "orphan" operations without workflow context
+- End-to-end examples demonstrate complete workflow
+
+**Rationale**: 
+- Pre-v0.7.0: Users received "13 commands" without knowing sequence
+- Post-v0.7.0: Workflow-first design provides clear user journey
+- Type 2 is about HOW to use the speckit (specification creation)
+- Type 1 is about WHAT entities do (business execution)
+
+**Example Comparison**:
+```yaml
+# Type 1 (Entity State Machine) - Business execution
+Specification Entity:
+  states: [draft, review, approved, deprecated]
+  transitions: draft → review → approved
+
+# Type 2 (Specification Usage Workflow) - Specification creation
+SDS Workflow:
+  Step 1: Constitution → Define principles
+  Step 2: Specify → Create spec document
+  Step 3: Clarify → Resolve ambiguities
+  ...
+  Step 8: Implement → Write sub-specifications
+```
 
 **Example workflow structure**:
 ```

@@ -124,6 +124,50 @@ memory/constitution.md
 
 **CRITICAL NEW PRINCIPLE** (v0.7.0+): MetaSpec now requires **workflow-first design** for all domain specifications.
 
+### Two Types of Workflows ⭐ UPDATED v0.8.0
+
+**IMPORTANT**: There are TWO types of workflows in specifications. Understanding the distinction is critical.
+
+#### Type 1: Entity State Machines (Business Execution)
+
+**What**: Lifecycle of individual entities during business operations  
+**Example**: Order (pending → confirmed → shipped → delivered)  
+**Used by**: Business logic, domain operations  
+**Defines**: Status field transitions, business rules  
+
+```yaml
+Order Entity:
+  status: [pending, confirmed, shipped, delivered]
+  transitions:
+    - pending → confirmed (when: payment verified)
+    - confirmed → shipped (when: items packed)
+    - shipped → delivered (when: customer receives)
+```
+
+#### Type 2: Specification Usage Workflow (Specification Creation) ⭐ NEW
+
+**What**: End-to-end process of creating and using the specification itself  
+**Example**: SDS Workflow (Constitution → Specify → Clarify → ... → Implement)  
+**Used by**: Users creating specifications, AI agents  
+**Defines**: Action steps, slash commands, quality gates  
+
+```yaml
+SDS Workflow:
+  Step 1: Constitution → /metaspec.sds.constitution
+  Step 2: Specify → /metaspec.sds.specify
+  Step 3: Clarify → /metaspec.sds.clarify
+  ...
+  Step 8: Implement → /metaspec.sds.implement
+```
+
+**Key Distinction**:
+- **Type 1**: How entities change during business execution (WHAT happens)
+- **Type 2**: How to create/use/validate the specification (HOW to use speckit)
+
+**Most speckits need BOTH**:
+- Type 1: Define entity lifecycles (if domain has stateful entities)
+- Type 2: **Required for all Speckits** - Define specification creation workflow
+
 ### Why Workflow Matters
 
 ❌ **Don't build**: "Tool箱" (collection of isolated operations)  
@@ -134,11 +178,12 @@ memory/constitution.md
 **Before v0.7.0**: Developers could create speckits that passed all quality checks but lacked clear user workflows. Users received "13 commands" without knowing which to use first, or how they relate.
 
 **After v0.7.0**: All domain specifications MUST define:
-1. **Workflow Phases** - Distinct stages in the user journey
+1. **Workflow Phases** - Distinct stages in the user journey (Type 2)
 2. **Phase Purposes** - Why each phase exists
 3. **Operation Mapping** - Which operations belong to which phase
 4. **Sequencing** - Entry/exit criteria, dependencies, ordering
 5. **End-to-End Examples** - Complete workflow demonstrations
+6. **Entity State Machines** - If domain has stateful entities (Type 1)
 
 ### MetaSpec as Example
 
@@ -199,38 +244,63 @@ The new **Part II Principle 7: Workflow Completeness** ensures:
 
 ### Examples
 
-**Good Workflow-Driven Design**:
+**Good Workflow-Driven Design** (Type 2: Specification Usage Workflow):
 ```
-Marketing Operations Workflow:
-  Phase 1: Strategic Planning
-    - Operations: /marketing.plan.create, /marketing.plan.validate
-    - Output: Approved marketing plan
+MetaSpec SDS Workflow:
+  Phase 1: Foundation
+    - Operations: /metaspec.sds.constitution
+    - Output: Specification design principles
   
-  Phase 2: Campaign Design
-    - Operations: /marketing.campaign.design, /marketing.campaign.get
-    - Output: Campaign specifications
+  Phase 2: Specification
+    - Operations: /metaspec.sds.specify, /metaspec.sds.clarify
+    - Output: Domain specification document
   
-  Phase 3: Content Creation
-    - Operations: /marketing.generate.post, /marketing.generate.article
-    - Output: Ready-to-publish content
+  Phase 3: Quality Gates
+    - Operations: /metaspec.sds.checklist, /metaspec.sds.analyze
+    - Output: Quality validation reports
+  
+  Phase 4: Implementation (if complex)
+    - Operations: /metaspec.sds.plan, /metaspec.sds.tasks, /metaspec.sds.implement
+    - Output: Sub-specifications
+```
+
+**Good Entity State Machine** (Type 1: Business Execution):
+```
+Specification Entity (MetaSpec itself):
+  States: draft → review → approved → deprecated
+  Transitions:
+    - draft → review (when: ready for feedback)
+    - review → approved (when: quality checks pass)
+    - approved → deprecated (when: replaced by new version)
 ```
 
 **Bad (Pre-v0.7.0) Design**:
 ```
-Marketing Operations:
-  - /marketing.project (what's this for?)
-  - /marketing.campaign (when to use?)
-  - /marketing.generate.post (how does this relate to campaign?)
+Specification Operations (no workflow):
+  - /spec.create (what's this for?)
+  - /spec.validate (when to use?)
+  - /spec.analyze (how does this relate to create?)
   ❌ Users confused about sequence and relationships
 ```
 
 ### Your Checklist
 
 When helping users create speckits, verify:
-- [ ] Domain specification includes "Workflow Specification" section
-- [ ] All operations are mapped to workflow phases
-- [ ] Each phase has clear purpose, entry/exit criteria
+
+**Type 2: Specification Usage Workflow** (Required for all speckits):
+- [ ] Domain specification includes "Specification Usage Workflow" section
+- [ ] Workflow has 8-12 action steps (Constitution → Specify → ... → Implement)
+- [ ] Each step maps 1:1 to a slash command
+- [ ] Each step has clear goal, inputs, outputs, quality criteria
 - [ ] End-to-end workflow examples provided
+
+**Type 1: Entity State Machines** (If domain has stateful entities):
+- [ ] Domain specification includes "Entity State Machines" section
+- [ ] Each stateful entity has defined states and transitions
+- [ ] Forbidden transitions are documented
+- [ ] Validation rules for state changes defined
+
+**Constitution**:
 - [ ] Constitution Part II includes Workflow Completeness principle
 
 ---

@@ -328,15 +328,20 @@ entity_name:
 
 **Repeat for each entity**.
 
-#### **Workflow** (Optional but Recommended for Stateful Specifications)
+#### **Workflow** (CRITICAL - Two Types) ⭐ UPDATED v0.8.0
 
-Define state machines and transition rules for entities with lifecycle:
+**IMPORTANT**: There are TWO types of workflows in specifications. Most speckits need BOTH.
+
+---
+
+##### **Type 1: Entity State Machines** (For Stateful Entities)
+
+Define lifecycle and transitions for individual entities with status:
 
 **When to include**:
-- Specification involves state management (e.g., Order, Session, Device)
-- Entities have lifecycle or status changes
-- Operations have sequential dependencies
-- Need to define allowed/forbidden transitions
+- Entities have status/state fields (e.g., Order, Session, Device)
+- Business objects have lifecycle stages
+- State changes have rules and constraints
 
 **Template**:
 ```markdown
@@ -403,6 +408,234 @@ stateDiagram-v2
 - Document why certain transitions are forbidden
 - Use clear, business-meaningful state names
 - Consider using state diagrams for complex workflows
+
+---
+
+##### **Type 2: Specification Usage Workflow** (For Speckits) ⭐ NEW v0.8.0
+
+Define the end-to-end process of creating and using this specification:
+
+**When to include**:
+- ✅ Building a Speckit (workflow-guidance toolkit)
+- ✅ Specifications will be created by non-technical users via AI agents
+- ✅ Multiple steps needed from discovery to completion
+- ✅ **REQUIRED for all Speckits** (v0.7.0 Workflow Completeness)
+
+**Purpose**:
+- This workflow defines HOW users create/use/validate the specification
+- Each step will map 1:1 to a slash command in your toolkit
+- This is NOT business execution workflow (that's Type 1)
+
+**Granularity Guidance** (CRITICAL):
+- Define at **action step level** (8-12 steps typical)
+- Each step = one distinct user action
+- Include quality gates and validation checkpoints
+- Each step will become a `/domainspec.{action}` command
+
+**Template**:
+```markdown
+## Specification Usage Workflow
+
+### Workflow: {Workflow Name (e.g., SDS, SDD, SD-X)}
+
+**Goal**: {What users achieve by following this workflow}
+
+**Total Steps**: {Number, typically 8-12}
+
+**Workflow Type**: {e.g., Spec-Driven Specification, Spec-Driven Development}
+
+---
+
+#### Step {N}: {Action Name}
+
+- **Goal**: {What this step achieves}
+- **User Action**: {What the user does}
+- **Inputs Required**: {What's needed to start this step}
+- **Outputs Created**: {What's produced}
+- **Entities Involved**: {Which specification entities are created/modified}
+- **Quality Criteria**: {How to validate completion}
+- **Command Mapping**: `/domainspec.{action}`
+- **Typical Duration**: {Time estimate}
+
+[Repeat for each step]
+
+---
+
+**Example - MetaSpec's SDS Workflow** (Best Practice):
+
+```markdown
+## Specification Usage Workflow
+
+### Workflow: SDS (Spec-Driven Specification)
+
+**Goal**: Define a complete domain specification from scratch
+
+**Total Steps**: 8
+
+**Workflow Type**: Spec-Driven Specification
+
+---
+
+#### Step 1: Constitution
+
+- **Goal**: Establish specification design principles
+- **User Action**: Define Part II of constitution (Specification Design Principles)
+- **Inputs Required**: Domain research, existing standards
+- **Outputs Created**: constitution.md (Part II updated)
+- **Entities Involved**: N/A (meta-level)
+- **Quality Criteria**: 5-7 principles defined, clear rationale
+- **Command Mapping**: `/metaspec.sds.constitution`
+- **Typical Duration**: 15-20 minutes
+
+#### Step 2: Specify
+
+- **Goal**: Create initial specification document
+- **User Action**: Define entities, operations, validation rules
+- **Inputs Required**: Constitution, domain knowledge
+- **Outputs Created**: specs/domain/001-{name}/spec.md
+- **Entities Involved**: All specification entities
+- **Quality Criteria**: All core entities defined, operations listed
+- **Command Mapping**: `/metaspec.sds.specify`
+- **Typical Duration**: 30-60 minutes
+
+#### Step 3: Clarify
+
+- **Goal**: Resolve underspecified areas
+- **User Action**: Answer questions about ambiguous sections
+- **Inputs Required**: Initial specification
+- **Outputs Created**: checklists/clarifications.md
+- **Entities Involved**: Entities with ambiguities
+- **Quality Criteria**: All flagged ambiguities resolved
+- **Command Mapping**: `/metaspec.sds.clarify`
+- **Typical Duration**: 15-30 minutes
+
+#### Step 4: Plan
+
+- **Goal**: Plan sub-specification architecture (if complex)
+- **User Action**: Decide if splitting needed, define structure
+- **Inputs Required**: Clarified specification
+- **Outputs Created**: plan.md
+- **Entities Involved**: Parent/child relationships
+- **Quality Criteria**: Clear split rationale, sub-spec boundaries
+- **Command Mapping**: `/metaspec.sds.plan`
+- **Typical Duration**: 20-30 minutes
+
+#### Step 5: Checklist
+
+- **Goal**: Validate specification quality
+- **User Action**: Review generated quality checklist
+- **Inputs Required**: Completed specification
+- **Outputs Created**: checklists/comprehensive-quality.md
+- **Entities Involved**: All entities (validation)
+- **Quality Criteria**: >80% checklist items passing
+- **Command Mapping**: `/metaspec.sds.checklist`
+- **Typical Duration**: 10-15 minutes
+
+#### Step 6: Tasks
+
+- **Goal**: Break down specification work
+- **User Action**: Generate task list for sub-specifications
+- **Inputs Required**: Plan (if complex path)
+- **Outputs Created**: tasks.md
+- **Entities Involved**: Sub-specifications
+- **Quality Criteria**: All sub-specs have clear tasks
+- **Command Mapping**: `/metaspec.sds.tasks`
+- **Typical Duration**: 15-20 minutes
+
+#### Step 7: Analyze
+
+- **Goal**: Check cross-artifact consistency
+- **User Action**: Review consistency report
+- **Inputs Required**: All specification artifacts
+- **Outputs Created**: analysis/consistency-report.md
+- **Entities Involved**: All entities (cross-check)
+- **Quality Criteria**: No critical inconsistencies
+- **Command Mapping**: `/metaspec.sds.analyze`
+- **Typical Duration**: 10-15 minutes
+
+#### Step 8: Implement
+
+- **Goal**: Write sub-specification documents
+- **User Action**: Execute tasks to create sub-specs
+- **Inputs Required**: Tasks, plan
+- **Outputs Created**: specs/domain/00X-{name}/spec.md (multiple)
+- **Entities Involved**: Sub-specification entities
+- **Quality Criteria**: All tasks complete, sub-specs created
+- **Command Mapping**: `/metaspec.sds.implement`
+- **Typical Duration**: 60-120 minutes
+
+```
+\```
+
+**Key Characteristics**:
+- Each step is a user action (not system action)
+- Steps are sequential with dependencies
+- Each maps to one slash command
+- Quality criteria define "done"
+- Typical duration helps project planning
+
+**Common Patterns**:
+```
+Standard Speckit Workflow Pattern (adapt to your domain):
+
+Phase 1: Foundation
+  - Step 1: Constitution (establish principles)
+
+Phase 2: Discovery & Planning
+  - Step 2: Discover (identify requirements)
+  - Step 3: Clarify (resolve ambiguities)
+  - Step 4: Plan/Strategy (create plan)
+
+Phase 3: Validation
+  - Step 5: Checklist (quality check)
+
+Phase 4: Implementation
+  - Step 6: Tasks (break down work)
+  - Step 7: Analyze (check consistency)
+  - Step 8: Create/Generate (produce output)
+
+Phase 5: Optimization
+  - Step 9: Review (collect feedback)
+  - Step 10: Optimize (improve)
+```
+
+**Validation**:
+- ✅ Each step has clear input/output
+- ✅ Steps form a complete workflow (start to finish)
+- ✅ Each step maps to one command
+- ✅ No gaps in the workflow
+- ✅ Quality gates included
+
+---
+
+**🎯 Key Distinction (IMPORTANT)**:
+
+| Aspect | Type 1: Entity State Machines | Type 2: Specification Usage Workflow |
+|--------|------------------------------|-------------------------------------|
+| **What** | Entity lifecycle | How to use specification |
+| **Example** | Order (pending → shipped) | Constitution → Discover → Strategy |
+| **Maps to** | Entity status field | Slash commands |
+| **Used by** | Business execution | Specification creation |
+| **Typical count** | 1 per stateful entity | 1 workflow, 8-12 steps |
+| **Required for** | Stateful domains | All Speckits |
+
+**Example Comparison**:
+
+```yaml
+# Type 1 (Entity State Machine) - Specification entity lifecycle
+Specification Entity:
+  status: [draft, review, approved, deprecated]
+  transitions: draft → review → approved
+
+# Type 2 (Specification Usage Workflow) - How to create specifications
+SDS Workflow:
+  Step 1: Constitution → Define specification principles
+  Step 2: Specify → Create initial spec document
+  Step 3: Clarify → Resolve ambiguities
+  Step 4: Plan → Design sub-spec structure (if complex)
+  ...
+  Step 8: Implement → Write sub-specifications
+```
 
 #### **Specification Operations**
 

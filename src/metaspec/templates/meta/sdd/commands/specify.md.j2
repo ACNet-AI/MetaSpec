@@ -926,9 +926,25 @@ Q: Is this toolkit providing **API access** to existing data?
 
    **For Type B (Workflow-Guidance) toolkits - THIS IS WHAT YOU WANT!**
    
-   - [ ] Does the specification define a multi-phase workflow?
-   - [ ] Are there specific actions in each phase?
-   - **If YES** → ✅ **Derive workflow commands from these phases**
+   **First, check your Domain Specification** (specs/domain/001-*/spec.md):
+   - [ ] Does it have a "Specification Usage Workflow" section? (Should be Type 2 workflow, not entity state machines)
+   - [ ] Does this workflow define the end-to-end process of creating specifications?
+   - [ ] Are workflow steps defined at action level (8-12 steps typical)?
+   - **If YES** → ✅ **Perfect! Use this workflow directly to derive commands**
+   - **If NO** → ⚠️ **Go back to Domain Spec and define it first** (use `/metaspec.sds.specify` guidance)
+   
+   **Key Question to Ask**:
+   > "The domain spec defines entities and rules. What is the recommended workflow for users to create specifications using these entities?"
+   
+   Expected answer should provide:
+   - Step-by-step process (8-12 steps)
+   - Each step's goal, inputs, outputs
+   - Quality checkpoints
+   - Entities involved in each step
+   - Command naming pattern
+   
+   **If this workflow is ALREADY in your Domain Spec** → Just map it to commands!
+   **If NOT** → You need to define it in Domain Spec first (MetaSpec SDS workflow is the pattern)
    
    **How to Derive** (MetaSpec's Own Pattern - Dogfooding):
    

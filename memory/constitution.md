@@ -1,6 +1,11 @@
 # Meta-Spec Development Constitution
 
 > **Core Principles**: This document defines the fundamental rules and principles that govern Meta-Spec development and usage.
+>
+> **Structure**: This constitution has three parts:
+> - **Part I**: Project Core Values (MetaSpec project development)
+> - **Part II**: Specification Design Principles (Domain specification design) - managed by `/metaspec.sds.constitution`
+> - **Part III**: Toolkit Implementation Principles (Toolkit development) - managed by `/metaspec.sdd.constitution`
 
 ---
 
@@ -16,7 +21,11 @@ We believe that:
 
 ---
 
-## ✅ Core Principles
+## Part I: Project Core Values
+
+These principles govern MetaSpec project development itself.
+
+### ✅ Core Principles
 
 ### 1. Minimal Viable Abstraction
 
@@ -403,9 +412,192 @@ A Meta-Spec release is successful when:
 
 ---
 
+---
+
+## Part II: Specification Design Principles
+
+These principles govern how domain specifications should be designed (managed by `/metaspec.sds.constitution`).
+
+### 1. Entity Clarity
+
+**Principle**: Entities must have clear purpose, well-defined fields, and unambiguous semantics.
+
+**Rules**:
+- Each entity has a single, clear responsibility
+- Field types must be explicit (no ambiguous types)
+- Relationships between entities are documented
+- Every field has a description
+
+### 2. Validation Completeness
+
+**Principle**: All validation rules must be explicitly defined and enforceable.
+
+**Rules**:
+- Required vs optional fields clearly marked
+- Constraints are machine-checkable
+- Validation rules reference specific fields
+- Error messages are descriptive
+
+### 3. Operation Semantics
+
+**Principle**: Operations have clear inputs, outputs, and side effects.
+
+**Rules**:
+- Request/response schemas defined
+- Idempotency documented
+- Error conditions specified
+- Examples provided
+
+### 4. Implementation Neutrality
+
+**Principle**: Specifications describe WHAT, not HOW (implementation-agnostic).
+
+**Rules**:
+- No language-specific constructs
+- No implementation details in specs
+- Focus on interface contracts
+- Platform-neutral terminology
+
+### 5. Extensibility Design
+
+**Principle**: Specifications support evolution without breaking changes.
+
+**Rules**:
+- Version fields in entities
+- Optional fields for new features
+- Deprecation process defined
+- Backward compatibility considered
+
+### 6. Domain Fidelity
+
+**Principle**: Specifications accurately reflect domain knowledge and constraints.
+
+**Rules**:
+- Use domain terminology
+- Respect domain rules
+- Research existing standards
+- Validate with domain experts
+
+### 7. Workflow Completeness ⭐ NEW v0.8.0
+
+**Principle**: Specifications must define complete user workflows, not just isolated operations.
+
+**Two Types of Workflows**:
+
+#### Type 1: Entity State Machines (Optional, for stateful entities)
+- Define entity lifecycle during business execution
+- Example: Order (pending → confirmed → shipped → delivered)
+- Document allowed/forbidden transitions
+- Specify preconditions and postconditions
+
+#### Type 2: Specification Usage Workflow (Required for all Speckits)
+- Define end-to-end specification creation process
+- Example: SDS Workflow (Constitution → Specify → Clarify → ... → Implement)
+- 8-12 action steps typical
+- Each step maps to a slash command
+- Include quality gates and validation checkpoints
+
+**Rules**:
+- Type 2 workflow is REQUIRED for all speckits
+- Each workflow step has clear goal, inputs, outputs
+- Steps are sequential with dependencies
+- Each step maps 1:1 to a command (e.g., `/domainspec.action`)
+- No "orphan" operations without workflow context
+- End-to-end examples demonstrate complete workflow
+
+**Rationale**: 
+- Pre-v0.7.0: Users received "13 commands" without knowing sequence
+- Post-v0.7.0: Workflow-first design provides clear user journey
+- Type 2 is about HOW to use the speckit, Type 1 is about WHAT entities do
+
+**Example Comparison**:
+```yaml
+# Type 1 (Entity State Machine) - Business execution
+Specification Entity:
+  states: [draft, review, approved, deprecated]
+  transitions: draft → review → approved
+
+# Type 2 (Specification Usage Workflow) - Specification creation
+SDS Workflow:
+  Step 1: Constitution → Define principles
+  Step 2: Specify → Create spec document
+  Step 3: Clarify → Resolve ambiguities
+  ...
+  Step 8: Implement → Write sub-specifications
+```
+
+---
+
+## Part III: Toolkit Implementation Principles
+
+These principles govern how speckits (spec-driven toolkits) should be implemented (managed by `/metaspec.sdd.constitution`).
+
+### 1. Entity-First Design
+
+**Principle**: Toolkit architecture mirrors specification entities.
+
+**Rules**:
+- Entity classes match specification entities
+- Parser produces entity objects
+- Validator checks entity constraints
+- Clear mapping: spec → code
+
+### 2. Validator Extensibility
+
+**Principle**: Validation system supports custom rules without core changes.
+
+**Rules**:
+- Pluggable validator architecture
+- Domain-specific validators as plugins
+- Base validators for common patterns
+- Clear validator registration mechanism
+
+### 3. Spec-First Development
+
+**Principle**: Specification is the source of truth; toolkit enforces it.
+
+**Rules**:
+- Code references specification
+- Validation rules implement spec constraints
+- Generated code includes spec comments
+- Toolkit version matches spec version
+
+### 4. AI-Agent Friendly
+
+**Principle**: Toolkit design optimizes for AI agent usage.
+
+**Rules**:
+- Slash commands in `.metaspec/commands/`
+- AGENTS.md with clear instructions
+- Structured output formats (YAML/JSON)
+- Examples for each command
+- Templates for common patterns
+
+### 5. Progressive Enhancement
+
+**Principle**: Toolkit starts minimal, adds features incrementally.
+
+**Rules**:
+- MVP: Parser + Validator + Init
+- Phase 2: Generator + Templates
+- Phase 3: Advanced features
+- Each phase is deployable
+
+### 6. Automated Quality
+
+**Principle**: Quality checks are automated and integrated.
+
+**Rules**:
+- Linting integrated in CLI
+- Test generation from examples
+- CI/CD validation
+- Coverage tracking
+
+---
+
 **This constitution is a living document. It evolves with the project, but core principles remain stable.**
 
-**Last Updated**: 2025-01-20  
-**Version**: 1.0  
+**Last Updated**: 2025-11-17  
+**Version**: 2.0  
 **Status**: Active
 
