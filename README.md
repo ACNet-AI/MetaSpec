@@ -510,14 +510,18 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**Current Version**: v0.9.1 (Alpha) 🚀
+**Current Version**: v0.9.2 (Alpha) 🚀
 
-**Latest Updates** (v0.9.1):
-- 🎯 **Generator Pattern Clarification** - Critical architectural guidance
-- ✅ Added comprehensive Generator pattern guidance to `/metaspec.sdd.specify`
-- 🔍 Added Generator Pattern Compliance validation (Dimension L) to `/metaspec.sdd.analyze`
-- 🚫 Prevents toolkit vs domain application confusion (Generator anti-patterns)
-- 📝 Detects 3 types of violations: Purpose, Templates, CLI Commands
+**Latest Updates** (v0.9.2):
+- 🎯 **Toolkit Type Detection & Simplified Generator Pattern** - Architecture clarity
+- ✅ Removed "Domain Application" concept from `/metaspec.sdd.specify` (MetaSpec only generates Specification Toolkits)
+- 🔍 Simplified Step 4.5: Unified guidance for all toolkits (deleted 190 lines of confusion)
+- ⚠️ Unified Generator template: Single pattern for all Specification Toolkits (removed Option B)
+- 📝 Added Post-Generation verification checklist (Step 5d, +122 lines)
+- 🎓 Clarified MetaSpec architecture: Layer 1 (MetaSpec) → Layer 2 (Spec Toolkit) → Layer 3 (Domain App)
+
+**Previous Updates** (v0.9.1):
+- 🎯 Generator Pattern Clarification - Added guidance and validation (Dimension L)
 
 **Previous Updates** (v0.9.0):
 - ✨ Enhanced `/metaspec.sdd.specify` with Use Case → Component automatic derivation
