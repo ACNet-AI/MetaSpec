@@ -9,6 +9,181 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.1] - 2025-11-18
+
+### 🎯 Generator Pattern Clarification (Supplement to v0.9.0)
+
+**Proposal ID**: PROP-2025-11-18-GENERATOR-PATTERN  
+**Date**: 2025-11-18  
+**Status**: ✅ Implemented  
+**Severity**: HIGH (Architecture-level)  
+**Source**: marketing-spec-kit development feedback (continued)  
+**Related**: v0.9.0 fixes (supplementary fix)
+
+#### 🚨 Critical Issue
+
+The `/metaspec.sdd.specify` command allowed Generator components to be misinterpreted, leading to architectures where Generator creates **domain content** (posts, articles, emails) instead of **project files** (specs, constitution, commands).
+
+**Example from marketing-spec-kit**:
+```markdown
+### Component: Generator ❌ WRONG
+Purpose: Generate marketing content from validated specifications
+Features:
+- Generate social media posts
+- Generate blog articles  
+- Generate email campaigns
+```
+
+**MetaSpec's own implementation** (generator.py):
+```python
+"""Generate complete speckit projects from meta-spec definitions."""
+# ✅ Generates project files (constitution.md, specs/, README.md)
+# ❌ Does NOT generate domain content
+```
+
+#### 🎯 Root Cause
+
+**Pattern Confusion**: Toolkit vs Domain Application
+
+```
+Specification Toolkit (marketing-spec-kit)
+  ├─ Generator → Project files ✅
+  └─ Wrong: Domain content ❌
+
+Domain Application (user's marketing app)
+  ├─ Generator → Marketing content ✅
+  └─ Uses specifications from toolkit
+```
+
+**Key Insight**: When Use Case says "AI-Driven Content Generation":
+- ❌ Wrong interpretation: Generate domain deliverables (posts, articles)
+- ✅ Correct interpretation: Generate project files and specifications
+
+#### ✅ Implemented Fixes
+
+| Fix | Content | Location | Status |
+|-----|---------|----------|--------|
+| **Fix 1** | Generator Pattern guidance | `/metaspec.sdd.specify` Component 5 | ✅ Done |
+| **Fix 2** | Generator Pattern validation | `/metaspec.sdd.analyze` Dimension L | ✅ Done |
+
+#### 📝 Fix 1: Generator Pattern Guidance (`specify.md.j2`)
+
+**Added Section**: "Generator Pattern - Toolkit vs Domain Tool" (line 2196+)
+
+**Key Content**:
+- ✅ CORRECT: Generate project files (specs, constitution, commands, templates)
+- ❌ FORBIDDEN: Generate domain content (posts, articles, emails, marketing content)
+- Visual diagram showing toolkit vs domain application separation
+- Reference to MetaSpec's own generator.py implementation
+- Correct/incorrect template examples
+- Correct/incorrect CLI command examples
+
+**Impact**: Prevents the #1 architectural mistake in toolkit development
+
+#### 🔍 Fix 2: Generator Pattern Validation (`analyze.md.j2`)
+
+**Added Dimension**: L. Generator Pattern Compliance (line 813+)
+
+**Three Validation Checks**:
+
+**L1: Generator Purpose Validation** (CRITICAL)
+- Detects domain content keywords (posts, articles, emails, marketing content)
+- Verifies toolkit keywords (project files, specification structure)
+- Reports CRITICAL error if domain pattern detected
+
+**L2: Template Pattern Validation** (HIGH)
+- Detects domain templates (post.j2, article.j2, email.j2)
+- Verifies toolkit templates (constitution.j2, spec.yaml.j2)
+- Reports HIGH error if domain templates detected
+
+**L3: CLI Command Pattern Validation** (HIGH)
+- Detects domain commands (generate post, generate article)
+- Verifies toolkit commands (init <project-dir>, generate spec)
+- Reports HIGH error if domain commands detected
+
+**Example Report**:
+```
+❌ CRITICAL: Generator follows domain content pattern [GEN_PATTERN_001]
+  Detected: "social media post", "blog article", "email campaign"
+  
+  Current: "Generate marketing content from specifications"
+  Expected: "Generate project structure and specification files"
+  
+  Fix Strategy:
+    1. Update Purpose: FROM "Generate marketing content" 
+                       TO "Generate project files"
+    2. Update Features: FROM "Generate posts/articles/emails"
+                        TO "Generate specs/constitution/commands"
+    3. Update Templates: FROM templates/post.j2
+                         TO templates/spec.yaml.j2
+    4. Update CLI: FROM {toolkit} generate post
+                   TO {toolkit} init <project-dir>
+```
+
+#### 📊 Implementation Results
+
+**Code Change Statistics**:
+- `specify.md.j2`: +87 lines (Generator Pattern guidance)
+- `analyze.md.j2`: +290 lines (Dimension L validation)
+- Total: +377 lines
+
+**Validation Coverage**:
+- ✅ Purpose & Features: Anti-pattern keyword detection
+- ✅ Templates: Pattern matching for domain vs toolkit templates
+- ✅ CLI Commands: Command pattern validation
+- ✅ Comprehensive fix guidance with concrete examples
+
+**Expected Impact**:
+- 🎯 Prevents toolkit vs domain application confusion
+- ✅ Enforces correct Generator pattern across all speckits
+- 📝 Provides actionable fix guidance with error codes
+- 🔍 Auto-detects 3 types of pattern violations (purpose, templates, CLI)
+
+#### 🧪 Test Coverage
+
+This enhancement can be validated by:
+1. **Regenerate marketing-spec-kit** with v0.10.0
+   - Expected: `/metaspec.sdd.specify` provides clear Generator pattern guidance
+   - Expected: `/metaspec.sdd.analyze` detects incorrect Generator definition
+
+2. **Run analyze on existing incorrect spec**
+   - Create spec.md with domain content Generator
+   - Run `/metaspec.sdd.analyze`
+   - Expected: CRITICAL error with GEN_PATTERN_001 and fix guidance
+
+#### 🔄 Migration Path
+
+**Existing Users** (with incorrect Generator patterns):
+- ⚠️ Run `/metaspec.sdd.analyze` to detect violations
+- ⚠️ Follow fix guidance to correct Generator definition
+- ⚠️ This is an architectural issue - requires manual fix
+
+**New Users**:
+- ✅ Follow new guidance in `/metaspec.sdd.specify`
+- ✅ Validation automatically detects mistakes
+- ✅ Clear distinction between toolkit and domain application
+
+**For marketing-spec-kit**:
+- Manual fix required (separate from MetaSpec release)
+- Update spec.md Generator definition
+- Rewrite generator.py to generate project files
+- Update templates and CLI commands
+
+#### 📚 Related Resources
+
+- **Proposal**: `docs/internal/generator-pattern-clarification-proposal.md`
+- **Original Feedback**: `marketing-spec-kit/docs/internal/metaspec-generator-misdefinition-feedback.md`
+- **Command Template**: `src/metaspec/templates/meta/sdd/commands/specify.md.j2`
+- **Validation Template**: `src/metaspec/templates/meta/sdd/commands/analyze.md.j2`
+
+#### 🙏 Acknowledgments
+
+This enhancement addresses a critical architectural pattern discovered during marketing-spec-kit development. It complements the v0.9.0 fixes by providing explicit guidance and validation for the Generator component pattern.
+
+**Pattern Clarity**: The distinction between "toolkit Generator" (project files) and "domain application Generator" (business content) is now explicitly documented and automatically validated.
+
+---
+
 ## [0.9.0] - 2025-11-17
 
 ### 🎯 `/metaspec.sdd.specify` Command Enhancement

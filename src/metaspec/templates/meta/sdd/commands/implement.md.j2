@@ -32,7 +32,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 | 8-10. Checkpoints & Reporting | 303-394 | 91 lines | 🟡 Important | `read_file(target_file, offset=303, limit=91)` |
 | 11-13. Validation & Saves | 395-519 | 124 lines | 🟡 Important | `read_file(target_file, offset=395, limit=124)` |
 | 14-15. Propagation & Validation | 520-646 | 126 lines | 🟡 Important | `read_file(target_file, offset=520, limit=126)` |
-| 16. Final Report | 647-935 | 288 lines | 🟢 Reference | `read_file(target_file, offset=647, limit=288)` |
+| 16. Final Report | 647-997 | 350 lines | 🟢 Reference | `read_file(target_file, offset=647, limit=350)` |
 
 **📋 Section 7: Task Execution Details by Language** (92 lines):
 
@@ -71,9 +71,9 @@ read_file(target_file, offset=286, limit=16)  # Rust
 ```
 
 **Token Savings**: 
-- Full file: 935 lines (~3200 tokens)
-- Prerequisites only: 146 lines (~500 tokens) → **84% savings**
-- Language-specific: 16-25 lines (~60-90 tokens) → **97% savings**
+- Full file: 997 lines (~3400 tokens)
+- Prerequisites only: 146 lines (~500 tokens) → **85% savings**
+- Language-specific: 16-25 lines (~60-90 tokens) → **97% savings** 🏆
 - Phase-specific: 59-97 lines (~200-330 tokens) → **90% savings**
 
 ---

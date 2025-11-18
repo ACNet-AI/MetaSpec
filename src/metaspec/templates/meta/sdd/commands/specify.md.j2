@@ -34,12 +34,12 @@ This command is for defining **toolkit implementation specifications**:
 
 | Step | Lines | Size | read_file Usage |
 |------|-------|------|-----------------|
-| 1. Setup & Verify | 94-150 | 56 lines | `read_file(target_file, offset=94, limit=56)` |
-| 2. Gather Content | 151-230 | 79 lines | `read_file(target_file, offset=151, limit=79)` |
-| 3. Generate Sections | 240-2494 | 2254 lines | See components below ⬇️ **LARGE** |
-| 4. Write File | 2495-2543 | 48 lines | `read_file(target_file, offset=2495, limit=48)` |
-| 5. Impact Report | 2544-2641 | 97 lines | `read_file(target_file, offset=2544, limit=97)` |
-| 6-9. Analysis & Report | 2642-2918 | 276 lines | `read_file(target_file, offset=2642, limit=276)` |
+| 1. Setup & Verify | 103-159 | 56 lines | `read_file(target_file, offset=103, limit=56)` |
+| 2. Gather Content | 160-239 | 79 lines | `read_file(target_file, offset=160, limit=79)` |
+| 3. Generate Sections | 240-2583 | 2343 lines | See components below ⬇️ **LARGE** |
+| 4. Write File | 2584-2632 | 48 lines | `read_file(target_file, offset=2584, limit=48)` |
+| 5. Impact Report | 2633-2730 | 97 lines | `read_file(target_file, offset=2633, limit=97)` |
+| 6-9. Analysis & Report | 2731-3007 | 276 lines | `read_file(target_file, offset=2731, limit=276)` |
 
 **📋 Key Components in Step 3** (Jump to specific components):
 
@@ -51,8 +51,8 @@ This command is for defining **toolkit implementation specifications**:
 | Component 2: Validator | 447-491 | 44 lines | 🟢 Optional | `read_file(target_file, offset=447, limit=44)` |
 | **Component 3: CLI Commands** ⭐ | 492-1015 | 523 lines | 🔴 **KEY** | See subsections below ⬇️ |
 | **Component 4: Slash Commands** ⭐⭐ | 1016-2181 | 1165 lines | 🔴 **LARGE** | See subsections below ⬇️ |
-| **Component 5: Generator** ⭐ | 2182-2353 | 171 lines | 🔴 **UPDATED** | `read_file(target_file, offset=2182, limit=171)` |
-| Architecture & Requirements | 2354-2485 | 131 lines | 🟡 Important | `read_file(target_file, offset=2354, limit=131)` |
+| **Component 5: Generator** ⭐⭐ | 2190-2440 | 250 lines | 🔴 **CRITICAL** | See subsections below ⬇️ |
+| Architecture & Requirements | 2441-2575 | 134 lines | 🟡 Important | `read_file(target_file, offset=2441, limit=134)` |
 
 **🎨 Component 3: CLI Commands Subsections**:
 
@@ -70,31 +70,44 @@ This command is for defining **toolkit implementation specifications**:
 | **Custom Commands** ⭐ | 1123-1650 | 527 lines | `read_file(target_file, offset=1123, limit=527)` |
 | **Library Commands** ⭐ | 1982-2181 | 199 lines | `read_file(target_file, offset=1982, limit=199)` |
 
+**🎨 Component 5: Generator Subsections** (250 lines total, ⭐⭐ v0.9.1):
+
+| Subsection | Lines | Size | Usage |
+|------------|-------|------|-------|
+| **Generator Pattern Guide** ⭐⭐ | 2196-2282 | 87 lines | `read_file(target_file, offset=2196, limit=87)` |
+| Step 1: Determine if Required | 2283-2318 | 35 lines | `read_file(target_file, offset=2283, limit=35)` |
+| Step 2: Decide Priority | 2319-2346 | 27 lines | `read_file(target_file, offset=2319, limit=27)` |
+| Step 3: Define Component | 2347-2440 | 93 lines | `read_file(target_file, offset=2347, limit=93)` |
+
 **💡 Typical Usage Patterns**:
 ```python
 # Minimal: Read only Steps 1-2 (135 lines)
-read_file(target_file, offset=94, limit=135)
+read_file(target_file, offset=103, limit=135)
 
-# **Use Case Analysis**: Critical for component decisions (60 lines) ⭐ NEW
+# **Use Case Analysis**: Critical for component decisions (60 lines) ⭐
 read_file(target_file, offset=288, limit=60)
 
-# **init Standards**: Essential for Generator/Scaffolder (140 lines) ⭐ NEW
+# **init Standards**: Essential for Generator/Scaffolder (140 lines) ⭐
 read_file(target_file, offset=676, limit=140)
 
 # CLI Design: Component 3 with AGENTS.md compliance (523 lines)
 read_file(target_file, offset=492, limit=523)
 
-# **Generator Logic**: When to include Generator (171 lines) ⭐ NEW
-read_file(target_file, offset=2182, limit=171)
+# **Generator Pattern**: CRITICAL - Toolkit vs Domain distinction (87 lines) ⭐⭐ NEW v0.9.1
+read_file(target_file, offset=2196, limit=87)
+
+# **Generator Logic**: When to include Generator (250 lines total) ⭐
+read_file(target_file, offset=2190, limit=250)
 
 # Slash Commands: Component 4 overview (106 lines)
 read_file(target_file, offset=1016, limit=106)
 ```
 
-**Token Savings (v0.9.0)**: 
-- Full file: 3101 lines (~10,500 tokens)
-- **Targeted reading: 60-523 lines (~200-1,750 tokens)**
-- **Savings: 83-98% tokens** 🎉🏆
+**Token Savings (v0.9.1)**: 
+- Full file: 3199 lines (~10,850 tokens)
+- **Targeted reading: 60-523 lines (~200-1,770 tokens)**
+- **Generator Pattern only: 87 lines (~295 tokens) - 97% savings** 🏆
+- **Overall savings: 83-98% tokens** 🎉
 
 ---
 
@@ -194,9 +207,9 @@ ls specs/toolkit/ | grep -E '^[0-9]{3}-' | sort -n
      - Needed if: Users interact via terminal
      - Provides: init, validate, generate commands
    
-   - [ ] **Generator** - Generate code/docs from specs
-     - Needed if: Want to automate code generation
-     - Examples: Generate TypeScript types, Python classes
+  - [ ] **Generator** - Generate project files/structure from specifications
+    - Needed if: Toolkit creates projects or spec files
+    - Examples: Generate project structure, spec templates, model classes from spec entities
    
    - [ ] **SDK/Library** - Programmatic API
      - Needed if: Other tools need to integrate
@@ -313,8 +326,9 @@ Apply these rules to analyze your use cases:
 
 3. **Generator Component**:
    - Required if use cases mention: "generate", "create", "produce", "output", "build", "scaffold"
-   - ⚠️ **CRITICAL**: "Content Generation", "Code Generation", "Template Generation" → Generator is CORE
-   - Example: "Generate marketing content" → Generator is CORE
+   - ⚠️ **CRITICAL**: "Project Generation", "Spec Generation", "Template-based Generation" → Generator is CORE
+   - Example: "Generate project structure from specifications" → Generator is CORE
+   - ⚠️ **WRONG**: "Generate marketing content" → This is domain content, NOT toolkit generation!
 
 4. **CLI Component**:
    - Usually CORE for most toolkits (standard interface)
@@ -2191,6 +2205,95 @@ These Slash Commands (from library and/or specification) will:
 
 **⚠️ CRITICAL**: Generator is NOT always optional. Determine if required based on use cases.
 
+---
+
+### ⭐ **Generator Pattern - Toolkit vs Domain Tool** ⭐ CRITICAL
+
+**IMPORTANT**: Before defining Generator, understand the fundamental distinction:
+
+#### For Specification Toolkits (MetaSpec, marketing-spec-kit, etc.)
+
+Generator **MUST** generate **project files**, NOT **domain content**.
+
+**✅ CORRECT Generator Purpose (Toolkit)**:
+- Generate project directory structure
+- Render specification files from templates (e.g., `specs/xxx.yaml`)
+- Render constitution from template (e.g., `memory/constitution.md`)
+- Render command files (e.g., `.{toolkit}/commands/xxx.md`)
+- Create README.md, AGENTS.md, and other project files
+- Generate project scaffolding and boilerplate
+
+**❌ FORBIDDEN Generator Anti-Patterns (Domain Content)**:
+- Generate domain deliverables (social posts, blog articles, emails, product descriptions)
+- Generate end-user business content
+- Generate domain-specific outputs that **consume** specifications
+- Create business deliverables from specs
+
+**Why This Matters**:
+```
+┌─────────────────────────────────────────────────────────┐
+│         Specification Toolkit (Your Speckit)            │
+│                                                          │
+│  Generator Role:                                         │
+│  ✅ Generate PROJECT FILES                             │
+│     (specs, constitution, commands, templates)          │
+│                                                          │
+│  ❌ NOT domain deliverables                            │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+                  User creates specs
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│      Domain Application (User's App Using Specs)        │
+│                                                          │
+│  Generator Role:                                         │
+│  ✅ Generate DOMAIN DELIVERABLES                       │
+│     (posts, articles, emails, products)                 │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Reference Implementation**: See MetaSpec's `src/metaspec/generator.py`:
+```python
+"""Generate complete speckit projects from meta-spec definitions."""
+# ✅ Generates project directory structure
+# ✅ Renders constitution.md from template
+# ✅ Renders specification files
+# ✅ Creates README.md, AGENTS.md
+# ❌ Does NOT generate domain content
+```
+
+**Correct Templates (Toolkit)**:
+- ✅ `templates/constitution.j2` - For memory/constitution.md
+- ✅ `templates/spec.yaml.j2` - For specs/xxx-spec.yaml
+- ✅ `templates/readme.md.j2` - For README.md
+- ✅ `templates/command.md.j2` - For custom commands
+
+**Incorrect Templates (Domain Content)**:
+- ❌ `templates/social_post.j2` - Marketing content (belongs in user's app)
+- ❌ `templates/blog_article.j2` - Blog content (belongs in user's app)
+- ❌ `templates/email.j2` - Email content (belongs in user's app)
+- ❌ `templates/product_page.j2` - Product content (belongs in user's app)
+
+**Correct CLI Commands**:
+- ✅ `{toolkit} init <project-dir>` - Generate complete project structure
+- ✅ `{toolkit} generate spec --template=campaign` - Generate spec file
+- ✅ `{toolkit} generate command --name=custom` - Generate custom command
+
+**Incorrect CLI Commands**:
+- ❌ `{toolkit} generate post` - Domain content (user's app responsibility)
+- ❌ `{toolkit} generate article` - Domain content (user's app responsibility)
+- ❌ `{toolkit} generate email` - Domain content (user's app responsibility)
+
+**Key Principle**: 
+Your toolkit helps users **create and manage specifications**. Users will build their own applications that **read your specifications and generate domain content**. Don't conflate these two roles.
+
+**Common Misunderstanding**:
+- Use Case says: "AI-Driven **Content Generation**"
+- ❌ Wrong interpretation: Generate domain content (posts, articles)
+- ✅ Correct interpretation: Generate project files and specifications
+
+---
+
 ### Step 1: Determine if Generator is Required
 
 **Automatic Requirements Detection**:
@@ -2277,10 +2380,10 @@ Check Toolkit Type         Check Toolkit Type
 - {Reason 2: e.g., Toolkit type is "Generator/Scaffolder"}
 - {Reason 3: e.g., CLI includes "generate" command}
 
-**Generation Targets**:
-- {Target 1}: {Description} (e.g., "Twitter posts from marketing specs")
-- {Target 2}: {Description} (e.g., "Blog content from campaign data")
-- {Target 3}: {Description} (e.g., "Email templates from audience profiles")
+**Generation Targets** (Project files, NOT domain content):
+- {Target 1}: {Description} (e.g., "Project structure from meta-spec")
+- {Target 2}: {Description} (e.g., "Specification files from templates")
+- {Target 3}: {Description} (e.g., "Constitution.md from principles")
 
 **Templates**:
 - Location: `templates/` directory
@@ -2330,10 +2433,10 @@ else:
 **CLI Integration**:
 ```bash
 # Generate command (if toolkit has CLI)
-{toolkit-name} generate <spec-file> [--template TEMPLATE] [--output DIR]
+{toolkit-name} generate spec [--template TEMPLATE] [--output DIR]
 
-# Example
-{toolkit-name} generate campaign.yaml --template twitter --output ./posts
+# Example (Generate specification file from template)
+{toolkit-name} generate spec --template campaign --output ./specs/
 ```
 \```
 

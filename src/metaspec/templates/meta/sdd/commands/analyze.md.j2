@@ -808,6 +808,297 @@ Framework Standards Compliance checks ensure toolkit specs follow MetaSpec conve
 ✅ All CLI commands in spec have corresponding plan components and tasks
 ```
 
+---
+
+#### L. Generator Pattern Compliance ⭐ NEW (v0.10.0+)
+
+**Purpose**: Verify Generator component follows toolkit pattern (project files), not domain pattern (business content)
+
+**Context**: This validation prevents the common architectural mistake where Generator is defined to create domain deliverables (posts, articles, emails) instead of project files (specs, constitution, commands).
+
+**Critical Pattern Check**:
+
+**L1: Generator Purpose Validation**:
+
+**Check**:
+```python
+# Extract Generator definition from spec.md
+generator_def = extract_component(spec_md, "Generator")
+
+if generator_def:
+    purpose = generator_def.get("purpose", "").lower()
+    features = generator_def.get("features", "").lower()
+    
+    # Anti-pattern keywords (domain content generation)
+    domain_content_patterns = [
+        "social post", "social media post", "twitter post", "linkedin post",
+        "blog article", "blog post", "article",
+        "email campaign", "email template",
+        "marketing content", "marketing copy",
+        "user story", "test case", "product description",
+        "documentation page", "content generation"
+    ]
+    
+    # Check for violations
+    violations = []
+    for pattern in domain_content_patterns:
+        if pattern in purpose or pattern in features:
+            violations.append(pattern)
+    
+    if violations:
+        report_error("GEN_PATTERN_001", "CRITICAL", violations)
+    
+    # Check for correct patterns (project file generation)
+    toolkit_patterns = [
+        "project structure", "project directory", "project file",
+        "specification file", "spec file", "constitution",
+        "template rendering", "directory structure",
+        "project scaffolding", "boilerplate"
+    ]
+    
+    has_toolkit_pattern = any(p in purpose or p in features for p in toolkit_patterns)
+    if not has_toolkit_pattern and "generate" in (purpose + features):
+        report_warning("GEN_PATTERN_002", "HIGH")
+```
+
+**Rules**:
+- ❌ Generator MUST NOT mention domain content generation (posts, articles, emails, marketing content)
+- ✅ Generator MUST mention project/specification file generation
+- ✅ Templates MUST be project file templates (constitution.j2, spec.yaml.j2), NOT content templates (post.j2, article.j2)
+
+**Report**:
+```
+❌ CRITICAL: Generator follows domain content pattern instead of toolkit pattern [GEN_PATTERN_001]
+  Location: spec.md §Component: Generator → Purpose & Features
+  
+  Detected Anti-Patterns:
+    - "social media post" (in Features)
+    - "blog article" (in Features)
+    - "email campaign" (in Features)
+  
+  Current Definition:
+    Purpose: "Generate marketing content from validated specifications"
+    Features: "Generate social posts, blog articles, email campaigns"
+  
+  Expected (Toolkit Pattern):
+    Purpose: "Generate project files and specification structure"
+    Features: "Generate project directory, render spec files, create constitution"
+  
+  Impact: CRITICAL - This is a fundamental architectural mistake.
+    Your toolkit should help users CREATE specifications, not CONSUME them.
+    Domain content generation belongs in the user's application, not in your toolkit.
+  
+  Reference: MetaSpec's own generator.py (src/metaspec/generator.py)
+    ✅ Generates project files (constitution.md, specs/, README.md)
+    ❌ Does NOT generate domain content
+  
+  Fix Strategy:
+    1. Update Generator Purpose:
+       FROM: "Generate marketing content from specs"
+       TO:   "Generate project structure and specification files"
+    
+    2. Update Generator Features:
+       FROM: "Generate posts, articles, emails"
+       TO:   "Generate project directory, render spec templates, create constitution"
+    
+    3. Update Templates:
+       FROM: templates/post.j2, templates/article.j2
+       TO:   templates/constitution.j2, templates/spec.yaml.j2
+    
+    4. Update CLI Commands:
+       FROM: {toolkit} generate post --spec=campaign.yaml
+       TO:   {toolkit} init <project-dir> --template=campaign
+  
+  See Also:
+    - specify.md.j2 §Component 5 "Generator Pattern - Toolkit vs Domain Tool"
+    - docs/patterns/generator-component.md (if exists)
+
+⚠️ HIGH: Generator purpose unclear - missing toolkit pattern keywords [GEN_PATTERN_002]
+  Location: spec.md §Component: Generator → Purpose
+  
+  Current: Purpose mentions "generate" but doesn't specify what
+  Expected: Clearly state "generate project files" or "generate specification structure"
+  
+  Recommendation: Add toolkit pattern keywords:
+    - "project structure"
+    - "specification file"  
+    - "constitution"
+    - "project scaffolding"
+
+✅ Generator follows correct toolkit pattern
+  - Purpose: "Generate project structure and specification files" ✅
+  - Features: "Create project directory, render constitution.md, generate spec templates" ✅
+  - Templates: templates/constitution.j2, templates/spec.yaml.j2 ✅
+  - No domain content patterns detected ✅
+```
+
+---
+
+**L2: Template Pattern Validation**:
+
+**Check**:
+```python
+# Extract Generator templates section
+templates_section = extract_section(spec_md, "Templates", parent="Generator")
+
+if templates_section:
+    template_list = templates_section.lower()
+    
+    # Check for domain content template anti-patterns
+    content_template_patterns = [
+        "post.j2", "article.j2", "email.j2", "blog.j2",
+        "social_post", "content_template", "marketing_template"
+    ]
+    
+    violations = []
+    for pattern in content_template_patterns:
+        if pattern in template_list:
+            violations.append(pattern)
+    
+    if violations:
+        report_error("GEN_TEMPLATE_001", "HIGH", violations)
+    
+    # Check for correct toolkit templates
+    toolkit_template_patterns = [
+        "constitution.j2", "spec.yaml.j2", "spec.j2",
+        "readme.md.j2", "command.md.j2"
+    ]
+    
+    has_toolkit_templates = any(p in template_list for p in toolkit_template_patterns)
+    if not has_toolkit_templates:
+        report_warning("GEN_TEMPLATE_002", "MEDIUM")
+```
+
+**Rules**:
+- ❌ Templates MUST NOT be domain content templates (post.j2, article.j2, email.j2)
+- ✅ Templates MUST be project file templates (constitution.j2, spec.yaml.j2, readme.md.j2)
+
+**Report**:
+```
+❌ HIGH: Generator templates follow domain content pattern [GEN_TEMPLATE_001]
+  Location: spec.md §Generator → Templates
+  
+  Domain Content Templates Detected:
+    - templates/social_post.j2 ❌
+    - templates/blog_article.j2 ❌
+    - templates/email_campaign.j2 ❌
+  
+  Expected (Toolkit Templates):
+    - templates/constitution.j2 ✅
+    - templates/spec.yaml.j2 ✅
+    - templates/readme.md.j2 ✅
+  
+  Recommendation: Replace domain content templates with project file templates.
+
+⚠️ MEDIUM: Missing standard toolkit templates [GEN_TEMPLATE_002]
+  Expected Templates:
+    - constitution.j2 (for memory/constitution.md)
+    - spec.yaml.j2 (for specs/*.yaml)
+  
+  Recommendation: Add standard project file templates.
+
+✅ Templates follow toolkit pattern
+  - constitution.j2 ✅
+  - spec.yaml.j2 ✅
+  - readme.md.j2 ✅
+```
+
+---
+
+**L3: CLI Command Pattern Validation**:
+
+**Check**:
+```python
+# Extract CLI commands from Generator section or CLI Commands section
+cli_commands = extract_cli_commands(spec_md)
+
+# Check for domain content generation commands
+content_command_patterns = [
+    "generate post", "generate article", "generate email",
+    "generate content", "create post", "create article"
+]
+
+violations = []
+for cmd in cli_commands:
+    cmd_lower = cmd.lower()
+    for pattern in content_command_patterns:
+        if pattern in cmd_lower:
+            violations.append(cmd)
+            break
+
+if violations:
+    report_error("GEN_CLI_001", "HIGH", violations)
+
+# Check for correct toolkit commands
+toolkit_command_patterns = [
+    "init <project", "generate spec", "generate command"
+]
+
+has_toolkit_commands = any(
+    any(p in cmd.lower() for p in toolkit_command_patterns)
+    for cmd in cli_commands
+)
+
+if not has_toolkit_commands:
+    report_warning("GEN_CLI_002", "MEDIUM")
+```
+
+**Rules**:
+- ❌ CLI MUST NOT include domain content generation commands (generate post, generate article)
+- ✅ CLI MUST include project generation commands (init <project-dir>, generate spec)
+
+**Report**:
+```
+❌ HIGH: CLI includes domain content generation commands [GEN_CLI_001]
+  Location: spec.md §CLI Commands
+  
+  Domain Content Commands Detected:
+    - "{toolkit} generate post" ❌
+    - "{toolkit} generate article" ❌
+    - "{toolkit} generate email" ❌
+  
+  These commands belong in user's domain application, not in toolkit.
+  
+  Recommendation: Remove domain commands, add toolkit commands:
+    ✅ {toolkit} init <project-dir>
+    ✅ {toolkit} generate spec --template=campaign
+    ✅ {toolkit} generate command --name=custom
+
+⚠️ MEDIUM: Missing standard toolkit CLI commands [GEN_CLI_002]
+  Expected Commands:
+    - init <project-dir> (generate complete project)
+    - generate spec (generate specification file)
+  
+  Current: Only validation commands found.
+  
+  Recommendation: Add project generation commands if toolkit type is Generator/Scaffolder.
+
+✅ CLI commands follow toolkit pattern
+  - init <project-dir> ✅
+  - generate spec ✅
+  - No domain content commands ✅
+```
+
+---
+
+**Dimension L Summary**:
+
+Generator Pattern Compliance ensures Generator component is correctly defined as a toolkit tool (generating project files), not a domain application (generating business content).
+
+**Three Pattern Checks**:
+- **L1**: Generator purpose and features (CRITICAL if violated)
+- **L2**: Template patterns (HIGH if violated)
+- **L3**: CLI command patterns (HIGH if violated)
+
+**Key Insight**: 
+The phrase "Content Generation" in use cases means "Generate project files and specifications", NOT "Generate domain deliverables (posts, articles)". This is the most common architectural misunderstanding in toolkit development.
+
+**Reference**: 
+- MetaSpec's own generator.py implementation
+- specify.md.j2 §Component 5 "Generator Pattern - Toolkit vs Domain Tool"
+
+---
+
 ### 5. Severity assignment
 
 **CRITICAL**: Constitution violation, missing core artifact, blocking gap

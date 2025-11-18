@@ -31,7 +31,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 | **5. Task Execution Details** ⭐ | 152-619 | 467 lines | 🔴 **KEY** | See subsections below ⬇️ |
 | 6-10. Checkpoints & Validation | 620-832 | 212 lines | 🟡 Important | `read_file(target_file, offset=620, limit=212)` |
 | 11-13. Reporting & Propagation | 833-938 | 105 lines | 🟡 Important | `read_file(target_file, offset=833, limit=105)` |
-| 14. Final Report | 939-1216 | 277 lines | 🟢 Reference | `read_file(target_file, offset=939, limit=277)` |
+| 14. Final Report | 939-1270 | 331 lines | 🟢 Reference | `read_file(target_file, offset=939, limit=331)` |
 
 **📋 Section 5: Task Execution Details** (Most important - 467 lines):
 
@@ -63,7 +63,7 @@ read_file(target_file, offset=422, limit=45)  # Operations
 ```
 
 **Token Savings**: 
-- Full file: 1216 lines (~4200 tokens)
+- Full file: 1270 lines (~4350 tokens)
 - Prerequisites only: 87 lines (~300 tokens) → **93% savings**
 - Refactor section: 143 lines (~500 tokens) → **88% savings**
 - Template reference: 31-62 lines (~100-200 tokens) → **95% savings**

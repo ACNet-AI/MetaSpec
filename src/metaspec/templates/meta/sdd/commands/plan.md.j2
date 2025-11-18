@@ -70,9 +70,9 @@ This command must handle two types of specifications:
 
 | Template | Lines | Size | Usage |
 |----------|-------|------|-------|
-| Technical Context Template | 775-783 | 8 lines | `read_file(target_file, offset=775, limit=8)` |
-| Research Phase Template | 784-806 | 22 lines | `read_file(target_file, offset=784, limit=22)` |
-| Architecture Template | 807-854 | 47 lines | `read_file(target_file, offset=807, limit=47)` |
+| Technical Context Template | 846-854 | 8 lines | `read_file(target_file, offset=846, limit=8)` |
+| Research Phase Template | 855-877 | 22 lines | `read_file(target_file, offset=855, limit=22)` |
+| Architecture Template | 878-925 | 47 lines | `read_file(target_file, offset=878, limit=47)` |
 
 **💡 Typical Usage Patterns**:
 ```python
@@ -89,11 +89,11 @@ read_file(target_file, offset=362, limit=55)
 read_file(target_file, offset=221, limit=284)
 
 # Template reference: Read specific template (8-47 lines)
-read_file(target_file, offset=807, limit=47)  # Architecture
+read_file(target_file, offset=878, limit=47)  # Architecture
 ```
 
 **Token Savings**: 
-- Full file: 854 lines (~2900 tokens)
+- Full file: 925 lines (~3140 tokens)
 - Core flow: 62 lines (~210 tokens) → **93% savings**
 - Language-specific: 15-16 lines (~55 tokens) → **98% savings** 🏆
 - Component-specific: 55-87 lines (~190-300 tokens) → **90-94% savings**

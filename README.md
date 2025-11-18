@@ -510,9 +510,16 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**Current Version**: v0.9.0 (Alpha) 🚀
+**Current Version**: v0.9.1 (Alpha) 🚀
 
-**Latest Updates** (v0.9.0):
+**Latest Updates** (v0.9.1):
+- 🎯 **Generator Pattern Clarification** - Critical architectural guidance
+- ✅ Added comprehensive Generator pattern guidance to `/metaspec.sdd.specify`
+- 🔍 Added Generator Pattern Compliance validation (Dimension L) to `/metaspec.sdd.analyze`
+- 🚫 Prevents toolkit vs domain application confusion (Generator anti-patterns)
+- 📝 Detects 3 types of violations: Purpose, Templates, CLI Commands
+
+**Previous Updates** (v0.9.0):
 - ✨ Enhanced `/metaspec.sdd.specify` with Use Case → Component automatic derivation
 - 🔍 Added Framework Standards validation to `/metaspec.sdd.analyze`
 - 📋 Added AGENTS.md compliance checks and init command standards

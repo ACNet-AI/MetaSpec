@@ -32,26 +32,26 @@ You **MUST** consider the user input before proceeding (if not empty).
 | 6. Sub-Spec Template | 279-346 | 67 lines | 🔴 **KEY** | `read_file(target_file, offset=279, limit=67)` |
 | 7-9. Generate & Validate | 347-490 | 143 lines | 🟡 Important | `read_file(target_file, offset=347, limit=143)` |
 | 10-11. Propagation & Report | 491-645 | 154 lines | 🟡 Important | `read_file(target_file, offset=491, limit=154)` |
-| 12. Final Report | 646-824 | 178 lines | 🟢 Reference | `read_file(target_file, offset=646, limit=178)` |
+| 12. Final Report | 646-884 | 238 lines | 🟢 Reference | `read_file(target_file, offset=646, limit=238)` |
 
 **📋 Task Templates** (Jump to specific template):
 
 | Template Type | Lines | Size | Usage |
 |---------------|-------|------|-------|
-| **Single Spec Refinement** | 825-833 | 8 lines | `read_file(target_file, offset=825, limit=8)` |
-| **Core Specification** | 834-843 | 9 lines | `read_file(target_file, offset=834, limit=9)` |
-| **Phase Specification** ⭐ | 844-855 | 11 lines | `read_file(target_file, offset=844, limit=11)` |
-| **Component Specification** | 856-868 | 12 lines | `read_file(target_file, offset=856, limit=12)` |
-| **Supporting Specification** | 869-909 | 40 lines | `read_file(target_file, offset=869, limit=40)` |
+| **Single Spec Refinement** | 885-893 | 8 lines | `read_file(target_file, offset=885, limit=8)` |
+| **Core Specification** | 894-903 | 9 lines | `read_file(target_file, offset=894, limit=9)` |
+| **Phase Specification** ⭐ | 904-915 | 11 lines | `read_file(target_file, offset=904, limit=11)` |
+| **Component Specification** | 916-928 | 12 lines | `read_file(target_file, offset=916, limit=12)` |
+| **Supporting Specification** | 929-969 | 40 lines | `read_file(target_file, offset=929, limit=40)` |
 
 **🎯 Phase Workflows** (Multi-spec patterns):
 
 | Phase | Lines | Size | Usage |
 |-------|-------|------|-------|
-| Phase 1: Core Spec | 910-918 | 8 lines | `read_file(target_file, offset=910, limit=8)` |
-| Phase 2: Lifecycle Phases | 919-946 | 27 lines | `read_file(target_file, offset=919, limit=27)` |
-| Phase 3: Supporting Specs | 947-972 | 25 lines | `read_file(target_file, offset=947, limit=25)` |
-| Phase 4: Cross-Reference | 973-993 | 20 lines | `read_file(target_file, offset=973, limit=20)` |
+| Phase 1: Core Spec | 970-978 | 8 lines | `read_file(target_file, offset=970, limit=8)` |
+| Phase 2: Lifecycle Phases | 979-1006 | 27 lines | `read_file(target_file, offset=979, limit=27)` |
+| Phase 3: Supporting Specs | 1007-1032 | 25 lines | `read_file(target_file, offset=1007, limit=25)` |
+| Phase 4: Cross-Reference | 1033-1053 | 20 lines | `read_file(target_file, offset=1033, limit=20)` |
 
 **💡 Typical Usage Patterns**:
 ```python
@@ -62,17 +62,17 @@ read_file(target_file, offset=21, limit=120)
 read_file(target_file, offset=190, limit=155)
 
 # Specific template: Read template only (8-40 lines)
-read_file(target_file, offset=844, limit=11)  # Phase template
+read_file(target_file, offset=904, limit=11)  # Phase template
 
 # Phase pattern: Read specific phase (8-27 lines)
-read_file(target_file, offset=919, limit=27)  # Phase 2
+read_file(target_file, offset=979, limit=27)  # Phase 2
 ```
 
 **Token Savings**: 
-- Full file: 993 lines (~3400 tokens)
-- Core flow: 120 lines (~410 tokens) → **88% savings**
-- Multi-spec strategy: 155 lines (~530 tokens) → **84% savings**
-- Template only: 8-40 lines (~30-140 tokens) → **96-99% savings**
+- Full file: 1053 lines (~3600 tokens)
+- Core flow: 120 lines (~410 tokens) → **89% savings**
+- Multi-spec strategy: 155 lines (~530 tokens) → **85% savings**
+- Template only: 8-40 lines (~30-140 tokens) → **96-99% savings** 🏆
 
 ---
 
