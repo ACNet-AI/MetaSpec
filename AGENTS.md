@@ -87,13 +87,13 @@ The constitution is organized into **three parts**:
 
 ```
 memory/constitution.md
-├── Part I: Project Core Values (管理: /speckit.constitution)
+├── Part I: Project Core Values (Managed by: /speckit.constitution)
 │   - AI-First Design
 │   - Progressive Enhancement
 │   - Minimal Viable Abstraction
 │   - Domain Specificity
 │
-├── Part II: Specification Design Principles (管理: /metaspec.sds.constitution)
+├── Part II: Specification Design Principles (Managed by: /metaspec.sds.constitution)
 │   - Entity Clarity
 │   - Validation Completeness
 │   - Operation Semantics
@@ -102,7 +102,7 @@ memory/constitution.md
 │   - Domain Fidelity
 │   - Workflow Completeness ⭐ NEW
 │
-└── Part III: Toolkit Implementation Principles (管理: /metaspec.sdd.constitution)
+└── Part III: Toolkit Implementation Principles (Managed by: /metaspec.sdd.constitution)
     - Entity-First Design
     - Validator Extensibility
     - Spec-First Development
@@ -170,7 +170,7 @@ SDS Workflow:
 
 ### Why Workflow Matters
 
-❌ **Don't build**: "Tool箱" (collection of isolated operations)  
+❌ **Don't build**: "Toolbox" (collection of isolated operations)  
 ✅ **Do build**: "Workflow Systems" (integrated end-to-end user journeys)
 
 ### The Problem We Solved
@@ -1255,6 +1255,77 @@ metaspec init my-toolkit default     # Explicit (same as above)
 - [ ] Entity matches STEP 2 design
 - [ ] Commands aligned with domain
 - [ ] Dependencies specified
+
+---
+
+### **STEP 3.5: Understand init Command Standards** ⭐ NEW
+
+**Goal**: Ensure your speckit's `init` command follows MetaSpec standards.
+
+**Why this matters**: When you later use `/metaspec.sdd.specify` to define your toolkit, the `init` command specification must align with MetaSpec conventions. This prevents common mistakes like creating single files instead of project structures.
+
+#### init Command Standard for Generator/Scaffolder Toolkits
+
+**If your toolkit type is "Generator/Scaffolder"**, the `init` command **MUST**:
+
+1. **Argument Format**:
+   ```bash
+   {toolkit-name} init <project-directory> [OPTIONS]
+   ```
+   - ✅ Argument is a **directory name** (not a filename)
+   - ❌ WRONG: `{toolkit-name} init spec.yaml`
+   - ✅ RIGHT: `{toolkit-name} init my-project`
+
+2. **Output Structure** (Must create):
+   ```
+   <project-directory>/
+   ├── .{toolkit-name}/       # Configuration directory
+   │   ├── commands/          # (Optional) Custom slash commands
+   │   └── templates/         # (Optional) Output templates
+   ├── memory/
+   │   └── constitution.md    # Project principles (pre-filled)
+   ├── specs/
+   │   └── {initial-spec}     # Initial specification file
+   └── README.md              # Project documentation
+   ```
+
+3. **constitution.md Requirements**:
+   - ✅ Must be pre-filled with template content
+   - ✅ Must include domain-specific guidance
+   - ❌ NOT empty or placeholder
+
+4. **Initial Specification File**:
+   - ✅ Created from template with example data
+   - ✅ Must pass validation immediately
+
+#### Reference Examples
+
+**✅ Correct (MetaSpec itself)**:
+```bash
+metaspec init my-speckit
+# Creates: my-speckit/ with full structure
+# - All required directories
+# - Pre-filled constitution.md
+# - Example spec files
+```
+
+**❌ Wrong**:
+```bash
+my-toolkit init spec.yaml
+# Creates: Single spec.yaml file only
+# Missing: directories, constitution, README
+```
+
+#### Why These Standards?
+
+1. **Consistency**: All MetaSpec-generated toolkits follow the same pattern
+2. **AI-Friendly**: AI agents know what to expect
+3. **Complete Projects**: Users get a full project structure, not just a file
+4. **Best Practices**: Follows industry standards (like create-react-app, cargo new)
+
+#### When NOT to Follow
+
+**If your toolkit is NOT a "Generator/Scaffolder"** (e.g., pure validator, query tool), `init` may have different behavior or not exist at all. The standards above apply specifically to toolkits that create projects or scaffolding.
 
 ---
 

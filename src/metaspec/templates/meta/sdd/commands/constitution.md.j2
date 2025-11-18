@@ -89,6 +89,27 @@ Based on user input and implementation understanding, update these **standard to
 
 **Rationale**: Generic toolkits are weak toolkits; domain focus creates value.
 
+#### **VII. Document Consistency** ⭐ NEW
+- Toolkit specifications must maintain consistency across all documents
+- Component priority (CORE/OPTIONAL) must derive from Primary Use Cases
+- init command spec must match AGENTS.md "Recommended Project Structure"
+- Entity names in toolkit must match domain spec definitions
+- CLI command definitions must be complete and accurate
+
+**Rationale**: Based on marketing-spec-kit feedback (2025-11-17), inconsistencies between spec.md, AGENTS.md, and logical requirements caused implementation errors. This principle prevents:
+- Use case says "generation" but Generator marked as Future Enhancement
+- init command creates <filename> instead of <project-dir>
+- Domain spec entities referenced but not defined
+- AGENTS.md standards ignored
+
+**Rules**:
+1. **AGENTS.md Alignment**: If toolkit is "Generator/Scaffolder", init must create complete directory structure (.{toolkit}/, memory/, specs/, README.md)
+2. **Component-Use Case Coherence**: If use case includes "generate/creation", Generator must be CORE (not Future)
+3. **Domain Spec Dependencies**: All referenced domain specs must exist before toolkit implementation
+4. **Logical Command Definition**: init argument must be <project-dir> for Generator/Scaffolder (not <filename>)
+
+**Verification**: `/metaspec.sdd.specify` includes "Step 5.5: Consistency Validation" that automatically checks these rules.
+
 ### 4. Prepare implementation-specific examples
 
 For each principle in Part III, provide implementation-specific examples:
@@ -98,7 +119,8 @@ For each principle in Part III, provide implementation-specific examples:
 - **Spec-First Development**: Input formats? Declarative style?
 - **AI-Agent Friendly**: Error messages? Naming conventions?
 - **Progressive Enhancement**: MVP scope? Feature roadmap?
-- **Automated Quality**: Test strategy? CI/CD setup?
+- **Domain Specificity**: What domain standards? Domain-specific validations?
+- **Document Consistency**: Component priorities? init command? Cross-document verification?
 
 **Examples by tech stack**:
 - Python: Pydantic models, @validator decorators, Typer CLI
@@ -135,9 +157,28 @@ Update only the `## Part III: Toolkit Implementation Principles` section with im
 
 [MVP scope, feature roadmap, versioning]
 
-### 6. Automated Quality
+### 6. Domain Specificity
 
-[Testing strategy, CI/CD, coverage targets]
+[Domain standards, domain-specific validation rules, focus areas]
+
+### 7. Document Consistency ⭐ NEW
+
+**Principle**: Toolkit specifications must maintain consistency across all documents and logical coherence between components.
+
+**Rules**:
+1. **AGENTS.md Alignment**: init command spec must match AGENTS.md "Recommended Project Structure"
+2. **Component-Use Case Coherence**: Component priority (CORE/OPTIONAL) must derive from Primary Use Cases
+3. **Domain Spec Dependencies**: All referenced domain specs must exist before toolkit implementation
+4. **Logical Command Definition**: CLI command definitions must be complete and accurate
+
+**Verification**: `/metaspec.sdd.specify` includes automatic consistency validation.
+
+**Example Issues Prevented**:
+- ❌ Use case: "Content Generation" but Generator marked as Future Enhancement
+- ❌ init command: `<filename>` instead of `<project-directory>`
+- ❌ Entity referenced but not defined in domain spec
+- ✅ All components correctly prioritized based on use cases
+- ✅ init command matches AGENTS.md standards
 
 <!-- Managed by /metaspec.sdd.constitution -->
 ```

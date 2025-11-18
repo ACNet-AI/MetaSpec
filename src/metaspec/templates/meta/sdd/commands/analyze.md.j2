@@ -66,6 +66,7 @@ Parse user intent to select appropriate analysis mode:
   - "constitution", "principles" → Constitution Alignment
   - "completeness" → Specification Completeness
   - "cross-artifacts" → Cross-Artifact Consistency
+  - "framework", "standards", "init", "components" → Framework Standards Compliance ⭐ NEW (v0.9.0+)
 - Use when: Fixing specific issues, targeted improvement
 
 **Full Mode** 📊 (5-10 min, comprehensive):
@@ -542,6 +543,220 @@ OR
   Recommendation: Standardize on "entity" (matches constitution)
 ✅ All field names consistent across spec and plan
 ```
+
+#### J. Framework Standards Compliance ⭐ NEW (v0.9.0+)
+
+**Purpose**: Verify toolkit spec compliance with MetaSpec framework conventions
+
+**Context**: These rules are built into MetaSpec framework design and documented in MetaSpec/AGENTS.md for reference. The validation checks enforce these conventions without requiring external file reads.
+
+**J1: init Command Standards** (Generator/Scaffolder toolkits):
+
+**Check**:
+```python
+# Extract toolkit type and init command from spec.md
+toolkit_type = extract_section(spec_md, "Toolkit Type")
+init_command = extract_cli_command(spec_md, "init")
+
+# Validate if toolkit is Generator/Scaffolder
+if "Generator" in toolkit_type or "Scaffolder" in toolkit_type:
+    # Rule 1: Argument format
+    if "<filename>" in init_command or ".yaml" in init_command or ".json" in init_command:
+        report_error("INIT_CMD_001", "HIGH")
+    
+    # Rule 2: Output structure
+    output_desc = extract_init_output(spec_md)
+    required_dirs = [".{toolkit}/", "memory/", "specs/", "README.md"]
+    for dir in required_dirs:
+        if dir not in output_desc:
+            report_warning("INIT_OUT_001", "MEDIUM")
+    
+    # Rule 3: constitution.md content
+    if "constitution.md" in output_desc:
+        if "empty" in output_desc or "placeholder" in output_desc:
+            report_error("INIT_CONST_001", "HIGH")
+```
+
+**Rules**:
+- ✅ Argument MUST be `<project-directory>` (not `<filename>`, `<spec-file>`, `.yaml`)
+- ✅ Output MUST include: `.{toolkit}/`, `memory/`, `specs/`, `README.md`
+- ✅ `memory/constitution.md` MUST be pre-filled (not empty/placeholder)
+
+**Report**:
+```
+❌ HIGH: init command uses <filename> instead of <project-directory> [INIT_CMD_001]
+  Location: spec.md §CLI Commands → init
+  Current: marketing-spec-kit init <spec-file>
+  Expected: marketing-spec-kit init <project-directory>
+  
+  Impact: Violates framework convention for Generator/Scaffolder toolkits
+  Reference: MetaSpec framework standards (init command pattern)
+  
+  Fix: In CLI Commands section, change:
+       FROM: init <spec-file>
+       TO:   init <project-directory>
+
+❌ MEDIUM: init output missing required directory [INIT_OUT_001]
+  Missing: memory/constitution.md
+  Expected: Complete project structure with all standard directories
+  
+  Fix: Add to init command output description:
+       - memory/constitution.md (pre-filled with project principles)
+
+✅ init command follows framework standards
+  - Argument: <project-directory> ✅
+  - Output structure: Complete ✅
+  - constitution.md: Pre-filled ✅
+```
+
+---
+
+**J2: Component Priority Logic**:
+
+**Check**:
+```python
+# Extract use cases and component priorities
+use_cases = extract_section(spec_md, "Primary Use Cases")
+core_components = extract_section(spec_md, "Core Components")
+future_components = extract_section(spec_md, "Future Enhancements")
+
+# Rule 1: Generation use case → Generator must be Core
+use_case_lower = use_cases.lower()
+if any(kw in use_case_lower for kw in ["generate", "generation", "create content", "produce", "output"]):
+    generator_location = find_component_location(spec_md, "Generator")
+    if generator_location != "Core Components":
+        report_warning("COMP_PRI_001", "HIGH")
+
+# Rule 2: Validation use case → Validator should be Core
+if any(kw in use_case_lower for kw in ["validate", "verify", "check", "ensure"]):
+    validator_location = find_component_location(spec_md, "Validator")
+    if validator_location != "Core Components":
+        report_warning("COMP_PRI_002", "MEDIUM")
+
+# Rule 3: Generator/Scaffolder toolkit → Generator must be Core
+if toolkit_type in ["Generator/Scaffolder"]:
+    if "Generator" not in core_components:
+        report_error("COMP_PRI_003", "CRITICAL")
+```
+
+**Rules**:
+- If use_case contains `"generate|generation|create|produce"` → Generator MUST be in Core Components
+- If use_case contains `"validate|verify|check"` → Validator SHOULD be in Core Components
+- If toolkit_type is `"Generator/Scaffolder"` → Generator MUST be Core (cannot be Future)
+
+**Report**:
+```
+❌ HIGH: Component priority mismatch [COMP_PRI_001]
+  Use Case: "AI-Driven Content Generation" (PRIMARY)
+  Keyword detected: "generation"
+  Generator location: Future Enhancements ❌
+  Expected location: Core Components ✅
+  
+  Impact: Cannot fulfill PRIMARY use case without CORE component
+  Rationale: Primary features must be supported by core components
+  
+  Fix: Move Generator from "Future Enhancements" to "Core Components" section
+  Reference: Use Case → Component Analysis logic (Component Requirements section)
+
+❌ CRITICAL: Toolkit type requires Generator as Core [COMP_PRI_003]
+  Toolkit Type: Generator/Scaffolder
+  Generator location: Not in Core Components ❌
+  
+  Impact: Violates toolkit type definition
+  
+  Fix: Add Generator to "Core Components" section
+
+✅ Component priorities align with use cases
+  - "validate" in use case → Validator in Core ✅
+  - "generate" in use case → Generator in Core ✅
+```
+
+---
+
+**J3: Generator Necessity Check**:
+
+**Check**:
+```python
+# Apply decision logic from Component 5 specification
+toolkit_type = extract_toolkit_type(spec_md)
+use_cases = extract_use_cases(spec_md)
+generator_location = find_component_location(spec_md, "Generator")
+
+# Decision tree (from specify.md.j2 Component 5)
+should_have_generator = False
+
+# Step 1: Check use cases
+if any(kw in use_cases.lower() for kw in ["generate", "generation", "scaffold", "create"]):
+    should_have_generator = True
+
+# Step 2: Check toolkit type
+if toolkit_type in ["Generator/Scaffolder", "Code Generator"]:
+    should_have_generator = True
+
+# Step 3: Compare with similar tools
+similar_tools = extract_similar_tools(spec_md)
+if has_generation_capability(similar_tools):
+    should_have_generator = True
+
+# Validate
+if should_have_generator and generator_location not in ["Core Components"]:
+    report_warning("GEN_NEC_001", "HIGH")
+elif not should_have_generator and generator_location == "Core Components":
+    report_info("GEN_NEC_002", "LOW")
+```
+
+**Rules**:
+- If toolkit_type == "Generator/Scaffolder" → Generator MUST be Core
+- If use_cases contain generation keywords → Generator SHOULD be Core
+- If similar tools have generation → Consider adding Generator
+
+**Report**:
+```
+❌ HIGH: Generator component missing or misclassified [GEN_NEC_001]
+  Toolkit Type: Generator/Scaffolder
+  Primary Use Case: "AI-driven content generation"
+  Similar Tools: create-react-app (has generator)
+  
+  Current: Generator in "Future Enhancements"
+  Expected: Generator in "Core Components"
+  
+  Decision Tree Analysis:
+    ✅ Step 1: Use case mentions "generation"
+    ✅ Step 2: Toolkit type is "Generator/Scaffolder"
+    ✅ Step 3: Similar tools have generation capability
+    → Conclusion: Generator MUST be Core
+  
+  Fix: Move Generator to "Core Components" section
+  Reference: Component Requirements Analysis & Decision Tree
+
+ℹ️  LOW: Generator may be over-specified [GEN_NEC_002]
+  Toolkit Type: Validator/Analyzer
+  Primary Use Case: "Validate specifications"
+  Generator: In Core Components
+  
+  Note: Generator not required for validation-focused toolkit
+  Consider: Moving to "Future Enhancements" if not essential
+
+✅ Generator classification correct
+  - Toolkit type matches component priority ✅
+  - Use cases justify Generator as Core ✅
+  - Similar tools analysis consistent ✅
+```
+
+---
+
+**Dimension J Summary**:
+
+Framework Standards Compliance checks ensure toolkit specs follow MetaSpec conventions:
+- **J1**: init command format and output structure
+- **J2**: Component priorities match use case requirements
+- **J3**: Generator necessity based on toolkit type and use cases
+
+**Severity Guidelines**:
+- **CRITICAL**: Toolkit type violation (e.g., Generator/Scaffolder without Generator in Core)
+- **HIGH**: init command format errors, primary use case not supported by core components
+- **MEDIUM**: Missing optional directories, secondary use case support
+- **LOW**: Over-specification, informational notices
 
 #### K. Cross-Artifact Consistency (⭐ NEW - MetaSpec specific)
 

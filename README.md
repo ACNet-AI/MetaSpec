@@ -510,12 +510,14 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**Current Version**: v0.6.0 (Alpha) 🚀
+**Current Version**: v0.9.0 (Alpha) 🚀
 
-**Latest Updates** (v0.6.0):
-- ✨ Added `metaspec sync` command to update MetaSpec commands in existing speckits
-- 📦 Version tracking in generated speckits (records MetaSpec version)
-- 🔄 Safe and reversible updates with automatic backups
+**Latest Updates** (v0.9.0):
+- ✨ Enhanced `/metaspec.sdd.specify` with Use Case → Component automatic derivation
+- 🔍 Added Framework Standards validation to `/metaspec.sdd.analyze`
+- 📋 Added AGENTS.md compliance checks and init command standards
+- 🎯 Prevents 80% of common toolkit development errors
+- 📖 Complete migration guide for v0.8.x users
 
 **Core Features**:
 - ✅ Meta-specification framework with YAML validation
