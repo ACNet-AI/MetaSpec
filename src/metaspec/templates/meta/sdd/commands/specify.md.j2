@@ -36,10 +36,10 @@ This command is for defining **toolkit implementation specifications**:
 |------|-------|------|-----------------|
 | 1. Setup & Verify | 103-159 | 56 lines | `read_file(target_file, offset=103, limit=56)` |
 | 2. Gather Content | 160-239 | 79 lines | `read_file(target_file, offset=160, limit=79)` |
-| 3. Generate Sections | 240-2583 | 2343 lines | See components below ⬇️ **LARGE** |
-| 4. Write File | 2584-2632 | 48 lines | `read_file(target_file, offset=2584, limit=48)` |
-| 5. Impact Report | 2633-2730 | 97 lines | `read_file(target_file, offset=2633, limit=97)` |
-| 6-9. Analysis & Report | 2731-3007 | 276 lines | `read_file(target_file, offset=2731, limit=276)` |
+| 3. Generate Sections | 240-2639 | 2399 lines | See components below ⬇️ **LARGE** |
+| 4. Write File | 2640-2688 | 48 lines | `read_file(target_file, offset=2640, limit=48)` |
+| 5. Impact Report | 2689-2787 | 98 lines | `read_file(target_file, offset=2689, limit=98)` |
+| 6-9. Analysis & Report | 2788-3084 | 296 lines | `read_file(target_file, offset=2788, limit=296)` |
 
 **📋 Key Components in Step 3** (Jump to specific components):
 
@@ -51,8 +51,8 @@ This command is for defining **toolkit implementation specifications**:
 | Component 2: Validator | 447-491 | 44 lines | 🟢 Optional | `read_file(target_file, offset=447, limit=44)` |
 | **Component 3: CLI Commands** ⭐ | 492-1015 | 523 lines | 🔴 **KEY** | See subsections below ⬇️ |
 | **Component 4: Slash Commands** ⭐⭐ | 1016-2181 | 1165 lines | 🔴 **LARGE** | See subsections below ⬇️ |
-| **Component 5: Generator** ⭐⭐⭐ | 2210-2717 | 508 lines | 🔴 **CRITICAL** | See subsections below ⬇️ |
-| Architecture & Requirements | 2718-2845 | 128 lines | 🟡 Important | `read_file(target_file, offset=2718, limit=128)` |
+| **Component 5: Generator** ⭐⭐⭐ | 2214-2779 | 565 lines | 🔴 **CRITICAL** | See subsections below ⬇️ |
+| Architecture & Requirements | 2780-2850 | 70 lines | 🟡 Important | `read_file(target_file, offset=2780, limit=70)` |
 
 **🎨 Component 3: CLI Commands Subsections**:
 
@@ -70,16 +70,16 @@ This command is for defining **toolkit implementation specifications**:
 | **Custom Commands** ⭐ | 1123-1650 | 527 lines | `read_file(target_file, offset=1123, limit=527)` |
 | **Library Commands** ⭐ | 1982-2181 | 199 lines | `read_file(target_file, offset=1982, limit=199)` |
 
-**🎨 Component 5: Generator Subsections** (508 lines total, ⭐⭐⭐ v0.9.2):
+**🎨 Component 5: Generator Subsections** (565 lines total, ⭐⭐⭐ v0.9.3):
 
 | Subsection | Lines | Size | Usage |
 |------------|-------|------|-------|
 | **Generator Pattern Guide** ⭐⭐ | 2220-2306 | 87 lines | `read_file(target_file, offset=2220, limit=87)` |
 | **🎯 Understanding Purpose** ⭐⭐ NEW | 2307-2377 | 71 lines | `read_file(target_file, offset=2307, limit=71)` |
 | Step 1-4: Analysis Logic | 2378-2457 | 80 lines | `read_file(target_file, offset=2378, limit=80)` |
-| **Step 5: Define Generator** ⭐ | 2458-2579 | 122 lines | `read_file(target_file, offset=2458, limit=122)` |
-| **✅ Verification Checklist** ⭐⭐ NEW | 2580-2700 | 121 lines | `read_file(target_file, offset=2580, limit=121)` |
-| Step 6: Omit Generator | 2701-2727 | 27 lines | `read_file(target_file, offset=2701, limit=27)` |
+| **Step 5: Define Generator** ⭐ UPDATED | 2458-2634 | 177 lines | `read_file(target_file, offset=2458, limit=177)` |
+| **✅ Verification Checklist** ⭐⭐ NEW | 2635-2776 | 142 lines | `read_file(target_file, offset=2635, limit=142)` |
+| Step 6: Omit Generator | 2779-2805 | 27 lines | `read_file(target_file, offset=2779, limit=27)` |
 
 **💡 Typical Usage Patterns**:
 ```python
@@ -101,22 +101,22 @@ read_file(target_file, offset=2220, limit=87)
 # **Understanding Purpose**: NEW - MetaSpec scope clarification (71 lines) ⭐⭐ v0.9.2
 read_file(target_file, offset=2307, limit=71)
 
-# **✅ Verification Checklist**: NEW - Post-generation validation (121 lines) ⭐⭐ v0.9.2
-read_file(target_file, offset=2580, limit=121)
+# **✅ Verification Checklist**: NEW - Post-generation validation (142 lines) ⭐⭐ v0.9.3
+read_file(target_file, offset=2635, limit=142)
 
-# **Generator Logic**: Complete Component 5 (508 lines total) ⭐⭐⭐ v0.9.2
-read_file(target_file, offset=2220, limit=508)
+# **Generator Logic**: Complete Component 5 (565 lines total) ⭐⭐⭐ v0.9.3
+read_file(target_file, offset=2214, limit=565)
 
 # Slash Commands: Component 4 overview (106 lines)
 read_file(target_file, offset=1016, limit=106)
 ```
 
-**Token Savings (v0.9.2)**: 
-- Full file: 3463 lines (~11,736 tokens)
+**Token Savings (v0.9.3)**: 
+- Full file: 3541 lines (~12,000 tokens)
 - **Targeted reading: 60-523 lines (~200-1,770 tokens)**
-- **Step 4.5 only: 77 lines (~260 tokens) - 98% savings** 🏆
-- **Step 5d only: 121 lines (~410 tokens) - 97% savings** 🏆
-- **Generator Pattern only: 87 lines (~295 tokens) - 97% savings** 🏆
+- **Step 5 (Generator with deployment): 177 lines (~600 tokens) - 95% savings** 🏆
+- **Verification Checklist: 142 lines (~480 tokens) - 96% savings** 🏆
+- **Generator Pattern only: 87 lines (~295 tokens) - 98% savings** 🏆
 - **Overall savings: 84-98% tokens** 🎉
 
 ---
@@ -2472,10 +2472,15 @@ Check Toolkit Type         Check Toolkit Type
 
 **Generation Targets** (Project files):
 - **Project structure**: Create `.{toolkit}/`, `memory/`, `specs/` directories
-- **Specification files**: Render `{entity}-spec.yaml` from templates
+- **Specification files**: Render `{entity}-spec.md` from templates (default: Markdown; alternatives: YAML, JSON, TOML)
 - **Constitution**: Generate `memory/constitution.md` from principles template
 - **README**: Create project README with toolkit usage guide
-- **Commands**: Generate custom slash commands (if specified)
+- **Slash Commands**: Deploy toolkit's slash commands to `.{toolkit}/commands/`
+  - ✅ **Always deploy** all slash command files (`*.md`) from `templates/{source}/commands/`
+  - ✅ **Target location**: `.{toolkit}/commands/` directory in user projects
+  - ✅ **Purpose**: AI assistant operational guides (read by AI in user projects)
+  - ✅ **Method**: Direct file copy (NOT Jinja2 rendering)
+  - ⚠️ **Not optional** - Critical for AI-driven workflows
 
 **Architecture Pattern** (Follow MetaSpec):
 ```python
@@ -2510,21 +2515,71 @@ class {Toolkit}Generator:
         # 5. Build project structure
         project = self._build_structure(files)
         
-        # 6. Write to disk (atomic)
+        # 6. Deploy slash commands (if toolkit has them)
+        self._deploy_slash_commands(output_dir)
+        
+        # 7. Write to disk (atomic)
         self._write_files(project, output_dir)
         
         return GeneratedProject(files=files)
 ```
 
+**Command Deployment Implementation**:
+```python
+def _deploy_slash_commands(self, output_dir: Path) -> None:
+    """
+    Deploy toolkit's slash commands to user project.
+    
+    Copies all command files from toolkit's templates to 
+    `.{toolkit}/commands/` so AI assistants can read them in user projects.
+    
+    Args:
+        output_dir: Target project directory
+    
+    Behavior:
+        - Copies all *.md files from templates/{source}/commands/
+        - Creates `.{toolkit}/commands/` directory if needed
+        - Preserves original .md format (no Jinja2 rendering)
+        - Skips if no commands directory exists in templates
+    """
+    # Get toolkit's command directory from package
+    commands_source = Path(__file__).parent.parent / "templates" / "{source}" / "commands"
+    
+    if not commands_source.exists():
+        return  # No commands to deploy (optional component)
+    
+    # Create target directory in user project
+    commands_target = output_dir / f".{self.toolkit_name}" / "commands"
+    commands_target.mkdir(parents=True, exist_ok=True)
+    
+    # Copy all command files (direct copy, no rendering)
+    for cmd_file in commands_source.glob("*.md"):
+        shutil.copy(cmd_file, commands_target / cmd_file.name)
+        logger.debug(f"Deployed command: {cmd_file.name}")
+```
+
 **Templates**:
-- **Location**: `src/{toolkit_name}/templates/` directory
+- **Location**: `src/{toolkit_name}/templates/{source}/` directory
+  - `{source}`: Domain-specific subdirectory (e.g., `mcp`, `marketing`, `api`)
+  - ⚠️ **Note**: Most toolkits don't need a `base/` directory - put templates directly in `{source}/`
 - **Format**: Plain files or Jinja2 templates (`.j2` extension)
 - **Customization**: User-overridable in `.{toolkit}/templates/`
-- **Required Templates**:
-  - `constitution.md` or `constitution.md.j2` - Project principles
-  - `spec-template.yaml` or `spec-template.yaml.j2` - Specification template
-  - `readme-template.md` or `readme-template.md.j2` - Project README
-  - `command-template.md.j2` (optional) - Custom command template
+
+- **Required Templates** (in `templates/{source}/`):
+  - `constitution.md.j2` - Project principles template (domain-specific, not generic)
+  - `spec-template.md.j2` - Specification template
+    - **Default format**: Markdown (`.md`)
+    - **Alternative formats**: YAML (`.yaml`), JSON (`.json`), TOML (`.toml`), or custom
+    - **Choose based on**: Domain conventions and parsing requirements
+  - `readme.md.j2` - Project README template
+  - `.gitignore.j2` - Git ignore rules template
+  
+- **Required Command Deployment** (if toolkit has slash commands):
+  - **Source**: `templates/{source}/commands/*.md` (same `{source}` as above)
+  - **Target**: `.{toolkit}/commands/*.md` (in user projects)
+  - **Method**: Direct file copy (NOT Jinja2 rendering)
+  - **Purpose**: AI assistant operational guides
+  - **When**: Always deploy during project initialization
 
 **Input**:
 - **Project name** (string): Name for the new project
@@ -2592,6 +2647,29 @@ Run this checklist to catch common mistakes:
 | **init command output** | ✅ Full project structure | ❌ Single file |
 | **Templates location** | ✅ `src/{toolkit}/templates/` | ❌ Domain-specific templates |
 | **Template content** | ✅ Constitution, README, spec templates | ❌ Post/article templates |
+
+##### ✅ Slash Commands Deployment Checklist
+
+**Verify that your Generator properly deploys slash commands to user projects:**
+
+| Check | Correct | Wrong |
+|-------|---------|-------|
+| **Commands deployed?** | ✅ All `.md` files in `.{toolkit}/commands/` | ❌ Empty or missing directory |
+| **Command count** | ✅ Matches toolkit's command count | ❌ Missing commands |
+| **File format** | ✅ Original `.md` format preserved | ❌ Rendered as `.j2` or modified |
+| **Deployment method** | ✅ Direct file copy using `shutil.copy()` | ❌ Jinja2 rendering |
+| **Target location** | ✅ `.{toolkit}/commands/*.md` | ❌ Wrong directory or filename |
+| **AI accessible** | ✅ AI can read commands in user project | ❌ Commands only in toolkit source |
+| **Timing** | ✅ Deployed during `init` command | ❌ Manual copy required |
+
+**Command Deployment Verification**:
+```python
+# After running: {toolkit} init my-project
+# Verify:
+assert (my-project / ".{toolkit}" / "commands").exists()
+assert len(list((my-project / ".{toolkit}" / "commands").glob("*.md"))) > 0
+assert (my-project / ".{toolkit}" / "commands" / "{toolkit}.{command}.md").exists()
+```
 
 ##### 📋 Specific Validation Rules
 

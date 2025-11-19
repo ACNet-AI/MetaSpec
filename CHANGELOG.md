@@ -9,6 +9,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.3] - 2025-11-19
+
+### 📋 Slash Commands Deployment Documentation Fix
+
+**Issue**: Generator Pattern documentation incomplete regarding slash commands deployment  
+**Severity**: MEDIUM (Documentation completeness)  
+**Source**: marketing-spec-kit implementation feedback  
+**Status**: ✅ Resolved
+
+#### 🚨 Problem
+
+MetaSpec v0.9.2's `/metaspec.sdd.specify` command had incomplete documentation on deploying slash commands to user projects. The phrase "Generate custom slash commands (if specified)" was misleading, causing implementers to miss this critical step.
+
+**Consequences**:
+- Implementers didn't deploy slash commands to user projects
+- User projects lacked `.{toolkit}/commands/` directory
+- AI assistants couldn't access operational guides
+- Core AI-driven workflow value was lost
+
+#### 🔧 Implemented Fixes
+
+**Fix 1: Updated Generation Targets** (Line 2473-2483)
+
+**Before**:
+```markdown
+- **Commands**: Generate custom slash commands (if specified)
+```
+
+**After**:
+```markdown
+- **Slash Commands**: Deploy toolkit's slash commands to `.{toolkit}/commands/`
+  - ✅ Always deploy all slash command files (*.md)
+  - ✅ Target location: `.{toolkit}/commands/` in user projects
+  - ✅ Purpose: AI assistant operational guides
+  - ✅ Method: Direct file copy (NOT Jinja2 rendering)
+  - ⚠️ Not optional - Critical for AI-driven workflows
+```
+
+**Fix 2: Added Command Deployment Implementation** (Line 2527-2559)
+
+Added detailed `_deploy_slash_commands()` method with:
+- Clear docstring explaining purpose
+- Source/target directory specification
+- Direct file copy approach (not rendering)
+- Graceful handling when no commands exist
+
+**Fix 3: Added Slash Commands Deployment Checklist** (Line 2645-2666)
+
+New verification table checking:
+- Commands deployed correctly
+- File format preserved
+- AI accessibility
+- Proper timing (during init)
+
+**Fix 4: Updated Required Templates List** (Line 2565-2576)
+
+Added "Required Command Deployment" section specifying:
+- Source/target paths
+- Deployment method
+- Purpose clarification
+- Timing requirements
+
+#### 📊 Impact
+
+**Documentation Quality**:
+- ✅ Clear guidance on slash commands deployment
+- ✅ Complete code examples with `_deploy_slash_commands()`
+- ✅ Verification checklist for implementers
+- ✅ Aligned with MetaSpec's own implementation
+
+**Implementation Correctness**:
+- ✅ Future toolkits will correctly deploy commands
+- ✅ AI-driven workflows will work out-of-the-box
+- ✅ Consistent with MetaSpec architecture patterns
+
+#### 🔄 Migration Path
+
+**For existing toolkits** (like marketing-spec-kit):
+
+1. **Add command deployment logic** to Generator:
+   ```python
+   def _deploy_slash_commands(self, output_dir: Path) -> None:
+       # Copy from templates/{source}/commands/ to .{toolkit}/commands/
+   ```
+
+2. **Update project structure** description in spec.md
+3. **Verify** using new checklist
+4. **Re-release** toolkit with fix
+
+**For new toolkits**:
+- Follow updated `/metaspec.sdd.specify` guidance
+- Run verification checklist
+- Commands will deploy automatically
+
+#### 📚 Related Documentation
+
+- Generator implementation: `src/metaspec/generator.py` (Line 310, 328, 342)
+- Base AGENTS.md: Documents `.metaspec/commands/` purpose
+
+---
+
 ## [0.9.2] - 2025-11-18
 
 ### 🎯 Toolkit Type Detection & Simplified Generator Pattern

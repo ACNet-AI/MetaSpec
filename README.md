@@ -510,15 +510,20 @@ uv run mypy src/metaspec       # Type check
 
 ## 🏗️ Status
 
-**Current Version**: v0.9.2 (Alpha) 🚀
+**Current Version**: v0.9.3 (Alpha) 🚀
 
-**Latest Updates** (v0.9.2):
-- 🎯 **Toolkit Type Detection & Simplified Generator Pattern** - Architecture clarity
-- ✅ Removed "Domain Application" concept from `/metaspec.sdd.specify` (MetaSpec only generates Specification Toolkits)
-- 🔍 Simplified Step 4.5: Unified guidance for all toolkits (deleted 190 lines of confusion)
-- ⚠️ Unified Generator template: Single pattern for all Specification Toolkits (removed Option B)
-- 📝 Added Post-Generation verification checklist (Step 5d, +122 lines)
-- 🎓 Clarified MetaSpec architecture: Layer 1 (MetaSpec) → Layer 2 (Spec Toolkit) → Layer 3 (Domain App)
+**Latest Updates** (v0.9.3):
+- 📋 **Slash Commands Deployment Documentation Fix** - Complete guidance on deploying commands to user projects
+- ✅ Updated Generation Targets: Clear explanation of slash commands deployment (always required, not optional)
+- 🔧 Added `_deploy_slash_commands()` implementation example with detailed code
+- ✅ Added Slash Commands Deployment Checklist to catch deployment errors
+- 📁 Clarified template structure: `templates/{source}/` (most toolkits don't need `base/`)
+- 🎯 Prevents implementers from missing critical AI-driven workflow support
+
+**Previous Updates** (v0.9.2):
+- 🎯 Toolkit Type Detection & Simplified Generator Pattern
+- ✅ Removed "Domain Application" concept (MetaSpec only generates Specification Toolkits)
+- 🔍 Simplified Step 4.5 and unified Generator template
 
 **Previous Updates** (v0.9.1):
 - 🎯 Generator Pattern Clarification - Added guidance and validation (Dimension L)
