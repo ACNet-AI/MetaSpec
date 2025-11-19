@@ -202,8 +202,9 @@ Check and update dependent files to align with updated principles:
 - **Update** if principle names or descriptions changed
 - **Mark** with `<!-- Updated per constitution v{VERSION} -->`
 
-#### C. Toolkit Templates
+#### C. Toolkit Specification Templates (MetaSpec's own templates)
 - **Read** `/src/metaspec/templates/meta/templates/spec-template.md.j2` (if exists)
+- **Note**: This is MetaSpec's template for generating **toolkit specs**, not user project specs
 - **Check** template structure matches required principles
 - **Check** mandatory sections align with Entity-First and Spec-First principles
 - **Update** if new principles require new sections

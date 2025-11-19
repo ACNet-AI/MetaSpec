@@ -9,6 +9,224 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.5] - 2025-11-19
+
+### 🔧 Documentation Optimization & Logical Consistency
+
+**Issue**: After v0.9.4 introduced "Generator vs AI Commands" separation, the documentation still contained logical contradictions and redundancy  
+**Severity**: MEDIUM (Documentation quality)  
+**Status**: ✅ Resolved
+
+#### 🎯 Changes
+
+**1. Resolved Critical Logical Contradictions in specify.md.j2**
+
+**Contradiction 1**: init Command Standard vs Generator Pattern
+- ❌ **Before**: Line 745-746 required creating `{initial-spec-file}` (actual spec template)
+- ✅ **After**: Now requires creating `specs/README.md` (workflow guidance only)
+- **Impact**: Aligns with v0.9.4's "AI-First" philosophy
+
+**Contradiction 2**: MetaSpec Self-Reference Misleading
+- ❌ **Before**: Example showed MetaSpec creating `001-meta-spec/spec.md`
+- ✅ **After**: Correctly shows creating `.metaspec/commands/` and `specs/README.md`
+- **Impact**: MetaSpec's own behavior now matches documentation
+
+**Contradiction 3**: Use Case Example Misleading
+- ❌ **Before**: "AI-Driven Content Generation" implied AI content = Generator's job
+- ✅ **After**: "Generate project structure" correctly shows infrastructure setup
+- **Impact**: Clear role separation between Generator and AI Commands
+
+**2. Removed 334 Lines of Redundancy (-9.2%)**
+
+Removed duplicate content across documentation:
+
+**specify.md.j2** (295 lines removed):
+- init Command Standard details (150+ lines duplicated 3 times)
+- Generator Pattern explanations (redundant sections)
+- Verification Checklist (192 lines → 25 lines template reference)
+- CLI vs Slash Command distinctions (repeated 4+ times)
+
+**README.md** (39 lines removed):
+- Duplicate core features (already in Key Features section)
+- Duplicate quality metrics (already in badges)
+- Historical updates (belong in CHANGELOG)
+- Outdated version info
+
+**Token Savings**:
+- Verification Checklist: 192 lines → 25 lines = **86.9% savings** 🏆
+- README Status: 44 lines → 5 lines = **88.6% savings** 🏆
+- Overall: 3618 lines → 3284 lines = **9.2% reduction**
+- Updated token savings: 84-98% → **84-99%**
+
+**3. Synchronized Related Documentation**
+
+**plan.md.j2**: Updated project structure example
+- ❌ **Before**: Showed `spec-template.yaml` in templates
+- ✅ **After**: Shows `specs-readme.md.j2` (correct infrastructure template)
+
+**constitution.md.j2**: Clarified template reference
+- Added explicit note: `spec-template.md.j2` is MetaSpec's own toolkit spec template, NOT user project spec template
+
+**4. Updated Navigation Guides**
+
+Updated line numbers and section sizes in:
+- `specify.md.j2` (comprehensive update)
+- `plan.md.j2` (project structure changes)
+- `implement.md.j2` (line number sync)
+
+**5. README Status Section Optimization**
+
+Removed redundant Status section (44 lines → 5 lines):
+- ❌ **Removed**: Duplicate core features (already in Key Features section)
+- ❌ **Removed**: Duplicate quality metrics (already in badges)
+- ❌ **Removed**: Historical updates (belong in CHANGELOG)
+- ❌ **Removed**: Outdated version info (v0.9.4 → v0.9.5)
+- ✅ **Simplified**: Clean "Release Notes" section with CHANGELOG reference
+
+**Impact**: Improved README readability and maintainability
+
+#### 📊 Summary
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| specify.md.j2 size | 3574 lines | 3279 lines | -295 lines (-8.3%) |
+| README Status section | 44 lines | 5 lines | -39 lines (-88.6%) |
+| Total optimization | 3618 lines | 3284 lines | -334 lines (-9.2%) |
+| Logical contradictions | 3 critical | 0 | ✅ Resolved |
+| Token savings (max) | 84-98% | 84-99% | +1% |
+| Documentation alignment | Partial | ✅ Complete | Full v0.9.4 alignment |
+
+#### 🎓 Lessons Learned
+
+1. **Incremental fixes need holistic review**: v0.9.4 added "Generator vs AI Commands" but left old contradictory text
+2. **External validation is valuable**: marketing-spec-kit analysis revealed critical contradictions
+3. **Navigation guides are living documents**: Must update when content changes
+4. **Single source of truth**: Status information should live in badges and CHANGELOG, not duplicated in Status sections
+
+---
+
+## [0.9.4] - 2025-11-19
+
+### 🎯 Generator vs AI Commands: Role Separation
+
+**Issue**: Generator Pattern documentation inconsistent with MetaSpec implementation  
+**Severity**: MEDIUM-HIGH (Architecture principle)  
+**Source**: marketing-spec-kit implementation feedback  
+**Status**: ✅ Resolved
+
+#### 🚨 Problem
+
+MetaSpec v0.9.3's `/metaspec.sdd.specify` documentation required `spec-template.{format}.j2`, but MetaSpec's **own implementation** only generates `specs/README.md`. This created a fundamental misunderstanding about Generator's role.
+
+**Core Contradiction**:
+- 📄 **Doc claimed**: Generate `spec-template.{format}.j2` (empty template for users to fill)
+- 💻 **MetaSpec does**: Only generates `specs/README.md` (guidance document)
+- 🤖 **Actual workflow**: Specifications generated by AI + slash commands
+
+**Design Philosophy Conflict**:
+- ❌ **Template-First** (doc suggested): Pre-generate empty templates, users fill manually
+- ✅ **AI-First** (actual design): AI generates specs through interactive dialogue
+
+#### 🔧 Implemented Fixes
+
+**Fix 1: Added "Generator vs AI Commands: Role Separation" Section** (Line 2220-2316)
+
+New comprehensive explanation clarifying:
+- **Generator's Role**: Set up project infrastructure (NOT generate specifications)
+- **AI Commands' Role**: Generate specifications through interactive dialogue
+- **Why This Separation**: Flexibility, intelligence, quality, true spec-driven
+- **Workflow Comparison**: Template-First (wrong) vs AI-First (correct)
+- **Real-World Example**: MetaSpec itself uses AI generation, not templates
+
+**Fix 2: Updated Required Templates** (Line 2666-2680)
+
+**Before**:
+```markdown
+- `spec-template.md.j2` - Specification template
+```
+
+**After**:
+```markdown
+- `specs-readme.md.j2` - specs/ directory guidance template ⭐ CRITICAL
+  - Target: specs/README.md (NOT spec-template)
+  - Content: Explains how to use slash commands
+  - Purpose: Guide users to AI-driven specification generation
+
+- Anti-Pattern - Do NOT Create ❌:
+  - ❌ spec-template.{format}.j2
+  - ❌ example-spec.{format}.j2
+  - Reason: Specs generated by AI, not pre-templated
+```
+
+**Fix 3: Updated Generation Targets** (Line 2571-2592)
+
+Changed from "Project files" to "Project infrastructure only":
+- ✅ Added: `specs/README.md` (guidance, not template)
+- ❌ Removed: Specification files rendering
+- ❌ Added anti-pattern section: Don't generate spec templates
+
+**Fix 4: Updated Example Code** (Line 2670-2697)
+
+Added `_select_templates()` method example showing:
+- Only 4 infrastructure templates
+- `specs/README.md` (guidance, NOT template)
+- Explicit note: No spec-template or example-spec
+
+**Fix 5: Added Generator Scope Verification** (Line 2819-2865)
+
+New verification checklist:
+- 7 verification checks (infrastructure vs specifications)
+- Verification code with assertions
+- Common anti-patterns to avoid
+- Correct pattern guidance
+
+#### 📊 Impact
+
+**Architecture Clarity**:
+- ✅ Clear separation: Generator (infrastructure) vs AI (specifications)
+- ✅ Aligned with MetaSpec's own implementation
+- ✅ Embraces AI-First design philosophy
+
+**Documentation Quality**:
+- ✅ Removed misleading `spec-template` requirement
+- ✅ Added comprehensive role separation explanation
+- ✅ Real-world example (MetaSpec itself)
+- ✅ Explicit anti-patterns
+
+**Implementation Correctness**:
+- ✅ Future toolkits won't pre-generate empty templates
+- ✅ Users guided to AI-driven spec generation
+- ✅ Better UX (dialogue vs form-filling)
+
+#### 🔄 Migration Path
+
+**For existing toolkits** (like marketing-spec-kit):
+
+1. **Remove anti-patterns**:
+   - Delete `spec-template.{format}.j2`
+   - Delete `example-spec.{format}.j2`
+
+2. **Add guidance**:
+   - Create `specs-readme.md.j2` (based on MetaSpec's template)
+   - Update Generator to only create infrastructure
+
+3. **Verify**:
+   - Run new "Generator Scope Verification" checklist
+   - Ensure `specs/` only contains `README.md` after init
+
+**For new toolkits**:
+- Follow updated `/metaspec.sdd.specify` guidance
+- Generator creates infrastructure only
+- Rely on AI + slash commands for spec generation
+
+#### 📚 Related Documentation
+
+- MetaSpec's Generator: `src/metaspec/generator.py` (Line 233)
+- MetaSpec's template: `templates/base/specs/README.md.j2`
+- Design philosophy: AI-First, not Template-First
+
+---
+
 ## [0.9.3] - 2025-11-19
 
 ### 📋 Slash Commands Deployment Documentation Fix

@@ -45,7 +45,7 @@ What you can generate:
 
 **3. Full Lifecycle** - Covers **complete lifecycle** (creation, updates, maintenance)
 
-**4. Precision-Guided Navigation** - Built-in line-number navigation across 6 core commands lets AI jump directly to relevant sections with `read_file(offset, limit)`, cutting token usage by **84-98%**
+**4. Precision-Guided Navigation** - Built-in line-number navigation across 6 core commands lets AI jump directly to relevant sections with `read_file(offset, limit)`, cutting token usage by **84-99%**
 
 ---
 
@@ -55,7 +55,7 @@ MetaSpec 0.5.4 introduces **precision-guided navigation** so AI agents can read 
 
 - **How it works**: Every enhanced command begins with a 📖 Navigation Guide listing line ranges. Combine it with `read_file(target_file, offset, limit)` to stream only that segment.
 - **Coverage**: `specify` (SDS/SDD), `implement` (SDS/SDD), `tasks` (SDS), `plan` (SDD) — **8615 lines** of navigation guidance overall.
-- **Savings**: Real-world scenarios show **84-98% token reductions** (language-specific sections reach **97-98%**).
+- **Savings**: Real-world scenarios show **84-99% token reductions** (language-specific sections reach **97-99%**).
 - **More examples**: See `AGENTS.md` → *Token Optimization: Precision-Guided Navigation* for full tables and best practices.
 
 ```bash
@@ -508,47 +508,11 @@ uv run mypy src/metaspec       # Type check
 
 ---
 
-## 🏗️ Status
+## 📝 Release Notes
 
-**Current Version**: v0.9.3 (Alpha) 🚀
+**Current Version**: v0.9.5 (Alpha) 🚀
 
-**Latest Updates** (v0.9.3):
-- 📋 **Slash Commands Deployment Documentation Fix** - Complete guidance on deploying commands to user projects
-- ✅ Updated Generation Targets: Clear explanation of slash commands deployment (always required, not optional)
-- 🔧 Added `_deploy_slash_commands()` implementation example with detailed code
-- ✅ Added Slash Commands Deployment Checklist to catch deployment errors
-- 📁 Clarified template structure: `templates/{source}/` (most toolkits don't need `base/`)
-- 🎯 Prevents implementers from missing critical AI-driven workflow support
-
-**Previous Updates** (v0.9.2):
-- 🎯 Toolkit Type Detection & Simplified Generator Pattern
-- ✅ Removed "Domain Application" concept (MetaSpec only generates Specification Toolkits)
-- 🔍 Simplified Step 4.5 and unified Generator template
-
-**Previous Updates** (v0.9.1):
-- 🎯 Generator Pattern Clarification - Added guidance and validation (Dimension L)
-
-**Previous Updates** (v0.9.0):
-- ✨ Enhanced `/metaspec.sdd.specify` with Use Case → Component automatic derivation
-- 🔍 Added Framework Standards validation to `/metaspec.sdd.analyze`
-- 📋 Added AGENTS.md compliance checks and init command standards
-- 🎯 Prevents 80% of common toolkit development errors
-- 📖 Complete migration guide for v0.8.x users
-
-**Core Features**:
-- ✅ Meta-specification framework with YAML validation
-- ✅ Multi-domain speckit generation (SD-Development, SD-Design, SD-Testing, etc.)
-- ✅ 19 AI-assisted MetaSpec commands (8 SDS + 8 SDD + 3 Evolution)
-- ✅ Precision-guided navigation (84-98% token savings)
-- ✅ Recursive tree structure for complex specifications
-- ✅ CLI tools and community registry
-
-**Quality Metrics**:
-- ✅ 90.99% test coverage (151/151 tests passing)
-- ✅ Full CLI functionality tested
-- ✅ Production-ready code quality
-
-📝 See [CHANGELOG.md](./CHANGELOG.md) for release history
+**Latest**: Documentation optimization & logical consistency fixes. See [CHANGELOG.md](./CHANGELOG.md) for full release history.
 
 ---
 

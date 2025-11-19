@@ -40,31 +40,29 @@ This command must handle two types of specifications:
 
 | Step | Lines | Size | Priority | read_file Usage |
 |------|-------|------|----------|-----------------|
-| 1-2. Load & Validate | 35-68 | 33 lines | 🔴 MUST READ | `read_file(target_file, offset=35, limit=33)` |
-| **3. Extract Implementation** ⭐ | 69-98 | 29 lines | 🔴 **KEY** | `read_file(target_file, offset=69, limit=29)` |
-| **4. Technical Context** ⭐ | 99-164 | 65 lines | 🔴 **KEY** | See language-specific below ⬇️ |
-| 5. Project Structure | 165-220 | 55 lines | 🟡 Important | `read_file(target_file, offset=165, limit=55)` |
-| **6-7. Architecture Design** ⭐ | 221-505 | 284 lines | 🔴 **KEY** | See subsections below ⬇️ |
-| 8-11. Validate & Report | 506-613 | 107 lines | 🟡 Important | `read_file(target_file, offset=506, limit=107)` |
-| 12. Final Report | 614-774 | 160 lines | 🟢 Reference | `read_file(target_file, offset=614, limit=160)` |
+| 1-2. Load & Validate | 106-139 | 33 lines | 🔴 MUST READ | `read_file(target_file, offset=106, limit=33)` |
+| **3. Extract Implementation** ⭐ | 140-169 | 29 lines | 🔴 **KEY** | `read_file(target_file, offset=140, limit=29)` |
+| **4. Technical Context** ⭐ | 170-235 | 65 lines | 🔴 **KEY** | See language-specific below ⬇️ |
+| 5. Project Structure | 252-294 | 42 lines | 🟡 Important | `read_file(target_file, offset=252, limit=42)` |
+| **6-7. Architecture Design** ⭐ | 295-579 | 284 lines | 🔴 **KEY** | See subsections below ⬇️ |
+| 8-11. Validate & Report | 580-674 | 94 lines | 🟡 Important | `read_file(target_file, offset=580, limit=94)` |
+| 12. Final Report | 688-850 | 162 lines | 🟢 Reference | `read_file(target_file, offset=688, limit=162)` |
 
 **🌐 Section 4: Language-Specific Technical Context** (65 lines):
 
 | Language | Lines | Size | Usage |
 |----------|-------|------|-------|
-| Python Context | 99-115 | 16 lines | `read_file(target_file, offset=99, limit=16)` |
-| TypeScript Context | 116-131 | 15 lines | `read_file(target_file, offset=116, limit=15)` |
-| Go Context | 132-147 | 15 lines | `read_file(target_file, offset=132, limit=15)` |
-| Rust Context | 148-164 | 16 lines | `read_file(target_file, offset=148, limit=16)` |
+| Python Context | 174-185 | 11 lines | `read_file(target_file, offset=174, limit=11)` |
+| TypeScript Context | 186-197 | 11 lines | `read_file(target_file, offset=186, limit=11)` |
+| Go Context | 198-209 | 11 lines | `read_file(target_file, offset=198, limit=11)` |
+| Rust Context | 210-221 | 11 lines | `read_file(target_file, offset=210, limit=11)` |
 
 **🏗️ Section 6-7: Architecture Design** (284 lines):
 
 | Component | Lines | Size | Usage |
 |-----------|-------|------|-------|
-| Research Phase | 221-280 | 59 lines | `read_file(target_file, offset=221, limit=59)` |
-| Architecture Overview | 287-361 | 74 lines | `read_file(target_file, offset=287, limit=74)` |
-| Parser Design | 362-417 | 55 lines | `read_file(target_file, offset=362, limit=55)` |
-| Validator Design | 418-505 | 87 lines | `read_file(target_file, offset=418, limit=87)` |
+| Research Phase | 295-354 | 59 lines | `read_file(target_file, offset=295, limit=59)` |
+| Architecture Design | 355-579 | 224 lines | `read_file(target_file, offset=355, limit=224)` |
 
 **📋 Templates** (At end of file):
 
@@ -76,26 +74,27 @@ This command must handle two types of specifications:
 
 **💡 Typical Usage Patterns**:
 ```python
-# Quick start: Load + Extract (62 lines)
-read_file(target_file, offset=35, limit=62)
+# Quick start: Load + Extract (63 lines)
+read_file(target_file, offset=106, limit=63)
 
-# Language-specific: Read only Python context (16 lines)
-read_file(target_file, offset=99, limit=16)
+# Language-specific: Read only Python context (11 lines)
+read_file(target_file, offset=174, limit=11)
 
-# Component-specific: Read Parser design only (55 lines)
-read_file(target_file, offset=362, limit=55)
+# Project Structure: Including updated templates (42 lines) ⭐ UPDATED
+read_file(target_file, offset=252, limit=42)
 
 # Architecture: Read full design (284 lines)
-read_file(target_file, offset=221, limit=284)
+read_file(target_file, offset=295, limit=284)
 
 # Template reference: Read specific template (8-47 lines)
 read_file(target_file, offset=878, limit=47)  # Architecture
 ```
 
-**Token Savings**: 
-- Full file: 925 lines (~3140 tokens)
-- Core flow: 62 lines (~210 tokens) → **93% savings**
-- Language-specific: 15-16 lines (~55 tokens) → **98% savings** 🏆
+**Token Savings** (v0.9.4 + Updates): 
+- Full file: 928 lines (~3150 tokens)
+- Core flow: 63 lines (~215 tokens) → **93% savings**
+- Language-specific: 11 lines (~37 tokens) → **99% savings** 🏆
+- Project structure: 42 lines (~143 tokens) → **96% savings** ⭐ UPDATED
 - Component-specific: 55-87 lines (~190-300 tokens) → **90-94% savings**
 - Template only: 8-47 lines (~30-160 tokens) → **95-99% savings**
 
@@ -268,7 +267,10 @@ Extensibility: Custom validator plugins via entry points
 │   ├── architecture.md           # Phase 1 output
 │   └── parser-design.md          # Phase 1 output
 ├── templates/
-│   └── spec-template.yaml        # User spec template
+│   ├── constitution.md.j2        # Project principles template
+│   ├── readme.md.j2              # Project README template
+│   ├── specs-readme.md.j2        # Workflow guidance template
+│   └── .gitignore.j2             # Git ignore template
 ├── src/
 │   └── [toolkit_name]/
 │       ├── __init__.py

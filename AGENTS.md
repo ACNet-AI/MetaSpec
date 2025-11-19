@@ -906,7 +906,7 @@ cd my-speckit
 
 ## 🧭 Token Optimization: Precision-Guided Navigation
 
-**NEW in v0.5.4+**: Major MetaSpec commands now include **precision-guided navigation** with exact line numbers, enabling massive token savings (84-98%).
+**NEW in v0.5.4+**: Major MetaSpec commands now include **precision-guided navigation** with exact line numbers, enabling massive token savings (84-99%).
 
 ### What is Precision-Guided Navigation?
 

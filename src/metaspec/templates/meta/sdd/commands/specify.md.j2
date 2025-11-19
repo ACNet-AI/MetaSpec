@@ -36,88 +36,84 @@ This command is for defining **toolkit implementation specifications**:
 |------|-------|------|-----------------|
 | 1. Setup & Verify | 103-159 | 56 lines | `read_file(target_file, offset=103, limit=56)` |
 | 2. Gather Content | 160-239 | 79 lines | `read_file(target_file, offset=160, limit=79)` |
-| 3. Generate Sections | 240-2639 | 2399 lines | See components below ⬇️ **LARGE** |
-| 4. Write File | 2640-2688 | 48 lines | `read_file(target_file, offset=2640, limit=48)` |
-| 5. Impact Report | 2689-2787 | 98 lines | `read_file(target_file, offset=2689, limit=98)` |
-| 6-9. Analysis & Report | 2788-3084 | 296 lines | `read_file(target_file, offset=2788, limit=296)` |
+| 3. Generate Sections | 240-2673 | 2433 lines | See components below ⬇️ **LARGE** |
+| 4. Write File | 2674-2722 | 48 lines | `read_file(target_file, offset=2674, limit=48)` |
+| 5. Impact Report | 2723-2821 | 98 lines | `read_file(target_file, offset=2723, limit=98)` |
+| 6-9. Analysis & Report | 2822-3118 | 296 lines | `read_file(target_file, offset=2822, limit=296)` |
 
 **📋 Key Components in Step 3** (Jump to specific components):
 
 | Component | Lines | Size | Priority | Usage |
 |-----------|-------|------|----------|-------|
-| Overview & Dependencies | 235-287 | 52 lines | 🔴 MUST READ | `read_file(target_file, offset=235, limit=52)` |
-| **Use Case → Component Analysis** ⭐ | 288-348 | 60 lines | 🔴 **NEW** | `read_file(target_file, offset=288, limit=60)` |
-| Component 1: Parser | 405-446 | 41 lines | 🟢 Optional | `read_file(target_file, offset=405, limit=41)` |
-| Component 2: Validator | 447-491 | 44 lines | 🟢 Optional | `read_file(target_file, offset=447, limit=44)` |
-| **Component 3: CLI Commands** ⭐ | 492-1015 | 523 lines | 🔴 **KEY** | See subsections below ⬇️ |
-| **Component 4: Slash Commands** ⭐⭐ | 1016-2181 | 1165 lines | 🔴 **LARGE** | See subsections below ⬇️ |
-| **Component 5: Generator** ⭐⭐⭐ | 2214-2779 | 565 lines | 🔴 **CRITICAL** | See subsections below ⬇️ |
-| Architecture & Requirements | 2780-2850 | 70 lines | 🟡 Important | `read_file(target_file, offset=2780, limit=70)` |
+| Overview & Dependencies | 264-316 | 52 lines | 🔴 MUST READ | `read_file(target_file, offset=264, limit=52)` |
+| **Use Case → Component Analysis** ⭐ | 317-380 | 63 lines | 🔴 **UPDATED** | `read_file(target_file, offset=317, limit=63)` |
+| Component 1: Parser | 434-475 | 41 lines | 🟢 Optional | `read_file(target_file, offset=434, limit=41)` |
+| Component 2: Validator | 476-520 | 44 lines | 🟢 Optional | `read_file(target_file, offset=476, limit=44)` |
+| **Component 3: CLI Commands** ⭐ | 524-962 | 438 lines | 🔴 **KEY** | See subsections below ⬇️ |
+| **Component 4: Slash Commands** ⭐⭐ | 963-2109 | 1146 lines | 🔴 **LARGE** | See subsections below ⬇️ |
+| **Component 5: Generator** ⭐⭐⭐ | 2110-2514 | 404 lines | 🔴 **CRITICAL** | See subsections below ⬇️ |
+| Architecture & Requirements | 2744-2814 | 70 lines | 🟡 Important | `read_file(target_file, offset=2744, limit=70)` |
 
 **🎨 Component 3: CLI Commands Subsections**:
 
 | Subsection | Lines | Size | Usage |
 |------------|-------|------|-------|
-| AGENTS.md Compliance | 504-607 | 103 lines | `read_file(target_file, offset=504, limit=103)` |
-| init Command Standards | 676-816 | 140 lines | `read_file(target_file, offset=676, limit=140)` |
-| Naming Principles | 658-675 | 17 lines | `read_file(target_file, offset=658, limit=17)` |
+| AGENTS.md Compliance | 533-556 | 23 lines | `read_file(target_file, offset=533, limit=23)` |
+| init Command Standards | 629-768 | 139 lines | `read_file(target_file, offset=629, limit=139)` |
+| Naming Principles | 591-607 | 16 lines | `read_file(target_file, offset=591, limit=16)` |
 
-**🎨 Component 4: Slash Commands Subsections** (1165 lines total):
-
-| Subsection | Lines | Size | Usage |
-|------------|-------|------|-------|
-| Overview | 1016-1122 | 106 lines | `read_file(target_file, offset=1016, limit=106)` |
-| **Custom Commands** ⭐ | 1123-1650 | 527 lines | `read_file(target_file, offset=1123, limit=527)` |
-| **Library Commands** ⭐ | 1982-2181 | 199 lines | `read_file(target_file, offset=1982, limit=199)` |
-
-**🎨 Component 5: Generator Subsections** (565 lines total, ⭐⭐⭐ v0.9.3):
+**🎨 Component 4: Slash Commands Subsections** (1146 lines total):
 
 | Subsection | Lines | Size | Usage |
 |------------|-------|------|-------|
-| **Generator Pattern Guide** ⭐⭐ | 2220-2306 | 87 lines | `read_file(target_file, offset=2220, limit=87)` |
-| **🎯 Understanding Purpose** ⭐⭐ NEW | 2307-2377 | 71 lines | `read_file(target_file, offset=2307, limit=71)` |
-| Step 1-4: Analysis Logic | 2378-2457 | 80 lines | `read_file(target_file, offset=2378, limit=80)` |
-| **Step 5: Define Generator** ⭐ UPDATED | 2458-2634 | 177 lines | `read_file(target_file, offset=2458, limit=177)` |
-| **✅ Verification Checklist** ⭐⭐ NEW | 2635-2776 | 142 lines | `read_file(target_file, offset=2635, limit=142)` |
-| Step 6: Omit Generator | 2779-2805 | 27 lines | `read_file(target_file, offset=2779, limit=27)` |
+| Overview | 963-1069 | 106 lines | `read_file(target_file, offset=963, limit=106)` |
+| **Custom Commands** ⭐ | 1070-1578 | 508 lines | `read_file(target_file, offset=1070, limit=508)` |
+| **Library Commands** ⭐ | 1910-2109 | 199 lines | `read_file(target_file, offset=1910, limit=199)` |
+
+**🎨 Component 5: Generator Subsections** (404 lines total, ⭐⭐⭐ v0.9.4):
+
+| Subsection | Lines | Size | Usage |
+|------------|-------|------|-------|
+| **🎯 Generator vs AI Commands** ⭐⭐⭐ UPDATED | 2116-2211 | 96 lines | `read_file(target_file, offset=2116, limit=96)` |
+| Step 1-4: Analysis Logic | 2214-2293 | 80 lines | `read_file(target_file, offset=2214, limit=80)` |
+| **Step 5: Define Generator** ⭐ UPDATED | 2294-2487 | 193 lines | `read_file(target_file, offset=2294, limit=193)` |
+| **✅ Verification Checklist** ⭐⭐ ENHANCED | 2488-2513 | 25 lines | `read_file(target_file, offset=2488, limit=25)` |
+| Step 6: Omit Generator | 2514-2527 | 13 lines | `read_file(target_file, offset=2514, limit=13)` |
 
 **💡 Typical Usage Patterns**:
 ```python
 # Minimal: Read only Steps 1-2 (135 lines)
 read_file(target_file, offset=103, limit=135)
 
-# **Use Case Analysis**: Critical for component decisions (60 lines) ⭐
-read_file(target_file, offset=288, limit=60)
+# **Use Case Analysis**: Critical for component decisions (63 lines) ⭐ UPDATED
+read_file(target_file, offset=317, limit=63)
 
-# **init Standards**: Essential for Generator/Scaffolder (140 lines) ⭐
-read_file(target_file, offset=676, limit=140)
+# **init Standards**: Essential for Generator/Scaffolder (139 lines) ⭐ UPDATED
+read_file(target_file, offset=629, limit=139)
 
-# CLI Design: Component 3 with AGENTS.md compliance (523 lines)
-read_file(target_file, offset=492, limit=523)
+# CLI Design: Component 3 with AGENTS.md compliance (438 lines) ⭐ OPTIMIZED
+read_file(target_file, offset=524, limit=438)
 
-# **Generator Pattern**: CRITICAL - Toolkit vs Domain distinction (87 lines) ⭐⭐ v0.9.1
-read_file(target_file, offset=2220, limit=87)
+# **🎯 Generator vs AI Commands**: Role separation (96 lines) ⭐⭐⭐ v0.9.4
+read_file(target_file, offset=2116, limit=96)
 
-# **Understanding Purpose**: NEW - MetaSpec scope clarification (71 lines) ⭐⭐ v0.9.2
-read_file(target_file, offset=2307, limit=71)
+# **✅ Verification Checklist**: Simplified checklist (25 lines) ⭐⭐ v0.9.4 OPTIMIZED
+read_file(target_file, offset=2488, limit=25)
 
-# **✅ Verification Checklist**: NEW - Post-generation validation (142 lines) ⭐⭐ v0.9.3
-read_file(target_file, offset=2635, limit=142)
-
-# **Generator Logic**: Complete Component 5 (565 lines total) ⭐⭐⭐ v0.9.3
-read_file(target_file, offset=2214, limit=565)
+# **Generator Logic**: Complete Component 5 (404 lines total) ⭐⭐⭐ v0.9.4 OPTIMIZED
+read_file(target_file, offset=2110, limit=404)
 
 # Slash Commands: Component 4 overview (106 lines)
-read_file(target_file, offset=1016, limit=106)
+read_file(target_file, offset=963, limit=106)
 ```
 
-**Token Savings (v0.9.3)**: 
-- Full file: 3541 lines (~12,000 tokens)
-- **Targeted reading: 60-523 lines (~200-1,770 tokens)**
-- **Step 5 (Generator with deployment): 177 lines (~600 tokens) - 95% savings** 🏆
-- **Verification Checklist: 142 lines (~480 tokens) - 96% savings** 🏆
-- **Generator Pattern only: 87 lines (~295 tokens) - 98% savings** 🏆
-- **Overall savings: 84-98% tokens** 🎉
+**Token Savings (v0.9.4 + Optimization)**: 
+- Full file: 3279 lines (~11,100 tokens) [Optimized from 3573 lines]
+- **Targeted reading: 25-438 lines (~85-1,480 tokens)**
+- **Generator vs AI Commands: 96 lines (~325 tokens) - 97% savings** 🏆
+- **Verification Checklist: 25 lines (~85 tokens) - 99% savings** 🏆🏆 [Optimized from 192 lines]
+- **Step 5 (Generator): 193 lines (~650 tokens) - 94% savings** 🏆 [Optimized from 224 lines]
+- **Overall savings: 84-99% tokens** 🎉 [Improved with optimization]
 
 ---
 
@@ -363,7 +359,7 @@ Based on the use cases you defined above, fill in this matrix:
 ### Analysis Example
 
 **Example Use Cases**:
-1. "AI-Driven Content Generation for social media"
+1. "Generate project structure from specifications" ← **Toolkit infrastructure**
 2. "Validate marketing specifications against rules"
 3. "Parse marketing campaign YAML files"
 
@@ -372,11 +368,15 @@ Based on the use cases you defined above, fill in this matrix:
 |-----------|----------|-----------|
 | Parser | CORE | Use case #3 explicitly requires parsing |
 | Validator | CORE | Use case #2 explicitly requires validation |
-| Generator | CORE | Use case #1 explicitly requires generation (keyword: "Generation") |
+| Generator | CORE | Use case #1 explicitly requires generation (keyword: "Generate project structure") |
 | CLI | CORE | Standard interface for all operations |
 
-⚠️ **Common Mistake**: Marking Generator as "OPTIONAL" when use case says "Generation"
-✅ **Correct**: If primary use case is generation, Generator must be CORE
+⚠️ **CRITICAL WARNING**: 
+- ✅ "Generate **project structure**" → Generator is CORE (toolkit infrastructure)
+- ❌ "Generate **marketing content**" → This is domain content, NOT toolkit generation!
+  - See "Generator vs AI Commands" (Line 2220-2311) for role separation
+
+✅ **Correct**: If primary use case is **project/infrastructure** generation, Generator must be CORE
 \```
 
 #### **Implementation Details** (NEW 🎯)
@@ -536,107 +536,27 @@ if not result.valid:
 
 **STEP 0: Reference AGENTS.md Standards** ⭐ NEW
 
-**Before defining CLI commands, check AGENTS.md for consistency requirements**:
+**Before defining CLI commands, verify alignment with AGENTS.md**:
 
-#### A. Read Project AGENTS.md
+#### Quick Compliance Check
 
 ```bash
-# Read the project's AGENTS.md file
+# Read project's AGENTS.md for consistency requirements
 read_file("AGENTS.md")
-
-# Extract key sections:
-1. "Recommended Project Structure" (typically lines 79-99)
-2. "Initialization Guidance" (typically lines 105-108)
-3. "User Workflow" (typically lines 112-150)
 ```
 
-#### B. AGENTS.md Consistency Requirements
+**Key Requirements**:
+- `init` command MUST create complete project structure (not single file)
+- Project MUST include: `.{toolkit}/`, `memory/`, `specs/` directories
+- CLI workflow MUST align with AGENTS.md guidance
 
-| CLI Command | AGENTS.md Requirement | spec.md MUST Comply |
-|-------------|----------------------|---------------------|
-| `init` | Creates project structure | ✅ Must create complete directory layout |
-| Project Structure | Includes memory/, specs/, .{toolkit}/ | ✅ init must create these directories |
-| Workflow | Step-by-step guidance | ✅ CLI help text must align |
+**For Generator/Scaffolder toolkits**: See detailed `init` command standards below (Line 676-844).
 
-#### C. Pre-Generation Checklist
-
-**Before generating CLI command definitions**:
-
-```markdown
-✅ AGENTS.md Compliance Checklist:
-
-- [ ] Read AGENTS.md "Recommended Project Structure" section
-- [ ] If toolkit type is "Generator/Scaffolder":
-      - [ ] init command MUST create project structure
-      - [ ] init argument MUST be <project-dir>, NOT <filename>
-      - [ ] init output MUST include:
-            - .{toolkit_name}/ directory
-            - memory/constitution.md file (with template content)
-            - specs/ directory
-            - README.md file
-- [ ] Verify CLI workflow matches AGENTS.md User Workflow section
-- [ ] Ensure command examples in spec.md match AGENTS.md examples
-```
-
-#### D. Common Mistakes vs Correct Patterns
-
-**❌ Wrong Pattern** (violates AGENTS.md):
+**Common Mistake to Avoid**:
 ```bash
-{toolkit-name} init my-spec.yaml
-# Output: Creates single YAML file only
-# Problem: Does not match "Recommended Project Structure"
+❌ {toolkit-name} init my-spec.yaml    # Creates single file only
+✅ {toolkit-name} init my-project      # Creates complete structure
 ```
-
-**✅ Correct Pattern** (follows AGENTS.md):
-```bash
-{toolkit-name} init my-project
-# Output: Creates complete project structure
-my-project/
-├── .{toolkit-name}/
-│   ├── commands/
-│   └── templates/
-├── memory/
-│   └── constitution.md    # With template content
-├── specs/
-│   └── default-spec.yaml  # With example data
-└── README.md              # With usage instructions
-```
-
-#### E. Reference Examples
-
-**MetaSpec (Correct)**:
-```bash
-metaspec init my-speckit
-→ Creates complete project structure ✅
-→ All required directories present ✅
-→ constitution.md has template ✅
-```
-
-**spec-kit (Correct)**:
-```bash
-spec-kit init
-→ Initializes in current directory ✅
-→ Creates standard structure ✅
-```
-
-#### F. What to Verify
-
-After defining CLI commands in spec.md:
-
-1. **init command**:
-   - [ ] Argument is `<project-directory>`, not `<filename>`
-   - [ ] Creates all directories listed in AGENTS.md
-   - [ ] constitution.md is pre-filled (not empty)
-   - [ ] Initial spec file is included
-
-2. **Workflow alignment**:
-   - [ ] CLI command sequence matches AGENTS.md workflow
-   - [ ] Help text references correct file paths
-
-3. **Examples consistency**:
-   - [ ] Code examples in spec.md match AGENTS.md patterns
-
-**Note**: This check prevents the common mistake of defining `init <filename>` when AGENTS.md requires `init <project-dir>` with full structure creation.
 
 ---
 
@@ -724,12 +644,12 @@ Some command names are **industry standards**, not "fixed names to avoid":
 ```
 <project-directory>/
 ├── .{toolkit-name}/           # Configuration directory
-│   ├── commands/              # (Optional) Custom slash commands
+│   ├── commands/              # Slash commands for AI (MUST deploy)
 │   └── templates/             # (Optional) Output templates
 ├── memory/
 │   └── constitution.md        # Project principles (MUST have content)
 ├── specs/
-│   └── {initial-spec-file}    # Initial specification file
+│   └── README.md              # Workflow guidance (NOT spec template)
 └── README.md                  # Project documentation
 ```
 
@@ -739,10 +659,11 @@ Some command names are **industry standards**, not "fixed names to avoid":
 - ✅ MUST be domain-specific guidance
 - ❌ FORBIDDEN: Empty file or placeholder
 
-**4. Initial Specification File**:
-- ✅ MUST be created from template (e.g., default.yaml)
-- ✅ MUST include example data
-- ✅ MUST pass validation immediately
+**4. specs/README.md Content** (See "Generator vs AI Commands" below):
+- ✅ MUST explain how to use slash commands for spec generation
+- ✅ MUST include workflow guidance and examples
+- ✅ MUST guide users to AI-driven specification creation
+- ❌ FORBIDDEN: Empty spec templates or example specs
 
 **5. Output Messages**:
 ```
@@ -751,8 +672,10 @@ Some command names are **industry standards**, not "fixed names to avoid":
 Next steps:
   1. cd {project-name}
   2. Edit memory/constitution.md to define your principles
-  3. Edit specs/{initial-spec} to define your specifications
-  4. Run: {toolkit-name} validate specs/{initial-spec}
+  3. Use AI to generate specifications (see specs/README.md)
+     Example: "Create a Q1 campaign specification"
+  4. AI will generate specs/001-xxx/spec.{format}
+  5. Run: {toolkit-name} validate specs/001-xxx/spec.{format}
 ```
 
 #### Implementation Checklist
@@ -762,9 +685,10 @@ When generating spec.md, verify:
 - [ ] init parameter is `<project-dir>`, NOT `<filename>`
 - [ ] Output includes `.{toolkit}/`, `memory/`, `specs/` directories
 - [ ] `memory/constitution.md` has pre-filled content (not empty)
-- [ ] `specs/` directory contains initial specification file
-- [ ] `README.md` explains project structure and usage
-- [ ] Success message guides user to next steps
+- [ ] `specs/README.md` contains workflow guidance (NOT spec template)
+- [ ] `.{toolkit}/commands/` contains deployed slash commands
+- [ ] Project `README.md` explains project structure and usage
+- [ ] Success message guides user to AI-driven workflow
 
 #### Anti-Patterns (FORBIDDEN)
 
@@ -800,18 +724,19 @@ metaspec init my-speckit
 # Output:
 my-speckit/
 ├── .metaspec/
-│   ├── commands/
-│   └── templates/
+│   └── commands/          # ✅ Slash commands deployed
+│       ├── sds.specify.md
+│       ├── sds.plan.md
+│       └── ... (19 commands)
 ├── memory/
 │   └── constitution.md    # ✅ Pre-filled with 3-part template
 ├── specs/
-│   └── 001-meta-spec/
-│       └── spec.md        # ✅ With example structure
+│   └── README.md          # ✅ Workflow guidance (NOT spec template)
 └── README.md              # ✅ Usage instructions
 
-✅ Creates complete structure
-✅ All required directories present
-✅ constitution.md has template content
+✅ Creates infrastructure only
+✅ NO spec templates or example specs
+✅ User generates specs via AI + slash commands
 ```
 
 **✅ Correct Example 2: spec-kit**
@@ -1031,17 +956,7 @@ check-transition
 
 ---
 
-**CLI vs Slash Commands Summary**
-
-**Key Distinction**:
-- **CLI Commands**: Independent tools for developers (validate, list, docs)
-- **Slash Commands**: AI execution guides (see **Component 4: Slash Commands** for details)
-
-**Relationship**: Separated by design - no direct calls between them.
-
-**CLI Implementation**: typer (Python) or commander (Node.js) with rich formatting.
-
-```
+**CLI vs Slash Commands**: See Component 4 below for detailed distinction. Summary: CLI = independent tools, Slash = AI execution guides, separated by design.
 
 ---
 
@@ -1394,42 +1309,23 @@ IMPLEMENT code     → implement    → implement            → sdd.implement
 
 #### Anti-Pattern 1: Entity-Based Commands (For Type B Toolkits)
 
-**❌ WRONG**:
-```bash
-# Deriving commands from domain entities
-Domain spec defines: Project, Product, Plan, Campaign, Channel
-→ Commands: /domain.project, /domain.product, /domain.plan
-```
+**❌ WRONG**: Deriving from domain entities → `/domain.project`, `/domain.product`  
+**✅ RIGHT**: Deriving from workflow phases → `/domainspec.constitution`, `/domainspec.specify`
 
-**Why wrong**: This creates a "data-access" tool, not a "workflow-guidance" tool.
+**Key difference**: Entity commands = data access; Workflow commands = specification guidance
 
-**✅ RIGHT**:
-```bash
-# Deriving commands from workflow phases (adapt spec-kit pattern)
-Base pattern: constitution → specify → clarify → plan → tasks → implement
-Your domain workflow: (analyze domain workflow phases)
-→ Commands: /domainspec.constitution, /domainspec.specify, /domainspec.clarify, etc.
-(Customize phase names based on domain terminology)
-```
-
-**Key difference**:
-- Entity commands = Access/manipulate data objects
-- Workflow commands = Guide users through specification creation
+**See "Type B: Workflow-Guidance Toolkit" above (Line 1176-1234) for complete explanation.**
 
 #### Anti-Pattern 2: Forgetting MetaSpec's Own Pattern
 
-**MetaSpec itself uses workflow commands**:
-- ✅ `/metaspec.sds.specify` (workflow action)
-- ❌ NOT `/metaspec.specification.create` (entity operation)
-
+MetaSpec uses workflow commands (`/metaspec.sds.specify`), NOT entity operations.  
 **Your toolkit should follow the same pattern**.
 
 #### Anti-Pattern 3: Missing Workflow Analysis
 
-**If you skipped** the "Workflows & Phases" analysis:
+If you skipped "Workflows & Phases" analysis (Step 1, Item 4):
 - ⚠️ STOP and go back
-- Workflow is the CORE of Type B toolkits
-- Without workflow analysis, you'll default to entity commands
+- Workflow is CORE for Type B toolkits
 
 ---
 
@@ -2217,164 +2113,104 @@ These Slash Commands (from library and/or specification) will:
 
 ---
 
-### ⭐ **Generator Pattern - Toolkit vs Domain Tool** ⭐ CRITICAL
+### 🎯 **Generator vs AI Commands: Role Separation** ⭐ NEW v0.9.4
 
-**IMPORTANT**: Before defining Generator, understand the fundamental distinction:
+**FUNDAMENTAL PRINCIPLE**: Understand the separation of responsibilities between Generator and AI Commands.
 
-#### For Specification Toolkits (MetaSpec, marketing-spec-kit, etc.)
+#### Generator's Role (init command)
 
-Generator **MUST** generate **project files**, NOT **domain content**.
+**Purpose**: Set up project **infrastructure**, NOT generate specifications.
 
-**✅ CORRECT Generator Purpose (Toolkit)**:
-- Generate project directory structure
-- Render specification files from templates (e.g., `specs/xxx.yaml`)
-- Render constitution from template (e.g., `memory/constitution.md`)
-- Render command files (e.g., `.{toolkit}/commands/xxx.md`)
-- Create README.md, AGENTS.md, and other project files
-- Generate project scaffolding and boilerplate
+**Responsibilities**:
+- ✅ Create project structure (`.{toolkit}/`, `memory/`, `specs/` directories)
+- ✅ Deploy slash commands (`.{toolkit}/commands/*.md`) - **Critical for AI**
+- ✅ Generate infrastructure files (constitution, README, .gitignore)
+- ✅ Generate **guidance** documents (`specs/README.md` explaining workflow)
+- ❌ **NOT** generate specification files (spec.md, plan.md, tasks.md)
+- ❌ **NOT** generate empty spec templates for users to fill in
 
-**❌ FORBIDDEN Generator Anti-Patterns (Domain Content)**:
-- Generate domain deliverables (social posts, blog articles, emails, product descriptions)
-- Generate end-user business content
-- Generate domain-specific outputs that **consume** specifications
-- Create business deliverables from specs
+#### AI Commands' Role (slash commands)
 
-**Why This Matters**:
+**Purpose**: Generate **specifications** through interactive dialogue.
+
+**Responsibilities**:
+- ✅ Interactive dialogue with users (ask clarifying questions)
+- ✅ Generate specification files (`specs/001-xxx/spec.md`)
+- ✅ Generate planning files (`specs/001-xxx/plan.md`)
+- ✅ Generate task files (`specs/001-xxx/tasks.md`)
+- ✅ Adapt to user's specific domain needs
+- ✅ Create contextual, high-quality specifications
+
+#### Why This Separation?
+
+1. **Flexibility**: Each user's specifications are unique - can't pre-template effectively
+2. **Intelligence**: AI can ask clarifying questions and adapt to context
+3. **Quality**: Interactive generation produces better, more relevant specs
+4. **True Spec-Driven**: Specifications ARE the conversation, not form-filling
+5. **AI-First Design**: Embraces AI as core generator, not optional assistant
+
+#### Workflow Comparison
+
+**❌ DON'T (Template-First Anti-Pattern)**:
+```bash
+# Wrong approach - Pre-generate empty templates
+my-toolkit init my-project
+→ specs/spec-template.yaml          # Empty template, user fills manually
+→ specs/example-spec.yaml            # Static example
+
+User: Opens spec-template.yaml
+User: Sees 100+ empty fields
+User: Confused about what to fill in
+User: Manually fills (error-prone, tedious)
 ```
-┌─────────────────────────────────────────────────────────┐
-│         Specification Toolkit (Your Speckit)            │
-│                                                          │
-│  Generator Role:                                         │
-│  ✅ Generate PROJECT FILES                             │
-│     (specs, constitution, commands, templates)          │
-│                                                          │
-│  ❌ NOT domain deliverables                            │
-└─────────────────────────────────────────────────────────┘
-                         ↓
-                  User creates specs
-                         ↓
-┌─────────────────────────────────────────────────────────┐
-│      Domain Application (User's App Using Specs)        │
-│                                                          │
-│  Generator Role:                                         │
-│  ✅ Generate DOMAIN DELIVERABLES                       │
-│     (posts, articles, emails, products)                 │
-└─────────────────────────────────────────────────────────┘
+
+**✅ DO (AI-First Correct Pattern)**:
+```bash
+# Correct approach - Guide to AI generation
+my-toolkit init my-project
+→ specs/README.md                    # Explains workflow
+→ .my-toolkit/commands/*.md          # AI operational guides
+
+User: Reads specs/README.md
+User: Talks to AI: "I want to create a Q1 campaign"
+AI: Asks clarifying questions
+AI: Generates specs/001-q1-campaign/spec.yaml
+User: Reviews and validates
 ```
 
-**Reference Implementation**: See MetaSpec's `src/metaspec/generator.py`:
+#### Real-World Example: MetaSpec Itself
+
+**MetaSpec's Generator** (generator.py Line 233):
 ```python
-"""Generate complete speckit projects from meta-spec definitions."""
-# ✅ Generates project directory structure
-# ✅ Renders constitution.md from template
-# ✅ Renders specification files
-# ✅ Creates README.md, AGENTS.md
-# ❌ Does NOT generate domain content
+base_project_files = [
+    ("base/constitution.md.j2", "memory/constitution.md"),
+    ("base/specs/README.md.j2", "specs/README.md"),      # ← Only guidance
+    ("base/README.md.j2", "README.md"),
+    # NOTE: No spec-template, no example-spec
+]
 ```
 
-**Correct Templates (Toolkit)**:
-- ✅ `templates/constitution.j2` - For memory/constitution.md
-- ✅ `templates/spec.yaml.j2` - For specs/xxx-spec.yaml
-- ✅ `templates/readme.md.j2` - For README.md
-- ✅ `templates/command.md.j2` - For custom commands
+**MetaSpec's specs/ directory** after `metaspec init`:
+```
+my-speckit/
+└── specs/
+    └── README.md           # ← Only this file!
+                           # Explains how to use /metaspec.sds.specify
+```
 
-**Incorrect Templates (Domain Content)**:
-- ❌ `templates/social_post.j2` - Marketing content (belongs in user's app)
-- ❌ `templates/blog_article.j2` - Blog content (belongs in user's app)
-- ❌ `templates/email.j2` - Email content (belongs in user's app)
-- ❌ `templates/product_page.j2` - Product content (belongs in user's app)
+**Specifications generated by AI**:
+```bash
+# User invokes slash command
+/metaspec.sds.specify "Define MCP specification"
 
-**Correct CLI Commands**:
-- ✅ `{toolkit} init <project-dir>` - Generate complete project structure
-- ✅ `{toolkit} generate spec --template=campaign` - Generate spec file
-- ✅ `{toolkit} generate command --name=custom` - Generate custom command
+# AI generates (not pre-templated)
+specs/domain/001-mcp-specification/spec.md
+```
 
-**Incorrect CLI Commands**:
-- ❌ `{toolkit} generate post` - Domain content (user's app responsibility)
-- ❌ `{toolkit} generate article` - Domain content (user's app responsibility)
-- ❌ `{toolkit} generate email` - Domain content (user's app responsibility)
-
-**Key Principle**: 
-Your toolkit helps users **create and manage specifications**. Users will build their own applications that **read your specifications and generate domain content**. Don't conflate these two roles.
-
-**Common Misunderstanding**:
-- Use Case says: "AI-Driven **Content Generation**"
-- ❌ Wrong interpretation: Generate domain content (posts, articles)
-- ✅ Correct interpretation: Generate project files and specifications
+**Key Insight**: Even MetaSpec - a specification framework - doesn't pre-generate spec templates. It uses AI + slash commands.
 
 ---
 
-### 🎯 Understanding Generator's Purpose in Spec Toolkits
-
-**CRITICAL: All toolkits generated by MetaSpec are Specification Toolkits.**
-
-MetaSpec only generates **Specification Toolkits** that MANAGE specifications (parse, validate, create spec files).
-
-If your Generator is CORE, it should generate **PROJECT FILES**, not domain content:
-- ✅ **Project structure** (directories, constitution, README)
-- ✅ **Specification templates** (.yaml/.json files)
-- ❌ **NOT domain content** (posts, docs, code from specs)
-
----
-
-#### 🎯 What Generator Should Create
-
-**For ALL Specification Toolkits (including yours)**:
-
-| Component | Purpose | Example |
-|-----------|---------|---------|
-| **Project Structure** | Standardized directories | `.{toolkit}/`, `memory/`, `specs/` |
-| **Constitution** | Project principles | `memory/constitution.md` |
-| **Specification Templates** | Starter spec files | `campaign-spec.yaml`, `product-spec.yaml` |
-| **README** | Project documentation | `README.md` with usage guide |
-| **Custom Commands** | Optional slash commands | `.{toolkit}/commands/*.md` |
-
----
-
-#### 🚨 Common Misunderstanding
-
-**⚠️ WARNING: "Content Generation" confusion**
-
-```
-❌ WRONG Interpretation:
-Use Case: "AI-Driven Content Generation"
-→ Thinking: "Generate marketing posts/blogs"
-→ Generator creates: Domain content (posts, articles)
-→ Result: Violates MetaSpec architecture
-
-✅ CORRECT Interpretation:
-Use Case: "AI-Driven Content Generation"
-→ Thinking: "Help users generate specifications with AI"
-→ Generator creates: Project structure for specs
-→ Result: Follows MetaSpec pattern
-```
-
-**Key principle**: 
-- Specification Toolkits generate **PROJECT FILES** to manage specs
-- Domain content generation (posts, docs) belongs in **separate applications** that consume specs
-
----
-
-#### ✅ Real Example: marketing-spec-kit
-
-```yaml
-Use Cases:
-  1. Parse marketing specifications
-  2. Validate campaign structures  
-  3. AI-Driven Content Generation ⚠️
-
-Correct Generator behavior:
-  ✅ Generate: Project directory structure
-  ✅ Generate: Specification templates (campaign.yaml)
-  ✅ Generate: Constitution.md
-  ✅ Generate: README.md
-  
-  ❌ Do NOT generate: Marketing posts
-  ❌ Do NOT generate: Blog articles
-  ❌ Do NOT generate: Social media content
-  
-  (Those belong in a separate "marketing-content-generator" application)
-```
 ### Step 1: Determine if Generator is Required
 
 **Automatic Requirements Detection**:
@@ -2470,17 +2306,19 @@ Check Toolkit Type         Check Toolkit Type
 - init command requires structured project generation
 - Users need standardized project structure
 
-**Generation Targets** (Project files):
+**Generation Targets** (Project infrastructure only):
 - **Project structure**: Create `.{toolkit}/`, `memory/`, `specs/` directories
-- **Specification files**: Render `{entity}-spec.md` from templates (default: Markdown; alternatives: YAML, JSON, TOML)
 - **Constitution**: Generate `memory/constitution.md` from principles template
-- **README**: Create project README with toolkit usage guide
+- **Project README**: Create project README with toolkit usage guide
+- **Specs guidance**: Generate `specs/README.md` explaining how to use slash commands (see "Generator vs AI Commands" above for role separation)
+- **Git config**: Create `.gitignore` with standard patterns
 - **Slash Commands**: Deploy toolkit's slash commands to `.{toolkit}/commands/`
   - ✅ **Always deploy** all slash command files (`*.md`) from `templates/{source}/commands/`
   - ✅ **Target location**: `.{toolkit}/commands/` directory in user projects
-  - ✅ **Purpose**: AI assistant operational guides (read by AI in user projects)
   - ✅ **Method**: Direct file copy (NOT Jinja2 rendering)
-  - ⚠️ **Not optional** - Critical for AI-driven workflows
+  - ⚠️ **Critical** - Required for AI-driven workflows
+
+**Note**: See Line 2220-2311 "Generator vs AI Commands" for detailed role separation and anti-patterns.
 
 **Architecture Pattern** (Follow MetaSpec):
 ```python
@@ -2558,6 +2396,19 @@ def _deploy_slash_commands(self, output_dir: Path) -> None:
         logger.debug(f"Deployed command: {cmd_file.name}")
 ```
 
+**Template Selection** (infrastructure only):
+```python
+def _select_templates(self, template: str) -> dict[str, str]:
+    """Select infrastructure templates to render (see Line 2220-2311 for role separation)."""
+    templates = {
+        "memory/constitution.md": "constitution.md.j2",
+        "specs/README.md": "specs-readme.md.j2",     # Guidance, NOT spec template
+        "README.md": "readme.md.j2",
+        ".gitignore": "gitignore.j2",
+    }
+    return templates
+```
+
 **Templates**:
 - **Location**: `src/{toolkit_name}/templates/{source}/` directory
   - `{source}`: Domain-specific subdirectory (e.g., `mcp`, `marketing`, `api`)
@@ -2565,15 +2416,17 @@ def _deploy_slash_commands(self, output_dir: Path) -> None:
 - **Format**: Plain files or Jinja2 templates (`.j2` extension)
 - **Customization**: User-overridable in `.{toolkit}/templates/`
 
-- **Required Templates** (in `templates/{source}/`):
-  - `constitution.md.j2` - Project principles template (domain-specific, not generic)
-  - `spec-template.md.j2` - Specification template
-    - **Default format**: Markdown (`.md`)
-    - **Alternative formats**: YAML (`.yaml`), JSON (`.json`), TOML (`.toml`), or custom
-    - **Choose based on**: Domain conventions and parsing requirements
+- **Required Infrastructure Templates** (in `templates/{source}/`):
+  - `constitution.md.j2` - Project principles template (domain-specific)
   - `readme.md.j2` - Project README template
   - `.gitignore.j2` - Git ignore rules template
+  - `specs-readme.md.j2` - specs/ directory guidance template ⭐ **CRITICAL**
+    - **Target**: `specs/README.md` (NOT spec-template)
+    - **Content**: Explains how to use slash commands to generate specifications
+    - **Example**: See MetaSpec's `templates/base/specs/README.md.j2`
   
+- **What NOT to Create**: See "Generator vs AI Commands" (Line 2220-2311) for anti-patterns
+
 - **Required Command Deployment** (if toolkit has slash commands):
   - **Source**: `templates/{source}/commands/*.md` (same `{source}` as above)
   - **Target**: `.{toolkit}/commands/*.md` (in user projects)
@@ -2634,145 +2487,30 @@ for file in project.files:
 
 ### ✅ Post-Generation Verification Checklist
 
-**After defining your Generator component, verify it aligns with MetaSpec standards.**
+**After defining your Generator component, verify alignment with MetaSpec standards.**
 
-Run this checklist to catch common mistakes:
+**Quick Reference**: See "Generator vs AI Commands" (Line 2220-2311) for role separation details.
 
-##### ✅ Generator Purpose Checklist
+##### Component-Level Checks
 
-| Check | Correct | Wrong |
-|-------|---------|-------|
-| **What does Generator create?** | ✅ Project files (dirs, specs, constitution) | ❌ Domain content (posts, docs, code) |
-| **init command argument** | ✅ `<project-directory>` | ❌ `<spec-file>` |
-| **init command output** | ✅ Full project structure | ❌ Single file |
-| **Templates location** | ✅ `src/{toolkit}/templates/` | ❌ Domain-specific templates |
-| **Template content** | ✅ Constitution, README, spec templates | ❌ Post/article templates |
+| Area | Verify | Anti-Pattern |
+|------|--------|--------------|
+| **Purpose** | ✅ Creates project infrastructure | ❌ Generates domain content |
+| **init argument** | ✅ `<project-directory>` | ❌ `<spec-file>` |
+| **init output** | ✅ Complete project structure | ❌ Single file |
+| **Slash commands** | ✅ Deployed to `.{toolkit}/commands/` | ❌ Missing or incomplete |
+| **specs/ content** | ✅ Only `README.md` (guidance) | ❌ spec-template, example-spec |
 
-##### ✅ Slash Commands Deployment Checklist
+##### Verification Code Example
 
-**Verify that your Generator properly deploys slash commands to user projects:**
-
-| Check | Correct | Wrong |
-|-------|---------|-------|
-| **Commands deployed?** | ✅ All `.md` files in `.{toolkit}/commands/` | ❌ Empty or missing directory |
-| **Command count** | ✅ Matches toolkit's command count | ❌ Missing commands |
-| **File format** | ✅ Original `.md` format preserved | ❌ Rendered as `.j2` or modified |
-| **Deployment method** | ✅ Direct file copy using `shutil.copy()` | ❌ Jinja2 rendering |
-| **Target location** | ✅ `.{toolkit}/commands/*.md` | ❌ Wrong directory or filename |
-| **AI accessible** | ✅ AI can read commands in user project | ❌ Commands only in toolkit source |
-| **Timing** | ✅ Deployed during `init` command | ❌ Manual copy required |
-
-**Command Deployment Verification**:
 ```python
-# After running: {toolkit} init my-project
-# Verify:
+# After: {toolkit} init my-project
 assert (my-project / ".{toolkit}" / "commands").exists()
-assert len(list((my-project / ".{toolkit}" / "commands").glob("*.md"))) > 0
-assert (my-project / ".{toolkit}" / "commands" / "{toolkit}.{command}.md").exists()
+assert (my-project / "specs" / "README.md").exists()
+assert not (my-project / "specs" / "spec-template.yaml").exists()
 ```
 
-##### 📋 Specific Validation Rules
-
-**Rule 1: Generator Purpose**
-```
-✅ CORRECT:
-"Purpose: Generate project structure and specification files"
-"Purpose: Initialize new {toolkit} project with standardized layout"
-
-❌ WRONG:
-"Purpose: Generate marketing posts from specifications"
-"Purpose: Create blog articles based on specs"
-"Purpose: Build social media content"
-```
-
-**Rule 2: Generation Targets**
-```
-✅ CORRECT:
-- Project structure (directories)
-- Specification templates (.yaml/.json)
-- Constitution.md
-- README.md
-- Custom commands (optional)
-
-❌ WRONG:
-- Social media posts
-- Blog articles
-- Email templates
-- API documentation (as primary output)
-- Code files (as primary output)
-```
-
-**Rule 3: init Command Pattern**
-```
-✅ CORRECT:
-{toolkit-name} init <project-directory> [--template TEMPLATE]
-{toolkit-name} init my-project
-{toolkit-name} init quick-start --template minimal
-
-❌ WRONG:
-{toolkit-name} init spec.yaml
-{toolkit-name} generate campaign.yaml --output posts/
-{toolkit-name} create-content --type blog
-```
-
-**Rule 4: CLI Integration**
-```
-✅ CORRECT:
-# init command uses Generator
-{toolkit-name} init <project-name> [OPTIONS]
-
-Output:
-✓ Created project structure
-✓ Generated constitution.md
-✓ Created spec templates
-✓ Generated README.md
-
-❌ WRONG:
-# generate command creates domain content
-{toolkit-name} generate <spec-file> --type post
-
-Output:
-✓ Generated 10 social posts
-✓ Created 3 blog articles
-```
-
-##### 🎯 Decision Matrix
-
-**Use this to verify your Generator design**:
-
-| Question | If YES | If NO |
-|----------|--------|-------|
-| Does Generator create project directories? | ✅ Correct | ⚠️ Review purpose |
-| Does Generator create constitution.md? | ✅ Correct | ⚠️ Add to targets |
-| Does Generator create spec templates? | ✅ Correct | ⚠️ Add to targets |
-| Does init command take `<project-dir>` arg? | ✅ Correct | ❌ Fix command pattern |
-| Does Generator create domain content? | ❌ WRONG - Remove this | ✅ Correct |
-| Does Generator consume specs as input? | ❌ WRONG - Review purpose | ✅ Correct |
-
-##### 🚨 Red Flags
-
-**If you see ANY of these, Generator definition is WRONG**:
-
-- ❌ Generation Targets include: "posts", "articles", "emails", "tweets"
-- ❌ CLI example shows: `generate post`, `create content`, `build docs`
-- ❌ Input includes: "Specification file path"
-- ❌ Output includes: "Generated N posts", "Created M articles"
-- ❌ Templates include: `post.j2`, `article.j2`, `email.j2`
-
-**If you see red flags, REVISE Generator definition to focus on PROJECT FILES.**
-
-##### ✅ Verification Actions
-
-**Before proceeding to Step 6**:
-
-1. [ ] Review Generator Purpose statement
-2. [ ] Verify Generation Targets are project files
-3. [ ] Confirm init command pattern is correct
-4. [ ] Check CLI Integration examples
-5. [ ] Ensure no domain content generation
-6. [ ] Run `/metaspec.sdd.analyze` for automated validation (recommended)
-
-**If any checks fail, go back and revise Step 5.**
+**For detailed validation rules and red flags**, see "Generator vs AI Commands" (Line 2220-2311).
 
 ---
 
@@ -3276,20 +3014,19 @@ Checking tests/integration/...
 → Test Impact: 1 new test file, 1 file needing review
 ```
 
-### 7. Validation Checklist (NEW)
+### 7. Validation Checklist (Document-Level)
 
-**Purpose**: Ensure toolkit specification quality before finalizing.
+**Purpose**: Ensure toolkit specification document quality before finalizing.
 
-Run these critical validation checks:
+**Critical checks** (different from Component-Level checks in Step 5):
 
-- [ ] **Structure**: Required sections present (Dependencies, Overview, Implementation, Components, Success Criteria)
-- [ ] **Dependencies**: At least one domain spec referenced, all dependencies exist
-- [ ] **Implementation**: Language specified with rationale, architecture type defined
-- [ ] **Components**: Core components listed (Parser/Validator/CLI/etc.) with clear purposes
-- [ ] **Constitution Compliance**: Entity-First Design, Spec-First Development, AI-Agent Friendly, Progressive Enhancement
-- [ ] **Validation Strategy**: Test plan defined (unit/integration tests)
+- [ ] **Structure**: All required sections present (Dependencies, Overview, Implementation, etc.)
+- [ ] **Dependencies**: At least one domain spec referenced and verified to exist
+- [ ] **Implementation**: Language + rationale, architecture defined
+- [ ] **Components**: Core components listed with clear purposes
+- [ ] **Constitution**: Compliant with Part III principles (Entity-First, Spec-First, AI-Friendly)
 - [ ] **Impact Report**: Prepended at top of spec.md
-- [ ] **File Path**: specs/toolkit/{spec_id}/spec.md
+- [ ] **File Path**: Correct location `specs/toolkit/{spec_id}/spec.md`
 
 ### 8. Generate Validation Report
 
