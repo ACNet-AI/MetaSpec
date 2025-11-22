@@ -44,8 +44,35 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.metaspec]
-# MetaSpec version used to generate this speckit
+# MetaSpec metadata - enables community to discover speckit capabilities
 generated_by = "{{ metaspec_version }}"
+domain = "{{ domain }}"
+{% if lifecycle %}
+lifecycle = "{{ lifecycle }}"
+{% endif %}
+
+# Command system type - updated during toolkit implementation
+# Values: "generic" | "sds" | "sdd" | ["sds", "sdd"] | etc.
+{% if slash_commands %}
+# TODO: Calculate sd_type based on deployed slash commands
+sd_type = "tbd"
+{% else %}
+sd_type = "none"
+{% endif %}
+
+# Deployed slash commands (populated during toolkit implementation)
+{% if slash_commands %}
+{% for sc in slash_commands %}
+[[tool.metaspec.slash_commands]]
+name = "{{ sc.name }}"
+description = "{{ sc.description }}"
+source = "{{ sc.source }}"
+
+{% endfor %}
+{% else %}
+# No slash commands defined yet
+# Will be added during toolkit implementation via /metaspec.sdd.implement
+{% endif %}
 
 [tool.setuptools]
 package-dir = {"" = "src"}

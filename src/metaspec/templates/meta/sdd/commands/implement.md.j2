@@ -26,55 +26,58 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 | Step | Lines | Size | Priority | read_file Usage |
 |------|-------|------|----------|-----------------|
-| 1-5. Prerequisites & Setup | 21-167 | 146 lines | 🔴 MUST READ | `read_file(target_file, offset=21, limit=146)` |
-| 6. Execute Implementation | 168-209 | 41 lines | 🔴 MUST READ | `read_file(target_file, offset=168, limit=41)` |
-| **7. Task Execution Details** ⭐ | 210-302 | 92 lines | 🔴 **KEY** | See subsections below ⬇️ |
-| 8-10. Checkpoints & Reporting | 303-394 | 91 lines | 🟡 Important | `read_file(target_file, offset=303, limit=91)` |
-| 11-13. Validation & Saves | 395-519 | 124 lines | 🟡 Important | `read_file(target_file, offset=395, limit=124)` |
-| 14-15. Propagation & Validation | 520-646 | 126 lines | 🟡 Important | `read_file(target_file, offset=520, limit=126)` |
-| 16. Final Report | 647-997 | 350 lines | 🟢 Reference | `read_file(target_file, offset=647, limit=350)` |
+| 1-5. Prerequisites & Setup | 86-232 | 146 lines | 🔴 MUST READ | `read_file(target_file, offset=86, limit=146)` |
+| 6. Execute Implementation | 233-274 | 41 lines | 🔴 MUST READ | `read_file(target_file, offset=233, limit=41)` |
+| **7. Task Execution Details** ⭐ | 275-416 | 141 lines | 🔴 **KEY** | See subsections below ⬇️ |
+| 8-10. Checkpoints & Reporting | 417-508 | 91 lines | 🟡 Important | `read_file(target_file, offset=417, limit=91)` |
+| 11-13. Validation & Saves | 509-633 | 124 lines | 🟡 Important | `read_file(target_file, offset=509, limit=124)` |
+| 14-15. Propagation & Validation | 634-760 | 126 lines | 🟡 Important | `read_file(target_file, offset=634, limit=126)` |
+| 16. Final Report | 761-1048 | 287 lines | 🟢 Reference | `read_file(target_file, offset=761, limit=287)` |
 
-**📋 Section 7: Task Execution Details by Language** (92 lines):
+**📋 Section 7: Task Execution Details by Language** (141 lines):
 
 | Component | Lines | Size | Usage |
 |-----------|-------|------|-------|
-| **Python Implementation** | 210-235 | 25 lines | `read_file(target_file, offset=210, limit=25)` |
-| **TypeScript Implementation** | 236-261 | 25 lines | `read_file(target_file, offset=236, limit=25)` |
-| **Go Implementation** | 262-285 | 23 lines | `read_file(target_file, offset=262, limit=23)` |
-| **Rust Implementation** | 286-302 | 16 lines | `read_file(target_file, offset=286, limit=16)` |
+| **Python Implementation** ⭐ | 306-398 | 92 lines | `read_file(target_file, offset=306, limit=92)` |
+| **TypeScript Implementation** | 315-323 | 8 lines | `read_file(target_file, offset=315, limit=8)` |
+| **Go Implementation** | 324-332 | 8 lines | `read_file(target_file, offset=324, limit=8)` |
+| **Rust Implementation** | 333-341 | 8 lines | `read_file(target_file, offset=333, limit=8)` |
+
+**Note**: Python section (92 lines) includes overview + detailed `pyproject.toml` structure with `[tool.metaspec]` metadata and sd_type calculation rules (48 lines).
 
 **🎯 Phase-Specific Reading** (By component type):
 
 | Phase | Lines | Size | Usage |
 |-------|-------|------|-------|
-| Setup & Models | 71-142, 210-235 | 97 lines | `read_file(target_file, offset=71, limit=71)` + `offset=210, limit=25` |
-| Parser Development | 236-261 | 25 lines | `read_file(target_file, offset=236, limit=25)` |
-| Validator Development | 262-285 | 23 lines | `read_file(target_file, offset=262, limit=23)` |
-| CLI Development | 286-302 | 16 lines | `read_file(target_file, offset=286, limit=16)` |
-| Testing & Docs | 303-362 | 59 lines | `read_file(target_file, offset=303, limit=59)` |
+| Setup & pyproject.toml | 136-207, 306-398 | 164 lines | `read_file(target_file, offset=136, limit=71)` + `offset=306, limit=92` |
+| Language-Specific Impl | 306-341 | 35 lines | `read_file(target_file, offset=306, limit=35)` |
+| Checkpoints & Validation | 417-508 | 91 lines | `read_file(target_file, offset=417, limit=91)` |
+| Progress & Error Handling | 441-508 | 67 lines | `read_file(target_file, offset=441, limit=67)` |
+| Completion & Reporting | 509-633 | 124 lines | `read_file(target_file, offset=509, limit=124)` |
 
 **💡 Typical Usage Patterns**:
 ```python
 # Quick start: Read Prerequisites only (146 lines)
-read_file(target_file, offset=21, limit=146)
+read_file(target_file, offset=86, limit=146)
 
-# Python implementation: Read Python-specific guidance (25 lines)
-read_file(target_file, offset=210, limit=25)
+# Python implementation: Read Python guidance + pyproject.toml update (92 lines)
+read_file(target_file, offset=306, limit=92)
 
 # Validation phase: Read validation guidance (124 lines)
-read_file(target_file, offset=395, limit=124)
+read_file(target_file, offset=509, limit=124)
 
 # Specific language: Jump to language section
-read_file(target_file, offset=236, limit=25)  # TypeScript
-read_file(target_file, offset=262, limit=23)  # Go
-read_file(target_file, offset=286, limit=16)  # Rust
+read_file(target_file, offset=315, limit=8)   # TypeScript
+read_file(target_file, offset=324, limit=8)   # Go
+read_file(target_file, offset=333, limit=8)   # Rust
 ```
 
 **Token Savings**: 
-- Full file: 997 lines (~3400 tokens)
-- Prerequisites only: 146 lines (~500 tokens) → **85% savings**
-- Language-specific: 16-25 lines (~60-90 tokens) → **97% savings** 🏆
-- Phase-specific: 59-97 lines (~200-330 tokens) → **90% savings**
+- Full file: 1049 lines (~3600 tokens)
+- Prerequisites only: 146 lines (~500 tokens) → **86% savings**
+- Language-specific: 8 lines (~30 tokens) → **99% savings** 🏆
+- Python + pyproject.toml: 92 lines (~320 tokens) → **91% savings**
+- Phase-specific: 67-164 lines (~230-560 tokens) → **84-94% savings**
 
 ---
 
@@ -343,6 +346,55 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    - Implement validator that enforces specification rules
    - Implement CLI commands defined in toolkit spec
    - Follow architecture from plan.md
+
+   **Python pyproject.toml Structure** (T002 - Initialize/Update pyproject.toml):
+   
+   **CRITICAL**: Update `[tool.metaspec]` section based on actual deployed slash commands.
+   
+   ```toml
+   [project]
+   name = "your-speckit"
+   version = "0.1.0"
+   # ... (standard fields)
+   
+   [tool.metaspec]
+   generated_by = "0.9.5"
+   domain = "your-domain"
+   lifecycle = "greenfield"  # Optional
+   
+   # Calculate sd_type from deployed commands:
+   sd_type = "sdd"  # See calculation rules below
+   
+   # List ALL deployed slash commands in .metaspec/commands/:
+   [[tool.metaspec.slash_commands]]
+   name = "specify"
+   description = "Create feature specification"
+   source = "sdd/spec-kit"
+   
+   [[tool.metaspec.slash_commands]]
+   name = "implement"
+   description = "Execute implementation"
+   source = "sdd/spec-kit"
+   ```
+   
+   **sd_type Calculation Rules** (Auto-detect from deployed commands):
+   1. Scan `.metaspec/commands/` directory for actual `.md` files
+   2. For each command, determine source from filename or content:
+      - `sds.*` or from `library/sds/` → source: "sds"
+      - `sdd.*` or from `library/sdd/` → source: "sdd"  
+      - Generic/custom → source: "generic"
+   3. Calculate sd_type:
+      - Only "sds" commands → `sd_type = "sds"`
+      - Only "sdd" commands → `sd_type = "sdd"`
+      - Only "generic" → `sd_type = "generic"`
+      - Mixed types → `sd_type = ["sds", "sdd"]` (array)
+      - No commands → `sd_type = "none"`
+   
+   **Example**: If `.metaspec/commands/` contains:
+   - `sdd.specify.md`, `sdd.implement.md` → `sd_type = "sdd"`
+   - `sds.specify.md`, `sdd.implement.md` → `sd_type = ["sds", "sdd"]`
+   
+   **Note**: This metadata enables community tools to discover speckit capabilities.
 
 3. **Verify task**:
    - **SETUP**: Files created, configs valid, dependencies installable

@@ -196,6 +196,7 @@ class Generator:
             "version": meta_spec.version,
             "description": description,
             "domain": meta_spec.domain,
+            "lifecycle": meta_spec.lifecycle,
             "entity": entity_dict,
             "cli_commands": cli_commands_list,
             "slash_commands": slash_commands_list,

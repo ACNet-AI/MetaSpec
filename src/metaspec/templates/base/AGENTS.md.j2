@@ -10,7 +10,8 @@ You are helping a developer use **{{ name }}** - a spec-driven toolkit for {{ do
 
 **Toolkit Version**: {{ version }}  
 **Domain**: {{ domain }}  
-**Lifecycle**: {{ lifecycle }}
+{% if lifecycle %}**Lifecycle**: {{ lifecycle }}  
+{% endif %}
 
 ---
 

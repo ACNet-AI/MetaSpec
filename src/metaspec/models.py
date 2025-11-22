@@ -86,6 +86,7 @@ class MetaSpecDefinition:
     # Optional fields with defaults
     version: str = "0.1.0"
     domain: str = "generic"
+    lifecycle: str = "greenfield"  # greenfield, brownfield, or custom
     description: str | None = None
     cli_commands: list[Command] = field(default_factory=list)
     slash_commands: list[SlashCommand] = field(default_factory=list)
@@ -122,6 +123,8 @@ class MetaSpecDefinition:
             kwargs["version"] = data["version"]
         if "domain" in data:
             kwargs["domain"] = data["domain"]
+        if "lifecycle" in data:
+            kwargs["lifecycle"] = data["lifecycle"]
         if "description" in data:
             kwargs["description"] = data["description"]
         if "dependencies" in data:

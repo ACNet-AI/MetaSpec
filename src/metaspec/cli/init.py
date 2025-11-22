@@ -27,6 +27,7 @@ STARTER_PRESETS = {
         "name": "my-speckit",
         "version": "0.1.0",
         "domain": "generic",
+        "lifecycle": "greenfield",
         "description": "Generic speckit - manage specifications for any domain",
         "entity": {
             "name": "Spec",
