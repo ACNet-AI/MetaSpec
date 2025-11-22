@@ -51,17 +51,35 @@ domain = "{{ domain }}"
 lifecycle = "{{ lifecycle }}"
 {% endif %}
 
-# Command system type - updated during toolkit implementation
-# Values: "generic" | "sds" | "sdd" | ["sds", "sdd"] | etc.
+# CLI commands provided by this speckit
+{% if cli_commands %}
+cli_commands = [{% for cmd in cli_commands %}"{{ cmd.name }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% else %}
+cli_commands = []
+{% endif %}
+
+# Slash command system type (auto-detected from sources)
+# Values: "generic" | "sds" | "sdd" | ["sds", "sdd"] | "none"
 {% if slash_commands %}
-# TODO: Calculate sd_type based on deployed slash commands
-sd_type = "tbd"
+{% set sd_types = namespace(list=[]) %}
+{% for sc in slash_commands %}
+  {% if sc.source.startswith('sdd/') and 'sdd' not in sd_types.list %}
+    {% set _ = sd_types.list.append('sdd') %}
+  {% elif sc.source.startswith('sds/') and 'sds' not in sd_types.list %}
+    {% set _ = sd_types.list.append('sds') %}
+  {% elif sc.source == 'generic' and 'generic' not in sd_types.list %}
+    {% set _ = sd_types.list.append('generic') %}
+  {% endif %}
+{% endfor %}
+{% if sd_types.list|length == 1 %}
+sd_type = "{{ sd_types.list[0] }}"
+{% elif sd_types.list|length > 1 %}
+sd_type = {{ sd_types.list | tojson }}
 {% else %}
 sd_type = "none"
 {% endif %}
 
-# Deployed slash commands (populated during toolkit implementation)
-{% if slash_commands %}
+# Slash commands provided by this speckit (for AI agents)
 {% for sc in slash_commands %}
 [[tool.metaspec.slash_commands]]
 name = "{{ sc.name }}"
@@ -70,8 +88,8 @@ source = "{{ sc.source }}"
 
 {% endfor %}
 {% else %}
-# No slash commands defined yet
-# Will be added during toolkit implementation via /metaspec.sdd.implement
+sd_type = "none"
+# No slash commands defined
 {% endif %}
 
 [tool.setuptools]

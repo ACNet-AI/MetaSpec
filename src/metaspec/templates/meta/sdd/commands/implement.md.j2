@@ -349,7 +349,7 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
 
    **Python pyproject.toml Structure** (T002 - Initialize/Update pyproject.toml):
    
-   **CRITICAL**: Update `[tool.metaspec]` section based on actual deployed slash commands.
+   **CRITICAL**: Update `[tool.metaspec]` section based on actual implemented capabilities.
    
    ```toml
    [project]
@@ -362,39 +362,87 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    domain = "your-domain"
    lifecycle = "greenfield"  # Optional
    
-   # Calculate sd_type from deployed commands:
-   sd_type = "sdd"  # See calculation rules below
+   # CLI commands this speckit provides
+   cli_commands = ["init", "validate", "generate", "info"]
    
-   # List ALL deployed slash commands in .metaspec/commands/:
+   # Slash command system type (auto-detected from sources)
+   sd_type = "generic"  # See calculation rules below
+   
+   # Slash commands this speckit provides (for AI agents)
    [[tool.metaspec.slash_commands]]
-   name = "specify"
-   description = "Create feature specification"
-   source = "sdd/spec-kit"
+   name = "show-spec"
+   description = "Display domain specification"
+   source = "generic"
    
    [[tool.metaspec.slash_commands]]
-   name = "implement"
-   description = "Execute implementation"
-   source = "sdd/spec-kit"
+   name = "get-template"
+   description = "Get entity template"
+   source = "generic"
    ```
    
-   **sd_type Calculation Rules** (Auto-detect from deployed commands):
-   1. Scan `.metaspec/commands/` directory for actual `.md` files
-   2. For each command, determine source from filename or content:
-      - `sds.*` or from `library/sds/` → source: "sds"
-      - `sdd.*` or from `library/sdd/` → source: "sdd"  
-      - Generic/custom → source: "generic"
-   3. Calculate sd_type:
-      - Only "sds" commands → `sd_type = "sds"`
-      - Only "sdd" commands → `sd_type = "sdd"`
-      - Only "generic" → `sd_type = "generic"`
-      - Mixed types → `sd_type = ["sds", "sdd"]` (array)
-      - No commands → `sd_type = "none"`
+   **Update Procedure**:
    
-   **Example**: If `.metaspec/commands/` contains:
-   - `sdd.specify.md`, `sdd.implement.md` → `sd_type = "sdd"`
-   - `sds.specify.md`, `sdd.implement.md` → `sd_type = ["sds", "sdd"]`
+   1. **CLI Commands**: List all commands defined in `src/{package}/cli.py`
+      - Extract from `@app.command()` decorators
+      - Or list from `[project.scripts]` entrypoints
+      - Update: `cli_commands = ["cmd1", "cmd2", ...]`
    
-   **Note**: This metadata enables community tools to discover speckit capabilities.
+   2. **Slash Commands**: Scan `.metaspec/commands/` for actual `.md` files
+      - Each `.md` file = one slash command
+      - Extract name from filename (e.g., `show-spec.md` → `show-spec`)
+      - Extract description from frontmatter `description:` field
+      - Determine source:
+        * From `library/sdd/` → `source = "sdd/spec-kit"` or specific sub-library
+        * From `library/sds/` → `source = "sds"`
+        * Custom domain-specific → `source = "generic"`
+   
+   3. **sd_type**: Auto-calculate from slash command sources
+      - Only `"sdd/*"` sources → `sd_type = "sdd"`
+      - Only `"sds/*"` sources → `sd_type = "sds"`
+      - Only `"generic"` sources → `sd_type = "generic"`
+      - Mixed sources → `sd_type = ["generic", "sdd"]` (array)
+      - No slash commands → `sd_type = "none"`
+   
+   **Example Scenarios**:
+   
+   **Scenario 1: Domain-Specific Speckit** (MCP)
+   ```toml
+   cli_commands = ["init", "validate", "generate"]
+   sd_type = "generic"
+   
+   [[tool.metaspec.slash_commands]]
+   name = "show-spec"
+   source = "generic"  # Custom MCP command
+   ```
+   
+   **Scenario 2: Spec-Kit Pattern Speckit**
+   ```toml
+   cli_commands = ["init", "validate"]
+   sd_type = "sdd"
+   
+   [[tool.metaspec.slash_commands]]
+   name = "specify"
+   source = "sdd/spec-kit"  # From library
+   ```
+   
+   **Scenario 3: Mixed Pattern Speckit**
+   ```toml
+   cli_commands = ["init", "validate", "analyze"]
+   sd_type = ["generic", "sdd"]
+   
+   [[tool.metaspec.slash_commands]]
+   name = "discover"
+   source = "generic"  # Custom
+   
+   [[tool.metaspec.slash_commands]]
+   name = "specify"
+   source = "sdd/spec-kit"  # From library
+   ```
+   
+   **Purpose**: This metadata enables community to:
+   - Discover speckit capabilities (what CLI commands available?)
+   - Understand AI command system type (what workflow pattern?)
+   - Search/filter speckits by capabilities
 
 3. **Verify task**:
    - **SETUP**: Files created, configs valid, dependencies installable

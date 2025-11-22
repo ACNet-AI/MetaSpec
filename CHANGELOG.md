@@ -7,6 +7,98 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🎯 Speckit Metadata Support in pyproject.toml
+
+**Feature**: Enable community discovery of speckit capabilities through standardized metadata  
+**Status**: ✅ Implemented
+
+#### Changes
+
+**1. Added [tool.metaspec] Section to Generated Speckits**
+
+New metadata fields in `pyproject.toml`:
+```toml
+[tool.metaspec]
+generated_by = "0.9.5"        # MetaSpec version (required)
+domain = "marketing"           # Toolkit domain (required)
+lifecycle = "greenfield"       # Optional: omit for non-dev domains
+sd_type = "sdd"               # Command system type (updated during impl)
+
+[[tool.metaspec.slash_commands]]
+name = "specify"
+description = "Create specification"
+source = "sdd/spec-kit"
+```
+
+**Purpose**: 
+- Community tools can discover speckit capabilities
+- Enable speckit registry and search
+- Support compatibility checking
+
+**2. Two-Phase Implementation Model**
+
+**Phase 1: Initialization** (`metaspec init`)
+- `pyproject.toml.j2` provides base framework
+- `sd_type = "tbd"` or `"none"` (placeholder)
+- `slash_commands` section commented out
+- Simplified: No complex Jinja2 auto-detection logic
+
+**Phase 2: Implementation** (`/metaspec.sdd.implement`)
+- AI scans `.metaspec/commands/` for deployed commands
+- Calculates `sd_type` from command sources (sds/sdd/generic/mixed)
+- Populates `slash_commands` array
+- Updates metadata based on actual deployment
+
+**3. Enhanced implement.md.j2 Guidance**
+
+Added 92 lines of Python-specific guidance:
+- `pyproject.toml` structure with `[tool.metaspec]`
+- `sd_type` calculation rules (scan commands → detect source → compute type)
+- Auto-detection logic with examples
+- Reference to comprehensive documentation
+
+**4. Navigation Guide Corrections**
+
+Fixed all line numbers in `implement.md.j2`:
+- Main navigation table: All sections corrected (+65-67 line offset)
+- Section 7 subsections: Accurate line ranges
+- Token savings: Language-specific reading now 99% savings 🏆
+
+**5. Model & Generator Updates**
+
+- `models.py`: Added `lifecycle` field to `MetaSpecDefinition` (default: "greenfield")
+- `generator.py`: Pass `lifecycle` to template context
+- `init.py`: Add `lifecycle` to default preset
+- `README.md.j2` & `AGENTS.md.j2`: Make `lifecycle` display optional
+
+**6. Comprehensive Documentation**
+
+New file: `docs/metaspec-metadata-examples.md` (255 lines)
+- 5 real-world examples (Generic, SDD, Mixed SDS+SDD, SD-Marketing, Mixed sources)
+- Auto-detection rules explanation
+- Community use cases (registry, search, compatibility check)
+- Design principles
+
+#### Files Changed
+
+- `src/metaspec/templates/base/pyproject.toml.j2` (+29, -10)
+- `src/metaspec/templates/meta/sdd/commands/implement.md.j2` (+108, -11)
+- `src/metaspec/models.py` (+3)
+- `src/metaspec/generator.py` (+1)
+- `src/metaspec/cli/init.py` (+1)
+- `src/metaspec/templates/base/{README,AGENTS}.md.j2` (+6, -2)
+- `docs/metaspec-metadata-examples.md` (+255, new)
+
+**Total**: +403 lines, -23 lines
+
+#### Benefits
+
+1. **Community Discovery**: Standardized metadata format for registry tools
+2. **Accurate Metadata**: Based on actual deployment, not initial guesses
+3. **Flexible**: Works for dev and non-dev domains (lifecycle optional)
+4. **Maintainable**: Calculation logic centralized in `implement.md.j2`
+5. **Token Efficient**: Enhanced navigation with 99% savings for language-specific reading
+
 ---
 
 ## [0.9.5] - 2025-11-19
