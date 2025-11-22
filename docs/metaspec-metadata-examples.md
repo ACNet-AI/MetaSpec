@@ -87,11 +87,11 @@ sd_type = ["sds", "sdd"]
 
 # Deployed slash commands (19 total)
 slash_commands = [
-    "sds.specify", "sds.plan", "sds.tasks", "sds.implement",
-    "sds.clarify", "sds.analyze", "sds.checklist", "sds.constitution",
-    "sdd.specify", "sdd.plan", "sdd.tasks", "sdd.implement",
-    "sdd.clarify", "sdd.analyze", "sdd.checklist", "sdd.constitution",
-    "proposal", "apply", "archive"
+    "metaspec.sds.specify", "metaspec.sds.plan", "metaspec.sds.tasks", "metaspec.sds.implement",
+    "metaspec.sds.clarify", "metaspec.sds.analyze", "metaspec.sds.checklist", "metaspec.sds.constitution",
+    "metaspec.sdd.specify", "metaspec.sdd.plan", "metaspec.sdd.tasks", "metaspec.sdd.implement",
+    "metaspec.sdd.clarify", "metaspec.sdd.analyze", "metaspec.sdd.checklist", "metaspec.sdd.constitution",
+    "metaspec.evolution.proposal", "metaspec.evolution.apply", "metaspec.evolution.archive"
 ]
 ```
 

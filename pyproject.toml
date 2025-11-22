@@ -206,3 +206,41 @@ exclude_lines = [
     "@abstractmethod",
 ]
 
+[tool.metaspec]
+# MetaSpec metadata - self-descriptive capabilities
+generated_by = "0.9.7"
+domain = "meta-specification"
+lifecycle = "greenfield"
+
+# CLI commands this framework provides
+cli_commands = ["init", "search", "install", "contribute", "list", "info"]
+
+# Mixed command system: SDS (specification) + SDD (development)
+sd_type = ["sds", "sdd"]
+
+# Slash commands for AI-assisted speckit development (19 total)
+slash_commands = [
+    # SDS: Spec-Driven Specification (8 commands)
+    "metaspec.sds.constitution",
+    "metaspec.sds.specify",
+    "metaspec.sds.clarify",
+    "metaspec.sds.plan",
+    "metaspec.sds.tasks",
+    "metaspec.sds.analyze",
+    "metaspec.sds.implement",
+    "metaspec.sds.checklist",
+    # SDD: Spec-Driven Development (8 commands)
+    "metaspec.sdd.constitution",
+    "metaspec.sdd.specify",
+    "metaspec.sdd.clarify",
+    "metaspec.sdd.plan",
+    "metaspec.sdd.checklist",
+    "metaspec.sdd.tasks",
+    "metaspec.sdd.analyze",
+    "metaspec.sdd.implement",
+    # Evolution: Change Management (3 commands)
+    "metaspec.evolution.proposal",
+    "metaspec.evolution.apply",
+    "metaspec.evolution.archive",
+]
+
