@@ -32,7 +32,7 @@
 
 ```toml
 [tool.metaspec]
-generated_by = "0.9.5"
+generated_by = "0.9.6"
 domain = "mcp"
 
 # CLI commands this speckit provides
@@ -41,15 +41,8 @@ cli_commands = ["init", "validate", "generate", "info"]
 # Custom domain-specific slash commands
 sd_type = "generic"
 
-[[tool.metaspec.slash_commands]]
-name = "show-spec"
-description = "Display MCP specification reference"
-source = "generic"
-
-[[tool.metaspec.slash_commands]]
-name = "get-template"
-description = "Get MCP server template"
-source = "generic"
+# Slash commands for AI agents
+slash_commands = ["show-spec", "get-template"]
 ```
 
 **Scenario**: Domain-specific speckit with custom AI commands tailored to MCP domain
@@ -60,7 +53,7 @@ source = "generic"
 
 ```toml
 [tool.metaspec]
-generated_by = "0.9.5"
+generated_by = "0.9.6"
 domain = "api-testing"
 lifecycle = "greenfield"
 
@@ -71,20 +64,7 @@ cli_commands = ["init", "validate", "test"]
 sd_type = "sdd"
 
 # Slash commands from library/sdd/spec-kit
-[[tool.metaspec.slash_commands]]
-name = "specify"
-description = "Create API test specification"
-source = "sdd/spec-kit"
-
-[[tool.metaspec.slash_commands]]
-name = "plan"
-description = "Plan test implementation"
-source = "sdd/spec-kit"
-
-[[tool.metaspec.slash_commands]]
-name = "implement"
-description = "Execute test implementation"
-source = "sdd/spec-kit"
+slash_commands = ["specify", "plan", "implement"]
 ```
 
 **Scenario**: Speckit adopts spec-kit workflow pattern for greenfield API test development
@@ -95,66 +75,59 @@ source = "sdd/spec-kit"
 
 ```toml
 [tool.metaspec]
-generated_by = "0.9.5"
+generated_by = "0.9.6"
 domain = "meta-specification"
 lifecycle = "greenfield"
+
+# CLI commands
+cli_commands = ["init", "search", "install", "contribute", "list", "info"]
 
 # Command system type (auto-detected)
 sd_type = ["sds", "sdd"]
 
 # Deployed slash commands (19 total)
-[[tool.metaspec.slash_commands]]
-name = "sds.specify"
-description = "Define domain specification"
-source = "sds"
-
-[[tool.metaspec.slash_commands]]
-name = "sds.plan"
-description = "Plan specification architecture"
-source = "sds"
-
-[[tool.metaspec.slash_commands]]
-name = "sdd.specify"
-description = "Define toolkit specification"
-source = "sdd"
-
-[[tool.metaspec.slash_commands]]
-name = "sdd.implement"
-description = "Build toolkit code"
-source = "sdd"
-
-# ... (15 more commands)
+slash_commands = [
+    "sds.specify", "sds.plan", "sds.tasks", "sds.implement",
+    "sds.clarify", "sds.analyze", "sds.checklist", "sds.constitution",
+    "sdd.specify", "sdd.plan", "sdd.tasks", "sdd.implement",
+    "sdd.clarify", "sdd.analyze", "sdd.checklist", "sdd.constitution",
+    "proposal", "apply", "archive"
+]
 ```
 
 **Scenario**: MetaSpec itself - generates both specifications and toolkits
 
 ---
 
-### Example 4: SD-Marketing (Custom Domain, No Lifecycle)
+### Example 4: SD-Marketing (Custom Domain with Custom System)
 
 ```toml
 [tool.metaspec]
-generated_by = "0.9.5"
+generated_by = "0.9.6"
 domain = "marketing"
 
 # CLI commands for marketing operations
-cli_commands = ["init", "validate", "analyze", "report"]
+cli_commands = ["info", "init", "validate"]
 
-# Custom marketing-specific AI commands
-sd_type = "generic"
+# Custom marketing-specific command system (SDM)
+sd_type = "sdm"
 
-[[tool.metaspec.slash_commands]]
-name = "campaign.create"
-description = "Create marketing campaign specification"
-source = "generic"
-
-[[tool.metaspec.slash_commands]]
-name = "campaign.analyze"
-description = "Analyze campaign performance against KPIs"
-source = "generic"
+# SDM (Spec-Driven Marketing) commands
+slash_commands = [
+    "marketspec.constitution",
+    "marketspec.specify",
+    "marketspec.clarify",
+    "marketspec.plan",
+    "marketspec.tasks",
+    "marketspec.implement",
+    "marketspec.review",
+    "marketspec.optimize",
+    "marketspec.analyze",
+    "marketspec.checklist",
+]
 ```
 
-**Scenario**: Marketing toolkit with domain-specific commands - "lifecycle" doesn't apply to this domain
+**Scenario**: Marketing toolkit with custom SDM command system - first SD-X extension example
 
 ---
 
@@ -162,7 +135,7 @@ source = "generic"
 
 ```toml
 [tool.metaspec]
-generated_by = "0.9.5"
+generated_by = "0.9.6"
 domain = "api"
 lifecycle = "greenfield"
 
@@ -172,23 +145,8 @@ cli_commands = ["init", "validate", "generate", "test"]
 # Mixed command system: custom + spec-kit
 sd_type = ["generic", "sdd"]
 
-# Custom API-specific commands
-[[tool.metaspec.slash_commands]]
-name = "discover"
-description = "Discover API structure from OpenAPI/Swagger"
-source = "generic"
-
-# Spec-kit workflow commands
-[[tool.metaspec.slash_commands]]
-name = "specify"
-description = "Define API endpoint specification"
-source = "sdd/spec-kit"
-
-# Custom code generation
-[[tool.metaspec.slash_commands]]
-name = "generate"
-description = "Generate API client/server code"
-source = "generic"
+# Mix of custom and spec-kit commands
+slash_commands = ["discover", "specify", "plan", "implement", "generate"]
 ```
 
 **Scenario**: API speckit combining domain-specific discovery with spec-kit workflow

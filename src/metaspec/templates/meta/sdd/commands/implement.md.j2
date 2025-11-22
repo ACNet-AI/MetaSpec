@@ -409,34 +409,28 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    ```toml
    cli_commands = ["init", "validate", "generate"]
    sd_type = "generic"
-   
-   [[tool.metaspec.slash_commands]]
-   name = "show-spec"
-   source = "generic"  # Custom MCP command
+   slash_commands = ["show-spec", "get-template"]
    ```
    
    **Scenario 2: Spec-Kit Pattern Speckit**
    ```toml
    cli_commands = ["init", "validate"]
    sd_type = "sdd"
-   
-   [[tool.metaspec.slash_commands]]
-   name = "specify"
-   source = "sdd/spec-kit"  # From library
+   slash_commands = ["specify", "plan", "implement"]
    ```
    
-   **Scenario 3: Mixed Pattern Speckit**
+   **Scenario 3: Custom SD-X System** (Marketing)
+   ```toml
+   cli_commands = ["info", "init", "validate"]
+   sd_type = "sdm"
+   slash_commands = ["marketspec.constitution", "marketspec.specify", "marketspec.plan", ...]
+   ```
+   
+   **Scenario 4: Mixed Pattern Speckit**
    ```toml
    cli_commands = ["init", "validate", "analyze"]
    sd_type = ["generic", "sdd"]
-   
-   [[tool.metaspec.slash_commands]]
-   name = "discover"
-   source = "generic"  # Custom
-   
-   [[tool.metaspec.slash_commands]]
-   name = "specify"
-   source = "sdd/spec-kit"  # From library
+   slash_commands = ["discover", "specify", "plan", "generate"]
    ```
    
    **Purpose**: This metadata enables community to:

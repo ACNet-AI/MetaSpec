@@ -59,7 +59,7 @@ cli_commands = []
 {% endif %}
 
 # Slash command system type (auto-detected from sources)
-# Values: "generic" | "sds" | "sdd" | ["sds", "sdd"] | "none"
+# Values: "generic" | "sds" | "sdd" | custom (e.g., "sdm") | "none"
 {% if slash_commands %}
 {% set sd_types = namespace(list=[]) %}
 {% for sc in slash_commands %}
@@ -69,6 +69,10 @@ cli_commands = []
     {% set _ = sd_types.list.append('sds') %}
   {% elif sc.source == 'generic' and 'generic' not in sd_types.list %}
     {% set _ = sd_types.list.append('generic') %}
+  {% elif sc.source not in ['generic'] and not sc.source.startswith('sdd/') and not sc.source.startswith('sds/') %}
+    {% if sc.source not in sd_types.list %}
+      {% set _ = sd_types.list.append(sc.source) %}
+    {% endif %}
   {% endif %}
 {% endfor %}
 {% if sd_types.list|length == 1 %}
@@ -80,13 +84,7 @@ sd_type = "none"
 {% endif %}
 
 # Slash commands provided by this speckit (for AI agents)
-{% for sc in slash_commands %}
-[[tool.metaspec.slash_commands]]
-name = "{{ sc.name }}"
-description = "{{ sc.description }}"
-source = "{{ sc.source }}"
-
-{% endfor %}
+slash_commands = [{% for sc in slash_commands %}"{{ sc.name }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 {% else %}
 sd_type = "none"
 # No slash commands defined
