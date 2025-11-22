@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.7] - 2025-11-22
+
+### 🎯 Metadata & Navigation Enhancements
+
+**1. Simplified slash_commands Format**
+- Changed from verbose TOML tables to concise array format
+- Matches `cli_commands` style for consistency
+- Reduced boilerplate by 80% (50+ lines → ~10 lines)
+
+**2. Standardized SD-X Naming Convention**
+- Replaced `"generic"` with `"custom"` for non-SD-X commands
+- Enforced consistent `sd<domain>` pattern for all SD-X systems
+- Examples: `sds`, `sdd`, `sdm`, `sdt`, `sdo`
+- Benefits: Clear distinction between SD-X and custom systems
+
+**3. Precision-Guided Navigation for Long Commands** ⭐ NEW
+- Added guidance in `implement.md.j2` for generating navigation tables
+- Threshold: Commands >500 lines need navigation
+- Token savings: 70-90% when AI reads commands
+- Includes: Template, guidelines, calculation rules, examples
+- Applies to: All future generated speckits
+
+**Documentation Updates**:
+- `metaspec-metadata-examples.md`: Updated all 5 examples
+- `implement.md.j2`: Added 75-line navigation guidance section
+- `pyproject.toml.j2`: Simplified generation logic
+- Navigation table: Updated all line numbers (file +74 lines)
+
+**Benefits**:
+- ✅ Consistent metadata format across all speckits
+- ✅ Clear SD-X system classification
+- ✅ Massive token savings for long commands
+- ✅ Best practices baked into generation
+
+---
+
 ## [0.9.6] - 2025-11-22
 
 ### 🎯 Speckit Metadata Support in pyproject.toml
