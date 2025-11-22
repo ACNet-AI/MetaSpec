@@ -42,7 +42,7 @@ cli_commands = ["init", "validate", "generate", "info"]
 sd_type = "custom"
 
 # Slash commands for AI agents
-slash_commands = ["show-spec", "get-template"]
+slash_commands = ["/show-spec", "/get-template"]
 ```
 
 **Scenario**: Domain-specific speckit with custom AI commands (not following SD-X pattern)
@@ -64,7 +64,7 @@ cli_commands = ["init", "validate", "test"]
 sd_type = "sdd"
 
 # Slash commands from library/sdd/spec-kit
-slash_commands = ["specify", "plan", "implement"]
+slash_commands = ["/specify", "/plan", "/implement"]
 ```
 
 **Scenario**: Speckit adopts spec-kit workflow pattern for greenfield API test development
@@ -87,11 +87,11 @@ sd_type = ["sds", "sdd"]
 
 # Deployed slash commands (19 total)
 slash_commands = [
-    "metaspec.sds.specify", "metaspec.sds.plan", "metaspec.sds.tasks", "metaspec.sds.implement",
-    "metaspec.sds.clarify", "metaspec.sds.analyze", "metaspec.sds.checklist", "metaspec.sds.constitution",
-    "metaspec.sdd.specify", "metaspec.sdd.plan", "metaspec.sdd.tasks", "metaspec.sdd.implement",
-    "metaspec.sdd.clarify", "metaspec.sdd.analyze", "metaspec.sdd.checklist", "metaspec.sdd.constitution",
-    "metaspec.evolution.proposal", "metaspec.evolution.apply", "metaspec.evolution.archive"
+    "/metaspec.sds.specify", "/metaspec.sds.plan", "/metaspec.sds.tasks", "/metaspec.sds.implement",
+    "/metaspec.sds.clarify", "/metaspec.sds.analyze", "/metaspec.sds.checklist", "/metaspec.sds.constitution",
+    "/metaspec.sdd.specify", "/metaspec.sdd.plan", "/metaspec.sdd.tasks", "/metaspec.sdd.implement",
+    "/metaspec.sdd.clarify", "/metaspec.sdd.analyze", "/metaspec.sdd.checklist", "/metaspec.sdd.constitution",
+    "/metaspec.evolution.proposal", "/metaspec.evolution.apply", "/metaspec.evolution.archive"
 ]
 ```
 
@@ -114,16 +114,16 @@ sd_type = "sdm"
 
 # SDM (Spec-Driven Marketing) commands
 slash_commands = [
-    "marketspec.constitution",
-    "marketspec.specify",
-    "marketspec.clarify",
-    "marketspec.plan",
-    "marketspec.tasks",
-    "marketspec.implement",
-    "marketspec.review",
-    "marketspec.optimize",
-    "marketspec.analyze",
-    "marketspec.checklist",
+    "/marketspec.constitution",
+    "/marketspec.specify",
+    "/marketspec.clarify",
+    "/marketspec.plan",
+    "/marketspec.tasks",
+    "/marketspec.implement",
+    "/marketspec.review",
+    "/marketspec.optimize",
+    "/marketspec.analyze",
+    "/marketspec.checklist",
 ]
 ```
 
@@ -146,7 +146,7 @@ cli_commands = ["init", "validate", "generate", "test"]
 sd_type = ["custom", "sdd"]
 
 # Mix of custom and spec-kit commands
-slash_commands = ["discover", "specify", "plan", "implement", "generate"]
+slash_commands = ["/discover", "/specify", "/plan", "/implement", "/generate"]
 ```
 
 **Scenario**: API speckit combining custom domain-specific commands with spec-kit workflow

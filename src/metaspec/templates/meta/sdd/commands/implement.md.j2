@@ -374,7 +374,7 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    sd_type = "custom"
    
    # Slash commands this speckit provides (for AI agents)
-   slash_commands = ["show-spec", "get-template"]
+   slash_commands = ["/show-spec", "/get-template"]
    ```
    
    **Update Procedure**:
@@ -406,28 +406,28 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    ```toml
    cli_commands = ["init", "validate", "generate"]
    sd_type = "custom"
-   slash_commands = ["show-spec", "get-template"]
+   slash_commands = ["/show-spec", "/get-template"]
    ```
    
    **Scenario 2: SDD System** (Spec-Kit Pattern)
    ```toml
    cli_commands = ["init", "validate"]
    sd_type = "sdd"
-   slash_commands = ["specify", "plan", "implement"]
+   slash_commands = ["/specify", "/plan", "/implement"]
    ```
    
    **Scenario 3: SDM System** (Spec-Driven Marketing)
    ```toml
    cli_commands = ["info", "init", "validate"]
    sd_type = "sdm"
-   slash_commands = ["marketspec.constitution", "marketspec.specify", "marketspec.plan", ...]
+   slash_commands = ["/marketspec.constitution", "/marketspec.specify", "/marketspec.plan", ...]
    ```
    
    **Scenario 4: Mixed Systems**
    ```toml
    cli_commands = ["init", "validate", "analyze"]
    sd_type = ["custom", "sdd"]
-   slash_commands = ["discover", "specify", "plan", "generate"]
+   slash_commands = ["/discover", "/specify", "/plan", "/generate"]
    ```
    
    **Purpose**: This metadata enables community to:
