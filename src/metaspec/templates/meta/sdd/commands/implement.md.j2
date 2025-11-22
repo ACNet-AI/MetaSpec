@@ -28,43 +28,47 @@ You **MUST** consider the user input before proceeding (if not empty).
 |------|-------|------|----------|-----------------|
 | 1-5. Prerequisites & Setup | 86-232 | 146 lines | 🔴 MUST READ | `read_file(target_file, offset=86, limit=146)` |
 | 6. Execute Implementation | 233-274 | 41 lines | 🔴 MUST READ | `read_file(target_file, offset=233, limit=41)` |
-| **7. Task Execution Details** ⭐ | 275-464 | 189 lines | 🔴 **KEY** | See subsections below ⬇️ |
-| 8-10. Checkpoints & Reporting | 465-556 | 91 lines | 🟡 Important | `read_file(target_file, offset=465, limit=91)` |
-| 11-13. Validation & Saves | 557-681 | 124 lines | 🟡 Important | `read_file(target_file, offset=557, limit=124)` |
-| 14-15. Propagation & Validation | 682-808 | 126 lines | 🟡 Important | `read_file(target_file, offset=682, limit=126)` |
-| 16. Final Report | 809-1096 | 287 lines | 🟢 Reference | `read_file(target_file, offset=809, limit=287)` |
+| **7. Task Execution Details** ⭐ | 275-525 | 251 lines | 🔴 **KEY** | See subsections below ⬇️ |
+| 8-10. Checkpoints & Reporting | 526-617 | 91 lines | 🟡 Important | `read_file(target_file, offset=526, limit=91)` |
+| 11-13. Validation & Saves | 618-742 | 124 lines | 🟡 Important | `read_file(target_file, offset=618, limit=124)` |
+| 14-15. Propagation & Validation | 743-869 | 126 lines | 🟡 Important | `read_file(target_file, offset=743, limit=126)` |
+| 16. Final Report | 870-1158 | 288 lines | 🟢 Reference | `read_file(target_file, offset=870, limit=288)` |
 
-**📋 Section 7: Task Execution Details by Language** (189 lines):
+**📋 Section 7: Task Execution Details by Language** (251 lines):
 
 | Component | Lines | Size | Usage |
 |-----------|-------|------|-------|
-| **Python Implementation** ⭐ | 306-446 | 141 lines | `read_file(target_file, offset=306, limit=141)` |
+| **Python Implementation** ⭐ | 306-508 | 203 lines | `read_file(target_file, offset=306, limit=203)` |
 | **TypeScript Implementation** | 315-323 | 8 lines | `read_file(target_file, offset=315, limit=8)` |
 | **Go Implementation** | 324-332 | 8 lines | `read_file(target_file, offset=324, limit=8)` |
 | **Rust Implementation** | 333-341 | 8 lines | `read_file(target_file, offset=333, limit=8)` |
 
-**Note**: Python section (141 lines) includes overview (8 lines) + detailed `pyproject.toml` structure (97 lines) with `[tool.metaspec]` metadata, CLI commands, slash commands, sd_type calculation, and 3 example scenarios.
+**Note**: Python section (203 lines) includes overview (8 lines) + `pyproject.toml` structure (97 lines) + **long command navigation guidance (74 lines)** with template and examples.
 
 **🎯 Phase-Specific Reading** (By component type):
 
 | Phase | Lines | Size | Usage |
 |-------|-------|------|-------|
-| Setup & pyproject.toml | 136-207, 306-446 | 211 lines | `read_file(target_file, offset=136, limit=71)` + `offset=306, limit=141` |
+| Setup & pyproject.toml | 136-207, 306-508 | 273 lines | `read_file(target_file, offset=136, limit=71)` + `offset=306, limit=203` |
 | Language-Specific Impl | 306-341 | 35 lines | `read_file(target_file, offset=306, limit=35)` |
-| Checkpoints & Validation | 465-556 | 91 lines | `read_file(target_file, offset=465, limit=91)` |
-| Progress & Error Handling | 489-556 | 67 lines | `read_file(target_file, offset=489, limit=67)` |
-| Completion & Reporting | 557-681 | 124 lines | `read_file(target_file, offset=557, limit=124)` |
+| Command Navigation | 433-508 | 75 lines | `read_file(target_file, offset=433, limit=75)` |
+| Checkpoints & Validation | 526-617 | 91 lines | `read_file(target_file, offset=526, limit=91)` |
+| Progress & Error Handling | 550-617 | 67 lines | `read_file(target_file, offset=550, limit=67)` |
+| Completion & Reporting | 618-742 | 124 lines | `read_file(target_file, offset=618, limit=124)` |
 
 **💡 Typical Usage Patterns**:
 ```python
 # Quick start: Read Prerequisites only (146 lines)
 read_file(target_file, offset=86, limit=146)
 
-# Python implementation: Read Python guidance + pyproject.toml update (141 lines)
-read_file(target_file, offset=306, limit=141)
+# Python implementation: Read Python guidance + pyproject.toml + navigation (203 lines)
+read_file(target_file, offset=306, limit=203)
+
+# Command navigation: Read long command optimization guidance (75 lines)
+read_file(target_file, offset=433, limit=75)
 
 # Validation phase: Read validation guidance (124 lines)
-read_file(target_file, offset=557, limit=124)
+read_file(target_file, offset=618, limit=124)
 
 # Specific language: Jump to language section
 read_file(target_file, offset=315, limit=8)   # TypeScript
@@ -73,11 +77,12 @@ read_file(target_file, offset=333, limit=8)   # Rust
 ```
 
 **Token Savings**: 
-- Full file: 1097 lines (~3800 tokens)
-- Prerequisites only: 146 lines (~500 tokens) → **87% savings**
+- Full file: 1158 lines (~4050 tokens)
+- Prerequisites only: 146 lines (~500 tokens) → **88% savings**
 - Language-specific: 8 lines (~30 tokens) → **99% savings** 🏆
-- Python + pyproject.toml: 141 lines (~490 tokens) → **87% savings**
-- Phase-specific: 67-211 lines (~230-730 tokens) → **81-94% savings**
+- Python + metadata + navigation: 203 lines (~710 tokens) → **82% savings**
+- Command navigation only: 75 lines (~260 tokens) → **94% savings**
+- Phase-specific: 67-273 lines (~230-950 tokens) → **77-94% savings**
 
 ---
 
@@ -430,7 +435,82 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    - Understand AI command system type (what workflow pattern?)
    - Search/filter speckits by capabilities
 
-3. **Verify task**:
+3. **Optimize Long Slash Commands** ⭐ NEW
+
+   **When**: Slash command files in `.metaspec/commands/` or `templates/*/commands/` exceed 500 lines
+   
+   **Why**: Save 70-90% token consumption when AI reads commands
+   
+   **How**: Add precision-guided navigation at file start (after frontmatter)
+   
+   **Navigation Template**:
+   
+   ```markdown
+   ---
+   name: command-name
+   description: Command description
+   ---
+   
+   # /command-name
+   
+   📖 **Navigation Guide** (Token Optimization)
+   
+   **File Size**: {line_count} lines (~{token_estimate} tokens)
+   **Recommended**: Read specific sections to save 70-90% tokens
+   
+   | Section | Lines | Size | Usage |
+   |---------|-------|------|-------|
+   | 1. Purpose & Usage | 1-100 | 100 lines | `read_file(target, offset=1, limit=100)` |
+   | 2. Input Analysis | 101-250 | 150 lines | `read_file(target, offset=101, limit=150)` |
+   | 3. Processing Rules | 251-500 | 250 lines | `read_file(target, offset=251, limit=250)` |
+   | 4. Output Format | 501-750 | 250 lines | `read_file(target, offset=501, limit=250)` |
+   | 5. Examples | 751-{end} | {size} lines | `read_file(target, offset=751, limit={size})` |
+   
+   **💡 Typical Usage**:
+   ```python
+   # Quick reference: Read purpose only (100 lines)
+   read_file(target, offset=1, limit=100)
+   
+   # Specific section: Read processing rules (250 lines)
+   read_file(target, offset=251, limit=250)
+   
+   # Full understanding: Read all sections sequentially
+   ```
+   
+   **Token Savings**:
+   - Full file: {line_count} lines (~{token_estimate} tokens)
+   - Single section: 100-250 lines (~350-850 tokens) → **70-90% savings** 🏆
+   
+   ---
+   
+   [Actual command content starts here...]
+   ```
+   
+   **Guidelines**:
+   - **Threshold**: Add navigation for commands >500 lines
+   - **Sections**: 4-6 logical sections, each 100-300 lines
+   - **Line Numbers**: Calculate actual boundaries (use `wc -l`)
+   - **Token Estimate**: ~3.5 tokens per line average
+   - **Savings**: Emphasize 70-90% for section reads
+   
+   **Section Design**:
+   - Section 1: Purpose, usage, quick reference
+   - Section 2-N: Major logical blocks (input, rules, output, etc.)
+   - Last section: Examples and edge cases
+   
+   **Example Calculation**:
+   ```bash
+   # For 847-line command
+   Section 1: Purpose & Usage (1-100, 100 lines)
+   Section 2: Input Analysis (101-250, 150 lines)
+   Section 3: Processing Rules (251-500, 250 lines)
+   Section 4: Output Format (501-700, 200 lines)
+   Section 5: Examples (701-847, 147 lines)
+   
+   Token savings: 847 lines → 150 lines = 82% savings
+   ```
+
+4. **Verify task**:
    - **SETUP**: Files created, configs valid, dependencies installable
    - **MODELS**: Models instantiable, match specification entities
    - **PARSER**: Can parse valid/invalid specs, error handling works
@@ -439,11 +519,11 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    - **TESTS**: Tests pass, coverage adequate
    - **DOCS**: Documentation complete, examples work
 
-4. **Mark complete**:
+5. **Mark complete**:
    - Update tasks.md: `- [ ] T001` → `- [x] T001`
    - Report: "✅ T001 complete: Created directory structure"
 
-5. **Handle errors**:
+6. **Handle errors**:
    - If task fails: Report error, suggest fix
    - If sequential task fails: Halt phase
    - If parallel task fails: Continue others, report at end
