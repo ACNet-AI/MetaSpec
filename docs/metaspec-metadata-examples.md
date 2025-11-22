@@ -21,14 +21,14 @@
 | Field | Type | Description |
 |-------|------|-------------|
 | `lifecycle` | string | Development phase: "greenfield" (0→1) \| "brownfield" (1→n) \| custom |
-| `sd_type` | string \| array | Slash command system type: "generic" \| "sds" \| "sdd" \| mixed |
+| `sd_type` | string \| array | Slash command system type: SD-X ("sds" \| "sdd" \| "sdm"...) \| "custom" \| "none" |
 | `slash_commands` | array | Slash commands this speckit provides for AI agents |
 
 ---
 
 ## 📝 Example Outputs
 
-### Example 1: Domain-Specific Speckit (MCP Spec Kit)
+### Example 1: Custom Commands Speckit (MCP Spec Kit)
 
 ```toml
 [tool.metaspec]
@@ -38,14 +38,14 @@ domain = "mcp"
 # CLI commands this speckit provides
 cli_commands = ["init", "validate", "generate", "info"]
 
-# Custom domain-specific slash commands
-sd_type = "generic"
+# Custom domain-specific slash commands (not SD-X system)
+sd_type = "custom"
 
 # Slash commands for AI agents
 slash_commands = ["show-spec", "get-template"]
 ```
 
-**Scenario**: Domain-specific speckit with custom AI commands tailored to MCP domain
+**Scenario**: Domain-specific speckit with custom AI commands (not following SD-X pattern)
 
 ---
 
@@ -142,14 +142,14 @@ lifecycle = "greenfield"
 # CLI commands for API development
 cli_commands = ["init", "validate", "generate", "test"]
 
-# Mixed command system: custom + spec-kit
-sd_type = ["generic", "sdd"]
+# Mixed command system: custom commands + spec-kit workflow
+sd_type = ["custom", "sdd"]
 
 # Mix of custom and spec-kit commands
 slash_commands = ["discover", "specify", "plan", "implement", "generate"]
 ```
 
-**Scenario**: API speckit combining domain-specific discovery with spec-kit workflow
+**Scenario**: API speckit combining custom domain-specific commands with spec-kit workflow
 
 ---
 
@@ -163,18 +163,26 @@ Based on `slash_commands[].source`:
 
 | Source Pattern | Detected Type | Meaning |
 |----------------|---------------|---------|
-| `sdd/spec-kit` | `"sdd"` | Uses spec-kit workflow pattern |
-| `sdd/openspec` | `"sdd"` | Uses OpenSpec evolution pattern |
-| `sds/*` | `"sds"` | Uses SDS (Spec-Driven Specification) pattern |
-| `generic` | `"generic"` | Custom domain-specific commands |
-| Mixed sources | `["generic", "sdd"]` | Combines multiple patterns |
+| `sdd/spec-kit` | `"sdd"` | Spec-Driven Development (spec-kit workflow) |
+| `sdd/openspec` | `"sdd"` | Spec-Driven Development (openspec evolution) |
+| `sds/*` | `"sds"` | Spec-Driven Specification |
+| `sdm` | `"sdm"` | Spec-Driven Marketing |
+| `sdt` | `"sdt"` | Spec-Driven Testing |
+| `custom` | `"custom"` | Custom commands (not SD-X system) |
+| Mixed sources | `["custom", "sdd"]` | Combines multiple patterns |
 | No slash commands | `"none"` | No AI command system |
 
 **Detection Logic**:
-1. Collect all unique source prefixes from `slash_commands`
-2. Map to types: `sdd/*` → sdd, `sds/*` → sds, `generic` → generic
+1. Collect all unique source values from `slash_commands`
+2. Map to types: 
+   - `sdd/*` → sdd
+   - `sds/*` → sds
+   - `sdm`, `sdt`, `sdo`, etc. → keep as-is (SD-X systems)
+   - `custom` → custom (non-SD-X)
 3. If single type: `sd_type = "sdd"`
-4. If multiple types: `sd_type = ["generic", "sdd"]`
+4. If multiple types: `sd_type = ["custom", "sdd"]`
+
+**Naming Convention**: SD-X systems follow pattern `sd<domain>` where domain is 1-3 letter abbreviation
 
 ### `lifecycle` Usage
 
@@ -208,7 +216,7 @@ print(f"Slash Commands: {len(metadata.get('slash_commands', []))}")
 if "validate" in metadata["cli_commands"]:
     print("✅ Supports validation")
 
-if metadata["sd_type"] in ["sdd", ["generic", "sdd"]]:
+if metadata["sd_type"] in ["sdd", ["custom", "sdd"]]:
     print("✅ Uses spec-kit workflow")
 ```
 

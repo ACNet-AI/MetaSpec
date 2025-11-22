@@ -108,7 +108,7 @@ Select via interactive wizard when generating speckit:
 
 ```yaml
 # Universal SD-X toolkit
-source: "generic"
+source: "custom"
 
 # Or software development toolkit
 source: "sdd/spec-kit"   # Greenfield

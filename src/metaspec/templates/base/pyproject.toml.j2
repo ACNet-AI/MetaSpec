@@ -59,7 +59,7 @@ cli_commands = []
 {% endif %}
 
 # Slash command system type (auto-detected from sources)
-# Values: "generic" | "sds" | "sdd" | custom (e.g., "sdm") | "none"
+# Values: SD-X systems ("sds", "sdd", "sdm", "sdt", etc.) | "custom" | "none"
 {% if slash_commands %}
 {% set sd_types = namespace(list=[]) %}
 {% for sc in slash_commands %}
@@ -67,9 +67,9 @@ cli_commands = []
     {% set _ = sd_types.list.append('sdd') %}
   {% elif sc.source.startswith('sds/') and 'sds' not in sd_types.list %}
     {% set _ = sd_types.list.append('sds') %}
-  {% elif sc.source == 'generic' and 'generic' not in sd_types.list %}
-    {% set _ = sd_types.list.append('generic') %}
-  {% elif sc.source not in ['generic'] and not sc.source.startswith('sdd/') and not sc.source.startswith('sds/') %}
+  {% elif sc.source == 'custom' and 'custom' not in sd_types.list %}
+    {% set _ = sd_types.list.append('custom') %}
+  {% elif sc.source not in ['custom'] and not sc.source.startswith('sdd/') and not sc.source.startswith('sds/') %}
     {% if sc.source not in sd_types.list %}
       {% set _ = sd_types.list.append(sc.source) %}
     {% endif %}

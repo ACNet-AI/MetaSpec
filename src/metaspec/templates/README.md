@@ -115,7 +115,7 @@ Development methodologies organized by lifecycle:
 
 **Note**: This library has no commands (commands optional, templates required)
 
-**Usage**: Used by `create-new-feature.sh` script, specify `source: "generic"` if needed
+**Usage**: Used by `create-new-feature.sh` script, specify `source: "custom"` if needed
 
 ---
 
@@ -270,8 +270,8 @@ my-speckit/
 
 Templates are selected dynamically based on `slash_commands[].source`:
 - `source: "dev"` → `library/sdd/`
-- `source: "generic"` → `library/generic/`
-- Default: `"generic"`
+- `source: "custom"` → `library/generic/`
+- Default: `"custom"` (maps to `library/generic/`)
 
 ### 3. Clear Separation of Concerns
 

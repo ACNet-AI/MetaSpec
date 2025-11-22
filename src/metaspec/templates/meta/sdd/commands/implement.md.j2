@@ -365,19 +365,11 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
    # CLI commands this speckit provides
    cli_commands = ["init", "validate", "generate", "info"]
    
-   # Slash command system type (auto-detected from sources)
-   sd_type = "generic"  # See calculation rules below
+   # Slash command system type (see calculation rules below)
+   sd_type = "custom"
    
    # Slash commands this speckit provides (for AI agents)
-   [[tool.metaspec.slash_commands]]
-   name = "show-spec"
-   description = "Display domain specification"
-   source = "generic"
-   
-   [[tool.metaspec.slash_commands]]
-   name = "get-template"
-   description = "Get entity template"
-   source = "generic"
+   slash_commands = ["show-spec", "get-template"]
    ```
    
    **Update Procedure**:
@@ -387,49 +379,49 @@ grep -A 30 "^## Implementation" specs/toolkit/001-*/spec.md
       - Or list from `[project.scripts]` entrypoints
       - Update: `cli_commands = ["cmd1", "cmd2", ...]`
    
-   2. **Slash Commands**: Scan `.metaspec/commands/` for actual `.md` files
+   2. **Slash Commands**: List all `.md` files in `.metaspec/commands/`
       - Each `.md` file = one slash command
       - Extract name from filename (e.g., `show-spec.md` → `show-spec`)
-      - Extract description from frontmatter `description:` field
-      - Determine source:
-        * From `library/sdd/` → `source = "sdd/spec-kit"` or specific sub-library
-        * From `library/sds/` → `source = "sds"`
-        * Custom domain-specific → `source = "generic"`
+      - Update: `slash_commands = ["cmd1", "cmd2", ...]`
    
-   3. **sd_type**: Auto-calculate from slash command sources
-      - Only `"sdd/*"` sources → `sd_type = "sdd"`
-      - Only `"sds/*"` sources → `sd_type = "sds"`
-      - Only `"generic"` sources → `sd_type = "generic"`
-      - Mixed sources → `sd_type = ["generic", "sdd"]` (array)
-      - No slash commands → `sd_type = "none"`
+   3. **sd_type**: Classify the command system
+      - **SD-X systems** (following `sd<domain>` pattern):
+        * `"sdd"` - Spec-Driven Development (from library/sdd/)
+        * `"sds"` - Spec-Driven Specification (from library/sds/)
+        * `"sdm"` - Spec-Driven Marketing (custom marketing workflow)
+        * `"sdt"`, `"sdo"`, etc. - Other SD-X extensions
+      - **Non-SD-X**:
+        * `"custom"` - Custom commands not following SD-X pattern
+        * `"none"` - No slash commands
+      - **Mixed**: `["custom", "sdd"]` or `["sdm", "sdd"]` (array)
    
    **Example Scenarios**:
    
-   **Scenario 1: Domain-Specific Speckit** (MCP)
+   **Scenario 1: Custom Commands** (MCP - not SD-X)
    ```toml
    cli_commands = ["init", "validate", "generate"]
-   sd_type = "generic"
+   sd_type = "custom"
    slash_commands = ["show-spec", "get-template"]
    ```
    
-   **Scenario 2: Spec-Kit Pattern Speckit**
+   **Scenario 2: SDD System** (Spec-Kit Pattern)
    ```toml
    cli_commands = ["init", "validate"]
    sd_type = "sdd"
    slash_commands = ["specify", "plan", "implement"]
    ```
    
-   **Scenario 3: Custom SD-X System** (Marketing)
+   **Scenario 3: SDM System** (Spec-Driven Marketing)
    ```toml
    cli_commands = ["info", "init", "validate"]
    sd_type = "sdm"
    slash_commands = ["marketspec.constitution", "marketspec.specify", "marketspec.plan", ...]
    ```
    
-   **Scenario 4: Mixed Pattern Speckit**
+   **Scenario 4: Mixed Systems**
    ```toml
    cli_commands = ["init", "validate", "analyze"]
-   sd_type = ["generic", "sdd"]
+   sd_type = ["custom", "sdd"]
    slash_commands = ["discover", "specify", "plan", "generate"]
    ```
    

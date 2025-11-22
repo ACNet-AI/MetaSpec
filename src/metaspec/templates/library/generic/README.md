@@ -134,15 +134,15 @@ When generating a speckit, if you need to create a **universal SD-X toolkit** (n
 
 ```yaml
 # Select via metaspec init interactive wizard
-source: "generic"
+source: "custom"
 
 # Or specify in internal configuration
 slash_commands:
-  - source: "generic"
+  - source: "custom"
     name: "constitution"
-  - source: "generic"
+  - source: "custom"
     name: "specify"
-  - source: "generic"
+  - source: "custom"
     name: "proposal"
   # ...
 ```
